@@ -1,0 +1,986 @@
+
+<!DOCTYPE html>
+
+<html data-content_root="../../../../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>langchain.smith.evaluation.name_generation — 🦜🔗 LangChain  documentation</title>
+<script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+<!-- Loaded before other Sphinx assets -->
+<link href="../../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link href="../../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link href="../../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link as="font" crossorigin="" href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" rel="preload" type="font/woff2"/>
+<link href="../../../../_static/pygments.css?v=a746c00c" rel="stylesheet" type="text/css"/>
+<link href="../../../../_static/autodoc_pydantic.css" rel="stylesheet" type="text/css"/>
+<link href="../../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../../_static/sphinx-design.min.css?v=95c83b7e" rel="stylesheet" type="text/css"/>
+<link href="../../../../_static/css/custom.css?v=b95e2228" rel="stylesheet" type="text/css"/>
+<!-- Pre-loaded scripts that we'll load fully later -->
+<link as="script" href="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" rel="preload"/>
+<link as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" rel="preload"/>
+<script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../../_static/documentation_options.js?v=3b5cce75"></script>
+<script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../../_static/copybutton.js?v=f281be69"></script>
+<script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
+<script>DOCUMENTATION_OPTIONS.pagename = '_modules/langchain/smith/evaluation/name_generation';</script>
+<link href="../../../../_static/favicon.png" rel="icon"/>
+<link href="../../../../search.html" rel="search" title="Search"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="en" name="docsearch:language"/>
+<meta content="Sep 27, 2024" name="docbuild:last-update"/>
+</head>
+<body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
+<div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
+<div id="pst-scroll-pixel-helper"></div>
+<button class="btn rounded-pill" id="pst-back-to-top" type="button">
+<i class="fa-solid fa-arrow-up"></i>Back to top</button>
+<input class="sidebar-toggle" id="pst-primary-sidebar-checkbox" type="checkbox"/>
+<label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+<input class="sidebar-toggle" id="pst-secondary-sidebar-checkbox" type="checkbox"/>
+<label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+<div class="search-button__wrapper">
+<div class="search-button__overlay"></div>
+<div class="search-button__search-container">
+<form action="../../../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+</div>
+<div class="pst-async-banner-revealer d-none">
+<aside aria-label="Version warning" class="d-none d-print-none" id="bd-header-version-warning"></aside>
+</div>
+<header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+<button aria-label="Site navigation" class="pst-navbar-icon sidebar-toggle primary-toggle">
+<span class="fa-solid fa-bars"></span>
+</button>
+<div class="navbar-header-items__start">
+<div class="navbar-item">
+<a class="navbar-brand logo" href="../../../../index.html">
+<img alt="🦜🔗 LangChain  documentation - Home" class="logo__image only-light" src="../../../../_static/wordmark-api.svg"/>
+<script>document.write(`<img src="../../../../_static/wordmark-api-dark.svg" class="logo__image only-dark" alt="🦜🔗 LangChain  documentation - Home"/>`);</script>
+</a></div>
+</div>
+<div class="navbar-header-items">
+<div class="me-auto navbar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../../../../reference.html">
+    Reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-external" href="https://api.python.langchain.com/">
+    Legacy reference
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="navbar-header-items__end">
+<div class="navbar-item navbar-persistent--container">
+<form action="../../../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</div>
+<div class="navbar-item"><!-- This will display a link to LangChain docs -->
+<head>
+<style>
+        .text-link {
+            text-decoration: none; /* Remove underline */
+            color: inherit;        /* Inherit color from parent element */
+        }
+    </style>
+</head>
+<body>
+<a class="text-link" href="https://python.langchain.com/">Docs</a>
+</body></div>
+<div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+<div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://twitter.com/langchainai" rel="noopener" target="_blank" title="X / Twitter"><i aria-hidden="true" class="fab fa-twitter-square fa-lg"></i>
+<span class="sr-only">X / Twitter</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="navbar-persistent--mobile">
+<form action="../../../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</div>
+</div>
+</header>
+<div class="bd-container">
+<div class="bd-container__inner bd-page-width">
+<div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+<div class="sidebar-header-items sidebar-primary__section">
+<div class="sidebar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../../../../reference.html">
+    Reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-external" href="https://api.python.langchain.com/">
+    Legacy reference
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="sidebar-header-items__end">
+<div class="navbar-item"><!-- This will display a link to LangChain docs -->
+<head>
+<style>
+        .text-link {
+            text-decoration: none; /* Remove underline */
+            color: inherit;        /* Inherit color from parent element */
+        }
+    </style>
+</head>
+<body>
+<a class="text-link" href="https://python.langchain.com/">Docs</a>
+</body></div>
+<div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+<div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://twitter.com/langchainai" rel="noopener" target="_blank" title="X / Twitter"><i aria-hidden="true" class="fab fa-twitter-square fa-lg"></i>
+<span class="sr-only">X / Twitter</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sidebar-primary-items__end sidebar-primary__section">
+</div>
+<div id="rtd-footer-container"></div>
+</div>
+<main class="bd-main" id="main-content" role="main">
+<div class="bd-content">
+<div class="bd-article-container">
+<div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+<div class="header-article-items__start">
+<div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+<ul class="bd-breadcrumbs">
+<li class="breadcrumb-item breadcrumb-home">
+<a aria-label="Home" class="nav-link" href="../../../../index.html">
+<i class="fa-solid fa-home"></i>
+</a>
+</li>
+<li class="breadcrumb-item"><a class="nav-link" href="../../../index.html">Module code</a></li>
+<li aria-current="page" class="breadcrumb-item active">langchain.sm...</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<div id="searchbox"></div>
+<article class="bd-article">
+<h1>Source code for langchain.smith.evaluation.name_generation</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">adjectives</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"abandoned"</span><span class="p">,</span>
+    <span class="s2">"aching"</span><span class="p">,</span>
+    <span class="s2">"advanced"</span><span class="p">,</span>
+    <span class="s2">"ample"</span><span class="p">,</span>
+    <span class="s2">"artistic"</span><span class="p">,</span>
+    <span class="s2">"back"</span><span class="p">,</span>
+    <span class="s2">"best"</span><span class="p">,</span>
+    <span class="s2">"bold"</span><span class="p">,</span>
+    <span class="s2">"brief"</span><span class="p">,</span>
+    <span class="s2">"clear"</span><span class="p">,</span>
+    <span class="s2">"cold"</span><span class="p">,</span>
+    <span class="s2">"complicated"</span><span class="p">,</span>
+    <span class="s2">"cooked"</span><span class="p">,</span>
+    <span class="s2">"crazy"</span><span class="p">,</span>
+    <span class="s2">"crushing"</span><span class="p">,</span>
+    <span class="s2">"damp"</span><span class="p">,</span>
+    <span class="s2">"dear"</span><span class="p">,</span>
+    <span class="s2">"definite"</span><span class="p">,</span>
+    <span class="s2">"dependable"</span><span class="p">,</span>
+    <span class="s2">"diligent"</span><span class="p">,</span>
+    <span class="s2">"drab"</span><span class="p">,</span>
+    <span class="s2">"earnest"</span><span class="p">,</span>
+    <span class="s2">"elderly"</span><span class="p">,</span>
+    <span class="s2">"enchanted"</span><span class="p">,</span>
+    <span class="s2">"essential"</span><span class="p">,</span>
+    <span class="s2">"excellent"</span><span class="p">,</span>
+    <span class="s2">"extraneous"</span><span class="p">,</span>
+    <span class="s2">"fixed"</span><span class="p">,</span>
+    <span class="s2">"flowery"</span><span class="p">,</span>
+    <span class="s2">"formal"</span><span class="p">,</span>
+    <span class="s2">"fresh"</span><span class="p">,</span>
+    <span class="s2">"frosty"</span><span class="p">,</span>
+    <span class="s2">"giving"</span><span class="p">,</span>
+    <span class="s2">"glossy"</span><span class="p">,</span>
+    <span class="s2">"healthy"</span><span class="p">,</span>
+    <span class="s2">"helpful"</span><span class="p">,</span>
+    <span class="s2">"impressionable"</span><span class="p">,</span>
+    <span class="s2">"kind"</span><span class="p">,</span>
+    <span class="s2">"large"</span><span class="p">,</span>
+    <span class="s2">"left"</span><span class="p">,</span>
+    <span class="s2">"long"</span><span class="p">,</span>
+    <span class="s2">"loyal"</span><span class="p">,</span>
+    <span class="s2">"mealy"</span><span class="p">,</span>
+    <span class="s2">"memorable"</span><span class="p">,</span>
+    <span class="s2">"monthly"</span><span class="p">,</span>
+    <span class="s2">"new"</span><span class="p">,</span>
+    <span class="s2">"notable"</span><span class="p">,</span>
+    <span class="s2">"only"</span><span class="p">,</span>
+    <span class="s2">"ordinary"</span><span class="p">,</span>
+    <span class="s2">"passionate"</span><span class="p">,</span>
+    <span class="s2">"perfect"</span><span class="p">,</span>
+    <span class="s2">"pertinent"</span><span class="p">,</span>
+    <span class="s2">"proper"</span><span class="p">,</span>
+    <span class="s2">"puzzled"</span><span class="p">,</span>
+    <span class="s2">"reflecting"</span><span class="p">,</span>
+    <span class="s2">"respectful"</span><span class="p">,</span>
+    <span class="s2">"roasted"</span><span class="p">,</span>
+    <span class="s2">"scholarly"</span><span class="p">,</span>
+    <span class="s2">"shiny"</span><span class="p">,</span>
+    <span class="s2">"slight"</span><span class="p">,</span>
+    <span class="s2">"sparkling"</span><span class="p">,</span>
+    <span class="s2">"spotless"</span><span class="p">,</span>
+    <span class="s2">"stupendous"</span><span class="p">,</span>
+    <span class="s2">"sunny"</span><span class="p">,</span>
+    <span class="s2">"tart"</span><span class="p">,</span>
+    <span class="s2">"terrific"</span><span class="p">,</span>
+    <span class="s2">"timely"</span><span class="p">,</span>
+    <span class="s2">"unique"</span><span class="p">,</span>
+    <span class="s2">"upbeat"</span><span class="p">,</span>
+    <span class="s2">"vacant"</span><span class="p">,</span>
+    <span class="s2">"virtual"</span><span class="p">,</span>
+    <span class="s2">"warm"</span><span class="p">,</span>
+    <span class="s2">"weary"</span><span class="p">,</span>
+    <span class="s2">"whispered"</span><span class="p">,</span>
+    <span class="s2">"worthwhile"</span><span class="p">,</span>
+    <span class="s2">"yellow"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">nouns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"account"</span><span class="p">,</span>
+    <span class="s2">"acknowledgment"</span><span class="p">,</span>
+    <span class="s2">"address"</span><span class="p">,</span>
+    <span class="s2">"advertising"</span><span class="p">,</span>
+    <span class="s2">"airplane"</span><span class="p">,</span>
+    <span class="s2">"animal"</span><span class="p">,</span>
+    <span class="s2">"appointment"</span><span class="p">,</span>
+    <span class="s2">"arrival"</span><span class="p">,</span>
+    <span class="s2">"artist"</span><span class="p">,</span>
+    <span class="s2">"attachment"</span><span class="p">,</span>
+    <span class="s2">"attitude"</span><span class="p">,</span>
+    <span class="s2">"availability"</span><span class="p">,</span>
+    <span class="s2">"backpack"</span><span class="p">,</span>
+    <span class="s2">"bag"</span><span class="p">,</span>
+    <span class="s2">"balance"</span><span class="p">,</span>
+    <span class="s2">"bass"</span><span class="p">,</span>
+    <span class="s2">"bean"</span><span class="p">,</span>
+    <span class="s2">"beauty"</span><span class="p">,</span>
+    <span class="s2">"bibliography"</span><span class="p">,</span>
+    <span class="s2">"bill"</span><span class="p">,</span>
+    <span class="s2">"bite"</span><span class="p">,</span>
+    <span class="s2">"blossom"</span><span class="p">,</span>
+    <span class="s2">"boat"</span><span class="p">,</span>
+    <span class="s2">"book"</span><span class="p">,</span>
+    <span class="s2">"box"</span><span class="p">,</span>
+    <span class="s2">"boy"</span><span class="p">,</span>
+    <span class="s2">"bread"</span><span class="p">,</span>
+    <span class="s2">"bridge"</span><span class="p">,</span>
+    <span class="s2">"broccoli"</span><span class="p">,</span>
+    <span class="s2">"building"</span><span class="p">,</span>
+    <span class="s2">"butter"</span><span class="p">,</span>
+    <span class="s2">"button"</span><span class="p">,</span>
+    <span class="s2">"cabbage"</span><span class="p">,</span>
+    <span class="s2">"cake"</span><span class="p">,</span>
+    <span class="s2">"camera"</span><span class="p">,</span>
+    <span class="s2">"camp"</span><span class="p">,</span>
+    <span class="s2">"candle"</span><span class="p">,</span>
+    <span class="s2">"candy"</span><span class="p">,</span>
+    <span class="s2">"canvas"</span><span class="p">,</span>
+    <span class="s2">"car"</span><span class="p">,</span>
+    <span class="s2">"card"</span><span class="p">,</span>
+    <span class="s2">"carrot"</span><span class="p">,</span>
+    <span class="s2">"cart"</span><span class="p">,</span>
+    <span class="s2">"case"</span><span class="p">,</span>
+    <span class="s2">"cat"</span><span class="p">,</span>
+    <span class="s2">"chain"</span><span class="p">,</span>
+    <span class="s2">"chair"</span><span class="p">,</span>
+    <span class="s2">"chalk"</span><span class="p">,</span>
+    <span class="s2">"chance"</span><span class="p">,</span>
+    <span class="s2">"change"</span><span class="p">,</span>
+    <span class="s2">"channel"</span><span class="p">,</span>
+    <span class="s2">"character"</span><span class="p">,</span>
+    <span class="s2">"charge"</span><span class="p">,</span>
+    <span class="s2">"charm"</span><span class="p">,</span>
+    <span class="s2">"chart"</span><span class="p">,</span>
+    <span class="s2">"check"</span><span class="p">,</span>
+    <span class="s2">"cheek"</span><span class="p">,</span>
+    <span class="s2">"cheese"</span><span class="p">,</span>
+    <span class="s2">"chef"</span><span class="p">,</span>
+    <span class="s2">"cherry"</span><span class="p">,</span>
+    <span class="s2">"chicken"</span><span class="p">,</span>
+    <span class="s2">"child"</span><span class="p">,</span>
+    <span class="s2">"church"</span><span class="p">,</span>
+    <span class="s2">"circle"</span><span class="p">,</span>
+    <span class="s2">"class"</span><span class="p">,</span>
+    <span class="s2">"clay"</span><span class="p">,</span>
+    <span class="s2">"click"</span><span class="p">,</span>
+    <span class="s2">"clock"</span><span class="p">,</span>
+    <span class="s2">"cloth"</span><span class="p">,</span>
+    <span class="s2">"cloud"</span><span class="p">,</span>
+    <span class="s2">"clove"</span><span class="p">,</span>
+    <span class="s2">"club"</span><span class="p">,</span>
+    <span class="s2">"coach"</span><span class="p">,</span>
+    <span class="s2">"coal"</span><span class="p">,</span>
+    <span class="s2">"coast"</span><span class="p">,</span>
+    <span class="s2">"coat"</span><span class="p">,</span>
+    <span class="s2">"cod"</span><span class="p">,</span>
+    <span class="s2">"coffee"</span><span class="p">,</span>
+    <span class="s2">"collar"</span><span class="p">,</span>
+    <span class="s2">"color"</span><span class="p">,</span>
+    <span class="s2">"comb"</span><span class="p">,</span>
+    <span class="s2">"comfort"</span><span class="p">,</span>
+    <span class="s2">"comic"</span><span class="p">,</span>
+    <span class="s2">"committee"</span><span class="p">,</span>
+    <span class="s2">"community"</span><span class="p">,</span>
+    <span class="s2">"company"</span><span class="p">,</span>
+    <span class="s2">"comparison"</span><span class="p">,</span>
+    <span class="s2">"competition"</span><span class="p">,</span>
+    <span class="s2">"condition"</span><span class="p">,</span>
+    <span class="s2">"connection"</span><span class="p">,</span>
+    <span class="s2">"control"</span><span class="p">,</span>
+    <span class="s2">"cook"</span><span class="p">,</span>
+    <span class="s2">"copper"</span><span class="p">,</span>
+    <span class="s2">"copy"</span><span class="p">,</span>
+    <span class="s2">"corn"</span><span class="p">,</span>
+    <span class="s2">"cough"</span><span class="p">,</span>
+    <span class="s2">"country"</span><span class="p">,</span>
+    <span class="s2">"cover"</span><span class="p">,</span>
+    <span class="s2">"crate"</span><span class="p">,</span>
+    <span class="s2">"crayon"</span><span class="p">,</span>
+    <span class="s2">"cream"</span><span class="p">,</span>
+    <span class="s2">"creator"</span><span class="p">,</span>
+    <span class="s2">"crew"</span><span class="p">,</span>
+    <span class="s2">"crown"</span><span class="p">,</span>
+    <span class="s2">"current"</span><span class="p">,</span>
+    <span class="s2">"curtain"</span><span class="p">,</span>
+    <span class="s2">"curve"</span><span class="p">,</span>
+    <span class="s2">"cushion"</span><span class="p">,</span>
+    <span class="s2">"dad"</span><span class="p">,</span>
+    <span class="s2">"daughter"</span><span class="p">,</span>
+    <span class="s2">"day"</span><span class="p">,</span>
+    <span class="s2">"death"</span><span class="p">,</span>
+    <span class="s2">"debt"</span><span class="p">,</span>
+    <span class="s2">"decision"</span><span class="p">,</span>
+    <span class="s2">"deer"</span><span class="p">,</span>
+    <span class="s2">"degree"</span><span class="p">,</span>
+    <span class="s2">"design"</span><span class="p">,</span>
+    <span class="s2">"desire"</span><span class="p">,</span>
+    <span class="s2">"desk"</span><span class="p">,</span>
+    <span class="s2">"detail"</span><span class="p">,</span>
+    <span class="s2">"development"</span><span class="p">,</span>
+    <span class="s2">"digestion"</span><span class="p">,</span>
+    <span class="s2">"dime"</span><span class="p">,</span>
+    <span class="s2">"dinner"</span><span class="p">,</span>
+    <span class="s2">"direction"</span><span class="p">,</span>
+    <span class="s2">"dirt"</span><span class="p">,</span>
+    <span class="s2">"discovery"</span><span class="p">,</span>
+    <span class="s2">"discussion"</span><span class="p">,</span>
+    <span class="s2">"disease"</span><span class="p">,</span>
+    <span class="s2">"disgust"</span><span class="p">,</span>
+    <span class="s2">"distance"</span><span class="p">,</span>
+    <span class="s2">"distribution"</span><span class="p">,</span>
+    <span class="s2">"division"</span><span class="p">,</span>
+    <span class="s2">"doctor"</span><span class="p">,</span>
+    <span class="s2">"dog"</span><span class="p">,</span>
+    <span class="s2">"door"</span><span class="p">,</span>
+    <span class="s2">"drain"</span><span class="p">,</span>
+    <span class="s2">"drawer"</span><span class="p">,</span>
+    <span class="s2">"dress"</span><span class="p">,</span>
+    <span class="s2">"drink"</span><span class="p">,</span>
+    <span class="s2">"driving"</span><span class="p">,</span>
+    <span class="s2">"dust"</span><span class="p">,</span>
+    <span class="s2">"ear"</span><span class="p">,</span>
+    <span class="s2">"earth"</span><span class="p">,</span>
+    <span class="s2">"edge"</span><span class="p">,</span>
+    <span class="s2">"education"</span><span class="p">,</span>
+    <span class="s2">"effect"</span><span class="p">,</span>
+    <span class="s2">"egg"</span><span class="p">,</span>
+    <span class="s2">"end"</span><span class="p">,</span>
+    <span class="s2">"energy"</span><span class="p">,</span>
+    <span class="s2">"engine"</span><span class="p">,</span>
+    <span class="s2">"error"</span><span class="p">,</span>
+    <span class="s2">"event"</span><span class="p">,</span>
+    <span class="s2">"example"</span><span class="p">,</span>
+    <span class="s2">"exchange"</span><span class="p">,</span>
+    <span class="s2">"existence"</span><span class="p">,</span>
+    <span class="s2">"expansion"</span><span class="p">,</span>
+    <span class="s2">"experience"</span><span class="p">,</span>
+    <span class="s2">"expert"</span><span class="p">,</span>
+    <span class="s2">"eye"</span><span class="p">,</span>
+    <span class="s2">"face"</span><span class="p">,</span>
+    <span class="s2">"fact"</span><span class="p">,</span>
+    <span class="s2">"fall"</span><span class="p">,</span>
+    <span class="s2">"family"</span><span class="p">,</span>
+    <span class="s2">"farm"</span><span class="p">,</span>
+    <span class="s2">"father"</span><span class="p">,</span>
+    <span class="s2">"fear"</span><span class="p">,</span>
+    <span class="s2">"feeling"</span><span class="p">,</span>
+    <span class="s2">"field"</span><span class="p">,</span>
+    <span class="s2">"finger"</span><span class="p">,</span>
+    <span class="s2">"fire"</span><span class="p">,</span>
+    <span class="s2">"fish"</span><span class="p">,</span>
+    <span class="s2">"flag"</span><span class="p">,</span>
+    <span class="s2">"flight"</span><span class="p">,</span>
+    <span class="s2">"floor"</span><span class="p">,</span>
+    <span class="s2">"flower"</span><span class="p">,</span>
+    <span class="s2">"fold"</span><span class="p">,</span>
+    <span class="s2">"food"</span><span class="p">,</span>
+    <span class="s2">"football"</span><span class="p">,</span>
+    <span class="s2">"force"</span><span class="p">,</span>
+    <span class="s2">"form"</span><span class="p">,</span>
+    <span class="s2">"frame"</span><span class="p">,</span>
+    <span class="s2">"friend"</span><span class="p">,</span>
+    <span class="s2">"frog"</span><span class="p">,</span>
+    <span class="s2">"fruit"</span><span class="p">,</span>
+    <span class="s2">"fuel"</span><span class="p">,</span>
+    <span class="s2">"furniture"</span><span class="p">,</span>
+    <span class="s2">"game"</span><span class="p">,</span>
+    <span class="s2">"garden"</span><span class="p">,</span>
+    <span class="s2">"gate"</span><span class="p">,</span>
+    <span class="s2">"girl"</span><span class="p">,</span>
+    <span class="s2">"glass"</span><span class="p">,</span>
+    <span class="s2">"glove"</span><span class="p">,</span>
+    <span class="s2">"goat"</span><span class="p">,</span>
+    <span class="s2">"gold"</span><span class="p">,</span>
+    <span class="s2">"government"</span><span class="p">,</span>
+    <span class="s2">"grade"</span><span class="p">,</span>
+    <span class="s2">"grain"</span><span class="p">,</span>
+    <span class="s2">"grass"</span><span class="p">,</span>
+    <span class="s2">"green"</span><span class="p">,</span>
+    <span class="s2">"grip"</span><span class="p">,</span>
+    <span class="s2">"group"</span><span class="p">,</span>
+    <span class="s2">"growth"</span><span class="p">,</span>
+    <span class="s2">"guide"</span><span class="p">,</span>
+    <span class="s2">"guitar"</span><span class="p">,</span>
+    <span class="s2">"hair"</span><span class="p">,</span>
+    <span class="s2">"hall"</span><span class="p">,</span>
+    <span class="s2">"hand"</span><span class="p">,</span>
+    <span class="s2">"harbor"</span><span class="p">,</span>
+    <span class="s2">"harmony"</span><span class="p">,</span>
+    <span class="s2">"hat"</span><span class="p">,</span>
+    <span class="s2">"head"</span><span class="p">,</span>
+    <span class="s2">"health"</span><span class="p">,</span>
+    <span class="s2">"heart"</span><span class="p">,</span>
+    <span class="s2">"heat"</span><span class="p">,</span>
+    <span class="s2">"hill"</span><span class="p">,</span>
+    <span class="s2">"history"</span><span class="p">,</span>
+    <span class="s2">"hobbies"</span><span class="p">,</span>
+    <span class="s2">"hole"</span><span class="p">,</span>
+    <span class="s2">"hope"</span><span class="p">,</span>
+    <span class="s2">"horn"</span><span class="p">,</span>
+    <span class="s2">"horse"</span><span class="p">,</span>
+    <span class="s2">"hospital"</span><span class="p">,</span>
+    <span class="s2">"hour"</span><span class="p">,</span>
+    <span class="s2">"house"</span><span class="p">,</span>
+    <span class="s2">"humor"</span><span class="p">,</span>
+    <span class="s2">"idea"</span><span class="p">,</span>
+    <span class="s2">"impulse"</span><span class="p">,</span>
+    <span class="s2">"income"</span><span class="p">,</span>
+    <span class="s2">"increase"</span><span class="p">,</span>
+    <span class="s2">"industry"</span><span class="p">,</span>
+    <span class="s2">"ink"</span><span class="p">,</span>
+    <span class="s2">"insect"</span><span class="p">,</span>
+    <span class="s2">"instrument"</span><span class="p">,</span>
+    <span class="s2">"insurance"</span><span class="p">,</span>
+    <span class="s2">"interest"</span><span class="p">,</span>
+    <span class="s2">"invention"</span><span class="p">,</span>
+    <span class="s2">"iron"</span><span class="p">,</span>
+    <span class="s2">"island"</span><span class="p">,</span>
+    <span class="s2">"jelly"</span><span class="p">,</span>
+    <span class="s2">"jet"</span><span class="p">,</span>
+    <span class="s2">"jewel"</span><span class="p">,</span>
+    <span class="s2">"join"</span><span class="p">,</span>
+    <span class="s2">"judge"</span><span class="p">,</span>
+    <span class="s2">"juice"</span><span class="p">,</span>
+    <span class="s2">"jump"</span><span class="p">,</span>
+    <span class="s2">"kettle"</span><span class="p">,</span>
+    <span class="s2">"key"</span><span class="p">,</span>
+    <span class="s2">"kick"</span><span class="p">,</span>
+    <span class="s2">"kiss"</span><span class="p">,</span>
+    <span class="s2">"kitten"</span><span class="p">,</span>
+    <span class="s2">"knee"</span><span class="p">,</span>
+    <span class="s2">"knife"</span><span class="p">,</span>
+    <span class="s2">"knowledge"</span><span class="p">,</span>
+    <span class="s2">"land"</span><span class="p">,</span>
+    <span class="s2">"language"</span><span class="p">,</span>
+    <span class="s2">"laugh"</span><span class="p">,</span>
+    <span class="s2">"law"</span><span class="p">,</span>
+    <span class="s2">"lead"</span><span class="p">,</span>
+    <span class="s2">"learning"</span><span class="p">,</span>
+    <span class="s2">"leather"</span><span class="p">,</span>
+    <span class="s2">"leg"</span><span class="p">,</span>
+    <span class="s2">"lettuce"</span><span class="p">,</span>
+    <span class="s2">"level"</span><span class="p">,</span>
+    <span class="s2">"library"</span><span class="p">,</span>
+    <span class="s2">"lift"</span><span class="p">,</span>
+    <span class="s2">"light"</span><span class="p">,</span>
+    <span class="s2">"limit"</span><span class="p">,</span>
+    <span class="s2">"line"</span><span class="p">,</span>
+    <span class="s2">"linen"</span><span class="p">,</span>
+    <span class="s2">"lip"</span><span class="p">,</span>
+    <span class="s2">"liquid"</span><span class="p">,</span>
+    <span class="s2">"list"</span><span class="p">,</span>
+    <span class="s2">"look"</span><span class="p">,</span>
+    <span class="s2">"loss"</span><span class="p">,</span>
+    <span class="s2">"love"</span><span class="p">,</span>
+    <span class="s2">"lunch"</span><span class="p">,</span>
+    <span class="s2">"machine"</span><span class="p">,</span>
+    <span class="s2">"man"</span><span class="p">,</span>
+    <span class="s2">"manager"</span><span class="p">,</span>
+    <span class="s2">"map"</span><span class="p">,</span>
+    <span class="s2">"marble"</span><span class="p">,</span>
+    <span class="s2">"mark"</span><span class="p">,</span>
+    <span class="s2">"market"</span><span class="p">,</span>
+    <span class="s2">"mass"</span><span class="p">,</span>
+    <span class="s2">"match"</span><span class="p">,</span>
+    <span class="s2">"meal"</span><span class="p">,</span>
+    <span class="s2">"measure"</span><span class="p">,</span>
+    <span class="s2">"meat"</span><span class="p">,</span>
+    <span class="s2">"meeting"</span><span class="p">,</span>
+    <span class="s2">"memory"</span><span class="p">,</span>
+    <span class="s2">"metal"</span><span class="p">,</span>
+    <span class="s2">"middle"</span><span class="p">,</span>
+    <span class="s2">"milk"</span><span class="p">,</span>
+    <span class="s2">"mind"</span><span class="p">,</span>
+    <span class="s2">"mine"</span><span class="p">,</span>
+    <span class="s2">"minute"</span><span class="p">,</span>
+    <span class="s2">"mist"</span><span class="p">,</span>
+    <span class="s2">"mitten"</span><span class="p">,</span>
+    <span class="s2">"mom"</span><span class="p">,</span>
+    <span class="s2">"money"</span><span class="p">,</span>
+    <span class="s2">"monkey"</span><span class="p">,</span>
+    <span class="s2">"month"</span><span class="p">,</span>
+    <span class="s2">"moon"</span><span class="p">,</span>
+    <span class="s2">"morning"</span><span class="p">,</span>
+    <span class="s2">"mother"</span><span class="p">,</span>
+    <span class="s2">"motion"</span><span class="p">,</span>
+    <span class="s2">"mountain"</span><span class="p">,</span>
+    <span class="s2">"mouth"</span><span class="p">,</span>
+    <span class="s2">"muscle"</span><span class="p">,</span>
+    <span class="s2">"music"</span><span class="p">,</span>
+    <span class="s2">"nail"</span><span class="p">,</span>
+    <span class="s2">"name"</span><span class="p">,</span>
+    <span class="s2">"nation"</span><span class="p">,</span>
+    <span class="s2">"neck"</span><span class="p">,</span>
+    <span class="s2">"need"</span><span class="p">,</span>
+    <span class="s2">"news"</span><span class="p">,</span>
+    <span class="s2">"night"</span><span class="p">,</span>
+    <span class="s2">"noise"</span><span class="p">,</span>
+    <span class="s2">"note"</span><span class="p">,</span>
+    <span class="s2">"number"</span><span class="p">,</span>
+    <span class="s2">"nut"</span><span class="p">,</span>
+    <span class="s2">"observation"</span><span class="p">,</span>
+    <span class="s2">"offer"</span><span class="p">,</span>
+    <span class="s2">"oil"</span><span class="p">,</span>
+    <span class="s2">"operation"</span><span class="p">,</span>
+    <span class="s2">"opinion"</span><span class="p">,</span>
+    <span class="s2">"orange"</span><span class="p">,</span>
+    <span class="s2">"order"</span><span class="p">,</span>
+    <span class="s2">"organization"</span><span class="p">,</span>
+    <span class="s2">"ornament"</span><span class="p">,</span>
+    <span class="s2">"oven"</span><span class="p">,</span>
+    <span class="s2">"page"</span><span class="p">,</span>
+    <span class="s2">"pail"</span><span class="p">,</span>
+    <span class="s2">"pain"</span><span class="p">,</span>
+    <span class="s2">"paint"</span><span class="p">,</span>
+    <span class="s2">"pan"</span><span class="p">,</span>
+    <span class="s2">"pancake"</span><span class="p">,</span>
+    <span class="s2">"paper"</span><span class="p">,</span>
+    <span class="s2">"parcel"</span><span class="p">,</span>
+    <span class="s2">"parent"</span><span class="p">,</span>
+    <span class="s2">"part"</span><span class="p">,</span>
+    <span class="s2">"passenger"</span><span class="p">,</span>
+    <span class="s2">"paste"</span><span class="p">,</span>
+    <span class="s2">"payment"</span><span class="p">,</span>
+    <span class="s2">"peace"</span><span class="p">,</span>
+    <span class="s2">"pear"</span><span class="p">,</span>
+    <span class="s2">"pen"</span><span class="p">,</span>
+    <span class="s2">"pencil"</span><span class="p">,</span>
+    <span class="s2">"person"</span><span class="p">,</span>
+    <span class="s2">"pest"</span><span class="p">,</span>
+    <span class="s2">"pet"</span><span class="p">,</span>
+    <span class="s2">"picture"</span><span class="p">,</span>
+    <span class="s2">"pie"</span><span class="p">,</span>
+    <span class="s2">"pin"</span><span class="p">,</span>
+    <span class="s2">"pipe"</span><span class="p">,</span>
+    <span class="s2">"pizza"</span><span class="p">,</span>
+    <span class="s2">"place"</span><span class="p">,</span>
+    <span class="s2">"plane"</span><span class="p">,</span>
+    <span class="s2">"plant"</span><span class="p">,</span>
+    <span class="s2">"plastic"</span><span class="p">,</span>
+    <span class="s2">"plate"</span><span class="p">,</span>
+    <span class="s2">"play"</span><span class="p">,</span>
+    <span class="s2">"pleasure"</span><span class="p">,</span>
+    <span class="s2">"plot"</span><span class="p">,</span>
+    <span class="s2">"plough"</span><span class="p">,</span>
+    <span class="s2">"pocket"</span><span class="p">,</span>
+    <span class="s2">"point"</span><span class="p">,</span>
+    <span class="s2">"poison"</span><span class="p">,</span>
+    <span class="s2">"police"</span><span class="p">,</span>
+    <span class="s2">"pollution"</span><span class="p">,</span>
+    <span class="s2">"popcorn"</span><span class="p">,</span>
+    <span class="s2">"porter"</span><span class="p">,</span>
+    <span class="s2">"position"</span><span class="p">,</span>
+    <span class="s2">"pot"</span><span class="p">,</span>
+    <span class="s2">"potato"</span><span class="p">,</span>
+    <span class="s2">"powder"</span><span class="p">,</span>
+    <span class="s2">"power"</span><span class="p">,</span>
+    <span class="s2">"price"</span><span class="p">,</span>
+    <span class="s2">"print"</span><span class="p">,</span>
+    <span class="s2">"process"</span><span class="p">,</span>
+    <span class="s2">"produce"</span><span class="p">,</span>
+    <span class="s2">"product"</span><span class="p">,</span>
+    <span class="s2">"profit"</span><span class="p">,</span>
+    <span class="s2">"property"</span><span class="p">,</span>
+    <span class="s2">"prose"</span><span class="p">,</span>
+    <span class="s2">"protest"</span><span class="p">,</span>
+    <span class="s2">"pull"</span><span class="p">,</span>
+    <span class="s2">"pump"</span><span class="p">,</span>
+    <span class="s2">"punishment"</span><span class="p">,</span>
+    <span class="s2">"purpose"</span><span class="p">,</span>
+    <span class="s2">"push"</span><span class="p">,</span>
+    <span class="s2">"quarter"</span><span class="p">,</span>
+    <span class="s2">"question"</span><span class="p">,</span>
+    <span class="s2">"quiet"</span><span class="p">,</span>
+    <span class="s2">"quill"</span><span class="p">,</span>
+    <span class="s2">"quilt"</span><span class="p">,</span>
+    <span class="s2">"quince"</span><span class="p">,</span>
+    <span class="s2">"rabbit"</span><span class="p">,</span>
+    <span class="s2">"rail"</span><span class="p">,</span>
+    <span class="s2">"rain"</span><span class="p">,</span>
+    <span class="s2">"range"</span><span class="p">,</span>
+    <span class="s2">"rat"</span><span class="p">,</span>
+    <span class="s2">"rate"</span><span class="p">,</span>
+    <span class="s2">"ray"</span><span class="p">,</span>
+    <span class="s2">"reaction"</span><span class="p">,</span>
+    <span class="s2">"reading"</span><span class="p">,</span>
+    <span class="s2">"reason"</span><span class="p">,</span>
+    <span class="s2">"record"</span><span class="p">,</span>
+    <span class="s2">"regret"</span><span class="p">,</span>
+    <span class="s2">"relation"</span><span class="p">,</span>
+    <span class="s2">"religion"</span><span class="p">,</span>
+    <span class="s2">"representative"</span><span class="p">,</span>
+    <span class="s2">"request"</span><span class="p">,</span>
+    <span class="s2">"respect"</span><span class="p">,</span>
+    <span class="s2">"rest"</span><span class="p">,</span>
+    <span class="s2">"reward"</span><span class="p">,</span>
+    <span class="s2">"rhythm"</span><span class="p">,</span>
+    <span class="s2">"rice"</span><span class="p">,</span>
+    <span class="s2">"river"</span><span class="p">,</span>
+    <span class="s2">"road"</span><span class="p">,</span>
+    <span class="s2">"roll"</span><span class="p">,</span>
+    <span class="s2">"room"</span><span class="p">,</span>
+    <span class="s2">"root"</span><span class="p">,</span>
+    <span class="s2">"rose"</span><span class="p">,</span>
+    <span class="s2">"route"</span><span class="p">,</span>
+    <span class="s2">"rub"</span><span class="p">,</span>
+    <span class="s2">"rule"</span><span class="p">,</span>
+    <span class="s2">"run"</span><span class="p">,</span>
+    <span class="s2">"sack"</span><span class="p">,</span>
+    <span class="s2">"sail"</span><span class="p">,</span>
+    <span class="s2">"salt"</span><span class="p">,</span>
+    <span class="s2">"sand"</span><span class="p">,</span>
+    <span class="s2">"scale"</span><span class="p">,</span>
+    <span class="s2">"scarecrow"</span><span class="p">,</span>
+    <span class="s2">"scarf"</span><span class="p">,</span>
+    <span class="s2">"scene"</span><span class="p">,</span>
+    <span class="s2">"scent"</span><span class="p">,</span>
+    <span class="s2">"school"</span><span class="p">,</span>
+    <span class="s2">"science"</span><span class="p">,</span>
+    <span class="s2">"scissors"</span><span class="p">,</span>
+    <span class="s2">"screw"</span><span class="p">,</span>
+    <span class="s2">"sea"</span><span class="p">,</span>
+    <span class="s2">"seat"</span><span class="p">,</span>
+    <span class="s2">"secretary"</span><span class="p">,</span>
+    <span class="s2">"seed"</span><span class="p">,</span>
+    <span class="s2">"selection"</span><span class="p">,</span>
+    <span class="s2">"self"</span><span class="p">,</span>
+    <span class="s2">"sense"</span><span class="p">,</span>
+    <span class="s2">"servant"</span><span class="p">,</span>
+    <span class="s2">"shade"</span><span class="p">,</span>
+    <span class="s2">"shake"</span><span class="p">,</span>
+    <span class="s2">"shame"</span><span class="p">,</span>
+    <span class="s2">"shape"</span><span class="p">,</span>
+    <span class="s2">"sheep"</span><span class="p">,</span>
+    <span class="s2">"sheet"</span><span class="p">,</span>
+    <span class="s2">"shelf"</span><span class="p">,</span>
+    <span class="s2">"ship"</span><span class="p">,</span>
+    <span class="s2">"shirt"</span><span class="p">,</span>
+    <span class="s2">"shock"</span><span class="p">,</span>
+    <span class="s2">"shoe"</span><span class="p">,</span>
+    <span class="s2">"shop"</span><span class="p">,</span>
+    <span class="s2">"show"</span><span class="p">,</span>
+    <span class="s2">"side"</span><span class="p">,</span>
+    <span class="s2">"sign"</span><span class="p">,</span>
+    <span class="s2">"silk"</span><span class="p">,</span>
+    <span class="s2">"sink"</span><span class="p">,</span>
+    <span class="s2">"sister"</span><span class="p">,</span>
+    <span class="s2">"size"</span><span class="p">,</span>
+    <span class="s2">"sky"</span><span class="p">,</span>
+    <span class="s2">"sleep"</span><span class="p">,</span>
+    <span class="s2">"smash"</span><span class="p">,</span>
+    <span class="s2">"smell"</span><span class="p">,</span>
+    <span class="s2">"smile"</span><span class="p">,</span>
+    <span class="s2">"smoke"</span><span class="p">,</span>
+    <span class="s2">"snail"</span><span class="p">,</span>
+    <span class="s2">"snake"</span><span class="p">,</span>
+    <span class="s2">"sneeze"</span><span class="p">,</span>
+    <span class="s2">"snow"</span><span class="p">,</span>
+    <span class="s2">"soap"</span><span class="p">,</span>
+    <span class="s2">"society"</span><span class="p">,</span>
+    <span class="s2">"sock"</span><span class="p">,</span>
+    <span class="s2">"soda"</span><span class="p">,</span>
+    <span class="s2">"sofa"</span><span class="p">,</span>
+    <span class="s2">"son"</span><span class="p">,</span>
+    <span class="s2">"song"</span><span class="p">,</span>
+    <span class="s2">"sort"</span><span class="p">,</span>
+    <span class="s2">"sound"</span><span class="p">,</span>
+    <span class="s2">"soup"</span><span class="p">,</span>
+    <span class="s2">"space"</span><span class="p">,</span>
+    <span class="s2">"spark"</span><span class="p">,</span>
+    <span class="s2">"speed"</span><span class="p">,</span>
+    <span class="s2">"sponge"</span><span class="p">,</span>
+    <span class="s2">"spoon"</span><span class="p">,</span>
+    <span class="s2">"spray"</span><span class="p">,</span>
+    <span class="s2">"spring"</span><span class="p">,</span>
+    <span class="s2">"spy"</span><span class="p">,</span>
+    <span class="s2">"square"</span><span class="p">,</span>
+    <span class="s2">"stamp"</span><span class="p">,</span>
+    <span class="s2">"star"</span><span class="p">,</span>
+    <span class="s2">"start"</span><span class="p">,</span>
+    <span class="s2">"statement"</span><span class="p">,</span>
+    <span class="s2">"station"</span><span class="p">,</span>
+    <span class="s2">"steam"</span><span class="p">,</span>
+    <span class="s2">"steel"</span><span class="p">,</span>
+    <span class="s2">"stem"</span><span class="p">,</span>
+    <span class="s2">"step"</span><span class="p">,</span>
+    <span class="s2">"stew"</span><span class="p">,</span>
+    <span class="s2">"stick"</span><span class="p">,</span>
+    <span class="s2">"stitch"</span><span class="p">,</span>
+    <span class="s2">"stocking"</span><span class="p">,</span>
+    <span class="s2">"stomach"</span><span class="p">,</span>
+    <span class="s2">"stone"</span><span class="p">,</span>
+    <span class="s2">"stop"</span><span class="p">,</span>
+    <span class="s2">"store"</span><span class="p">,</span>
+    <span class="s2">"story"</span><span class="p">,</span>
+    <span class="s2">"stove"</span><span class="p">,</span>
+    <span class="s2">"stranger"</span><span class="p">,</span>
+    <span class="s2">"straw"</span><span class="p">,</span>
+    <span class="s2">"stream"</span><span class="p">,</span>
+    <span class="s2">"street"</span><span class="p">,</span>
+    <span class="s2">"stretch"</span><span class="p">,</span>
+    <span class="s2">"string"</span><span class="p">,</span>
+    <span class="s2">"structure"</span><span class="p">,</span>
+    <span class="s2">"substance"</span><span class="p">,</span>
+    <span class="s2">"sugar"</span><span class="p">,</span>
+    <span class="s2">"suggestion"</span><span class="p">,</span>
+    <span class="s2">"suit"</span><span class="p">,</span>
+    <span class="s2">"summer"</span><span class="p">,</span>
+    <span class="s2">"sun"</span><span class="p">,</span>
+    <span class="s2">"support"</span><span class="p">,</span>
+    <span class="s2">"surprise"</span><span class="p">,</span>
+    <span class="s2">"sweater"</span><span class="p">,</span>
+    <span class="s2">"swim"</span><span class="p">,</span>
+    <span class="s2">"system"</span><span class="p">,</span>
+    <span class="s2">"table"</span><span class="p">,</span>
+    <span class="s2">"tail"</span><span class="p">,</span>
+    <span class="s2">"talk"</span><span class="p">,</span>
+    <span class="s2">"tank"</span><span class="p">,</span>
+    <span class="s2">"taste"</span><span class="p">,</span>
+    <span class="s2">"tax"</span><span class="p">,</span>
+    <span class="s2">"tea"</span><span class="p">,</span>
+    <span class="s2">"teaching"</span><span class="p">,</span>
+    <span class="s2">"team"</span><span class="p">,</span>
+    <span class="s2">"tendency"</span><span class="p">,</span>
+    <span class="s2">"test"</span><span class="p">,</span>
+    <span class="s2">"texture"</span><span class="p">,</span>
+    <span class="s2">"theory"</span><span class="p">,</span>
+    <span class="s2">"thing"</span><span class="p">,</span>
+    <span class="s2">"thought"</span><span class="p">,</span>
+    <span class="s2">"thread"</span><span class="p">,</span>
+    <span class="s2">"throat"</span><span class="p">,</span>
+    <span class="s2">"thumb"</span><span class="p">,</span>
+    <span class="s2">"thunder"</span><span class="p">,</span>
+    <span class="s2">"ticket"</span><span class="p">,</span>
+    <span class="s2">"time"</span><span class="p">,</span>
+    <span class="s2">"tin"</span><span class="p">,</span>
+    <span class="s2">"title"</span><span class="p">,</span>
+    <span class="s2">"toad"</span><span class="p">,</span>
+    <span class="s2">"toe"</span><span class="p">,</span>
+    <span class="s2">"tooth"</span><span class="p">,</span>
+    <span class="s2">"toothpaste"</span><span class="p">,</span>
+    <span class="s2">"touch"</span><span class="p">,</span>
+    <span class="s2">"town"</span><span class="p">,</span>
+    <span class="s2">"toy"</span><span class="p">,</span>
+    <span class="s2">"trade"</span><span class="p">,</span>
+    <span class="s2">"train"</span><span class="p">,</span>
+    <span class="s2">"transport"</span><span class="p">,</span>
+    <span class="s2">"tray"</span><span class="p">,</span>
+    <span class="s2">"treatment"</span><span class="p">,</span>
+    <span class="s2">"tree"</span><span class="p">,</span>
+    <span class="s2">"trick"</span><span class="p">,</span>
+    <span class="s2">"trip"</span><span class="p">,</span>
+    <span class="s2">"trouble"</span><span class="p">,</span>
+    <span class="s2">"trousers"</span><span class="p">,</span>
+    <span class="s2">"truck"</span><span class="p">,</span>
+    <span class="s2">"tub"</span><span class="p">,</span>
+    <span class="s2">"turkey"</span><span class="p">,</span>
+    <span class="s2">"turn"</span><span class="p">,</span>
+    <span class="s2">"twist"</span><span class="p">,</span>
+    <span class="s2">"umbrella"</span><span class="p">,</span>
+    <span class="s2">"uncle"</span><span class="p">,</span>
+    <span class="s2">"underwear"</span><span class="p">,</span>
+    <span class="s2">"unit"</span><span class="p">,</span>
+    <span class="s2">"use"</span><span class="p">,</span>
+    <span class="s2">"vacation"</span><span class="p">,</span>
+    <span class="s2">"value"</span><span class="p">,</span>
+    <span class="s2">"van"</span><span class="p">,</span>
+    <span class="s2">"vase"</span><span class="p">,</span>
+    <span class="s2">"vegetable"</span><span class="p">,</span>
+    <span class="s2">"veil"</span><span class="p">,</span>
+    <span class="s2">"vein"</span><span class="p">,</span>
+    <span class="s2">"verse"</span><span class="p">,</span>
+    <span class="s2">"vessel"</span><span class="p">,</span>
+    <span class="s2">"view"</span><span class="p">,</span>
+    <span class="s2">"visitor"</span><span class="p">,</span>
+    <span class="s2">"voice"</span><span class="p">,</span>
+    <span class="s2">"volcano"</span><span class="p">,</span>
+    <span class="s2">"walk"</span><span class="p">,</span>
+    <span class="s2">"wall"</span><span class="p">,</span>
+    <span class="s2">"war"</span><span class="p">,</span>
+    <span class="s2">"wash"</span><span class="p">,</span>
+    <span class="s2">"waste"</span><span class="p">,</span>
+    <span class="s2">"watch"</span><span class="p">,</span>
+    <span class="s2">"water"</span><span class="p">,</span>
+    <span class="s2">"wave"</span><span class="p">,</span>
+    <span class="s2">"wax"</span><span class="p">,</span>
+    <span class="s2">"way"</span><span class="p">,</span>
+    <span class="s2">"wealth"</span><span class="p">,</span>
+    <span class="s2">"weather"</span><span class="p">,</span>
+    <span class="s2">"week"</span><span class="p">,</span>
+    <span class="s2">"weight"</span><span class="p">,</span>
+    <span class="s2">"wheel"</span><span class="p">,</span>
+    <span class="s2">"whip"</span><span class="p">,</span>
+    <span class="s2">"whistle"</span><span class="p">,</span>
+    <span class="s2">"window"</span><span class="p">,</span>
+    <span class="s2">"wine"</span><span class="p">,</span>
+    <span class="s2">"wing"</span><span class="p">,</span>
+    <span class="s2">"winter"</span><span class="p">,</span>
+    <span class="s2">"wire"</span><span class="p">,</span>
+    <span class="s2">"wish"</span><span class="p">,</span>
+    <span class="s2">"woman"</span><span class="p">,</span>
+    <span class="s2">"wood"</span><span class="p">,</span>
+    <span class="s2">"wool"</span><span class="p">,</span>
+    <span class="s2">"word"</span><span class="p">,</span>
+    <span class="s2">"work"</span><span class="p">,</span>
+    <span class="s2">"worm"</span><span class="p">,</span>
+    <span class="s2">"wound"</span><span class="p">,</span>
+    <span class="s2">"wrist"</span><span class="p">,</span>
+    <span class="s2">"writer"</span><span class="p">,</span>
+    <span class="s2">"yard"</span><span class="p">,</span>
+    <span class="s2">"yoke"</span><span class="p">,</span>
+    <span class="s2">"zebra"</span><span class="p">,</span>
+    <span class="s2">"zinc"</span><span class="p">,</span>
+    <span class="s2">"zipper"</span><span class="p">,</span>
+    <span class="s2">"zone"</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="random_name">
+<a class="viewcode-back" href="../../../../langchain/smith/langchain.smith.evaluation.name_generation.random_name.html#langchain.smith.evaluation.name_generation.random_name">[docs]</a>
+<span class="k">def</span> <span class="nf">random_name</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Generate a random name."""</span>
+    <span class="n">adjective</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">adjectives</span><span class="p">)</span>
+    <span class="n">noun</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">nouns</span><span class="p">)</span>
+    <span class="n">number</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">adjective</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">noun</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">number</span><span class="si">}</span><span class="s2">"</span></div>
+
+</pre></div>
+</article>
+</div>
+</div>
+<footer class="bd-footer-content">
+</footer>
+</main>
+</div>
+</div>
+<!-- Scripts loaded after <body> so the DOM is not blocked -->
+<script src="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+<footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+<div class="footer-items__start">
+<div class="footer-item">
+<p class="copyright">
+    
+      © Copyright 2023, LangChain Inc.
+      <br/>
+</p>
+</div>
+</div>
+</div>
+</footer>
+</body>
+</html>

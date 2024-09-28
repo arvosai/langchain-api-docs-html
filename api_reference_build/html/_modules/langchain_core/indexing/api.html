@@ -1,0 +1,925 @@
+
+<!DOCTYPE html>
+
+<html data-content_root="../../../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>langchain_core.indexing.api — 🦜🔗 LangChain  documentation</title>
+<script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+<!-- Loaded before other Sphinx assets -->
+<link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link as="font" crossorigin="" href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" rel="preload" type="font/woff2"/>
+<link href="../../../_static/pygments.css?v=a746c00c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/autodoc_pydantic.css" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sphinx-design.min.css?v=95c83b7e" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/custom.css?v=b95e2228" rel="stylesheet" type="text/css"/>
+<!-- Pre-loaded scripts that we'll load fully later -->
+<link as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" rel="preload"/>
+<link as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" rel="preload"/>
+<script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/documentation_options.js?v=3b5cce75"></script>
+<script src="../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../_static/copybutton.js?v=f281be69"></script>
+<script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+<script>DOCUMENTATION_OPTIONS.pagename = '_modules/langchain_core/indexing/api';</script>
+<link href="../../../_static/favicon.png" rel="icon"/>
+<link href="../../../search.html" rel="search" title="Search"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="en" name="docsearch:language"/>
+<meta content="Sep 27, 2024" name="docbuild:last-update"/>
+</head>
+<body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
+<div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
+<div id="pst-scroll-pixel-helper"></div>
+<button class="btn rounded-pill" id="pst-back-to-top" type="button">
+<i class="fa-solid fa-arrow-up"></i>Back to top</button>
+<input class="sidebar-toggle" id="pst-primary-sidebar-checkbox" type="checkbox"/>
+<label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+<input class="sidebar-toggle" id="pst-secondary-sidebar-checkbox" type="checkbox"/>
+<label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+<div class="search-button__wrapper">
+<div class="search-button__overlay"></div>
+<div class="search-button__search-container">
+<form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+</div>
+<div class="pst-async-banner-revealer d-none">
+<aside aria-label="Version warning" class="d-none d-print-none" id="bd-header-version-warning"></aside>
+</div>
+<header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+<button aria-label="Site navigation" class="pst-navbar-icon sidebar-toggle primary-toggle">
+<span class="fa-solid fa-bars"></span>
+</button>
+<div class="navbar-header-items__start">
+<div class="navbar-item">
+<a class="navbar-brand logo" href="../../../index.html">
+<img alt="🦜🔗 LangChain  documentation - Home" class="logo__image only-light" src="../../../_static/wordmark-api.svg"/>
+<script>document.write(`<img src="../../../_static/wordmark-api-dark.svg" class="logo__image only-dark" alt="🦜🔗 LangChain  documentation - Home"/>`);</script>
+</a></div>
+</div>
+<div class="navbar-header-items">
+<div class="me-auto navbar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../../../reference.html">
+    Reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-external" href="https://api.python.langchain.com/">
+    Legacy reference
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="navbar-header-items__end">
+<div class="navbar-item navbar-persistent--container">
+<form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</div>
+<div class="navbar-item"><!-- This will display a link to LangChain docs -->
+<head>
+<style>
+        .text-link {
+            text-decoration: none; /* Remove underline */
+            color: inherit;        /* Inherit color from parent element */
+        }
+    </style>
+</head>
+<body>
+<a class="text-link" href="https://python.langchain.com/">Docs</a>
+</body></div>
+<div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+<div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://twitter.com/langchainai" rel="noopener" target="_blank" title="X / Twitter"><i aria-hidden="true" class="fab fa-twitter-square fa-lg"></i>
+<span class="sr-only">X / Twitter</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="navbar-persistent--mobile">
+<form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</div>
+</div>
+</header>
+<div class="bd-container">
+<div class="bd-container__inner bd-page-width">
+<div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+<div class="sidebar-header-items sidebar-primary__section">
+<div class="sidebar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../../../reference.html">
+    Reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-external" href="https://api.python.langchain.com/">
+    Legacy reference
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="sidebar-header-items__end">
+<div class="navbar-item"><!-- This will display a link to LangChain docs -->
+<head>
+<style>
+        .text-link {
+            text-decoration: none; /* Remove underline */
+            color: inherit;        /* Inherit color from parent element */
+        }
+    </style>
+</head>
+<body>
+<a class="text-link" href="https://python.langchain.com/">Docs</a>
+</body></div>
+<div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+<div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://twitter.com/langchainai" rel="noopener" target="_blank" title="X / Twitter"><i aria-hidden="true" class="fab fa-twitter-square fa-lg"></i>
+<span class="sr-only">X / Twitter</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sidebar-primary-items__end sidebar-primary__section">
+</div>
+<div id="rtd-footer-container"></div>
+</div>
+<main class="bd-main" id="main-content" role="main">
+<div class="bd-content">
+<div class="bd-article-container">
+<div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+<div class="header-article-items__start">
+<div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+<ul class="bd-breadcrumbs">
+<li class="breadcrumb-item breadcrumb-home">
+<a aria-label="Home" class="nav-link" href="../../../index.html">
+<i class="fa-solid fa-home"></i>
+</a>
+</li>
+<li class="breadcrumb-item"><a class="nav-link" href="../../index.html">Module code</a></li>
+<li aria-current="page" class="breadcrumb-item active">langchain_co...</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<div id="searchbox"></div>
+<article class="bd-article">
+<h1>Source code for langchain_core.indexing.api</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Module contains logic for indexing documents into vector stores."""</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">AsyncIterable</span><span class="p">,</span> <span class="n">AsyncIterator</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">islice</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Literal</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">TypedDict</span><span class="p">,</span>
+    <span class="n">TypeVar</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+    <span class="n">cast</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">model_validator</span>
+
+<span class="kn">from</span> <span class="nn">langchain_core.document_loaders.base</span> <span class="kn">import</span> <span class="n">BaseLoader</span>
+<span class="kn">from</span> <span class="nn">langchain_core.documents</span> <span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span> <span class="nn">langchain_core.indexing.base</span> <span class="kn">import</span> <span class="n">DocumentIndex</span><span class="p">,</span> <span class="n">RecordManager</span>
+<span class="kn">from</span> <span class="nn">langchain_core.vectorstores</span> <span class="kn">import</span> <span class="n">VectorStore</span>
+
+<span class="c1"># Magic UUID to use as a namespace for hashing.</span>
+<span class="c1"># Used to try and generate a unique UUID for each document</span>
+<span class="c1"># from hashing the document content and metadata.</span>
+<span class="n">NAMESPACE_UUID</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">(</span><span class="nb">int</span><span class="o">=</span><span class="mi">1984</span><span class="p">)</span>
+
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"T"</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_hash_string_to_uuid</span><span class="p">(</span><span class="n">input_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Hashes a string and returns the corresponding UUID."""</span>
+    <span class="n">hash_value</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="n">input_string</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid5</span><span class="p">(</span><span class="n">NAMESPACE_UUID</span><span class="p">,</span> <span class="n">hash_value</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_hash_nested_dict_to_uuid</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Hashes a nested dictionary and returns the corresponding UUID."""</span>
+    <span class="n">serialized_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">hash_value</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="n">serialized_data</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid5</span><span class="p">(</span><span class="n">NAMESPACE_UUID</span><span class="p">,</span> <span class="n">hash_value</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">_HashedDocument</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A hashed document with a unique ID."""</span>
+
+    <span class="n">uid</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">hash_</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">"""The hash of the document including content and metadata."""</span>
+    <span class="n">content_hash</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">"""The hash of the document content."""</span>
+    <span class="n">metadata_hash</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">"""The hash of the document metadata."""</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">is_lc_serializable</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">calculate_hashes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Root validator to calculate content and metadata hash."""</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"page_content"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"metadata"</span><span class="p">,</span> <span class="p">{})</span>
+
+        <span class="n">forbidden_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"hash_"</span><span class="p">,</span> <span class="s2">"content_hash"</span><span class="p">,</span> <span class="s2">"metadata_hash"</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">forbidden_keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Metadata cannot contain key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> as it "</span>
+                    <span class="sa">f</span><span class="s2">"is reserved for internal use."</span>
+                <span class="p">)</span>
+
+        <span class="n">content_hash</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">_hash_string_to_uuid</span><span class="p">(</span><span class="n">content</span><span class="p">))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">metadata_hash</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">_hash_nested_dict_to_uuid</span><span class="p">(</span><span class="n">metadata</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Failed to hash metadata: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">. "</span>
+                <span class="sa">f</span><span class="s2">"Please use a dict that can be serialized using json."</span>
+            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+
+        <span class="n">values</span><span class="p">[</span><span class="s2">"content_hash"</span><span class="p">]</span> <span class="o">=</span> <span class="n">content_hash</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">"metadata_hash"</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata_hash</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">"hash_"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">_hash_string_to_uuid</span><span class="p">(</span><span class="n">content_hash</span> <span class="o">+</span> <span class="n">metadata_hash</span><span class="p">))</span>
+
+        <span class="n">_uid</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"uid"</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">_uid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"uid"</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">"hash_"</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">values</span>
+
+    <span class="k">def</span> <span class="nf">to_document</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Document</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return a Document object."""</span>
+        <span class="k">return</span> <span class="n">Document</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uid</span><span class="p">,</span>
+            <span class="n">page_content</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">page_content</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_document</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">document</span><span class="p">:</span> <span class="n">Document</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_HashedDocument</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Create a HashedDocument from a Document."""</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>  <span class="c1"># type: ignore[call-arg]</span>
+            <span class="n">uid</span><span class="o">=</span><span class="n">uid</span><span class="p">,</span>  <span class="c1"># type: ignore[arg-type]</span>
+            <span class="n">page_content</span><span class="o">=</span><span class="n">document</span><span class="o">.</span><span class="n">page_content</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">document</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_batch</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""Utility batching function."""</span>
+    <span class="n">it</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">chunk</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">yield</span> <span class="n">chunk</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">_abatch</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">iterable</span><span class="p">:</span> <span class="n">AsyncIterable</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""Utility batching function."""</span>
+    <span class="n">batch</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
+            <span class="n">batch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">size</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">batch</span>
+            <span class="n">batch</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">batch</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">batch</span>
+
+
+<span class="k">def</span> <span class="nf">_get_source_id_assigner</span><span class="p">(</span>
+    <span class="n">source_id_key</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Document</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Document</span><span class="p">],</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""Get the source id from the document."""</span>
+    <span class="k">if</span> <span class="n">source_id_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">doc</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source_id_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">doc</span><span class="p">:</span> <span class="n">doc</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">source_id_key</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">source_id_key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">source_id_key</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"source_id_key should be either None, a string or a callable. "</span>
+            <span class="sa">f</span><span class="s2">"Got </span><span class="si">{</span><span class="n">source_id_key</span><span class="si">}</span><span class="s2"> of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">source_id_key</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_deduplicate_in_order</span><span class="p">(</span>
+    <span class="n">hashed_documents</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">_HashedDocument</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">_HashedDocument</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Deduplicate a list of hashed documents while preserving order."""</span>
+    <span class="n">seen</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">hashed_doc</span> <span class="ow">in</span> <span class="n">hashed_documents</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">hashed_doc</span><span class="o">.</span><span class="n">hash_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+            <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">hashed_doc</span><span class="o">.</span><span class="n">hash_</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">hashed_doc</span>
+
+
+<span class="c1"># PUBLIC API</span>
+
+
+<div class="viewcode-block" id="IndexingResult">
+<a class="viewcode-back" href="../../../core/indexing/langchain_core.indexing.api.IndexingResult.html#langchain_core.indexing.api.IndexingResult">[docs]</a>
+<span class="k">class</span> <span class="nc">IndexingResult</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Return a detailed a breakdown of the result of the indexing operation."""</span>
+
+    <span class="n">num_added</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">"""Number of added documents."""</span>
+    <span class="n">num_updated</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">"""Number of updated documents because they were not up to date."""</span>
+    <span class="n">num_deleted</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">"""Number of deleted documents."""</span>
+    <span class="n">num_skipped</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">"""Number of skipped documents because they were already up to date."""</span></div>
+
+
+
+<div class="viewcode-block" id="index">
+<a class="viewcode-back" href="../../../core/indexing/langchain_core.indexing.api.index.html#langchain_core.indexing.api.index">[docs]</a>
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span>
+    <span class="n">docs_source</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseLoader</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Document</span><span class="p">]],</span>
+    <span class="n">record_manager</span><span class="p">:</span> <span class="n">RecordManager</span><span class="p">,</span>
+    <span class="n">vector_store</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">VectorStore</span><span class="p">,</span> <span class="n">DocumentIndex</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">cleanup</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"incremental"</span><span class="p">,</span> <span class="s2">"full"</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">source_id_key</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Document</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">cleanup_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1_000</span><span class="p">,</span>
+    <span class="n">force_update</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IndexingResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Index data from the loader into the vector store.</span>
+
+<span class="sd">    Indexing functionality uses a manager to keep track of which documents</span>
+<span class="sd">    are in the vector store.</span>
+
+<span class="sd">    This allows us to keep track of which documents were updated, and which</span>
+<span class="sd">    documents were deleted, which documents should be skipped.</span>
+
+<span class="sd">    For the time being, documents are indexed using their hashes, and users</span>
+<span class="sd">     are not able to specify the uid of the document.</span>
+
+<span class="sd">    IMPORTANT:</span>
+<span class="sd">       * if auto_cleanup is set to True, the loader should be returning</span>
+<span class="sd">         the entire dataset, and not just a subset of the dataset.</span>
+<span class="sd">         Otherwise, the auto_cleanup will remove documents that it is not</span>
+<span class="sd">         supposed to.</span>
+<span class="sd">       * In incremental mode, if documents associated with a particular</span>
+<span class="sd">         source id appear across different batches, the indexing API</span>
+<span class="sd">         will do some redundant work. This will still result in the</span>
+<span class="sd">         correct end state of the index, but will unfortunately not be</span>
+<span class="sd">         100% efficient. For example, if a given document is split into 15</span>
+<span class="sd">         chunks, and we index them using a batch size of 5, we'll have 3 batches</span>
+<span class="sd">         all with the same source id. In general, to avoid doing too much</span>
+<span class="sd">         redundant work select as big a batch size as possible.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        docs_source: Data loader or iterable of documents to index.</span>
+<span class="sd">        record_manager: Timestamped set to keep track of which documents were</span>
+<span class="sd">                         updated.</span>
+<span class="sd">        vector_store: VectorStore or DocumentIndex to index the documents into.</span>
+<span class="sd">        batch_size: Batch size to use when indexing. Default is 100.</span>
+<span class="sd">        cleanup: How to handle clean up of documents. Default is None.</span>
+<span class="sd">            - Incremental: Cleans up all documents that haven't been updated AND</span>
+<span class="sd">                           that are associated with source ids that were seen</span>
+<span class="sd">                           during indexing.</span>
+<span class="sd">                           Clean up is done continuously during indexing helping</span>
+<span class="sd">                           to minimize the probability of users seeing duplicated</span>
+<span class="sd">                           content.</span>
+<span class="sd">            - Full: Delete all documents that have not been returned by the loader</span>
+<span class="sd">                    during this run of indexing.</span>
+<span class="sd">                    Clean up runs after all documents have been indexed.</span>
+<span class="sd">                    This means that users may see duplicated content during indexing.</span>
+<span class="sd">            - None: Do not delete any documents.</span>
+<span class="sd">        source_id_key: Optional key that helps identify the original source</span>
+<span class="sd">            of the document. Default is None.</span>
+<span class="sd">        cleanup_batch_size: Batch size to use when cleaning up documents.</span>
+<span class="sd">            Default is 1_000.</span>
+<span class="sd">        force_update: Force update documents even if they are present in the</span>
+<span class="sd">            record manager. Useful if you are re-indexing with updated embeddings.</span>
+<span class="sd">            Default is False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Indexing result which contains information about how many documents</span>
+<span class="sd">        were added, updated, deleted, or skipped.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If cleanup mode is not one of 'incremental', 'full' or None</span>
+<span class="sd">        ValueError: If cleanup mode is incremental and source_id_key is None.</span>
+<span class="sd">        ValueError: If vectorstore does not have</span>
+<span class="sd">            "delete" and "add_documents" required methods.</span>
+<span class="sd">        ValueError: If source_id_key is not None, but is not a string or callable.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">cleanup</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"incremental"</span><span class="p">,</span> <span class="s2">"full"</span><span class="p">,</span> <span class="kc">None</span><span class="p">}:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"cleanup should be one of 'incremental', 'full' or None. "</span>
+            <span class="sa">f</span><span class="s2">"Got </span><span class="si">{</span><span class="n">cleanup</span><span class="si">}</span><span class="s2">."</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">cleanup</span> <span class="o">==</span> <span class="s2">"incremental"</span> <span class="ow">and</span> <span class="n">source_id_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Source id key is required when cleanup mode is incremental."</span><span class="p">)</span>
+
+    <span class="n">destination</span> <span class="o">=</span> <span class="n">vector_store</span>  <span class="c1"># Renaming internally for clarity</span>
+
+    <span class="c1"># If it's a vectorstore, let's check if it has the required methods.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">VectorStore</span><span class="p">):</span>
+        <span class="c1"># Check that the Vectorstore has required methods implemented</span>
+        <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"delete"</span><span class="p">,</span> <span class="s2">"add_documents"</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Vectorstore </span><span class="si">{</span><span class="n">destination</span><span class="si">}</span><span class="s2"> does not have required method </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">"</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span> <span class="o">==</span> <span class="n">VectorStore</span><span class="o">.</span><span class="n">delete</span><span class="p">:</span>
+            <span class="c1"># Checking if the vectorstore has overridden the default delete method</span>
+            <span class="c1"># implementation which just raises a NotImplementedError</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Vectorstore has not implemented the delete method"</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">DocumentIndex</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Vectorstore should be either a VectorStore or a DocumentIndex. "</span>
+            <span class="sa">f</span><span class="s2">"Got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">docs_source</span><span class="p">,</span> <span class="n">BaseLoader</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">doc_iterator</span> <span class="o">=</span> <span class="n">docs_source</span><span class="o">.</span><span class="n">lazy_load</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+            <span class="n">doc_iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">docs_source</span><span class="o">.</span><span class="n">load</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">doc_iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">docs_source</span><span class="p">)</span>
+
+    <span class="n">source_id_assigner</span> <span class="o">=</span> <span class="n">_get_source_id_assigner</span><span class="p">(</span><span class="n">source_id_key</span><span class="p">)</span>
+
+    <span class="c1"># Mark when the update started.</span>
+    <span class="n">index_start_dt</span> <span class="o">=</span> <span class="n">record_manager</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span>
+    <span class="n">num_added</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_skipped</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_updated</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_deleted</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">doc_batch</span> <span class="ow">in</span> <span class="n">_batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">doc_iterator</span><span class="p">):</span>
+        <span class="n">hashed_docs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">_deduplicate_in_order</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">_HashedDocument</span><span class="o">.</span><span class="n">from_document</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">doc_batch</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">source_ids</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">source_id_assigner</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">hashed_docs</span>
+        <span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">cleanup</span> <span class="o">==</span> <span class="s2">"incremental"</span><span class="p">:</span>
+            <span class="c1"># If the cleanup mode is incremental, source ids are required.</span>
+            <span class="k">for</span> <span class="n">source_id</span><span class="p">,</span> <span class="n">hashed_doc</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">source_ids</span><span class="p">,</span> <span class="n">hashed_docs</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">source_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">"Source ids are required when cleanup mode is incremental. "</span>
+                        <span class="sa">f</span><span class="s2">"Document that starts with "</span>
+                        <span class="sa">f</span><span class="s2">"content: </span><span class="si">{</span><span class="n">hashed_doc</span><span class="o">.</span><span class="n">page_content</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span><span class="si">}</span><span class="s2"> was not assigned "</span>
+                        <span class="sa">f</span><span class="s2">"as source id."</span>
+                    <span class="p">)</span>
+            <span class="c1"># source ids cannot be None after for loop above.</span>
+            <span class="n">source_ids</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">source_ids</span><span class="p">)</span>  <span class="c1"># type: ignore[assignment]</span>
+
+        <span class="n">exists_batch</span> <span class="o">=</span> <span class="n">record_manager</span><span class="o">.</span><span class="n">exists</span><span class="p">([</span><span class="n">doc</span><span class="o">.</span><span class="n">uid</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">hashed_docs</span><span class="p">])</span>
+
+        <span class="c1"># Filter out documents that already exist in the record store.</span>
+        <span class="n">uids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">docs_to_index</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">uids_to_refresh</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">seen_docs</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">hashed_doc</span><span class="p">,</span> <span class="n">doc_exists</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">hashed_docs</span><span class="p">,</span> <span class="n">exists_batch</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">doc_exists</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">force_update</span><span class="p">:</span>
+                    <span class="n">seen_docs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">hashed_doc</span><span class="o">.</span><span class="n">uid</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">uids_to_refresh</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hashed_doc</span><span class="o">.</span><span class="n">uid</span><span class="p">)</span>
+                    <span class="k">continue</span>
+            <span class="n">uids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hashed_doc</span><span class="o">.</span><span class="n">uid</span><span class="p">)</span>
+            <span class="n">docs_to_index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hashed_doc</span><span class="o">.</span><span class="n">to_document</span><span class="p">())</span>
+
+        <span class="c1"># Update refresh timestamp</span>
+        <span class="k">if</span> <span class="n">uids_to_refresh</span><span class="p">:</span>
+            <span class="n">record_manager</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">uids_to_refresh</span><span class="p">,</span> <span class="n">time_at_least</span><span class="o">=</span><span class="n">index_start_dt</span><span class="p">)</span>
+            <span class="n">num_skipped</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">uids_to_refresh</span><span class="p">)</span>
+
+        <span class="c1"># Be pessimistic and assume that all vector store write will fail.</span>
+        <span class="c1"># First write to vector store</span>
+        <span class="k">if</span> <span class="n">docs_to_index</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">VectorStore</span><span class="p">):</span>
+                <span class="n">destination</span><span class="o">.</span><span class="n">add_documents</span><span class="p">(</span>
+                    <span class="n">docs_to_index</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">uids</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">DocumentIndex</span><span class="p">):</span>
+                <span class="n">destination</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span><span class="n">docs_to_index</span><span class="p">)</span>
+
+            <span class="n">num_added</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">docs_to_index</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">seen_docs</span><span class="p">)</span>
+            <span class="n">num_updated</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seen_docs</span><span class="p">)</span>
+
+        <span class="c1"># And only then update the record store.</span>
+        <span class="c1"># Update ALL records, even if they already exist since we want to refresh</span>
+        <span class="c1"># their timestamp.</span>
+        <span class="n">record_manager</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">doc</span><span class="o">.</span><span class="n">uid</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">hashed_docs</span><span class="p">],</span>
+            <span class="n">group_ids</span><span class="o">=</span><span class="n">source_ids</span><span class="p">,</span>
+            <span class="n">time_at_least</span><span class="o">=</span><span class="n">index_start_dt</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># If source IDs are provided, we can do the deletion incrementally!</span>
+        <span class="k">if</span> <span class="n">cleanup</span> <span class="o">==</span> <span class="s2">"incremental"</span><span class="p">:</span>
+            <span class="c1"># Get the uids of the documents that were not returned by the loader.</span>
+
+            <span class="c1"># mypy isn't good enough to determine that source ids cannot be None</span>
+            <span class="c1"># here due to a check that's happening above, so we check again.</span>
+            <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="n">source_ids</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">source_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">"Source ids cannot be None here."</span><span class="p">)</span>
+
+            <span class="n">_source_ids</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">source_ids</span><span class="p">)</span>
+
+            <span class="n">uids_to_delete</span> <span class="o">=</span> <span class="n">record_manager</span><span class="o">.</span><span class="n">list_keys</span><span class="p">(</span>
+                <span class="n">group_ids</span><span class="o">=</span><span class="n">_source_ids</span><span class="p">,</span> <span class="n">before</span><span class="o">=</span><span class="n">index_start_dt</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">uids_to_delete</span><span class="p">:</span>
+                <span class="c1"># Then delete from vector store.</span>
+                <span class="n">destination</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">uids_to_delete</span><span class="p">)</span>
+                <span class="c1"># First delete from record store.</span>
+                <span class="n">record_manager</span><span class="o">.</span><span class="n">delete_keys</span><span class="p">(</span><span class="n">uids_to_delete</span><span class="p">)</span>
+                <span class="n">num_deleted</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">uids_to_delete</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">cleanup</span> <span class="o">==</span> <span class="s2">"full"</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">uids_to_delete</span> <span class="o">:=</span> <span class="n">record_manager</span><span class="o">.</span><span class="n">list_keys</span><span class="p">(</span>
+            <span class="n">before</span><span class="o">=</span><span class="n">index_start_dt</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">cleanup_batch_size</span>
+        <span class="p">):</span>
+            <span class="c1"># First delete from record store.</span>
+            <span class="n">destination</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">uids_to_delete</span><span class="p">)</span>
+            <span class="c1"># Then delete from record manager.</span>
+            <span class="n">record_manager</span><span class="o">.</span><span class="n">delete_keys</span><span class="p">(</span><span class="n">uids_to_delete</span><span class="p">)</span>
+            <span class="n">num_deleted</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">uids_to_delete</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"num_added"</span><span class="p">:</span> <span class="n">num_added</span><span class="p">,</span>
+        <span class="s2">"num_updated"</span><span class="p">:</span> <span class="n">num_updated</span><span class="p">,</span>
+        <span class="s2">"num_skipped"</span><span class="p">:</span> <span class="n">num_skipped</span><span class="p">,</span>
+        <span class="s2">"num_deleted"</span><span class="p">:</span> <span class="n">num_deleted</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+
+<span class="c1"># Define an asynchronous generator function</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">_to_async_iterator</span><span class="p">(</span><span class="n">iterator</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Convert an iterable to an async iterator."""</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">item</span>
+
+
+<div class="viewcode-block" id="aindex">
+<a class="viewcode-back" href="../../../core/indexing/langchain_core.indexing.api.aindex.html#langchain_core.indexing.api.aindex">[docs]</a>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">aindex</span><span class="p">(</span>
+    <span class="n">docs_source</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseLoader</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Document</span><span class="p">],</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Document</span><span class="p">]],</span>
+    <span class="n">record_manager</span><span class="p">:</span> <span class="n">RecordManager</span><span class="p">,</span>
+    <span class="n">vector_store</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">VectorStore</span><span class="p">,</span> <span class="n">DocumentIndex</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">cleanup</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"incremental"</span><span class="p">,</span> <span class="s2">"full"</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">source_id_key</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Document</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">cleanup_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1_000</span><span class="p">,</span>
+    <span class="n">force_update</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IndexingResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Async index data from the loader into the vector store.</span>
+
+<span class="sd">    Indexing functionality uses a manager to keep track of which documents</span>
+<span class="sd">    are in the vector store.</span>
+
+<span class="sd">    This allows us to keep track of which documents were updated, and which</span>
+<span class="sd">    documents were deleted, which documents should be skipped.</span>
+
+<span class="sd">    For the time being, documents are indexed using their hashes, and users</span>
+<span class="sd">     are not able to specify the uid of the document.</span>
+
+<span class="sd">    IMPORTANT:</span>
+<span class="sd">       if auto_cleanup is set to True, the loader should be returning</span>
+<span class="sd">       the entire dataset, and not just a subset of the dataset.</span>
+<span class="sd">       Otherwise, the auto_cleanup will remove documents that it is not</span>
+<span class="sd">       supposed to.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        docs_source: Data loader or iterable of documents to index.</span>
+<span class="sd">        record_manager: Timestamped set to keep track of which documents were</span>
+<span class="sd">                         updated.</span>
+<span class="sd">        vectorstore: Vector store or Document Index to index the documents into</span>
+<span class="sd">        batch_size: Batch size to use when indexing. Default is 100.</span>
+<span class="sd">        cleanup: How to handle clean up of documents. Default is None.</span>
+<span class="sd">            - Incremental: Cleans up all documents that haven't been updated AND</span>
+<span class="sd">                           that are associated with source ids that were seen</span>
+<span class="sd">                           during indexing.</span>
+<span class="sd">                           Clean up is done continuously during indexing helping</span>
+<span class="sd">                           to minimize the probability of users seeing duplicated</span>
+<span class="sd">                           content.</span>
+<span class="sd">            - Full: Delete all documents that haven to been returned by the loader.</span>
+<span class="sd">                    Clean up runs after all documents have been indexed.</span>
+<span class="sd">                    This means that users may see duplicated content during indexing.</span>
+<span class="sd">            - None: Do not delete any documents.</span>
+<span class="sd">        source_id_key: Optional key that helps identify the original source</span>
+<span class="sd">            of the document. Default is None.</span>
+<span class="sd">        cleanup_batch_size: Batch size to use when cleaning up documents.</span>
+<span class="sd">            Default is 1_000.</span>
+<span class="sd">        force_update: Force update documents even if they are present in the</span>
+<span class="sd">            record manager. Useful if you are re-indexing with updated embeddings.</span>
+<span class="sd">            Default is False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Indexing result which contains information about how many documents</span>
+<span class="sd">        were added, updated, deleted, or skipped.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If cleanup mode is not one of 'incremental', 'full' or None</span>
+<span class="sd">        ValueError: If cleanup mode is incremental and source_id_key is None.</span>
+<span class="sd">        ValueError: If vectorstore does not have</span>
+<span class="sd">            "adelete" and "aadd_documents" required methods.</span>
+<span class="sd">        ValueError: If source_id_key is not None, but is not a string or callable.</span>
+<span class="sd">    """</span>
+
+    <span class="k">if</span> <span class="n">cleanup</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"incremental"</span><span class="p">,</span> <span class="s2">"full"</span><span class="p">,</span> <span class="kc">None</span><span class="p">}:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"cleanup should be one of 'incremental', 'full' or None. "</span>
+            <span class="sa">f</span><span class="s2">"Got </span><span class="si">{</span><span class="n">cleanup</span><span class="si">}</span><span class="s2">."</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">cleanup</span> <span class="o">==</span> <span class="s2">"incremental"</span> <span class="ow">and</span> <span class="n">source_id_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Source id key is required when cleanup mode is incremental."</span><span class="p">)</span>
+
+    <span class="n">destination</span> <span class="o">=</span> <span class="n">vector_store</span>  <span class="c1"># Renaming internally for clarity</span>
+
+    <span class="c1"># If it's a vectorstore, let's check if it has the required methods.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">VectorStore</span><span class="p">):</span>
+        <span class="c1"># Check that the Vectorstore has required methods implemented</span>
+        <span class="c1"># Check that the Vectorstore has required methods implemented</span>
+        <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"adelete"</span><span class="p">,</span> <span class="s2">"aadd_documents"</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Vectorstore </span><span class="si">{</span><span class="n">destination</span><span class="si">}</span><span class="s2"> does not have required method </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">"</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span><span class="o">.</span><span class="n">adelete</span> <span class="o">==</span> <span class="n">VectorStore</span><span class="o">.</span><span class="n">adelete</span><span class="p">:</span>
+            <span class="c1"># Checking if the vectorstore has overridden the default delete method</span>
+            <span class="c1"># implementation which just raises a NotImplementedError</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Vectorstore has not implemented the delete method"</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">DocumentIndex</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Vectorstore should be either a VectorStore or a DocumentIndex. "</span>
+            <span class="sa">f</span><span class="s2">"Got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
+        <span class="p">)</span>
+    <span class="n">async_doc_iterator</span><span class="p">:</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Document</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">docs_source</span><span class="p">,</span> <span class="n">BaseLoader</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">async_doc_iterator</span> <span class="o">=</span> <span class="n">docs_source</span><span class="o">.</span><span class="n">alazy_load</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+            <span class="c1"># Exception triggered when neither lazy_load nor alazy_load are implemented.</span>
+            <span class="c1"># * The default implementation of alazy_load uses lazy_load.</span>
+            <span class="c1"># * The default implementation of lazy_load raises NotImplementedError.</span>
+            <span class="c1"># In such a case, we use the load method and convert it to an async</span>
+            <span class="c1"># iterator.</span>
+            <span class="n">async_doc_iterator</span> <span class="o">=</span> <span class="n">_to_async_iterator</span><span class="p">(</span><span class="n">docs_source</span><span class="o">.</span><span class="n">load</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">docs_source</span><span class="p">,</span> <span class="s2">"__aiter__"</span><span class="p">):</span>
+            <span class="n">async_doc_iterator</span> <span class="o">=</span> <span class="n">docs_source</span>  <span class="c1"># type: ignore[assignment]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">async_doc_iterator</span> <span class="o">=</span> <span class="n">_to_async_iterator</span><span class="p">(</span><span class="n">docs_source</span><span class="p">)</span>
+
+    <span class="n">source_id_assigner</span> <span class="o">=</span> <span class="n">_get_source_id_assigner</span><span class="p">(</span><span class="n">source_id_key</span><span class="p">)</span>
+
+    <span class="c1"># Mark when the update started.</span>
+    <span class="n">index_start_dt</span> <span class="o">=</span> <span class="k">await</span> <span class="n">record_manager</span><span class="o">.</span><span class="n">aget_time</span><span class="p">()</span>
+    <span class="n">num_added</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_skipped</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_updated</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_deleted</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">async</span> <span class="k">for</span> <span class="n">doc_batch</span> <span class="ow">in</span> <span class="n">_abatch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">async_doc_iterator</span><span class="p">):</span>
+        <span class="n">hashed_docs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">_deduplicate_in_order</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">_HashedDocument</span><span class="o">.</span><span class="n">from_document</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">doc_batch</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">source_ids</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">source_id_assigner</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">hashed_docs</span>
+        <span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">cleanup</span> <span class="o">==</span> <span class="s2">"incremental"</span><span class="p">:</span>
+            <span class="c1"># If the cleanup mode is incremental, source ids are required.</span>
+            <span class="k">for</span> <span class="n">source_id</span><span class="p">,</span> <span class="n">hashed_doc</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">source_ids</span><span class="p">,</span> <span class="n">hashed_docs</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">source_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">"Source ids are required when cleanup mode is incremental. "</span>
+                        <span class="sa">f</span><span class="s2">"Document that starts with "</span>
+                        <span class="sa">f</span><span class="s2">"content: </span><span class="si">{</span><span class="n">hashed_doc</span><span class="o">.</span><span class="n">page_content</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span><span class="si">}</span><span class="s2"> was not assigned "</span>
+                        <span class="sa">f</span><span class="s2">"as source id."</span>
+                    <span class="p">)</span>
+            <span class="c1"># source ids cannot be None after for loop above.</span>
+            <span class="n">source_ids</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">source_ids</span><span class="p">)</span>
+
+        <span class="n">exists_batch</span> <span class="o">=</span> <span class="k">await</span> <span class="n">record_manager</span><span class="o">.</span><span class="n">aexists</span><span class="p">([</span><span class="n">doc</span><span class="o">.</span><span class="n">uid</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">hashed_docs</span><span class="p">])</span>
+
+        <span class="c1"># Filter out documents that already exist in the record store.</span>
+        <span class="n">uids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">docs_to_index</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Document</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">uids_to_refresh</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">seen_docs</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">hashed_doc</span><span class="p">,</span> <span class="n">doc_exists</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">hashed_docs</span><span class="p">,</span> <span class="n">exists_batch</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">doc_exists</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">force_update</span><span class="p">:</span>
+                    <span class="n">seen_docs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">hashed_doc</span><span class="o">.</span><span class="n">uid</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">uids_to_refresh</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hashed_doc</span><span class="o">.</span><span class="n">uid</span><span class="p">)</span>
+                    <span class="k">continue</span>
+            <span class="n">uids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hashed_doc</span><span class="o">.</span><span class="n">uid</span><span class="p">)</span>
+            <span class="n">docs_to_index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hashed_doc</span><span class="o">.</span><span class="n">to_document</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">uids_to_refresh</span><span class="p">:</span>
+            <span class="c1"># Must be updated to refresh timestamp.</span>
+            <span class="k">await</span> <span class="n">record_manager</span><span class="o">.</span><span class="n">aupdate</span><span class="p">(</span><span class="n">uids_to_refresh</span><span class="p">,</span> <span class="n">time_at_least</span><span class="o">=</span><span class="n">index_start_dt</span><span class="p">)</span>
+            <span class="n">num_skipped</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">uids_to_refresh</span><span class="p">)</span>
+
+        <span class="c1"># Be pessimistic and assume that all vector store write will fail.</span>
+        <span class="c1"># First write to vector store</span>
+        <span class="k">if</span> <span class="n">docs_to_index</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">VectorStore</span><span class="p">):</span>
+                <span class="k">await</span> <span class="n">destination</span><span class="o">.</span><span class="n">aadd_documents</span><span class="p">(</span>
+                    <span class="n">docs_to_index</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">uids</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">DocumentIndex</span><span class="p">):</span>
+                <span class="k">await</span> <span class="n">destination</span><span class="o">.</span><span class="n">aupsert</span><span class="p">(</span><span class="n">docs_to_index</span><span class="p">)</span>
+            <span class="n">num_added</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">docs_to_index</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">seen_docs</span><span class="p">)</span>
+            <span class="n">num_updated</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seen_docs</span><span class="p">)</span>
+
+        <span class="c1"># And only then update the record store.</span>
+        <span class="c1"># Update ALL records, even if they already exist since we want to refresh</span>
+        <span class="c1"># their timestamp.</span>
+        <span class="k">await</span> <span class="n">record_manager</span><span class="o">.</span><span class="n">aupdate</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">doc</span><span class="o">.</span><span class="n">uid</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">hashed_docs</span><span class="p">],</span>
+            <span class="n">group_ids</span><span class="o">=</span><span class="n">source_ids</span><span class="p">,</span>
+            <span class="n">time_at_least</span><span class="o">=</span><span class="n">index_start_dt</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># If source IDs are provided, we can do the deletion incrementally!</span>
+
+        <span class="k">if</span> <span class="n">cleanup</span> <span class="o">==</span> <span class="s2">"incremental"</span><span class="p">:</span>
+            <span class="c1"># Get the uids of the documents that were not returned by the loader.</span>
+
+            <span class="c1"># mypy isn't good enough to determine that source ids cannot be None</span>
+            <span class="c1"># here due to a check that's happening above, so we check again.</span>
+            <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="n">source_ids</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">source_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">"Source ids cannot be None here."</span><span class="p">)</span>
+
+            <span class="n">_source_ids</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">source_ids</span><span class="p">)</span>
+
+            <span class="n">uids_to_delete</span> <span class="o">=</span> <span class="k">await</span> <span class="n">record_manager</span><span class="o">.</span><span class="n">alist_keys</span><span class="p">(</span>
+                <span class="n">group_ids</span><span class="o">=</span><span class="n">_source_ids</span><span class="p">,</span> <span class="n">before</span><span class="o">=</span><span class="n">index_start_dt</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">uids_to_delete</span><span class="p">:</span>
+                <span class="c1"># Then delete from vector store.</span>
+                <span class="k">await</span> <span class="n">destination</span><span class="o">.</span><span class="n">adelete</span><span class="p">(</span><span class="n">uids_to_delete</span><span class="p">)</span>
+                <span class="c1"># First delete from record store.</span>
+                <span class="k">await</span> <span class="n">record_manager</span><span class="o">.</span><span class="n">adelete_keys</span><span class="p">(</span><span class="n">uids_to_delete</span><span class="p">)</span>
+                <span class="n">num_deleted</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">uids_to_delete</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">cleanup</span> <span class="o">==</span> <span class="s2">"full"</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">uids_to_delete</span> <span class="o">:=</span> <span class="k">await</span> <span class="n">record_manager</span><span class="o">.</span><span class="n">alist_keys</span><span class="p">(</span>
+            <span class="n">before</span><span class="o">=</span><span class="n">index_start_dt</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">cleanup_batch_size</span>
+        <span class="p">):</span>
+            <span class="c1"># First delete from record store.</span>
+            <span class="k">await</span> <span class="n">destination</span><span class="o">.</span><span class="n">adelete</span><span class="p">(</span><span class="n">uids_to_delete</span><span class="p">)</span>
+            <span class="c1"># Then delete from record manager.</span>
+            <span class="k">await</span> <span class="n">record_manager</span><span class="o">.</span><span class="n">adelete_keys</span><span class="p">(</span><span class="n">uids_to_delete</span><span class="p">)</span>
+            <span class="n">num_deleted</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">uids_to_delete</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"num_added"</span><span class="p">:</span> <span class="n">num_added</span><span class="p">,</span>
+        <span class="s2">"num_updated"</span><span class="p">:</span> <span class="n">num_updated</span><span class="p">,</span>
+        <span class="s2">"num_skipped"</span><span class="p">:</span> <span class="n">num_skipped</span><span class="p">,</span>
+        <span class="s2">"num_deleted"</span><span class="p">:</span> <span class="n">num_deleted</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+</pre></div>
+</article>
+</div>
+</div>
+<footer class="bd-footer-content">
+</footer>
+</main>
+</div>
+</div>
+<!-- Scripts loaded after <body> so the DOM is not blocked -->
+<script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+<footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+<div class="footer-items__start">
+<div class="footer-item">
+<p class="copyright">
+    
+      © Copyright 2023, LangChain Inc.
+      <br/>
+</p>
+</div>
+</div>
+</div>
+</footer>
+</body>
+</html>

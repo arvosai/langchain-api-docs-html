@@ -1,0 +1,1533 @@
+
+<!DOCTYPE html>
+
+<html data-content_root="../../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>langchain_anthropic.chat_models — 🦜🔗 LangChain  documentation</title>
+<script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+<!-- Loaded before other Sphinx assets -->
+<link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link as="font" crossorigin="" href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" rel="preload" type="font/woff2"/>
+<link href="../../_static/pygments.css?v=a746c00c" rel="stylesheet" type="text/css"/>
+<link href="../../_static/autodoc_pydantic.css" rel="stylesheet" type="text/css"/>
+<link href="../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../_static/sphinx-design.min.css?v=95c83b7e" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/custom.css?v=b95e2228" rel="stylesheet" type="text/css"/>
+<!-- Pre-loaded scripts that we'll load fully later -->
+<link as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" rel="preload"/>
+<link as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" rel="preload"/>
+<script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/documentation_options.js?v=3b5cce75"></script>
+<script src="../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../_static/copybutton.js?v=f281be69"></script>
+<script src="../../_static/design-tabs.js?v=f930bc37"></script>
+<script>DOCUMENTATION_OPTIONS.pagename = '_modules/langchain_anthropic/chat_models';</script>
+<link href="../../_static/favicon.png" rel="icon"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="en" name="docsearch:language"/>
+<meta content="Sep 27, 2024" name="docbuild:last-update"/>
+</head>
+<body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
+<div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
+<div id="pst-scroll-pixel-helper"></div>
+<button class="btn rounded-pill" id="pst-back-to-top" type="button">
+<i class="fa-solid fa-arrow-up"></i>Back to top</button>
+<input class="sidebar-toggle" id="pst-primary-sidebar-checkbox" type="checkbox"/>
+<label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+<input class="sidebar-toggle" id="pst-secondary-sidebar-checkbox" type="checkbox"/>
+<label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+<div class="search-button__wrapper">
+<div class="search-button__overlay"></div>
+<div class="search-button__search-container">
+<form action="../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+</div>
+<div class="pst-async-banner-revealer d-none">
+<aside aria-label="Version warning" class="d-none d-print-none" id="bd-header-version-warning"></aside>
+</div>
+<header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+<button aria-label="Site navigation" class="pst-navbar-icon sidebar-toggle primary-toggle">
+<span class="fa-solid fa-bars"></span>
+</button>
+<div class="navbar-header-items__start">
+<div class="navbar-item">
+<a class="navbar-brand logo" href="../../index.html">
+<img alt="🦜🔗 LangChain  documentation - Home" class="logo__image only-light" src="../../_static/wordmark-api.svg"/>
+<script>document.write(`<img src="../../_static/wordmark-api-dark.svg" class="logo__image only-dark" alt="🦜🔗 LangChain  documentation - Home"/>`);</script>
+</a></div>
+</div>
+<div class="navbar-header-items">
+<div class="me-auto navbar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../../reference.html">
+    Reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-external" href="https://api.python.langchain.com/">
+    Legacy reference
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="navbar-header-items__end">
+<div class="navbar-item navbar-persistent--container">
+<form action="../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</div>
+<div class="navbar-item"><!-- This will display a link to LangChain docs -->
+<head>
+<style>
+        .text-link {
+            text-decoration: none; /* Remove underline */
+            color: inherit;        /* Inherit color from parent element */
+        }
+    </style>
+</head>
+<body>
+<a class="text-link" href="https://python.langchain.com/">Docs</a>
+</body></div>
+<div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+<div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://twitter.com/langchainai" rel="noopener" target="_blank" title="X / Twitter"><i aria-hidden="true" class="fab fa-twitter-square fa-lg"></i>
+<span class="sr-only">X / Twitter</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="navbar-persistent--mobile">
+<form action="../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</div>
+</div>
+</header>
+<div class="bd-container">
+<div class="bd-container__inner bd-page-width">
+<div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+<div class="sidebar-header-items sidebar-primary__section">
+<div class="sidebar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../../reference.html">
+    Reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-external" href="https://api.python.langchain.com/">
+    Legacy reference
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="sidebar-header-items__end">
+<div class="navbar-item"><!-- This will display a link to LangChain docs -->
+<head>
+<style>
+        .text-link {
+            text-decoration: none; /* Remove underline */
+            color: inherit;        /* Inherit color from parent element */
+        }
+    </style>
+</head>
+<body>
+<a class="text-link" href="https://python.langchain.com/">Docs</a>
+</body></div>
+<div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+<div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://twitter.com/langchainai" rel="noopener" target="_blank" title="X / Twitter"><i aria-hidden="true" class="fab fa-twitter-square fa-lg"></i>
+<span class="sr-only">X / Twitter</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sidebar-primary-items__end sidebar-primary__section">
+</div>
+<div id="rtd-footer-container"></div>
+</div>
+<main class="bd-main" id="main-content" role="main">
+<div class="bd-content">
+<div class="bd-article-container">
+<div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+<div class="header-article-items__start">
+<div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+<ul class="bd-breadcrumbs">
+<li class="breadcrumb-item breadcrumb-home">
+<a aria-label="Home" class="nav-link" href="../../index.html">
+<i class="fa-solid fa-home"></i>
+</a>
+</li>
+<li class="breadcrumb-item"><a class="nav-link" href="../index.html">Module code</a></li>
+<li aria-current="page" class="breadcrumb-item active">langchain_an...</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<div id="searchbox"></div>
+<article class="bd-article">
+<h1>Source code for langchain_anthropic.chat_models</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">AsyncIterator</span><span class="p">,</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">Iterator</span><span class="p">,</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Literal</span><span class="p">,</span>
+    <span class="n">Mapping</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Sequence</span><span class="p">,</span>
+    <span class="n">Tuple</span><span class="p">,</span>
+    <span class="n">Type</span><span class="p">,</span>
+    <span class="n">TypedDict</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+    <span class="n">cast</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">anthropic</span>
+<span class="kn">from</span> <span class="nn">langchain_core._api</span> <span class="kn">import</span> <span class="n">deprecated</span>
+<span class="kn">from</span> <span class="nn">langchain_core.callbacks</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">,</span>
+    <span class="n">CallbackManagerForLLMRun</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">langchain_core.language_models</span> <span class="kn">import</span> <span class="n">LanguageModelInput</span>
+<span class="kn">from</span> <span class="nn">langchain_core.language_models.chat_models</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BaseChatModel</span><span class="p">,</span>
+    <span class="n">LangSmithParams</span><span class="p">,</span>
+    <span class="n">agenerate_from_stream</span><span class="p">,</span>
+    <span class="n">generate_from_stream</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">langchain_core.messages</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AIMessage</span><span class="p">,</span>
+    <span class="n">AIMessageChunk</span><span class="p">,</span>
+    <span class="n">BaseMessage</span><span class="p">,</span>
+    <span class="n">HumanMessage</span><span class="p">,</span>
+    <span class="n">SystemMessage</span><span class="p">,</span>
+    <span class="n">ToolCall</span><span class="p">,</span>
+    <span class="n">ToolMessage</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">langchain_core.messages.ai</span> <span class="kn">import</span> <span class="n">UsageMetadata</span>
+<span class="kn">from</span> <span class="nn">langchain_core.messages.tool</span> <span class="kn">import</span> <span class="n">tool_call_chunk</span> <span class="k">as</span> <span class="n">create_tool_call_chunk</span>
+<span class="kn">from</span> <span class="nn">langchain_core.output_parsers</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">JsonOutputKeyToolsParser</span><span class="p">,</span>
+    <span class="n">PydanticToolsParser</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">langchain_core.output_parsers.base</span> <span class="kn">import</span> <span class="n">OutputParserLike</span>
+<span class="kn">from</span> <span class="nn">langchain_core.outputs</span> <span class="kn">import</span> <span class="n">ChatGeneration</span><span class="p">,</span> <span class="n">ChatGenerationChunk</span><span class="p">,</span> <span class="n">ChatResult</span>
+<span class="kn">from</span> <span class="nn">langchain_core.runnables</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Runnable</span><span class="p">,</span>
+    <span class="n">RunnableMap</span><span class="p">,</span>
+    <span class="n">RunnablePassthrough</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">langchain_core.tools</span> <span class="kn">import</span> <span class="n">BaseTool</span>
+<span class="kn">from</span> <span class="nn">langchain_core.utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">build_extra_kwargs</span><span class="p">,</span>
+    <span class="n">from_env</span><span class="p">,</span>
+    <span class="n">get_pydantic_field_names</span><span class="p">,</span>
+    <span class="n">secret_from_env</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">langchain_core.utils.function_calling</span> <span class="kn">import</span> <span class="n">convert_to_openai_tool</span>
+<span class="kn">from</span> <span class="nn">langchain_core.utils.pydantic</span> <span class="kn">import</span> <span class="n">is_basemodel_subclass</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BaseModel</span><span class="p">,</span>
+    <span class="n">ConfigDict</span><span class="p">,</span>
+    <span class="n">Field</span><span class="p">,</span>
+    <span class="n">PrivateAttr</span><span class="p">,</span>
+    <span class="n">SecretStr</span><span class="p">,</span>
+    <span class="n">model_validator</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">NotRequired</span><span class="p">,</span> <span class="n">Self</span>
+
+<span class="kn">from</span> <span class="nn">langchain_anthropic.output_parsers</span> <span class="kn">import</span> <span class="n">extract_tool_calls</span>
+
+<span class="n">_message_type_lookups</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"human"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span>
+    <span class="s2">"ai"</span><span class="p">:</span> <span class="s2">"assistant"</span><span class="p">,</span>
+    <span class="s2">"AIMessageChunk"</span><span class="p">:</span> <span class="s2">"assistant"</span><span class="p">,</span>
+    <span class="s2">"HumanMessageChunk"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">_format_image</span><span class="p">(</span><span class="n">image_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Formats an image of format data:image/jpeg;base64,{b64_string}</span>
+<span class="sd">    to a dict for anthropic api</span>
+
+<span class="sd">    {</span>
+<span class="sd">      "type": "base64",</span>
+<span class="sd">      "media_type": "image/jpeg",</span>
+<span class="sd">      "data": "/9j/4AAQSkZJRg...",</span>
+<span class="sd">    }</span>
+
+<span class="sd">    And throws an error if it's not a b64 image</span>
+<span class="sd">    """</span>
+    <span class="n">regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"^data:(?P&lt;media_type&gt;image/.+);base64,(?P&lt;data&gt;.+)$"</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">image_url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">"Anthropic only supports base64-encoded images currently."</span>
+            <span class="s2">" Example: data:image/png;base64,'/9j/4AAQSk'..."</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"base64"</span><span class="p">,</span>
+        <span class="s2">"media_type"</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"media_type"</span><span class="p">),</span>
+        <span class="s2">"data"</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"data"</span><span class="p">),</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">_merge_messages</span><span class="p">(</span>
+    <span class="n">messages</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">SystemMessage</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">,</span> <span class="n">HumanMessage</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""Merge runs of human/tool messages into single human messages with content blocks."""</span>  <span class="c1"># noqa: E501</span>
+    <span class="n">merged</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">curr</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">model_copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">curr</span><span class="p">,</span> <span class="n">ToolMessage</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">curr</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">block</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"tool_result"</span>
+                <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">curr</span><span class="o">.</span><span class="n">content</span>
+            <span class="p">):</span>
+                <span class="n">curr</span> <span class="o">=</span> <span class="n">HumanMessage</span><span class="p">(</span><span class="n">curr</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>  <span class="c1"># type: ignore[misc]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">curr</span> <span class="o">=</span> <span class="n">HumanMessage</span><span class="p">(</span>  <span class="c1"># type: ignore[misc]</span>
+                    <span class="p">[</span>
+                        <span class="p">{</span>
+                            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"tool_result"</span><span class="p">,</span>
+                            <span class="s2">"content"</span><span class="p">:</span> <span class="n">curr</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
+                            <span class="s2">"tool_use_id"</span><span class="p">:</span> <span class="n">curr</span><span class="o">.</span><span class="n">tool_call_id</span><span class="p">,</span>
+                            <span class="s2">"is_error"</span><span class="p">:</span> <span class="n">curr</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">"error"</span><span class="p">,</span>
+                        <span class="p">}</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">merged</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="n">HumanMessage</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">curr</span><span class="p">,</span> <span class="n">HumanMessage</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">last</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">new_content</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="n">last</span><span class="o">.</span><span class="n">content</span><span class="p">}]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_content</span> <span class="o">=</span> <span class="n">last</span><span class="o">.</span><span class="n">content</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">curr</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">new_content</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="n">curr</span><span class="o">.</span><span class="n">content</span><span class="p">})</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_content</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">curr</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+            <span class="n">last</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">new_content</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">merged</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">merged</span>
+
+
+<span class="k">def</span> <span class="nf">_format_messages</span><span class="p">(</span>
+    <span class="n">messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""Format messages for anthropic."""</span>
+
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    [</span>
+<span class="sd">                {</span>
+<span class="sd">                    "role": _message_type_lookups[m.type],</span>
+<span class="sd">                    "content": [_AnthropicMessageContent(text=m.content).model_dump()],</span>
+<span class="sd">                }</span>
+<span class="sd">                for m in messages</span>
+<span class="sd">            ]</span>
+<span class="sd">    """</span>
+    <span class="n">system</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">formatted_messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">merged_messages</span> <span class="o">=</span> <span class="n">_merge_messages</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">merged_messages</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"system"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"System message must be at beginning of message list."</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">system</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">block</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"block"</span><span class="p">}</span>
+                    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span>
+                <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">system</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span>
+            <span class="k">continue</span>
+
+        <span class="n">role</span> <span class="o">=</span> <span class="n">_message_type_lookups</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">type</span><span class="p">]</span>
+        <span class="n">content</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># parse as dict</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">list</span>
+            <span class="p">),</span> <span class="s2">"Anthropic message content must be str or list of dicts"</span>
+
+            <span class="c1"># populate content</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="n">block</span><span class="p">})</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="s2">"type"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">block</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Dict content block must have a type key"</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">block</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"image_url"</span><span class="p">:</span>
+                        <span class="c1"># convert format</span>
+                        <span class="n">source</span> <span class="o">=</span> <span class="n">_format_image</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="s2">"image_url"</span><span class="p">][</span><span class="s2">"url"</span><span class="p">])</span>
+                        <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"image"</span><span class="p">,</span> <span class="s2">"source"</span><span class="p">:</span> <span class="n">source</span><span class="p">})</span>
+                    <span class="k">elif</span> <span class="n">block</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"tool_use"</span><span class="p">:</span>
+                        <span class="c1"># If a tool_call with the same id as a tool_use content block</span>
+                        <span class="c1"># exists, the tool_call is preferred.</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">)</span> <span class="ow">and</span> <span class="n">block</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span>
+                            <span class="n">tc</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="k">for</span> <span class="n">tc</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">tool_calls</span>
+                        <span class="p">]:</span>
+                            <span class="n">overlapping</span> <span class="o">=</span> <span class="p">[</span>
+                                <span class="n">tc</span>
+                                <span class="k">for</span> <span class="n">tc</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">tool_calls</span>
+                                <span class="k">if</span> <span class="n">tc</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="o">==</span> <span class="n">block</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span>
+                            <span class="p">]</span>
+                            <span class="n">content</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                                <span class="n">_lc_tool_calls_to_anthropic_tool_use_blocks</span><span class="p">(</span><span class="n">overlapping</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">block</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"text"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                            <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">block</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"text"</span><span class="p">:</span>
+                        <span class="n">text</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"text"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+                        <span class="c1"># Only add non-empty strings for now as empty ones are not</span>
+                        <span class="c1"># accepted.</span>
+                        <span class="c1"># https://github.com/anthropics/anthropic-sdk-python/issues/461</span>
+                        <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                            <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                <span class="p">{</span>
+                                    <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
+                                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">block</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                                    <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"type"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"cache_control"</span><span class="p">)</span>
+                                <span class="p">}</span>
+                            <span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">block</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"tool_result"</span><span class="p">:</span>
+                        <span class="n">tool_content</span> <span class="o">=</span> <span class="n">_format_messages</span><span class="p">(</span>
+                            <span class="p">[</span><span class="n">HumanMessage</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="s2">"content"</span><span class="p">])]</span>
+                        <span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"content"</span><span class="p">]</span>
+                        <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="o">**</span><span class="n">block</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s2">"content"</span><span class="p">:</span> <span class="n">tool_content</span><span class="p">}})</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"Content blocks must be str or dict, instead was: "</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">block</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+                    <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span>
+
+        <span class="c1"># Ensure all tool_calls have a tool_use content block</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">)</span> <span class="ow">and</span> <span class="n">message</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">content</span> <span class="ow">or</span> <span class="p">[]</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">[{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">}]</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">content</span>
+                <span class="k">else</span> <span class="n">content</span>
+            <span class="p">)</span>
+            <span class="n">tool_use_ids</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">cast</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">block</span><span class="p">)[</span><span class="s2">"id"</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">content</span>
+                <span class="k">if</span> <span class="n">cast</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">block</span><span class="p">)[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"tool_use"</span>
+            <span class="p">]</span>
+            <span class="n">missing_tool_calls</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">tc</span> <span class="k">for</span> <span class="n">tc</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">tool_calls</span> <span class="k">if</span> <span class="n">tc</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tool_use_ids</span>
+            <span class="p">]</span>
+            <span class="n">cast</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="n">_lc_tool_calls_to_anthropic_tool_use_blocks</span><span class="p">(</span><span class="n">missing_tool_calls</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">formatted_messages</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"role"</span><span class="p">:</span> <span class="n">role</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="n">content</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">system</span><span class="p">,</span> <span class="n">formatted_messages</span>
+
+
+<div class="viewcode-block" id="ChatAnthropic">
+<a class="viewcode-back" href="../../anthropic/chat_models/langchain_anthropic.chat_models.ChatAnthropic.html#langchain_anthropic.chat_models.ChatAnthropic">[docs]</a>
+<span class="k">class</span> <span class="nc">ChatAnthropic</span><span class="p">(</span><span class="n">BaseChatModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Anthropic chat models.</span>
+
+<span class="sd">    See https://docs.anthropic.com/en/docs/models-overview for a list of the latest models.</span>
+
+<span class="sd">    Setup:</span>
+<span class="sd">        Install ``langchain-anthropic`` and set environment variable ``ANTHROPIC_API_KEY``.</span>
+
+<span class="sd">        .. code-block:: bash</span>
+
+<span class="sd">            pip install -U langchain-anthropic</span>
+<span class="sd">            export ANTHROPIC_API_KEY="your-api-key"</span>
+
+<span class="sd">    Key init args — completion params:</span>
+<span class="sd">        model: str</span>
+<span class="sd">            Name of Anthropic model to use. E.g. "claude-3-sonnet-20240229".</span>
+<span class="sd">        temperature: float</span>
+<span class="sd">            Sampling temperature. Ranges from 0.0 to 1.0.</span>
+<span class="sd">        max_tokens: Optional[int]</span>
+<span class="sd">            Max number of tokens to generate.</span>
+
+<span class="sd">    Key init args — client params:</span>
+<span class="sd">        timeout: Optional[float]</span>
+<span class="sd">            Timeout for requests.</span>
+<span class="sd">        max_retries: int</span>
+<span class="sd">            Max number of retries if a request fails.</span>
+<span class="sd">        api_key: Optional[str]</span>
+<span class="sd">            Anthropic API key. If not passed in will be read from env var ANTHROPIC_API_KEY.</span>
+<span class="sd">        base_url: Optional[str]</span>
+<span class="sd">            Base URL for API requests. Only specify if using a proxy or service</span>
+<span class="sd">            emulator.</span>
+
+<span class="sd">    See full list of supported init args and their descriptions in the params section.</span>
+
+<span class="sd">    Instantiate:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain_anthropic import ChatAnthropic</span>
+
+<span class="sd">            llm = ChatAnthropic(</span>
+<span class="sd">                model="claude-3-sonnet-20240229",</span>
+<span class="sd">                temperature=0,</span>
+<span class="sd">                max_tokens=1024,</span>
+<span class="sd">                timeout=None,</span>
+<span class="sd">                max_retries=2,</span>
+<span class="sd">                # api_key="...",</span>
+<span class="sd">                # base_url="...",</span>
+<span class="sd">                # other params...</span>
+<span class="sd">            )</span>
+
+<span class="sd">    **NOTE**: Any param which is not explicitly supported will be passed directly to the</span>
+<span class="sd">    ``anthropic.Anthropic.messages.create(...)`` API every time to the model is</span>
+<span class="sd">    invoked. For example:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain_anthropic import ChatAnthropic</span>
+<span class="sd">            import anthropic</span>
+
+<span class="sd">            ChatAnthropic(..., extra_headers={}).invoke(...)</span>
+
+<span class="sd">            # results in underlying API call of:</span>
+
+<span class="sd">            anthropic.Anthropic(..).messages.create(..., extra_headers={})</span>
+
+<span class="sd">            # which is also equivalent to:</span>
+
+<span class="sd">            ChatAnthropic(...).invoke(..., extra_headers={})</span>
+
+<span class="sd">    Invoke:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            messages = [</span>
+<span class="sd">                ("system", "You are a helpful translator. Translate the user sentence to French."),</span>
+<span class="sd">                ("human", "I love programming."),</span>
+<span class="sd">            ]</span>
+<span class="sd">            llm.invoke(messages)</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            AIMessage(content="J'aime la programmation.", response_metadata={'id': 'msg_01Trik66aiQ9Z1higrD5XFx3', 'model': 'claude-3-sonnet-20240229', 'stop_reason': 'end_turn', 'stop_sequence': None, 'usage': {'input_tokens': 25, 'output_tokens': 11}}, id='run-5886ac5f-3c2e-49f5-8a44-b1e92808c929-0', usage_metadata={'input_tokens': 25, 'output_tokens': 11, 'total_tokens': 36})</span>
+
+<span class="sd">    Stream:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            for chunk in llm.stream(messages):</span>
+<span class="sd">                print(chunk)</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            AIMessageChunk(content='J', id='run-272ff5f9-8485-402c-b90d-eac8babc5b25')</span>
+<span class="sd">            AIMessageChunk(content="'", id='run-272ff5f9-8485-402c-b90d-eac8babc5b25')</span>
+<span class="sd">            AIMessageChunk(content='a', id='run-272ff5f9-8485-402c-b90d-eac8babc5b25')</span>
+<span class="sd">            AIMessageChunk(content='ime', id='run-272ff5f9-8485-402c-b90d-eac8babc5b25')</span>
+<span class="sd">            AIMessageChunk(content=' la', id='run-272ff5f9-8485-402c-b90d-eac8babc5b25')</span>
+<span class="sd">            AIMessageChunk(content=' programm', id='run-272ff5f9-8485-402c-b90d-eac8babc5b25')</span>
+<span class="sd">            AIMessageChunk(content='ation', id='run-272ff5f9-8485-402c-b90d-eac8babc5b25')</span>
+<span class="sd">            AIMessageChunk(content='.', id='run-272ff5f9-8485-402c-b90d-eac8babc5b25')</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            stream = llm.stream(messages)</span>
+<span class="sd">            full = next(stream)</span>
+<span class="sd">            for chunk in stream:</span>
+<span class="sd">                full += chunk</span>
+<span class="sd">            full</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            AIMessageChunk(content="J'aime la programmation.", id='run-b34faef0-882f-4869-a19c-ed2b856e6361')</span>
+
+<span class="sd">    Async:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            await llm.ainvoke(messages)</span>
+
+<span class="sd">            # stream:</span>
+<span class="sd">            # async for chunk in (await llm.astream(messages))</span>
+
+<span class="sd">            # batch:</span>
+<span class="sd">            # await llm.abatch([messages])</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            AIMessage(content="J'aime la programmation.", response_metadata={'id': 'msg_01Trik66aiQ9Z1higrD5XFx3', 'model': 'claude-3-sonnet-20240229', 'stop_reason': 'end_turn', 'stop_sequence': None, 'usage': {'input_tokens': 25, 'output_tokens': 11}}, id='run-5886ac5f-3c2e-49f5-8a44-b1e92808c929-0', usage_metadata={'input_tokens': 25, 'output_tokens': 11, 'total_tokens': 36})</span>
+
+<span class="sd">    Tool calling:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from pydantic import BaseModel, Field</span>
+
+<span class="sd">            class GetWeather(BaseModel):</span>
+<span class="sd">                '''Get the current weather in a given location'''</span>
+
+<span class="sd">                location: str = Field(..., description="The city and state, e.g. San Francisco, CA")</span>
+
+<span class="sd">            class GetPopulation(BaseModel):</span>
+<span class="sd">                '''Get the current population in a given location'''</span>
+
+<span class="sd">                location: str = Field(..., description="The city and state, e.g. San Francisco, CA")</span>
+
+<span class="sd">            llm_with_tools = llm.bind_tools([GetWeather, GetPopulation])</span>
+<span class="sd">            ai_msg = llm_with_tools.invoke("Which city is hotter today and which is bigger: LA or NY?")</span>
+<span class="sd">            ai_msg.tool_calls</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            [{'name': 'GetWeather',</span>
+<span class="sd">              'args': {'location': 'Los Angeles, CA'},</span>
+<span class="sd">              'id': 'toolu_01KzpPEAgzura7hpBqwHbWdo'},</span>
+<span class="sd">             {'name': 'GetWeather',</span>
+<span class="sd">              'args': {'location': 'New York, NY'},</span>
+<span class="sd">              'id': 'toolu_01JtgbVGVJbiSwtZk3Uycezx'},</span>
+<span class="sd">             {'name': 'GetPopulation',</span>
+<span class="sd">              'args': {'location': 'Los Angeles, CA'},</span>
+<span class="sd">              'id': 'toolu_01429aygngesudV9nTbCKGuw'},</span>
+<span class="sd">             {'name': 'GetPopulation',</span>
+<span class="sd">              'args': {'location': 'New York, NY'},</span>
+<span class="sd">              'id': 'toolu_01JPktyd44tVMeBcPPnFSEJG'}]</span>
+
+<span class="sd">        See ``ChatAnthropic.bind_tools()`` method for more.</span>
+
+<span class="sd">    Structured output:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from typing import Optional</span>
+
+<span class="sd">            from pydantic import BaseModel, Field</span>
+
+<span class="sd">            class Joke(BaseModel):</span>
+<span class="sd">                '''Joke to tell user.'''</span>
+
+<span class="sd">                setup: str = Field(description="The setup of the joke")</span>
+<span class="sd">                punchline: str = Field(description="The punchline to the joke")</span>
+<span class="sd">                rating: Optional[int] = Field(description="How funny the joke is, from 1 to 10")</span>
+
+<span class="sd">            structured_llm = llm.with_structured_output(Joke)</span>
+<span class="sd">            structured_llm.invoke("Tell me a joke about cats")</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            Joke(setup='Why was the cat sitting on the computer?', punchline='To keep an eye on the mouse!', rating=None)</span>
+
+<span class="sd">        See ``ChatAnthropic.with_structured_output()`` for more.</span>
+
+<span class="sd">    Image input:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            import base64</span>
+<span class="sd">            import httpx</span>
+<span class="sd">            from langchain_core.messages import HumanMessage</span>
+
+<span class="sd">            image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"</span>
+<span class="sd">            image_data = base64.b64encode(httpx.get(image_url).content).decode("utf-8")</span>
+<span class="sd">            message = HumanMessage(</span>
+<span class="sd">                content=[</span>
+<span class="sd">                    {"type": "text", "text": "describe the weather in this image"},</span>
+<span class="sd">                    {</span>
+<span class="sd">                        "type": "image_url",</span>
+<span class="sd">                        "image_url": {"url": f"data:image/jpeg;base64,{image_data}"},</span>
+<span class="sd">                    },</span>
+<span class="sd">                ],</span>
+<span class="sd">            )</span>
+<span class="sd">            ai_msg = llm.invoke([message])</span>
+<span class="sd">            ai_msg.content</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            "The image depicts a sunny day with a partly cloudy sky. The sky is a brilliant blue color with scattered white clouds drifting across. The lighting and cloud patterns suggest pleasant, mild weather conditions. The scene shows a grassy field or meadow with a wooden boardwalk trail leading through it, indicating an outdoor setting on a nice day well-suited for enjoying nature."</span>
+
+<span class="sd">    Token usage:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            ai_msg = llm.invoke(messages)</span>
+<span class="sd">            ai_msg.usage_metadata</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            {'input_tokens': 25, 'output_tokens': 11, 'total_tokens': 36}</span>
+
+<span class="sd">        Message chunks containing token usage will be included during streaming by</span>
+<span class="sd">        default:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            stream = llm.stream(messages)</span>
+<span class="sd">            full = next(stream)</span>
+<span class="sd">            for chunk in stream:</span>
+<span class="sd">                full += chunk</span>
+<span class="sd">            full.usage_metadata</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            {'input_tokens': 25, 'output_tokens': 11, 'total_tokens': 36}</span>
+
+<span class="sd">        These can be disabled by setting ``stream_usage=False`` in the stream method,</span>
+<span class="sd">        or by setting ``stream_usage=False`` when initializing ChatAnthropic.</span>
+
+<span class="sd">    Response metadata</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            ai_msg = llm.invoke(messages)</span>
+<span class="sd">            ai_msg.response_metadata</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            {'id': 'msg_013xU6FHEGEq76aP4RgFerVT',</span>
+<span class="sd">             'model': 'claude-3-sonnet-20240229',</span>
+<span class="sd">             'stop_reason': 'end_turn',</span>
+<span class="sd">             'stop_sequence': None,</span>
+<span class="sd">             'usage': {'input_tokens': 25, 'output_tokens': 11}}</span>
+
+<span class="sd">    """</span>  <span class="c1"># noqa: E501</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>
+        <span class="n">populate_by_name</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">_client</span><span class="p">:</span> <span class="n">anthropic</span><span class="o">.</span><span class="n">Client</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">_async_client</span><span class="p">:</span> <span class="n">anthropic</span><span class="o">.</span><span class="n">AsyncClient</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">alias</span><span class="o">=</span><span class="s2">"model_name"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Model name to use."""</span>
+
+    <span class="n">max_tokens</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="s2">"max_tokens_to_sample"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Denotes the number of tokens to predict per generation."""</span>
+
+    <span class="n">temperature</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""A non-negative float that tunes the degree of randomness in generation."""</span>
+
+    <span class="n">top_k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Number of most likely tokens to consider at each step."""</span>
+
+    <span class="n">top_p</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Total probability mass of tokens to consider at each step."""</span>
+
+    <span class="n">default_request_timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="s2">"timeout"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Timeout for requests to Anthropic Completion API."""</span>
+
+    <span class="c1"># sdk default = 2: https://github.com/anthropics/anthropic-sdk-python?tab=readme-ov-file#retries</span>
+    <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="w">    </span><span class="sd">"""Number of retries allowed for requests sent to the Anthropic Completion API."""</span>
+
+    <span class="n">stop_sequences</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="s2">"stop"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Default stop sequences."""</span>
+
+    <span class="n">anthropic_api_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">alias</span><span class="o">=</span><span class="s2">"base_url"</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">from_env</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">"ANTHROPIC_API_URL"</span><span class="p">,</span> <span class="s2">"ANTHROPIC_BASE_URL"</span><span class="p">],</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">"https://api.anthropic.com"</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Base URL for API requests. Only specify if using a proxy or service emulator.</span>
+
+<span class="sd">    If a value isn't passed in, will attempt to read the value first from</span>
+<span class="sd">    ANTHROPIC_API_URL and if that is not set, ANTHROPIC_BASE_URL.</span>
+<span class="sd">    If neither are set, the default value of 'https://api.anthropic.com' will</span>
+<span class="sd">    be used.</span>
+<span class="sd">    """</span>
+
+    <span class="n">anthropic_api_key</span><span class="p">:</span> <span class="n">SecretStr</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">alias</span><span class="o">=</span><span class="s2">"api_key"</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">secret_from_env</span><span class="p">(</span><span class="s2">"ANTHROPIC_API_KEY"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">""</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="w">    </span><span class="sd">"""Automatically read from env var `ANTHROPIC_API_KEY` if not provided."""</span>
+
+    <span class="n">default_headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Headers to pass to the Anthropic clients, will be used for every API call."""</span>
+
+    <span class="n">model_kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+
+    <span class="n">streaming</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">"""Whether to use streaming or not."""</span>
+
+    <span class="n">stream_usage</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="w">    </span><span class="sd">"""Whether to include usage metadata in streaming output. If True, additional</span>
+<span class="sd">    message chunks will be generated during the stream including usage metadata.</span>
+<span class="sd">    """</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_llm_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return type of chat model."""</span>
+        <span class="k">return</span> <span class="s2">"anthropic-chat"</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lc_secrets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"anthropic_api_key"</span><span class="p">:</span> <span class="s2">"ANTHROPIC_API_KEY"</span><span class="p">}</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">is_lc_serializable</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_lc_namespace</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Get the namespace of the langchain object."""</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">"langchain"</span><span class="p">,</span> <span class="s2">"chat_models"</span><span class="p">,</span> <span class="s2">"anthropic"</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_identifying_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Get the identifying parameters."""</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">"model"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+            <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span><span class="p">,</span>
+            <span class="s2">"temperature"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
+            <span class="s2">"top_k"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_k</span><span class="p">,</span>
+            <span class="s2">"top_p"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_p</span><span class="p">,</span>
+            <span class="s2">"model_kwargs"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_kwargs</span><span class="p">,</span>
+            <span class="s2">"streaming"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">,</span>
+            <span class="s2">"max_retries"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">,</span>
+            <span class="s2">"default_request_timeout"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_request_timeout</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_get_ls_params</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LangSmithParams</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Get the parameters used to invoke the model."""</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_invocation_params</span><span class="p">(</span><span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">ls_params</span> <span class="o">=</span> <span class="n">LangSmithParams</span><span class="p">(</span>
+            <span class="n">ls_provider</span><span class="o">=</span><span class="s2">"anthropic"</span><span class="p">,</span>
+            <span class="n">ls_model_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+            <span class="n">ls_model_type</span><span class="o">=</span><span class="s2">"chat"</span><span class="p">,</span>
+            <span class="n">ls_temperature</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"temperature"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">ls_max_tokens</span> <span class="o">:=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"max_tokens"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span><span class="p">):</span>
+            <span class="n">ls_params</span><span class="p">[</span><span class="s2">"ls_max_tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ls_max_tokens</span>
+        <span class="k">if</span> <span class="n">ls_stop</span> <span class="o">:=</span> <span class="n">stop</span> <span class="ow">or</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"stop"</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">ls_params</span><span class="p">[</span><span class="s2">"ls_stop"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ls_stop</span>
+        <span class="k">return</span> <span class="n">ls_params</span>
+
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">build_extra</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="n">extra</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model_kwargs"</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">all_required_field_names</span> <span class="o">=</span> <span class="n">get_pydantic_field_names</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">"model_kwargs"</span><span class="p">]</span> <span class="o">=</span> <span class="n">build_extra_kwargs</span><span class="p">(</span>
+            <span class="n">extra</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">all_required_field_names</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">values</span>
+
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">post_init</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="n">api_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">anthropic_api_key</span><span class="o">.</span><span class="n">get_secret_value</span><span class="p">()</span>
+        <span class="n">api_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">anthropic_api_url</span>
+        <span class="n">client_params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"api_key"</span><span class="p">:</span> <span class="n">api_key</span><span class="p">,</span>
+            <span class="s2">"base_url"</span><span class="p">:</span> <span class="n">api_url</span><span class="p">,</span>
+            <span class="s2">"max_retries"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">,</span>
+            <span class="s2">"default_headers"</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_headers</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="c1"># value &lt;= 0 indicates the param should be ignored. None is a meaningful value</span>
+        <span class="c1"># for Anthropic client and treated differently than not specifying the param at</span>
+        <span class="c1"># all.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_request_timeout</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_request_timeout</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">client_params</span><span class="p">[</span><span class="s2">"timeout"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_request_timeout</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">anthropic</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">client_params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_async_client</span> <span class="o">=</span> <span class="n">anthropic</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">(</span><span class="o">**</span><span class="n">client_params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">_get_request_payload</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_</span><span class="p">:</span> <span class="n">LanguageModelInput</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_input</span><span class="p">(</span><span class="n">input_</span><span class="p">)</span><span class="o">.</span><span class="n">to_messages</span><span class="p">()</span>
+        <span class="n">system</span><span class="p">,</span> <span class="n">formatted_messages</span> <span class="o">=</span> <span class="n">_format_messages</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"model"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+            <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span><span class="p">,</span>
+            <span class="s2">"messages"</span><span class="p">:</span> <span class="n">formatted_messages</span><span class="p">,</span>
+            <span class="s2">"temperature"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
+            <span class="s2">"top_k"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_k</span><span class="p">,</span>
+            <span class="s2">"top_p"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_p</span><span class="p">,</span>
+            <span class="s2">"stop_sequences"</span><span class="p">:</span> <span class="n">stop</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop_sequences</span><span class="p">,</span>
+            <span class="s2">"system"</span><span class="p">:</span> <span class="n">system</span><span class="p">,</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">model_kwargs</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">payload</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_stream</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">stream_usage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">ChatGenerationChunk</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">stream_usage</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">stream_usage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_usage</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"stream"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_request_payload</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">payload</span><span class="p">)</span>
+        <span class="n">coerce_content_to_string</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">_tools_in_params</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_make_message_chunk_from_anthropic_event</span><span class="p">(</span>
+                <span class="n">event</span><span class="p">,</span>
+                <span class="n">stream_usage</span><span class="o">=</span><span class="n">stream_usage</span><span class="p">,</span>
+                <span class="n">coerce_content_to_string</span><span class="o">=</span><span class="n">coerce_content_to_string</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">msg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">chunk</span> <span class="o">=</span> <span class="n">ChatGenerationChunk</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">run_manager</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">chunk</span><span class="o">=</span><span class="n">chunk</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="n">chunk</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_astream</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">stream_usage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">ChatGenerationChunk</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">stream_usage</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">stream_usage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_usage</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"stream"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_request_payload</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_async_client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">payload</span><span class="p">)</span>
+        <span class="n">coerce_content_to_string</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">_tools_in_params</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_make_message_chunk_from_anthropic_event</span><span class="p">(</span>
+                <span class="n">event</span><span class="p">,</span>
+                <span class="n">stream_usage</span><span class="o">=</span><span class="n">stream_usage</span><span class="p">,</span>
+                <span class="n">coerce_content_to_string</span><span class="o">=</span><span class="n">coerce_content_to_string</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">msg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">chunk</span> <span class="o">=</span> <span class="n">ChatGenerationChunk</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">run_manager</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="k">await</span> <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">chunk</span><span class="o">=</span><span class="n">chunk</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="n">chunk</span>
+
+    <span class="k">def</span> <span class="nf">_format_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ChatResult</span><span class="p">:</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s2">"content"</span><span class="p">]</span>
+        <span class="n">llm_output</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"content"</span><span class="p">,</span> <span class="s2">"role"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"text"</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">AIMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"text"</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">any</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"tool_use"</span> <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">content</span><span class="p">):</span>
+            <span class="n">tool_calls</span> <span class="o">=</span> <span class="n">extract_tool_calls</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">AIMessage</span><span class="p">(</span>
+                <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span>
+                <span class="n">tool_calls</span><span class="o">=</span><span class="n">tool_calls</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">AIMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">)</span>
+        <span class="c1"># Collect token usage</span>
+        <span class="n">msg</span><span class="o">.</span><span class="n">usage_metadata</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"input_tokens"</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">input_tokens</span><span class="p">,</span>
+            <span class="s2">"output_tokens"</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">output_tokens</span><span class="p">,</span>
+            <span class="s2">"total_tokens"</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">input_tokens</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">output_tokens</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">ChatResult</span><span class="p">(</span>
+            <span class="n">generations</span><span class="o">=</span><span class="p">[</span><span class="n">ChatGeneration</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)],</span>
+            <span class="n">llm_output</span><span class="o">=</span><span class="n">llm_output</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_generate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ChatResult</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">:</span>
+            <span class="n">stream_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream</span><span class="p">(</span>
+                <span class="n">messages</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span> <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">generate_from_stream</span><span class="p">(</span><span class="n">stream_iter</span><span class="p">)</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_request_payload</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">payload</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_agenerate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ChatResult</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">:</span>
+            <span class="n">stream_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_astream</span><span class="p">(</span>
+                <span class="n">messages</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span> <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">agenerate_from_stream</span><span class="p">(</span><span class="n">stream_iter</span><span class="p">)</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_request_payload</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_async_client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">payload</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ChatAnthropic.bind_tools">
+<a class="viewcode-back" href="../../anthropic/chat_models/langchain_anthropic.chat_models.ChatAnthropic.html#langchain_anthropic.chat_models.ChatAnthropic.bind_tools">[docs]</a>
+    <span class="k">def</span> <span class="nf">bind_tools</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">tools</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">BaseTool</span><span class="p">]],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">tool_choice</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+            <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"any"</span><span class="p">,</span> <span class="s2">"auto"</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Runnable</span><span class="p">[</span><span class="n">LanguageModelInput</span><span class="p">,</span> <span class="n">BaseMessage</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Bind tool-like objects to this chat model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tools: A list of tool definitions to bind to this chat model.</span>
+<span class="sd">                Supports Anthropic format tool schemas and any tool definition handled</span>
+<span class="sd">                by :meth:`~langchain_core.utils.function_calling.convert_to_openai_tool`.</span>
+<span class="sd">            tool_choice: Which tool to require the model to call. Options are:</span>
+
+<span class="sd">                - name of the tool as a string or as dict ``{"type": "tool", "name": "&lt;&lt;tool_name&gt;&gt;"}``: calls corresponding tool;</span>
+<span class="sd">                - ``"auto"``, ``{"type: "auto"}``, or None: automatically selects a tool (including no tool);</span>
+<span class="sd">                - ``"any"`` or ``{"type: "any"}``: force at least one tool to be called;</span>
+<span class="sd">            kwargs: Any additional parameters are passed directly to</span>
+<span class="sd">                :meth:`~langchain_anthropic.chat_models.ChatAnthropic.bind`.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from langchain_anthropic import ChatAnthropic</span>
+<span class="sd">                from pydantic import BaseModel, Field</span>
+
+<span class="sd">                class GetWeather(BaseModel):</span>
+<span class="sd">                    '''Get the current weather in a given location'''</span>
+
+<span class="sd">                    location: str = Field(..., description="The city and state, e.g. San Francisco, CA")</span>
+
+<span class="sd">                class GetPrice(BaseModel):</span>
+<span class="sd">                    '''Get the price of a specific product.'''</span>
+
+<span class="sd">                    product: str = Field(..., description="The product to look up.")</span>
+
+
+<span class="sd">                llm = ChatAnthropic(model="claude-3-5-sonnet-20240620", temperature=0)</span>
+<span class="sd">                llm_with_tools = llm.bind_tools([GetWeather, GetPrice])</span>
+<span class="sd">                llm_with_tools.invoke("what is the weather like in San Francisco",)</span>
+<span class="sd">                # -&gt; AIMessage(</span>
+<span class="sd">                #     content=[</span>
+<span class="sd">                #         {'text': '&lt;thinking&gt;\nBased on the user\'s question, the relevant function to call is GetWeather, which requires the "location" parameter.\n\nThe user has directly specified the location as "San Francisco". Since San Francisco is a well known city, I can reasonably infer they mean San Francisco, CA without needing the state specified.\n\nAll the required parameters are provided, so I can proceed with the API call.\n&lt;/thinking&gt;', 'type': 'text'},</span>
+<span class="sd">                #         {'text': None, 'type': 'tool_use', 'id': 'toolu_01SCgExKzQ7eqSkMHfygvYuu', 'name': 'GetWeather', 'input': {'location': 'San Francisco, CA'}}</span>
+<span class="sd">                #     ],</span>
+<span class="sd">                #     response_metadata={'id': 'msg_01GM3zQtoFv8jGQMW7abLnhi', 'model': 'claude-3-5-sonnet-20240620', 'stop_reason': 'tool_use', 'stop_sequence': None, 'usage': {'input_tokens': 487, 'output_tokens': 145}},</span>
+<span class="sd">                #     id='run-87b1331e-9251-4a68-acef-f0a018b639cc-0'</span>
+<span class="sd">                # )</span>
+
+<span class="sd">        Example — force tool call with tool_choice 'any':</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from langchain_anthropic import ChatAnthropic</span>
+<span class="sd">                from pydantic import BaseModel, Field</span>
+
+<span class="sd">                class GetWeather(BaseModel):</span>
+<span class="sd">                    '''Get the current weather in a given location'''</span>
+
+<span class="sd">                    location: str = Field(..., description="The city and state, e.g. San Francisco, CA")</span>
+
+<span class="sd">                class GetPrice(BaseModel):</span>
+<span class="sd">                    '''Get the price of a specific product.'''</span>
+
+<span class="sd">                    product: str = Field(..., description="The product to look up.")</span>
+
+
+<span class="sd">                llm = ChatAnthropic(model="claude-3-5-sonnet-20240620", temperature=0)</span>
+<span class="sd">                llm_with_tools = llm.bind_tools([GetWeather, GetPrice], tool_choice="any")</span>
+<span class="sd">                llm_with_tools.invoke("what is the weather like in San Francisco",)</span>
+
+
+<span class="sd">        Example — force specific tool call with tool_choice '&lt;name_of_tool&gt;':</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from langchain_anthropic import ChatAnthropic</span>
+<span class="sd">                from pydantic import BaseModel, Field</span>
+
+<span class="sd">                class GetWeather(BaseModel):</span>
+<span class="sd">                    '''Get the current weather in a given location'''</span>
+
+<span class="sd">                    location: str = Field(..., description="The city and state, e.g. San Francisco, CA")</span>
+
+<span class="sd">                class GetPrice(BaseModel):</span>
+<span class="sd">                    '''Get the price of a specific product.'''</span>
+
+<span class="sd">                    product: str = Field(..., description="The product to look up.")</span>
+
+
+<span class="sd">                llm = ChatAnthropic(model="claude-3-5-sonnet-20240620", temperature=0)</span>
+<span class="sd">                llm_with_tools = llm.bind_tools([GetWeather, GetPrice], tool_choice="GetWeather")</span>
+<span class="sd">                llm_with_tools.invoke("what is the weather like in San Francisco",)</span>
+
+<span class="sd">        Example — cache specific tools:</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from langchain_anthropic import ChatAnthropic, convert_to_anthropic_tool</span>
+<span class="sd">                from pydantic import BaseModel, Field</span>
+
+<span class="sd">                class GetWeather(BaseModel):</span>
+<span class="sd">                    '''Get the current weather in a given location'''</span>
+
+<span class="sd">                    location: str = Field(..., description="The city and state, e.g. San Francisco, CA")</span>
+
+<span class="sd">                class GetPrice(BaseModel):</span>
+<span class="sd">                    '''Get the price of a specific product.'''</span>
+
+<span class="sd">                    product: str = Field(..., description="The product to look up.")</span>
+
+<span class="sd">                # We'll convert our pydantic class to the anthropic tool format</span>
+<span class="sd">                # before passing to bind_tools so that we can set the 'cache_control'</span>
+<span class="sd">                # field on our tool.</span>
+<span class="sd">                cached_price_tool = convert_to_anthropic_tool(GetPrice)</span>
+<span class="sd">                # Currently the only supported "cache_control" value is</span>
+<span class="sd">                # {"type": "ephemeral"}.</span>
+<span class="sd">                cached_price_tool["cache_control"] = {"type": "ephemeral"}</span>
+
+<span class="sd">                # We need to pass in extra headers to enable use of the beta cache</span>
+<span class="sd">                # control API.</span>
+<span class="sd">                llm = ChatAnthropic(</span>
+<span class="sd">                    model="claude-3-5-sonnet-20240620",</span>
+<span class="sd">                    temperature=0,</span>
+<span class="sd">                    extra_headers={"anthropic-beta": "prompt-caching-2024-07-31"}</span>
+<span class="sd">                )</span>
+<span class="sd">                llm_with_tools = llm.bind_tools([GetWeather, cached_price_tool])</span>
+<span class="sd">                llm_with_tools.invoke("what is the weather like in San Francisco",)</span>
+
+<span class="sd">            This outputs:</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                AIMessage(content=[{'text': "Certainly! I can help you find out the current weather in San Francisco. To get this information, I'll use the GetWeather function. Let me fetch that data for you right away.", 'type': 'text'}, {'id': 'toolu_01TS5h8LNo7p5imcG7yRiaUM', 'input': {'location': 'San Francisco, CA'}, 'name': 'GetWeather', 'type': 'tool_use'}], response_metadata={'id': 'msg_01Xg7Wr5inFWgBxE5jH9rpRo', 'model': 'claude-3-5-sonnet-20240620', 'stop_reason': 'tool_use', 'stop_sequence': None, 'usage': {'input_tokens': 171, 'output_tokens': 96, 'cache_creation_input_tokens': 1470, 'cache_read_input_tokens': 0}}, id='run-b36a5b54-5d69-470e-a1b0-b932d00b089e-0', tool_calls=[{'name': 'GetWeather', 'args': {'location': 'San Francisco, CA'}, 'id': 'toolu_01TS5h8LNo7p5imcG7yRiaUM', 'type': 'tool_call'}], usage_metadata={'input_tokens': 171, 'output_tokens': 96, 'total_tokens': 267})</span>
+
+<span class="sd">            If we invoke the tool again, we can see that the "usage" information in the AIMessage.response_metadata shows that we had a cache hit:</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                AIMessage(content=[{'text': 'To get the current weather in San Francisco, I can use the GetWeather function. Let me check that for you.', 'type': 'text'}, {'id': 'toolu_01HtVtY1qhMFdPprx42qU2eA', 'input': {'location': 'San Francisco, CA'}, 'name': 'GetWeather', 'type': 'tool_use'}], response_metadata={'id': 'msg_016RfWHrRvW6DAGCdwB6Ac64', 'model': 'claude-3-5-sonnet-20240620', 'stop_reason': 'tool_use', 'stop_sequence': None, 'usage': {'input_tokens': 171, 'output_tokens': 82, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 1470}}, id='run-88b1f825-dcb7-4277-ac27-53df55d22001-0', tool_calls=[{'name': 'GetWeather', 'args': {'location': 'San Francisco, CA'}, 'id': 'toolu_01HtVtY1qhMFdPprx42qU2eA', 'type': 'tool_call'}], usage_metadata={'input_tokens': 171, 'output_tokens': 82, 'total_tokens': 253})</span>
+
+<span class="sd">        """</span>  <span class="c1"># noqa: E501</span>
+        <span class="n">formatted_tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">convert_to_anthropic_tool</span><span class="p">(</span><span class="n">tool</span><span class="p">)</span> <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">tools</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tool_choice</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tool_choice</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"tool_choice"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool_choice</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tool_choice</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">tool_choice</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"any"</span><span class="p">,</span> <span class="s2">"auto"</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"tool_choice"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="n">tool_choice</span><span class="p">}</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tool_choice</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"tool_choice"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"tool"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="n">tool_choice</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Unrecognized 'tool_choice' type </span><span class="si">{</span><span class="n">tool_choice</span><span class="si">=}</span><span class="s2">. Expected dict, "</span>
+                <span class="sa">f</span><span class="s2">"str, or None."</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">tools</span><span class="o">=</span><span class="n">formatted_tools</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ChatAnthropic.with_structured_output">
+<a class="viewcode-back" href="../../anthropic/chat_models/langchain_anthropic.chat_models.ChatAnthropic.html#langchain_anthropic.chat_models.ChatAnthropic.with_structured_output">[docs]</a>
+    <span class="k">def</span> <span class="nf">with_structured_output</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">schema</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">]],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">include_raw</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Runnable</span><span class="p">[</span><span class="n">LanguageModelInput</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""Model wrapper that returns outputs formatted to match the given schema.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            schema: The output schema. Can be passed in as:</span>
+
+<span class="sd">                - an Anthropic tool schema,</span>
+<span class="sd">                - an OpenAI function/tool schema,</span>
+<span class="sd">                - a JSON Schema,</span>
+<span class="sd">                - a TypedDict class,</span>
+<span class="sd">                - or a Pydantic class.</span>
+
+<span class="sd">                If ``schema`` is a Pydantic class then the model output will be a</span>
+<span class="sd">                Pydantic instance of that class, and the model-generated fields will be</span>
+<span class="sd">                validated by the Pydantic class. Otherwise the model output will be a</span>
+<span class="sd">                dict and will not be validated. See :meth:`~langchain_core.utils.function_calling.convert_to_openai_tool`</span>
+<span class="sd">                for more on how to properly specify types and descriptions of</span>
+<span class="sd">                schema fields when specifying a Pydantic or TypedDict class.</span>
+<span class="sd">            include_raw:</span>
+<span class="sd">                If False then only the parsed structured output is returned. If</span>
+<span class="sd">                an error occurs during model output parsing it will be raised. If True</span>
+<span class="sd">                then both the raw model response (a BaseMessage) and the parsed model</span>
+<span class="sd">                response will be returned. If an error occurs during output parsing it</span>
+<span class="sd">                will be caught and returned as well. The final output is always a dict</span>
+<span class="sd">                with keys "raw", "parsed", and "parsing_error".</span>
+<span class="sd">            kwargs: Additional keyword arguments are ignored.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A Runnable that takes same inputs as a :class:`~langchain_core.language_models.chat.BaseChatModel`.</span>
+
+<span class="sd">            If ``include_raw`` is False and ``schema`` is a Pydantic class, Runnable outputs</span>
+<span class="sd">            an instance of ``schema`` (i.e., a Pydantic object).</span>
+
+<span class="sd">            Otherwise, if ``include_raw`` is False then Runnable outputs a dict.</span>
+
+<span class="sd">            If ``include_raw`` is True, then Runnable outputs a dict with keys:</span>
+<span class="sd">                - ``"raw"``: BaseMessage</span>
+<span class="sd">                - ``"parsed"``: None if there was a parsing error, otherwise the type depends on the ``schema`` as described above.</span>
+<span class="sd">                - ``"parsing_error"``: Optional[BaseException]</span>
+
+<span class="sd">        Example: Pydantic schema (include_raw=False):</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from langchain_anthropic import ChatAnthropic</span>
+<span class="sd">                from pydantic import BaseModel</span>
+
+<span class="sd">                class AnswerWithJustification(BaseModel):</span>
+<span class="sd">                    '''An answer to the user question along with justification for the answer.'''</span>
+<span class="sd">                    answer: str</span>
+<span class="sd">                    justification: str</span>
+
+<span class="sd">                llm = ChatAnthropic(model="claude-3-5-sonnet-20240620", temperature=0)</span>
+<span class="sd">                structured_llm = llm.with_structured_output(AnswerWithJustification)</span>
+
+<span class="sd">                structured_llm.invoke("What weighs more a pound of bricks or a pound of feathers")</span>
+
+<span class="sd">                # -&gt; AnswerWithJustification(</span>
+<span class="sd">                #     answer='They weigh the same',</span>
+<span class="sd">                #     justification='Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ.'</span>
+<span class="sd">                # )</span>
+
+<span class="sd">        Example:  Pydantic schema (include_raw=True):</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from langchain_anthropic import ChatAnthropic</span>
+<span class="sd">                from pydantic import BaseModel</span>
+
+<span class="sd">                class AnswerWithJustification(BaseModel):</span>
+<span class="sd">                    '''An answer to the user question along with justification for the answer.'''</span>
+<span class="sd">                    answer: str</span>
+<span class="sd">                    justification: str</span>
+
+<span class="sd">                llm = ChatAnthropic(model="claude-3-5-sonnet-20240620", temperature=0)</span>
+<span class="sd">                structured_llm = llm.with_structured_output(AnswerWithJustification, include_raw=True)</span>
+
+<span class="sd">                structured_llm.invoke("What weighs more a pound of bricks or a pound of feathers")</span>
+<span class="sd">                # -&gt; {</span>
+<span class="sd">                #     'raw': AIMessage(content='', additional_kwargs={'tool_calls': [{'id': 'call_Ao02pnFYXD6GN1yzc0uXPsvF', 'function': {'arguments': '{"answer":"They weigh the same.","justification":"Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ."}', 'name': 'AnswerWithJustification'}, 'type': 'function'}]}),</span>
+<span class="sd">                #     'parsed': AnswerWithJustification(answer='They weigh the same.', justification='Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ.'),</span>
+<span class="sd">                #     'parsing_error': None</span>
+<span class="sd">                # }</span>
+
+<span class="sd">        Example: Dict schema (include_raw=False):</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from langchain_anthropic import ChatAnthropic</span>
+
+<span class="sd">                schema = {</span>
+<span class="sd">                    "name": "AnswerWithJustification",</span>
+<span class="sd">                    "description": "An answer to the user question along with justification for the answer.",</span>
+<span class="sd">                    "input_schema": {</span>
+<span class="sd">                        "type": "object",</span>
+<span class="sd">                        "properties": {</span>
+<span class="sd">                            "answer": {"type": "string"},</span>
+<span class="sd">                            "justification": {"type": "string"},</span>
+<span class="sd">                        },</span>
+<span class="sd">                        "required": ["answer", "justification"]</span>
+<span class="sd">                    }</span>
+<span class="sd">                }</span>
+<span class="sd">                llm = ChatAnthropic(model="claude-3-5-sonnet-20240620", temperature=0)</span>
+<span class="sd">                structured_llm = llm.with_structured_output(schema)</span>
+
+<span class="sd">                structured_llm.invoke("What weighs more a pound of bricks or a pound of feathers")</span>
+<span class="sd">                # -&gt; {</span>
+<span class="sd">                #     'answer': 'They weigh the same',</span>
+<span class="sd">                #     'justification': 'Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume and density of the two substances differ.'</span>
+<span class="sd">                # }</span>
+
+<span class="sd">        .. versionchanged:: 0.1.22</span>
+
+<span class="sd">                Added support for TypedDict class as `schema`.</span>
+
+<span class="sd">        """</span>  <span class="c1"># noqa: E501</span>
+
+        <span class="n">tool_name</span> <span class="o">=</span> <span class="n">convert_to_anthropic_tool</span><span class="p">(</span><span class="n">schema</span><span class="p">)[</span><span class="s2">"name"</span><span class="p">]</span>
+        <span class="n">llm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bind_tools</span><span class="p">([</span><span class="n">schema</span><span class="p">],</span> <span class="n">tool_choice</span><span class="o">=</span><span class="n">tool_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_basemodel_subclass</span><span class="p">(</span><span class="n">schema</span><span class="p">):</span>
+            <span class="n">output_parser</span><span class="p">:</span> <span class="n">OutputParserLike</span> <span class="o">=</span> <span class="n">PydanticToolsParser</span><span class="p">(</span>
+                <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">schema</span><span class="p">],</span> <span class="n">first_tool_only</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">output_parser</span> <span class="o">=</span> <span class="n">JsonOutputKeyToolsParser</span><span class="p">(</span>
+                <span class="n">key_name</span><span class="o">=</span><span class="n">tool_name</span><span class="p">,</span> <span class="n">first_tool_only</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">include_raw</span><span class="p">:</span>
+            <span class="n">parser_assign</span> <span class="o">=</span> <span class="n">RunnablePassthrough</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+                <span class="n">parsed</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="s2">"raw"</span><span class="p">)</span> <span class="o">|</span> <span class="n">output_parser</span><span class="p">,</span> <span class="n">parsing_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="p">)</span>
+            <span class="n">parser_none</span> <span class="o">=</span> <span class="n">RunnablePassthrough</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">parsed</span><span class="o">=</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">parser_with_fallback</span> <span class="o">=</span> <span class="n">parser_assign</span><span class="o">.</span><span class="n">with_fallbacks</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">parser_none</span><span class="p">],</span> <span class="n">exception_key</span><span class="o">=</span><span class="s2">"parsing_error"</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">RunnableMap</span><span class="p">(</span><span class="n">raw</span><span class="o">=</span><span class="n">llm</span><span class="p">)</span> <span class="o">|</span> <span class="n">parser_with_fallback</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">output_parser</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="AnthropicTool">
+<a class="viewcode-back" href="../../anthropic/chat_models/langchain_anthropic.chat_models.AnthropicTool.html#langchain_anthropic.chat_models.AnthropicTool">[docs]</a>
+<span class="k">class</span> <span class="nc">AnthropicTool</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Anthropic tool definition."""</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">input_schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+    <span class="n">cache_control</span><span class="p">:</span> <span class="n">NotRequired</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span></div>
+
+
+
+<div class="viewcode-block" id="convert_to_anthropic_tool">
+<a class="viewcode-back" href="../../anthropic/chat_models/langchain_anthropic.chat_models.convert_to_anthropic_tool.html#langchain_anthropic.chat_models.convert_to_anthropic_tool">[docs]</a>
+<span class="k">def</span> <span class="nf">convert_to_anthropic_tool</span><span class="p">(</span>
+    <span class="n">tool</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">BaseTool</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AnthropicTool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Convert a tool-like object to an Anthropic tool definition."""</span>
+    <span class="c1"># already in Anthropic tool format</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tool</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span>
+        <span class="n">k</span> <span class="ow">in</span> <span class="n">tool</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"description"</span><span class="p">,</span> <span class="s2">"input_schema"</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="n">anthropic_formatted</span> <span class="o">=</span> <span class="n">AnthropicTool</span><span class="p">(</span><span class="n">tool</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">oai_formatted</span> <span class="o">=</span> <span class="n">convert_to_openai_tool</span><span class="p">(</span><span class="n">tool</span><span class="p">)[</span><span class="s2">"function"</span><span class="p">]</span>
+        <span class="n">anthropic_formatted</span> <span class="o">=</span> <span class="n">AnthropicTool</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">oai_formatted</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">oai_formatted</span><span class="p">[</span><span class="s2">"description"</span><span class="p">],</span>
+            <span class="n">input_schema</span><span class="o">=</span><span class="n">oai_formatted</span><span class="p">[</span><span class="s2">"parameters"</span><span class="p">],</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">anthropic_formatted</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_tools_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s2">"tools"</span> <span class="ow">in</span> <span class="n">params</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="s2">"extra_body"</span> <span class="ow">in</span> <span class="n">params</span> <span class="ow">and</span> <span class="n">params</span><span class="p">[</span><span class="s2">"extra_body"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tools"</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">_AnthropicToolUse</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"tool_use"</span><span class="p">]</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="nb">dict</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">def</span> <span class="nf">_lc_tool_calls_to_anthropic_tool_use_blocks</span><span class="p">(</span>
+    <span class="n">tool_calls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ToolCall</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">_AnthropicToolUse</span><span class="p">]:</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">tool_call</span> <span class="ow">in</span> <span class="n">tool_calls</span><span class="p">:</span>
+        <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">_AnthropicToolUse</span><span class="p">(</span>
+                <span class="nb">type</span><span class="o">=</span><span class="s2">"tool_use"</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">tool_call</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span>
+                <span class="nb">input</span><span class="o">=</span><span class="n">tool_call</span><span class="p">[</span><span class="s2">"args"</span><span class="p">],</span>
+                <span class="nb">id</span><span class="o">=</span><span class="n">cast</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">tool_call</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">blocks</span>
+
+
+<span class="k">def</span> <span class="nf">_make_message_chunk_from_anthropic_event</span><span class="p">(</span>
+    <span class="n">event</span><span class="p">:</span> <span class="n">anthropic</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">RawMessageStreamEvent</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">stream_usage</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">coerce_content_to_string</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AIMessageChunk</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Convert Anthropic event to AIMessageChunk.</span>
+
+<span class="sd">    Note that not all events will result in a message chunk. In these cases</span>
+<span class="sd">    we return None.</span>
+<span class="sd">    """</span>
+    <span class="n">message_chunk</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AIMessageChunk</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># See https://github.com/anthropics/anthropic-sdk-python/blob/main/src/anthropic/lib/streaming/_messages.py  # noqa: E501</span>
+    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"message_start"</span> <span class="ow">and</span> <span class="n">stream_usage</span><span class="p">:</span>
+        <span class="n">input_tokens</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">input_tokens</span>
+        <span class="n">message_chunk</span> <span class="o">=</span> <span class="n">AIMessageChunk</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="s2">""</span> <span class="k">if</span> <span class="n">coerce_content_to_string</span> <span class="k">else</span> <span class="p">[],</span>
+            <span class="n">usage_metadata</span><span class="o">=</span><span class="n">UsageMetadata</span><span class="p">(</span>
+                <span class="n">input_tokens</span><span class="o">=</span><span class="n">input_tokens</span><span class="p">,</span>
+                <span class="n">output_tokens</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">total_tokens</span><span class="o">=</span><span class="n">input_tokens</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="p">(</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"content_block_start"</span>
+        <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">content_block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">content_block</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"tool_use"</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">coerce_content_to_string</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">"Received unexpected tool content block."</span><span class="p">)</span>
+        <span class="n">content_block</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">content_block</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+        <span class="n">content_block</span><span class="p">[</span><span class="s2">"index"</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">index</span>
+        <span class="n">tool_call_chunk</span> <span class="o">=</span> <span class="n">create_tool_call_chunk</span><span class="p">(</span>
+            <span class="n">index</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+            <span class="nb">id</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">content_block</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">content_block</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">message_chunk</span> <span class="o">=</span> <span class="n">AIMessageChunk</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="p">[</span><span class="n">content_block</span><span class="p">],</span>
+            <span class="n">tool_call_chunks</span><span class="o">=</span><span class="p">[</span><span class="n">tool_call_chunk</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"content_block_delta"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"text_delta"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">coerce_content_to_string</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">text</span>
+                <span class="n">message_chunk</span> <span class="o">=</span> <span class="n">AIMessageChunk</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">content_block</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+                <span class="n">content_block</span><span class="p">[</span><span class="s2">"index"</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">index</span>
+                <span class="n">content_block</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"text"</span>
+                <span class="n">message_chunk</span> <span class="o">=</span> <span class="n">AIMessageChunk</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="p">[</span><span class="n">content_block</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"input_json_delta"</span><span class="p">:</span>
+            <span class="n">content_block</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+            <span class="n">content_block</span><span class="p">[</span><span class="s2">"index"</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">index</span>
+            <span class="n">content_block</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"tool_use"</span>
+            <span class="n">tool_call_chunk</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"index"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                <span class="s2">"id"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">"name"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">"args"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">partial_json</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="n">message_chunk</span> <span class="o">=</span> <span class="n">AIMessageChunk</span><span class="p">(</span>
+                <span class="n">content</span><span class="o">=</span><span class="p">[</span><span class="n">content_block</span><span class="p">],</span>
+                <span class="n">tool_call_chunks</span><span class="o">=</span><span class="p">[</span><span class="n">tool_call_chunk</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+            <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"message_delta"</span> <span class="ow">and</span> <span class="n">stream_usage</span><span class="p">:</span>
+        <span class="n">output_tokens</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">output_tokens</span>
+        <span class="n">message_chunk</span> <span class="o">=</span> <span class="n">AIMessageChunk</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
+            <span class="n">usage_metadata</span><span class="o">=</span><span class="n">UsageMetadata</span><span class="p">(</span>
+                <span class="n">input_tokens</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">output_tokens</span><span class="o">=</span><span class="n">output_tokens</span><span class="p">,</span>
+                <span class="n">total_tokens</span><span class="o">=</span><span class="n">output_tokens</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">response_metadata</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">"stop_reason"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">stop_reason</span><span class="p">,</span>
+                <span class="s2">"stop_sequence"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">stop_sequence</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">message_chunk</span>
+
+
+<div class="viewcode-block" id="ChatAnthropicMessages">
+<a class="viewcode-back" href="../../anthropic/chat_models/langchain_anthropic.chat_models.ChatAnthropicMessages.html#langchain_anthropic.chat_models.ChatAnthropicMessages">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span><span class="n">since</span><span class="o">=</span><span class="s2">"0.1.0"</span><span class="p">,</span> <span class="n">removal</span><span class="o">=</span><span class="s2">"0.3.0"</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s2">"ChatAnthropic"</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">ChatAnthropicMessages</span><span class="p">(</span><span class="n">ChatAnthropic</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+</pre></div>
+</article>
+</div>
+</div>
+<footer class="bd-footer-content">
+</footer>
+</main>
+</div>
+</div>
+<!-- Scripts loaded after <body> so the DOM is not blocked -->
+<script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+<footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+<div class="footer-items__start">
+<div class="footer-item">
+<p class="copyright">
+    
+      © Copyright 2023, LangChain Inc.
+      <br/>
+</p>
+</div>
+</div>
+</div>
+</footer>
+</body>
+</html>

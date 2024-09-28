@@ -1,0 +1,1309 @@
+
+<!DOCTYPE html>
+
+<html data-content_root="../../../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>langchain_core.messages.utils — 🦜🔗 LangChain  documentation</title>
+<script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+<!-- Loaded before other Sphinx assets -->
+<link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
+<link as="font" crossorigin="" href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" rel="preload" type="font/woff2"/>
+<link href="../../../_static/pygments.css?v=a746c00c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/autodoc_pydantic.css" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sphinx-design.min.css?v=95c83b7e" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/custom.css?v=b95e2228" rel="stylesheet" type="text/css"/>
+<!-- Pre-loaded scripts that we'll load fully later -->
+<link as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" rel="preload"/>
+<link as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" rel="preload"/>
+<script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/documentation_options.js?v=3b5cce75"></script>
+<script src="../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../_static/copybutton.js?v=f281be69"></script>
+<script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+<script>DOCUMENTATION_OPTIONS.pagename = '_modules/langchain_core/messages/utils';</script>
+<link href="../../../_static/favicon.png" rel="icon"/>
+<link href="../../../search.html" rel="search" title="Search"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="en" name="docsearch:language"/>
+<meta content="Sep 27, 2024" name="docbuild:last-update"/>
+</head>
+<body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
+<div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
+<div id="pst-scroll-pixel-helper"></div>
+<button class="btn rounded-pill" id="pst-back-to-top" type="button">
+<i class="fa-solid fa-arrow-up"></i>Back to top</button>
+<input class="sidebar-toggle" id="pst-primary-sidebar-checkbox" type="checkbox"/>
+<label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+<input class="sidebar-toggle" id="pst-secondary-sidebar-checkbox" type="checkbox"/>
+<label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+<div class="search-button__wrapper">
+<div class="search-button__overlay"></div>
+<div class="search-button__search-container">
+<form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+</div>
+<div class="pst-async-banner-revealer d-none">
+<aside aria-label="Version warning" class="d-none d-print-none" id="bd-header-version-warning"></aside>
+</div>
+<header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+<button aria-label="Site navigation" class="pst-navbar-icon sidebar-toggle primary-toggle">
+<span class="fa-solid fa-bars"></span>
+</button>
+<div class="navbar-header-items__start">
+<div class="navbar-item">
+<a class="navbar-brand logo" href="../../../index.html">
+<img alt="🦜🔗 LangChain  documentation - Home" class="logo__image only-light" src="../../../_static/wordmark-api.svg"/>
+<script>document.write(`<img src="../../../_static/wordmark-api-dark.svg" class="logo__image only-dark" alt="🦜🔗 LangChain  documentation - Home"/>`);</script>
+</a></div>
+</div>
+<div class="navbar-header-items">
+<div class="me-auto navbar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../../../reference.html">
+    Reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-external" href="https://api.python.langchain.com/">
+    Legacy reference
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="navbar-header-items__end">
+<div class="navbar-item navbar-persistent--container">
+<form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</div>
+<div class="navbar-item"><!-- This will display a link to LangChain docs -->
+<head>
+<style>
+        .text-link {
+            text-decoration: none; /* Remove underline */
+            color: inherit;        /* Inherit color from parent element */
+        }
+    </style>
+</head>
+<body>
+<a class="text-link" href="https://python.langchain.com/">Docs</a>
+</body></div>
+<div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+<div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://twitter.com/langchainai" rel="noopener" target="_blank" title="X / Twitter"><i aria-hidden="true" class="fab fa-twitter-square fa-lg"></i>
+<span class="sr-only">X / Twitter</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="navbar-persistent--mobile">
+<form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</div>
+</div>
+</header>
+<div class="bd-container">
+<div class="bd-container__inner bd-page-width">
+<div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+<div class="sidebar-header-items sidebar-primary__section">
+<div class="sidebar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../../../reference.html">
+    Reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-external" href="https://api.python.langchain.com/">
+    Legacy reference
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="sidebar-header-items__end">
+<div class="navbar-item"><!-- This will display a link to LangChain docs -->
+<head>
+<style>
+        .text-link {
+            text-decoration: none; /* Remove underline */
+            color: inherit;        /* Inherit color from parent element */
+        }
+    </style>
+</head>
+<body>
+<a class="text-link" href="https://python.langchain.com/">Docs</a>
+</body></div>
+<div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+<div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://twitter.com/langchainai" rel="noopener" target="_blank" title="X / Twitter"><i aria-hidden="true" class="fab fa-twitter-square fa-lg"></i>
+<span class="sr-only">X / Twitter</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sidebar-primary-items__end sidebar-primary__section">
+</div>
+<div id="rtd-footer-container"></div>
+</div>
+<main class="bd-main" id="main-content" role="main">
+<div class="bd-content">
+<div class="bd-article-container">
+<div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+<div class="header-article-items__start">
+<div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+<ul class="bd-breadcrumbs">
+<li class="breadcrumb-item breadcrumb-home">
+<a aria-label="Home" class="nav-link" href="../../../index.html">
+<i class="fa-solid fa-home"></i>
+</a>
+</li>
+<li class="breadcrumb-item"><a class="nav-link" href="../../index.html">Module code</a></li>
+<li aria-current="page" class="breadcrumb-item active">langchain_co...</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<div id="searchbox"></div>
+<article class="bd-article">
+<h1>Source code for langchain_core.messages.utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Module contains utility functions for working with messages.</span>
+
+<span class="sd">Some examples of what you can do with these functions include:</span>
+
+<span class="sd">* Convert messages to strings (serialization)</span>
+<span class="sd">* Convert messages from dicts to Message objects (deserialization)</span>
+<span class="sd">* Filter messages from a list of messages based on name, type or id etc.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TYPE_CHECKING</span><span class="p">,</span>
+    <span class="n">Annotated</span><span class="p">,</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Literal</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+    <span class="n">cast</span><span class="p">,</span>
+    <span class="n">overload</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Discriminator</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">Tag</span>
+
+<span class="kn">from</span> <span class="nn">langchain_core.messages.ai</span> <span class="kn">import</span> <span class="n">AIMessage</span><span class="p">,</span> <span class="n">AIMessageChunk</span>
+<span class="kn">from</span> <span class="nn">langchain_core.messages.base</span> <span class="kn">import</span> <span class="n">BaseMessage</span><span class="p">,</span> <span class="n">BaseMessageChunk</span>
+<span class="kn">from</span> <span class="nn">langchain_core.messages.chat</span> <span class="kn">import</span> <span class="n">ChatMessage</span><span class="p">,</span> <span class="n">ChatMessageChunk</span>
+<span class="kn">from</span> <span class="nn">langchain_core.messages.function</span> <span class="kn">import</span> <span class="n">FunctionMessage</span><span class="p">,</span> <span class="n">FunctionMessageChunk</span>
+<span class="kn">from</span> <span class="nn">langchain_core.messages.human</span> <span class="kn">import</span> <span class="n">HumanMessage</span><span class="p">,</span> <span class="n">HumanMessageChunk</span>
+<span class="kn">from</span> <span class="nn">langchain_core.messages.modifier</span> <span class="kn">import</span> <span class="n">RemoveMessage</span>
+<span class="kn">from</span> <span class="nn">langchain_core.messages.system</span> <span class="kn">import</span> <span class="n">SystemMessage</span><span class="p">,</span> <span class="n">SystemMessageChunk</span>
+<span class="kn">from</span> <span class="nn">langchain_core.messages.tool</span> <span class="kn">import</span> <span class="n">ToolMessage</span><span class="p">,</span> <span class="n">ToolMessageChunk</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">langchain_text_splitters</span> <span class="kn">import</span> <span class="n">TextSplitter</span>
+
+    <span class="kn">from</span> <span class="nn">langchain_core.language_models</span> <span class="kn">import</span> <span class="n">BaseLanguageModel</span>
+    <span class="kn">from</span> <span class="nn">langchain_core.prompt_values</span> <span class="kn">import</span> <span class="n">PromptValue</span>
+    <span class="kn">from</span> <span class="nn">langchain_core.runnables.base</span> <span class="kn">import</span> <span class="n">Runnable</span>
+
+
+<span class="k">def</span> <span class="nf">_get_type</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Get the type associated with the object for serialization purposes."""</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">"type"</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">v</span><span class="o">.</span><span class="n">type</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Expected either a dictionary with a 'type' key or an object "</span>
+            <span class="sa">f</span><span class="s2">"with a 'type' attribute. Instead got type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
+        <span class="p">)</span>
+
+
+<span class="n">AnyMessage</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+    <span class="n">Union</span><span class="p">[</span>
+        <span class="n">Annotated</span><span class="p">[</span><span class="n">AIMessage</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s2">"ai"</span><span class="p">)],</span>
+        <span class="n">Annotated</span><span class="p">[</span><span class="n">HumanMessage</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s2">"human"</span><span class="p">)],</span>
+        <span class="n">Annotated</span><span class="p">[</span><span class="n">ChatMessage</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s2">"chat"</span><span class="p">)],</span>
+        <span class="n">Annotated</span><span class="p">[</span><span class="n">SystemMessage</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s2">"system"</span><span class="p">)],</span>
+        <span class="n">Annotated</span><span class="p">[</span><span class="n">FunctionMessage</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s2">"function"</span><span class="p">)],</span>
+        <span class="n">Annotated</span><span class="p">[</span><span class="n">ToolMessage</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s2">"tool"</span><span class="p">)],</span>
+        <span class="n">Annotated</span><span class="p">[</span><span class="n">AIMessageChunk</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s2">"AIMessageChunk"</span><span class="p">)],</span>
+        <span class="n">Annotated</span><span class="p">[</span><span class="n">HumanMessageChunk</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s2">"HumanMessageChunk"</span><span class="p">)],</span>
+        <span class="n">Annotated</span><span class="p">[</span><span class="n">ChatMessageChunk</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s2">"ChatMessageChunk"</span><span class="p">)],</span>
+        <span class="n">Annotated</span><span class="p">[</span><span class="n">SystemMessageChunk</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s2">"SystemMessageChunk"</span><span class="p">)],</span>
+        <span class="n">Annotated</span><span class="p">[</span><span class="n">FunctionMessageChunk</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s2">"FunctionMessageChunk"</span><span class="p">)],</span>
+        <span class="n">Annotated</span><span class="p">[</span><span class="n">ToolMessageChunk</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s2">"ToolMessageChunk"</span><span class="p">)],</span>
+    <span class="p">],</span>
+    <span class="n">Field</span><span class="p">(</span><span class="n">discriminator</span><span class="o">=</span><span class="n">Discriminator</span><span class="p">(</span><span class="n">_get_type</span><span class="p">)),</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="get_buffer_string">
+<a class="viewcode-back" href="../../../core/messages/langchain_core.messages.utils.get_buffer_string.html#langchain_core.messages.utils.get_buffer_string">[docs]</a>
+<span class="k">def</span> <span class="nf">get_buffer_string</span><span class="p">(</span>
+    <span class="n">messages</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="n">human_prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Human"</span><span class="p">,</span> <span class="n">ai_prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"AI"</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Convert a sequence of Messages to strings and concatenate them into one string.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        messages: Messages to be converted to strings.</span>
+<span class="sd">        human_prefix: The prefix to prepend to contents of HumanMessages.</span>
+<span class="sd">            Default is "Human".</span>
+<span class="sd">        ai_prefix: THe prefix to prepend to contents of AIMessages. Default is "AI".</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A single string concatenation of all input messages.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If an unsupported message type is encountered.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain_core import AIMessage, HumanMessage</span>
+
+<span class="sd">            messages = [</span>
+<span class="sd">                HumanMessage(content="Hi, how are you?"),</span>
+<span class="sd">                AIMessage(content="Good, how are you?"),</span>
+<span class="sd">            ]</span>
+<span class="sd">            get_buffer_string(messages)</span>
+<span class="sd">            # -&gt; "Human: Hi, how are you?\nAI: Good, how are you?"</span>
+<span class="sd">    """</span>
+    <span class="n">string_messages</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">HumanMessage</span><span class="p">):</span>
+            <span class="n">role</span> <span class="o">=</span> <span class="n">human_prefix</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">):</span>
+            <span class="n">role</span> <span class="o">=</span> <span class="n">ai_prefix</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">SystemMessage</span><span class="p">):</span>
+            <span class="n">role</span> <span class="o">=</span> <span class="s2">"System"</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">FunctionMessage</span><span class="p">):</span>
+            <span class="n">role</span> <span class="o">=</span> <span class="s2">"Function"</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ToolMessage</span><span class="p">):</span>
+            <span class="n">role</span> <span class="o">=</span> <span class="s2">"Tool"</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ChatMessage</span><span class="p">):</span>
+            <span class="n">role</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">role</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Got unsupported message type: </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">role</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">"function_call"</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="p">[</span><span class="s1">'function_call'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">string_messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">string_messages</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_message_from_dict</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseMessage</span><span class="p">:</span>
+    <span class="n">_type</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">_type</span> <span class="o">==</span> <span class="s2">"human"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HumanMessage</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">_type</span> <span class="o">==</span> <span class="s2">"ai"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">AIMessage</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">_type</span> <span class="o">==</span> <span class="s2">"system"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">SystemMessage</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">_type</span> <span class="o">==</span> <span class="s2">"chat"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ChatMessage</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">_type</span> <span class="o">==</span> <span class="s2">"function"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">FunctionMessage</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">_type</span> <span class="o">==</span> <span class="s2">"tool"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ToolMessage</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">_type</span> <span class="o">==</span> <span class="s2">"remove"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">RemoveMessage</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">_type</span> <span class="o">==</span> <span class="s2">"AIMessageChunk"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">AIMessageChunk</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">_type</span> <span class="o">==</span> <span class="s2">"HumanMessageChunk"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HumanMessageChunk</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">_type</span> <span class="o">==</span> <span class="s2">"FunctionMessageChunk"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">FunctionMessageChunk</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">_type</span> <span class="o">==</span> <span class="s2">"ToolMessageChunk"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ToolMessageChunk</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">_type</span> <span class="o">==</span> <span class="s2">"SystemMessageChunk"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">SystemMessageChunk</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">_type</span> <span class="o">==</span> <span class="s2">"ChatMessageChunk"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ChatMessageChunk</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Got unexpected message type: </span><span class="si">{</span><span class="n">_type</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="messages_from_dict">
+<a class="viewcode-back" href="../../../core/messages/langchain_core.messages.utils.messages_from_dict.html#langchain_core.messages.utils.messages_from_dict">[docs]</a>
+<span class="k">def</span> <span class="nf">messages_from_dict</span><span class="p">(</span><span class="n">messages</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Convert a sequence of messages from dicts to Message objects.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        messages: Sequence of messages (as dicts) to convert.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List of messages (BaseMessages).</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">_message_from_dict</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="message_chunk_to_message">
+<a class="viewcode-back" href="../../../core/messages/langchain_core.messages.utils.message_chunk_to_message.html#langchain_core.messages.utils.message_chunk_to_message">[docs]</a>
+<span class="k">def</span> <span class="nf">message_chunk_to_message</span><span class="p">(</span><span class="n">chunk</span><span class="p">:</span> <span class="n">BaseMessageChunk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseMessage</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Convert a message chunk to a message.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        chunk: Message chunk to convert.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Message.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">BaseMessageChunk</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">chunk</span>
+    <span class="c1"># chunk classes always have the equivalent non-chunk class as their first parent</span>
+    <span class="n">ignore_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"type"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">AIMessageChunk</span><span class="p">):</span>
+        <span class="n">ignore_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"tool_call_chunks"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">chunk</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span>
+        <span class="o">**</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">chunk</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ignore_keys</span><span class="p">}</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="n">MessageLikeRepresentation</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span>
+    <span class="n">BaseMessage</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_create_message_from_message_type</span><span class="p">(</span>
+    <span class="n">message_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tool_call_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tool_calls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">additional_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseMessage</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Create a message from a message type and content string.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        message_type: (str) the type of the message (e.g., "human", "ai", etc.).</span>
+<span class="sd">        content: (str) the content string.</span>
+<span class="sd">        name: (str) the name of the message. Default is None.</span>
+<span class="sd">        tool_call_id: (str) the tool call id. Default is None.</span>
+<span class="sd">        tool_calls: (List[Dict[str, Any]]) the tool calls. Default is None.</span>
+<span class="sd">        id: (str) the id of the message. Default is None.</span>
+<span class="sd">        **additional_kwargs: (Dict[str, Any]) additional keyword arguments.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        a message of the appropriate type.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: if the message type is not one of "human", "user", "ai",</span>
+<span class="sd">            "assistant", "system", "function", or "tool".</span>
+<span class="sd">    """</span>
+    <span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">if</span> <span class="n">tool_call_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"tool_call_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool_call_id</span>
+    <span class="k">if</span> <span class="n">additional_kwargs</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"additional_kwargs"</span><span class="p">]</span> <span class="o">=</span> <span class="n">additional_kwargs</span>  <span class="c1"># type: ignore[assignment]</span>
+    <span class="k">if</span> <span class="nb">id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span>
+    <span class="k">if</span> <span class="n">tool_calls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"tool_calls"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">tool_call</span> <span class="ow">in</span> <span class="n">tool_calls</span><span class="p">:</span>
+            <span class="c1"># Convert OpenAI-format tool call to LangChain format.</span>
+            <span class="k">if</span> <span class="s2">"function"</span> <span class="ow">in</span> <span class="n">tool_call</span><span class="p">:</span>
+                <span class="n">args</span> <span class="o">=</span> <span class="n">tool_call</span><span class="p">[</span><span class="s2">"function"</span><span class="p">][</span><span class="s2">"arguments"</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">args</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">"tool_calls"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="s2">"name"</span><span class="p">:</span> <span class="n">tool_call</span><span class="p">[</span><span class="s2">"function"</span><span class="p">][</span><span class="s2">"name"</span><span class="p">],</span>
+                        <span class="s2">"args"</span><span class="p">:</span> <span class="n">args</span><span class="p">,</span>
+                        <span class="s2">"id"</span><span class="p">:</span> <span class="n">tool_call</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span>
+                        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"tool_call"</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">"tool_calls"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tool_call</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">message_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"human"</span><span class="p">,</span> <span class="s2">"user"</span><span class="p">):</span>
+        <span class="n">message</span><span class="p">:</span> <span class="n">BaseMessage</span> <span class="o">=</span> <span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">message_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"ai"</span><span class="p">,</span> <span class="s2">"assistant"</span><span class="p">):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">AIMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">message_type</span> <span class="o">==</span> <span class="s2">"system"</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">SystemMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">message_type</span> <span class="o">==</span> <span class="s2">"function"</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">FunctionMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">message_type</span> <span class="o">==</span> <span class="s2">"tool"</span><span class="p">:</span>
+        <span class="n">artifact</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"additional_kwargs"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"artifact"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">ToolMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">artifact</span><span class="o">=</span><span class="n">artifact</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">message_type</span> <span class="o">==</span> <span class="s2">"remove"</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">RemoveMessage</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Unexpected message type: '</span><span class="si">{</span><span class="n">message_type</span><span class="si">}</span><span class="s2">'. Use one of 'human',"</span>
+            <span class="sa">f</span><span class="s2">" 'user', 'ai', 'assistant', 'function', 'tool', or 'system'."</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">message</span>
+
+
+<span class="k">def</span> <span class="nf">_convert_to_message</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">MessageLikeRepresentation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseMessage</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Instantiate a message from a variety of message formats.</span>
+
+<span class="sd">    The message format can be one of the following:</span>
+
+<span class="sd">    - BaseMessagePromptTemplate</span>
+<span class="sd">    - BaseMessage</span>
+<span class="sd">    - 2-tuple of (role string, template); e.g., ("human", "{user_input}")</span>
+<span class="sd">    - dict: a message dict with role and content keys</span>
+<span class="sd">    - string: shorthand for ("human", template); e.g., "{user_input}"</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        message: a representation of a message in one of the supported formats.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        an instance of a message or a message template.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        NotImplementedError: if the message type is not supported.</span>
+<span class="sd">        ValueError: if the message dict does not contain the required keys.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">BaseMessage</span><span class="p">):</span>
+        <span class="n">_message</span> <span class="o">=</span> <span class="n">message</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">_message</span> <span class="o">=</span> <span class="n">_create_message_from_message_type</span><span class="p">(</span><span class="s2">"human"</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1"># mypy doesn't realise this can't be a string given the previous branch</span>
+        <span class="n">message_type_str</span><span class="p">,</span> <span class="n">template</span> <span class="o">=</span> <span class="n">message</span>  <span class="c1"># type: ignore[misc]</span>
+        <span class="n">_message</span> <span class="o">=</span> <span class="n">_create_message_from_message_type</span><span class="p">(</span><span class="n">message_type_str</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">msg_kwargs</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">msg_type</span> <span class="o">=</span> <span class="n">msg_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"role"</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">msg_type</span> <span class="o">=</span> <span class="n">msg_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span>
+            <span class="c1"># None msg content is not allowed</span>
+            <span class="n">msg_content</span> <span class="o">=</span> <span class="n">msg_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"content"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Message dict must contain 'role' and 'content' keys, got </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+        <span class="n">_message</span> <span class="o">=</span> <span class="n">_create_message_from_message_type</span><span class="p">(</span>
+            <span class="n">msg_type</span><span class="p">,</span> <span class="n">msg_content</span><span class="p">,</span> <span class="o">**</span><span class="n">msg_kwargs</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported message type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_message</span>
+
+
+<div class="viewcode-block" id="convert_to_messages">
+<a class="viewcode-back" href="../../../core/messages/langchain_core.messages.utils.convert_to_messages.html#langchain_core.messages.utils.convert_to_messages">[docs]</a>
+<span class="k">def</span> <span class="nf">convert_to_messages</span><span class="p">(</span>
+    <span class="n">messages</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">MessageLikeRepresentation</span><span class="p">],</span> <span class="n">PromptValue</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Convert a sequence of messages to a list of messages.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        messages: Sequence of messages to convert.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List of messages (BaseMessages).</span>
+<span class="sd">    """</span>
+    <span class="c1"># Import here to avoid circular imports</span>
+    <span class="kn">from</span> <span class="nn">langchain_core.prompt_values</span> <span class="kn">import</span> <span class="n">PromptValue</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">PromptValue</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">messages</span><span class="o">.</span><span class="n">to_messages</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">_convert_to_message</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_runnable_support</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+    <span class="nd">@overload</span>
+    <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span>
+        <span class="n">messages</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Runnable</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">MessageLikeRepresentation</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]]:</span> <span class="o">...</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span>
+        <span class="n">messages</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">MessageLikeRepresentation</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]:</span> <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span>
+        <span class="n">messages</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">MessageLikeRepresentation</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span>
+        <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
+        <span class="n">Runnable</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">MessageLikeRepresentation</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]],</span>
+    <span class="p">]:</span>
+        <span class="kn">from</span> <span class="nn">langchain_core.runnables.base</span> <span class="kn">import</span> <span class="n">RunnableLambda</span>
+
+        <span class="k">if</span> <span class="n">messages</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+
+    <span class="n">wrapped</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span>
+    <span class="k">return</span> <span class="n">wrapped</span>
+
+
+<div class="viewcode-block" id="filter_messages">
+<a class="viewcode-back" href="../../../core/messages/langchain_core.messages.utils.filter_messages.html#langchain_core.messages.utils.filter_messages">[docs]</a>
+<span class="nd">@_runnable_support</span>
+<span class="k">def</span> <span class="nf">filter_messages</span><span class="p">(</span>
+    <span class="n">messages</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">MessageLikeRepresentation</span><span class="p">],</span> <span class="n">PromptValue</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">include_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">exclude_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">include_types</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">exclude_types</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">include_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">exclude_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Filter messages based on name, type or id.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        messages: Sequence Message-like objects to filter.</span>
+<span class="sd">        include_names: Message names to include. Default is None.</span>
+<span class="sd">        exclude_names: Messages names to exclude. Default is None.</span>
+<span class="sd">        include_types: Message types to include. Can be specified as string names (e.g.</span>
+<span class="sd">            "system", "human", "ai", ...) or as BaseMessage classes (e.g.</span>
+<span class="sd">            SystemMessage, HumanMessage, AIMessage, ...). Default is None.</span>
+<span class="sd">        exclude_types: Message types to exclude. Can be specified as string names (e.g.</span>
+<span class="sd">            "system", "human", "ai", ...) or as BaseMessage classes (e.g.</span>
+<span class="sd">            SystemMessage, HumanMessage, AIMessage, ...). Default is None.</span>
+<span class="sd">        include_ids: Message IDs to include. Default is None.</span>
+<span class="sd">        exclude_ids: Message IDs to exclude. Default is None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A list of Messages that meets at least one of the incl_* conditions and none</span>
+<span class="sd">        of the excl_* conditions. If not incl_* conditions are specified then</span>
+<span class="sd">        anything that is not explicitly excluded will be included.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError if two incompatible arguments are provided.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain_core.messages import filter_messages, AIMessage, HumanMessage, SystemMessage</span>
+
+<span class="sd">            messages = [</span>
+<span class="sd">                SystemMessage("you're a good assistant."),</span>
+<span class="sd">                HumanMessage("what's your name", id="foo", name="example_user"),</span>
+<span class="sd">                AIMessage("steve-o", id="bar", name="example_assistant"),</span>
+<span class="sd">                HumanMessage("what's your favorite color", id="baz",),</span>
+<span class="sd">                AIMessage("silicon blue", id="blah",),</span>
+<span class="sd">            ]</span>
+
+<span class="sd">            filter_messages(</span>
+<span class="sd">                messages,</span>
+<span class="sd">                incl_names=("example_user", "example_assistant"),</span>
+<span class="sd">                incl_types=("system",),</span>
+<span class="sd">                excl_ids=("bar",),</span>
+<span class="sd">            )</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            [</span>
+<span class="sd">                SystemMessage("you're a good assistant."),</span>
+<span class="sd">                HumanMessage("what's your name", id="foo", name="example_user"),</span>
+<span class="sd">            ]</span>
+<span class="sd">    """</span>  <span class="c1"># noqa: E501</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="n">convert_to_messages</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+    <span class="n">filtered</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">exclude_names</span> <span class="ow">and</span> <span class="n">msg</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">exclude_names</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">exclude_types</span> <span class="ow">and</span> <span class="n">_is_message_type</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">exclude_types</span><span class="p">))</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">exclude_ids</span> <span class="ow">and</span> <span class="n">msg</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">exclude_ids</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="c1"># default to inclusion when no inclusion criteria given.</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="p">(</span><span class="n">include_types</span> <span class="ow">or</span> <span class="n">include_ids</span> <span class="ow">or</span> <span class="n">include_names</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">include_names</span> <span class="ow">and</span> <span class="n">msg</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">include_names</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">include_types</span> <span class="ow">and</span> <span class="n">_is_message_type</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">include_types</span><span class="p">))</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">include_ids</span> <span class="ow">and</span> <span class="n">msg</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">include_ids</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="n">filtered</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">filtered</span></div>
+
+
+
+<div class="viewcode-block" id="merge_message_runs">
+<a class="viewcode-back" href="../../../core/messages/langchain_core.messages.utils.merge_message_runs.html#langchain_core.messages.utils.merge_message_runs">[docs]</a>
+<span class="nd">@_runnable_support</span>
+<span class="k">def</span> <span class="nf">merge_message_runs</span><span class="p">(</span>
+    <span class="n">messages</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">MessageLikeRepresentation</span><span class="p">],</span> <span class="n">PromptValue</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">chunk_separator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Merge consecutive Messages of the same type.</span>
+
+<span class="sd">    **NOTE**: ToolMessages are not merged, as each has a distinct tool call id that</span>
+<span class="sd">    can't be merged.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        messages: Sequence Message-like objects to merge.</span>
+<span class="sd">        chunk_separator: Specify the string to be inserted between message chunks.</span>
+<span class="sd">        Default is "\n".</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List of BaseMessages with consecutive runs of message types merged into single</span>
+<span class="sd">        messages. By default, if two messages being merged both have string contents,</span>
+<span class="sd">        the merged content is a concatenation of the two strings with a new-line separator.</span>
+<span class="sd">        The separator inserted between message chunks can be controlled by specifying</span>
+<span class="sd">        any string with ``chunk_separator``. If at least one of the messages has a list of</span>
+<span class="sd">        content blocks, the merged content is a list of content blocks.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain_core.messages import (</span>
+<span class="sd">                merge_message_runs,</span>
+<span class="sd">                AIMessage,</span>
+<span class="sd">                HumanMessage,</span>
+<span class="sd">                SystemMessage,</span>
+<span class="sd">                ToolCall,</span>
+<span class="sd">            )</span>
+
+<span class="sd">            messages = [</span>
+<span class="sd">                SystemMessage("you're a good assistant."),</span>
+<span class="sd">                HumanMessage("what's your favorite color", id="foo",),</span>
+<span class="sd">                HumanMessage("wait your favorite food", id="bar",),</span>
+<span class="sd">                AIMessage(</span>
+<span class="sd">                    "my favorite colo",</span>
+<span class="sd">                    tool_calls=[ToolCall(name="blah_tool", args={"x": 2}, id="123", type="tool_call")],</span>
+<span class="sd">                    id="baz",</span>
+<span class="sd">                ),</span>
+<span class="sd">                AIMessage(</span>
+<span class="sd">                    [{"type": "text", "text": "my favorite dish is lasagna"}],</span>
+<span class="sd">                    tool_calls=[ToolCall(name="blah_tool", args={"x": -10}, id="456", type="tool_call")],</span>
+<span class="sd">                    id="blur",</span>
+<span class="sd">                ),</span>
+<span class="sd">            ]</span>
+
+<span class="sd">            merge_message_runs(messages)</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            [</span>
+<span class="sd">                SystemMessage("you're a good assistant."),</span>
+<span class="sd">                HumanMessage("what's your favorite color\\nwait your favorite food", id="foo",),</span>
+<span class="sd">                AIMessage(</span>
+<span class="sd">                    [</span>
+<span class="sd">                        "my favorite colo",</span>
+<span class="sd">                        {"type": "text", "text": "my favorite dish is lasagna"}</span>
+<span class="sd">                    ],</span>
+<span class="sd">                    tool_calls=[</span>
+<span class="sd">                        ToolCall({"name": "blah_tool", "args": {"x": 2}, "id": "123", "type": "tool_call"}),</span>
+<span class="sd">                        ToolCall({"name": "blah_tool", "args": {"x": -10}, "id": "456", "type": "tool_call"})</span>
+<span class="sd">                    ]</span>
+<span class="sd">                    id="baz"</span>
+<span class="sd">                ),</span>
+<span class="sd">            ]</span>
+
+<span class="sd">    """</span>  <span class="c1"># noqa: E501</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">messages</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="n">convert_to_messages</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+    <span class="n">merged</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">model_copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="k">if</span> <span class="n">merged</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">last</span><span class="p">:</span>
+            <span class="n">merged</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curr</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">curr</span><span class="p">,</span> <span class="n">ToolMessage</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">curr</span><span class="p">,</span> <span class="n">last</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="n">merged</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">last</span><span class="p">,</span> <span class="n">curr</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">last_chunk</span> <span class="o">=</span> <span class="n">_msg_to_chunk</span><span class="p">(</span><span class="n">last</span><span class="p">)</span>
+            <span class="n">curr_chunk</span> <span class="o">=</span> <span class="n">_msg_to_chunk</span><span class="p">(</span><span class="n">curr</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">last_chunk</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">curr_chunk</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">last_chunk</span><span class="o">.</span><span class="n">content</span>
+                <span class="ow">and</span> <span class="n">curr_chunk</span><span class="o">.</span><span class="n">content</span>
+            <span class="p">):</span>
+                <span class="n">last_chunk</span><span class="o">.</span><span class="n">content</span> <span class="o">+=</span> <span class="n">chunk_separator</span>
+            <span class="n">merged</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_chunk_to_msg</span><span class="p">(</span><span class="n">last_chunk</span> <span class="o">+</span> <span class="n">curr_chunk</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">merged</span></div>
+
+
+
+<span class="c1"># TODO: Update so validation errors (for token_counter, for example) are raised on</span>
+<span class="c1"># init not at runtime.</span>
+<div class="viewcode-block" id="trim_messages">
+<a class="viewcode-back" href="../../../core/messages/langchain_core.messages.utils.trim_messages.html#langchain_core.messages.utils.trim_messages">[docs]</a>
+<span class="nd">@_runnable_support</span>
+<span class="k">def</span> <span class="nf">trim_messages</span><span class="p">(</span>
+    <span class="n">messages</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">MessageLikeRepresentation</span><span class="p">],</span> <span class="n">PromptValue</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">token_counter</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+        <span class="n">Callable</span><span class="p">[[</span><span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]],</span> <span class="nb">int</span><span class="p">],</span>
+        <span class="n">Callable</span><span class="p">[[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span>
+        <span class="n">BaseLanguageModel</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">strategy</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"first"</span><span class="p">,</span> <span class="s2">"last"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"last"</span><span class="p">,</span>
+    <span class="n">allow_partial</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">end_on</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]]]]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">start_on</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]]]]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">include_system</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">text_splitter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">TextSplitter</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Trim messages to be below a token count.</span>
+
+<span class="sd">    trim_messages can be used to reduce the size of a chat history to a specified token</span>
+<span class="sd">    count or specified message count.</span>
+
+<span class="sd">    In either case, if passing the trimmed chat history back into a chat model</span>
+<span class="sd">    directly, the resulting chat history should usually satisfy the following</span>
+<span class="sd">    properties:</span>
+
+<span class="sd">    1. The resulting chat history should be valid. Most chat models expect that chat</span>
+<span class="sd">       history starts with either (1) a `HumanMessage` or (2) a `SystemMessage` followed</span>
+<span class="sd">       by a `HumanMessage`. To achieve this, set `start_on="human"`.</span>
+<span class="sd">       In addition, generally a `ToolMessage` can only appear after an `AIMessage`</span>
+<span class="sd">       that involved a tool call.</span>
+<span class="sd">       Please see the following link for more information about messages:</span>
+<span class="sd">       https://python.langchain.com/docs/concepts/#messages</span>
+<span class="sd">    2. It includes recent messages and drops old messages in the chat history.</span>
+<span class="sd">       To achieve this set the `strategy="last"`.</span>
+<span class="sd">    3. Usually, the new chat history should include the `SystemMessage` if it</span>
+<span class="sd">       was present in the original chat history since the `SystemMessage` includes</span>
+<span class="sd">       special instructions to the chat model. The `SystemMessage` is almost always</span>
+<span class="sd">       the first message in the history if present. To achieve this set the</span>
+<span class="sd">       `include_system=True`.</span>
+
+<span class="sd">    **Note** The examples below show how to configure `trim_messages` to achieve</span>
+<span class="sd">        a behavior consistent with the above properties.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        messages: Sequence of Message-like objects to trim.</span>
+<span class="sd">        max_tokens: Max token count of trimmed messages.</span>
+<span class="sd">        token_counter: Function or llm for counting tokens in a BaseMessage or a list of</span>
+<span class="sd">            BaseMessage. If a BaseLanguageModel is passed in then</span>
+<span class="sd">            BaseLanguageModel.get_num_tokens_from_messages() will be used.</span>
+<span class="sd">            Set to `len` to count the number of **messages** in the chat history.</span>
+<span class="sd">        strategy: Strategy for trimming.</span>
+<span class="sd">            - "first": Keep the first &lt;= n_count tokens of the messages.</span>
+<span class="sd">            - "last": Keep the last &lt;= n_count tokens of the messages.</span>
+<span class="sd">            Default is "last".</span>
+<span class="sd">        allow_partial: Whether to split a message if only part of the message can be</span>
+<span class="sd">            included. If ``strategy="last"`` then the last partial contents of a message</span>
+<span class="sd">            are included. If ``strategy="first"`` then the first partial contents of a</span>
+<span class="sd">            message are included.</span>
+<span class="sd">            Default is False.</span>
+<span class="sd">        end_on: The message type to end on. If specified then every message after the</span>
+<span class="sd">            last occurrence of this type is ignored. If ``strategy=="last"`` then this</span>
+<span class="sd">            is done before we attempt to get the last ``max_tokens``. If</span>
+<span class="sd">            ``strategy=="first"`` then this is done after we get the first</span>
+<span class="sd">            ``max_tokens``. Can be specified as string names (e.g. "system", "human",</span>
+<span class="sd">            "ai", ...) or as BaseMessage classes (e.g. SystemMessage, HumanMessage,</span>
+<span class="sd">            AIMessage, ...). Can be a single type or a list of types.</span>
+<span class="sd">            Default is None.</span>
+<span class="sd">        start_on: The message type to start on. Should only be specified if</span>
+<span class="sd">            ``strategy="last"``. If specified then every message before</span>
+<span class="sd">            the first occurrence of this type is ignored. This is done after we trim</span>
+<span class="sd">            the initial messages to the last ``max_tokens``. Does not</span>
+<span class="sd">            apply to a SystemMessage at index 0 if ``include_system=True``. Can be</span>
+<span class="sd">            specified as string names (e.g. "system", "human", "ai", ...) or as</span>
+<span class="sd">            BaseMessage classes (e.g. SystemMessage, HumanMessage, AIMessage, ...). Can</span>
+<span class="sd">            be a single type or a list of types.</span>
+<span class="sd">            Default is None.</span>
+<span class="sd">        include_system: Whether to keep the SystemMessage if there is one at index 0.</span>
+<span class="sd">            Should only be specified if ``strategy="last"``.</span>
+<span class="sd">            Default is False.</span>
+<span class="sd">        text_splitter: Function or ``langchain_text_splitters.TextSplitter`` for</span>
+<span class="sd">            splitting the string contents of a message. Only used if</span>
+<span class="sd">            ``allow_partial=True``. If ``strategy="last"`` then the last split tokens</span>
+<span class="sd">            from a partial message will be included. if ``strategy=="first"`` then the</span>
+<span class="sd">            first split tokens from a partial message will be included. Token splitter</span>
+<span class="sd">            assumes that separators are kept, so that split contents can be directly</span>
+<span class="sd">            concatenated to recreate the original text. Defaults to splitting on</span>
+<span class="sd">            newlines.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List of trimmed BaseMessages.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: if two incompatible arguments are specified or an unrecognized</span>
+<span class="sd">            ``strategy`` is specified.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        Trim chat history based on token count, keeping the SystemMessage if</span>
+<span class="sd">        present, and ensuring that the chat history starts with a HumanMessage (</span>
+<span class="sd">        or a SystemMessage followed by a HumanMessage).</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from typing import List</span>
+
+<span class="sd">            from langchain_core.messages import (</span>
+<span class="sd">                AIMessage,</span>
+<span class="sd">                HumanMessage,</span>
+<span class="sd">                BaseMessage,</span>
+<span class="sd">                SystemMessage,</span>
+<span class="sd">                trim_messages,</span>
+<span class="sd">            )</span>
+
+<span class="sd">            messages = [</span>
+<span class="sd">                SystemMessage("you're a good assistant, you always respond with a joke."),</span>
+<span class="sd">                HumanMessage("i wonder why it's called langchain"),</span>
+<span class="sd">                AIMessage(</span>
+<span class="sd">                    'Well, I guess they thought "WordRope" and "SentenceString" just didn\'t have the same ring to it!'</span>
+<span class="sd">                ),</span>
+<span class="sd">                HumanMessage("and who is harrison chasing anyways"),</span>
+<span class="sd">                AIMessage(</span>
+<span class="sd">                    "Hmmm let me think.\n\nWhy, he's probably chasing after the last cup of coffee in the office!"</span>
+<span class="sd">                ),</span>
+<span class="sd">                HumanMessage("what do you call a speechless parrot"),</span>
+<span class="sd">            ]</span>
+
+
+<span class="sd">            trim_messages(</span>
+<span class="sd">                messages,</span>
+<span class="sd">                max_tokens=45,</span>
+<span class="sd">                strategy="last",</span>
+<span class="sd">                token_counter=ChatOpenAI(model="gpt-4o"),</span>
+<span class="sd">                # Most chat models expect that chat history starts with either:</span>
+<span class="sd">                # (1) a HumanMessage or</span>
+<span class="sd">                # (2) a SystemMessage followed by a HumanMessage</span>
+<span class="sd">                start_on="human",</span>
+<span class="sd">                # Usually, we want to keep the SystemMessage</span>
+<span class="sd">                # if it's present in the original history.</span>
+<span class="sd">                # The SystemMessage has special instructions for the model.</span>
+<span class="sd">                include_system=True,</span>
+<span class="sd">                allow_partial=False,</span>
+<span class="sd">            )</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            [</span>
+<span class="sd">                SystemMessage(content="you're a good assistant, you always respond with a joke."),</span>
+<span class="sd">                HumanMessage(content='what do you call a speechless parrot'),</span>
+<span class="sd">            ]</span>
+
+<span class="sd">        Trim chat history based on the message count, keeping the SystemMessage if</span>
+<span class="sd">        present, and ensuring that the chat history starts with a HumanMessage (</span>
+<span class="sd">        or a SystemMessage followed by a HumanMessage).</span>
+
+<span class="sd">            trim_messages(</span>
+<span class="sd">                messages,</span>
+<span class="sd">                # When `len` is passed in as the token counter function,</span>
+<span class="sd">                # max_tokens will count the number of messages in the chat history.</span>
+<span class="sd">                max_tokens=4,</span>
+<span class="sd">                strategy="last",</span>
+<span class="sd">                # Passing in `len` as a token counter function will</span>
+<span class="sd">                # count the number of messages in the chat history.</span>
+<span class="sd">                token_counter=len,</span>
+<span class="sd">                # Most chat models expect that chat history starts with either:</span>
+<span class="sd">                # (1) a HumanMessage or</span>
+<span class="sd">                # (2) a SystemMessage followed by a HumanMessage</span>
+<span class="sd">                start_on="human",</span>
+<span class="sd">                # Usually, we want to keep the SystemMessage</span>
+<span class="sd">                # if it's present in the original history.</span>
+<span class="sd">                # The SystemMessage has special instructions for the model.</span>
+<span class="sd">                include_system=True,</span>
+<span class="sd">                allow_partial=False,</span>
+<span class="sd">            )</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            [</span>
+<span class="sd">                SystemMessage(content="you're a good assistant, you always respond with a joke."),</span>
+<span class="sd">                HumanMessage(content='and who is harrison chasing anyways'),</span>
+<span class="sd">                AIMessage(content="Hmmm let me think.\n\nWhy, he's probably chasing after the last cup of coffee in the office!"),</span>
+<span class="sd">                HumanMessage(content='what do you call a speechless parrot'),</span>
+<span class="sd">            ]</span>
+
+
+<span class="sd">        Trim chat history using a custom token counter function that counts the</span>
+<span class="sd">        number of tokens in each message.</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            messages = [</span>
+<span class="sd">                SystemMessage("This is a 4 token text. The full message is 10 tokens."),</span>
+<span class="sd">                HumanMessage("This is a 4 token text. The full message is 10 tokens.", id="first"),</span>
+<span class="sd">                AIMessage(</span>
+<span class="sd">                    [</span>
+<span class="sd">                        {"type": "text", "text": "This is the FIRST 4 token block."},</span>
+<span class="sd">                        {"type": "text", "text": "This is the SECOND 4 token block."},</span>
+<span class="sd">                    ],</span>
+<span class="sd">                    id="second",</span>
+<span class="sd">                ),</span>
+<span class="sd">                HumanMessage("This is a 4 token text. The full message is 10 tokens.", id="third"),</span>
+<span class="sd">                AIMessage("This is a 4 token text. The full message is 10 tokens.", id="fourth"),</span>
+<span class="sd">            ]</span>
+
+<span class="sd">            def dummy_token_counter(messages: List[BaseMessage]) -&gt; int:</span>
+<span class="sd">                # treat each message like it adds 3 default tokens at the beginning</span>
+<span class="sd">                # of the message and at the end of the message. 3 + 4 + 3 = 10 tokens</span>
+<span class="sd">                # per message.</span>
+
+<span class="sd">                default_content_len = 4</span>
+<span class="sd">                default_msg_prefix_len = 3</span>
+<span class="sd">                default_msg_suffix_len = 3</span>
+
+<span class="sd">                count = 0</span>
+<span class="sd">                for msg in messages:</span>
+<span class="sd">                    if isinstance(msg.content, str):</span>
+<span class="sd">                        count += default_msg_prefix_len + default_content_len + default_msg_suffix_len</span>
+<span class="sd">                    if isinstance(msg.content, list):</span>
+<span class="sd">                        count += default_msg_prefix_len + len(msg.content) *  default_content_len + default_msg_suffix_len</span>
+<span class="sd">                return count</span>
+
+<span class="sd">        First 30 tokens, allowing partial messages:</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                trim_messages(</span>
+<span class="sd">                    messages,</span>
+<span class="sd">                    max_tokens=30,</span>
+<span class="sd">                    token_counter=dummy_token_counter,</span>
+<span class="sd">                    strategy="first",</span>
+<span class="sd">                    allow_partial=True,</span>
+<span class="sd">                )</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                [</span>
+<span class="sd">                    SystemMessage("This is a 4 token text. The full message is 10 tokens."),</span>
+<span class="sd">                    HumanMessage("This is a 4 token text. The full message is 10 tokens.", id="first"),</span>
+<span class="sd">                    AIMessage( [{"type": "text", "text": "This is the FIRST 4 token block."}], id="second"),</span>
+<span class="sd">                ]</span>
+<span class="sd">    """</span>  <span class="c1"># noqa: E501</span>
+
+    <span class="k">if</span> <span class="n">start_on</span> <span class="ow">and</span> <span class="n">strategy</span> <span class="o">==</span> <span class="s2">"first"</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span>
+    <span class="k">if</span> <span class="n">include_system</span> <span class="ow">and</span> <span class="n">strategy</span> <span class="o">==</span> <span class="s2">"first"</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="n">convert_to_messages</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">token_counter</span><span class="p">,</span> <span class="s2">"get_num_tokens_from_messages"</span><span class="p">):</span>
+        <span class="n">list_token_counter</span> <span class="o">=</span> <span class="n">token_counter</span><span class="o">.</span><span class="n">get_num_tokens_from_messages</span>
+    <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">token_counter</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">token_counter</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">annotation</span>
+            <span class="ow">is</span> <span class="n">BaseMessage</span>
+        <span class="p">):</span>
+
+            <span class="k">def</span> <span class="nf">list_token_counter</span><span class="p">(</span><span class="n">messages</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">token_counter</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type, misc]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">list_token_counter</span> <span class="o">=</span> <span class="n">token_counter</span>  <span class="c1"># type: ignore[assignment]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"'token_counter' expected to be a model that implements "</span>
+            <span class="sa">f</span><span class="s2">"'get_num_tokens_from_messages()' or a function. Received object of type "</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">token_counter</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
+        <span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">langchain_text_splitters</span> <span class="kn">import</span> <span class="n">TextSplitter</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">text_splitter_fn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span> <span class="n">text_splitter</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text_splitter</span><span class="p">,</span> <span class="n">TextSplitter</span><span class="p">):</span>
+            <span class="n">text_splitter_fn</span> <span class="o">=</span> <span class="n">text_splitter</span><span class="o">.</span><span class="n">split_text</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">text_splitter_fn</span> <span class="o">=</span> <span class="n">text_splitter</span>
+
+    <span class="n">text_splitter_fn</span> <span class="o">=</span> <span class="n">text_splitter_fn</span> <span class="ow">or</span> <span class="n">_default_text_splitter</span>
+
+    <span class="k">if</span> <span class="n">strategy</span> <span class="o">==</span> <span class="s2">"first"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_first_max_tokens</span><span class="p">(</span>
+            <span class="n">messages</span><span class="p">,</span>
+            <span class="n">max_tokens</span><span class="o">=</span><span class="n">max_tokens</span><span class="p">,</span>
+            <span class="n">token_counter</span><span class="o">=</span><span class="n">list_token_counter</span><span class="p">,</span>
+            <span class="n">text_splitter</span><span class="o">=</span><span class="n">text_splitter_fn</span><span class="p">,</span>
+            <span class="n">partial_strategy</span><span class="o">=</span><span class="s2">"first"</span> <span class="k">if</span> <span class="n">allow_partial</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">end_on</span><span class="o">=</span><span class="n">end_on</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">strategy</span> <span class="o">==</span> <span class="s2">"last"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_last_max_tokens</span><span class="p">(</span>
+            <span class="n">messages</span><span class="p">,</span>
+            <span class="n">max_tokens</span><span class="o">=</span><span class="n">max_tokens</span><span class="p">,</span>
+            <span class="n">token_counter</span><span class="o">=</span><span class="n">list_token_counter</span><span class="p">,</span>
+            <span class="n">allow_partial</span><span class="o">=</span><span class="n">allow_partial</span><span class="p">,</span>
+            <span class="n">include_system</span><span class="o">=</span><span class="n">include_system</span><span class="p">,</span>
+            <span class="n">start_on</span><span class="o">=</span><span class="n">start_on</span><span class="p">,</span>
+            <span class="n">end_on</span><span class="o">=</span><span class="n">end_on</span><span class="p">,</span>
+            <span class="n">text_splitter</span><span class="o">=</span><span class="n">text_splitter_fn</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Unrecognized </span><span class="si">{</span><span class="n">strategy</span><span class="si">=}</span><span class="s2">. Supported strategies are 'last' and 'first'."</span>
+        <span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_first_max_tokens</span><span class="p">(</span>
+    <span class="n">messages</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">token_counter</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]],</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="n">text_splitter</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+    <span class="n">partial_strategy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">"first"</span><span class="p">,</span> <span class="s2">"last"</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">end_on</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]]]]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]:</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">token_counter</span><span class="p">(</span><span class="n">messages</span><span class="p">[:</span><span class="o">-</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">i</span> <span class="k">else</span> <span class="n">messages</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">max_tokens</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span> <span class="o">-</span> <span class="n">i</span>
+            <span class="k">break</span>
+
+    <span class="k">if</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">partial_strategy</span><span class="p">:</span>
+        <span class="n">included_partial</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">messages</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">excluded</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">model_copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">num_block</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">excluded</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">partial_strategy</span> <span class="o">==</span> <span class="s2">"last"</span><span class="p">:</span>
+                <span class="n">excluded</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">excluded</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_block</span><span class="p">):</span>
+                <span class="n">excluded</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">excluded</span><span class="o">.</span><span class="n">content</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">token_counter</span><span class="p">(</span><span class="n">messages</span><span class="p">[:</span><span class="n">idx</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">excluded</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">max_tokens</span><span class="p">:</span>
+                    <span class="n">messages</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[:</span><span class="n">idx</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">excluded</span><span class="p">]</span>
+                    <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">included_partial</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="n">included_partial</span> <span class="ow">and</span> <span class="n">partial_strategy</span> <span class="o">==</span> <span class="s2">"last"</span><span class="p">:</span>
+                <span class="n">excluded</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">excluded</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">included_partial</span><span class="p">:</span>
+            <span class="n">excluded</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">model_copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">excluded</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="n">block</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"text"</span>
+                <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">content</span>
+            <span class="p">):</span>
+                <span class="n">text_block</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+                    <span class="n">block</span>
+                    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">content</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="n">block</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"text"</span>
+                <span class="p">)</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">text_block</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text_block</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="n">text_block</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">excluded</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">excluded</span><span class="o">.</span><span class="n">content</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+                <span class="n">split_texts</span> <span class="o">=</span> <span class="n">text_splitter</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">num_splits</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_texts</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">partial_strategy</span> <span class="o">==</span> <span class="s2">"last"</span><span class="p">:</span>
+                    <span class="n">split_texts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">split_texts</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_splits</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">split_texts</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+                    <span class="n">excluded</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split_texts</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">token_counter</span><span class="p">(</span><span class="n">messages</span><span class="p">[:</span><span class="n">idx</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">excluded</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">max_tokens</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">partial_strategy</span> <span class="o">==</span> <span class="s2">"last"</span><span class="p">:</span>
+                            <span class="n">excluded</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">split_texts</span><span class="p">))</span>
+                        <span class="n">messages</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[:</span><span class="n">idx</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">excluded</span><span class="p">]</span>
+                        <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="k">break</span>
+
+    <span class="k">if</span> <span class="n">end_on</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">idx</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_is_message_type</span><span class="p">(</span><span class="n">messages</span><span class="p">[</span><span class="n">idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">end_on</span><span class="p">):</span>
+            <span class="n">idx</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">messages</span><span class="p">[:</span><span class="n">idx</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_last_max_tokens</span><span class="p">(</span>
+    <span class="n">messages</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">token_counter</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]],</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="n">text_splitter</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+    <span class="n">allow_partial</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">include_system</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">start_on</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]]]]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">end_on</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]]]]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]:</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">end_on</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">messages</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_is_message_type</span><span class="p">(</span><span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">end_on</span><span class="p">):</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+    <span class="n">swapped_system</span> <span class="o">=</span> <span class="n">include_system</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">SystemMessage</span><span class="p">)</span>
+    <span class="n">reversed_</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">messages</span><span class="p">[</span><span class="mi">1</span><span class="p">:][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">swapped_system</span> <span class="k">else</span> <span class="n">messages</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">reversed_</span> <span class="o">=</span> <span class="n">_first_max_tokens</span><span class="p">(</span>
+        <span class="n">reversed_</span><span class="p">,</span>
+        <span class="n">max_tokens</span><span class="o">=</span><span class="n">max_tokens</span><span class="p">,</span>
+        <span class="n">token_counter</span><span class="o">=</span><span class="n">token_counter</span><span class="p">,</span>
+        <span class="n">text_splitter</span><span class="o">=</span><span class="n">text_splitter</span><span class="p">,</span>
+        <span class="n">partial_strategy</span><span class="o">=</span><span class="s2">"last"</span> <span class="k">if</span> <span class="n">allow_partial</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">end_on</span><span class="o">=</span><span class="n">start_on</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">swapped_system</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">reversed_</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">reversed_</span><span class="p">[</span><span class="mi">1</span><span class="p">:][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">reversed_</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+
+<span class="n">_MSG_CHUNK_MAP</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseMessageChunk</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">HumanMessage</span><span class="p">:</span> <span class="n">HumanMessageChunk</span><span class="p">,</span>
+    <span class="n">AIMessage</span><span class="p">:</span> <span class="n">AIMessageChunk</span><span class="p">,</span>
+    <span class="n">SystemMessage</span><span class="p">:</span> <span class="n">SystemMessageChunk</span><span class="p">,</span>
+    <span class="n">ToolMessage</span><span class="p">:</span> <span class="n">ToolMessageChunk</span><span class="p">,</span>
+    <span class="n">FunctionMessage</span><span class="p">:</span> <span class="n">FunctionMessageChunk</span><span class="p">,</span>
+    <span class="n">ChatMessage</span><span class="p">:</span> <span class="n">ChatMessageChunk</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">_CHUNK_MSG_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_MSG_CHUNK_MAP</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+
+<span class="k">def</span> <span class="nf">_msg_to_chunk</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">BaseMessage</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseMessageChunk</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">in</span> <span class="n">_MSG_CHUNK_MAP</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_MSG_CHUNK_MAP</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="vm">__class__</span><span class="p">](</span><span class="o">**</span><span class="n">message</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="p">{</span><span class="s2">"type"</span><span class="p">}))</span>
+
+    <span class="k">for</span> <span class="n">msg_cls</span><span class="p">,</span> <span class="n">chunk_cls</span> <span class="ow">in</span> <span class="n">_MSG_CHUNK_MAP</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">msg_cls</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">chunk_cls</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="p">{</span><span class="s2">"type"</span><span class="p">}))</span>
+
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Unrecognized message class </span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="vm">__class__</span><span class="si">}</span><span class="s2">. Supported classes are "</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">_MSG_CHUNK_MAP</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_chunk_to_msg</span><span class="p">(</span><span class="n">chunk</span><span class="p">:</span> <span class="n">BaseMessageChunk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseMessage</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">in</span> <span class="n">_CHUNK_MSG_MAP</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_CHUNK_MSG_MAP</span><span class="p">[</span><span class="n">chunk</span><span class="o">.</span><span class="vm">__class__</span><span class="p">](</span>
+            <span class="o">**</span><span class="n">chunk</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="p">{</span><span class="s2">"type"</span><span class="p">,</span> <span class="s2">"tool_call_chunks"</span><span class="p">})</span>
+        <span class="p">)</span>
+    <span class="k">for</span> <span class="n">chunk_cls</span><span class="p">,</span> <span class="n">msg_cls</span> <span class="ow">in</span> <span class="n">_CHUNK_MSG_MAP</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">chunk_cls</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">msg_cls</span><span class="p">(</span><span class="o">**</span><span class="n">chunk</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="p">{</span><span class="s2">"type"</span><span class="p">,</span> <span class="s2">"tool_call_chunks"</span><span class="p">}))</span>
+
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Unrecognized message chunk class </span><span class="si">{</span><span class="n">chunk</span><span class="o">.</span><span class="vm">__class__</span><span class="si">}</span><span class="s2">. Supported classes are "</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">_CHUNK_MSG_MAP</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_default_text_splitter</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">splits</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">s</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+</span> <span class="n">splits</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span>
+
+
+<span class="k">def</span> <span class="nf">_is_message_type</span><span class="p">(</span>
+    <span class="n">message</span><span class="p">:</span> <span class="n">BaseMessage</span><span class="p">,</span>
+    <span class="n">type_</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]]]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">types</span> <span class="o">=</span> <span class="p">[</span><span class="n">type_</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">type_</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">))</span> <span class="k">else</span> <span class="n">type_</span>
+    <span class="n">types_str</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">types</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">str</span><span class="p">)]</span>
+    <span class="n">types_types</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">types</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">type</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">message</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="n">types_str</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">types_types</span><span class="p">)</span>
+</pre></div>
+</article>
+</div>
+</div>
+<footer class="bd-footer-content">
+</footer>
+</main>
+</div>
+</div>
+<!-- Scripts loaded after <body> so the DOM is not blocked -->
+<script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+<footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+<div class="footer-items__start">
+<div class="footer-item">
+<p class="copyright">
+    
+      © Copyright 2023, LangChain Inc.
+      <br/>
+</p>
+</div>
+</div>
+</div>
+</footer>
+</body>
+</html>
