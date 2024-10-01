@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -231,7 +231,6 @@ document.write(`
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span> <span class="nn">uuid</span> <span class="kn">import</span> <span class="n">uuid4</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">langchain_core.documents</span> <span class="kn">import</span> <span class="n">Document</span>
@@ -242,8 +241,25 @@ document.write(`
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
+<span class="c1"># - If you only need a local vector database for small scale data or prototyping,</span>
+<span class="c1"># setting the uri as a local file, e.g.`./milvus.db`, is the most convenient method,</span>
+<span class="c1"># as it automatically utilizes [Milvus Lite](https://milvus.io/docs/milvus_lite.md)</span>
+<span class="c1"># to store all data in this file.</span>
+<span class="c1">#</span>
+<span class="c1"># - If you have large scale of data, say more than a million vectors, you can set up a</span>
+<span class="c1"># more performant Milvus server on [Docker or Kubernetes](https://milvus.io/docs/quickstart.md).</span>
+<span class="c1"># In this setup, please use the server address and port as your uri, e.g.`http://localhost:19530`.</span>
+<span class="c1"># If you enable the authentication feature on Milvus, use</span>
+<span class="c1"># "&lt;your_username&gt;:&lt;your_password&gt;" as the token, otherwise don't set the token.</span>
+<span class="c1">#</span>
+<span class="c1"># - If you use [Zilliz Cloud](https://zilliz.com/cloud), the fully managed cloud service</span>
+<span class="c1"># for Milvus, adjust the `uri` and `token`, which correspond to the</span>
+<span class="c1"># [Public Endpoint and API key](https://docs.zilliz.com/docs/on-zilliz-cloud-console#cluster-details)</span>
+<span class="c1"># in Zilliz Cloud.</span>
+
 <span class="n">DEFAULT_MILVUS_CONNECTION</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">"uri"</span><span class="p">:</span> <span class="s2">"http://localhost:19530"</span><span class="p">,</span>
+    <span class="c1"># "token": "",</span>
 <span class="p">}</span>
 
 <span class="n">Matrix</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
@@ -481,11 +497,12 @@ document.write(`
         <span class="n">replica_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">num_shards</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">vector_schema</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">metadata_schema</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Initialize the Milvus vector store."""</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">pymilvus</span> <span class="kn">import</span> <span class="n">Collection</span><span class="p">,</span> <span class="n">utility</span>
+            <span class="kn">from</span> <span class="nn">pymilvus</span> <span class="kn">import</span> <span class="n">Collection</span><span class="p">,</span> <span class="n">MilvusClient</span><span class="p">,</span> <span class="n">utility</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">"Could not import pymilvus python package. "</span>
@@ -494,6 +511,7 @@ document.write(`
 
         <span class="c1"># Default search params when one is not provided.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_search_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"FLAT"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"metric_type"</span><span class="p">:</span> <span class="s2">"L2"</span><span class="p">,</span> <span class="s2">"params"</span><span class="p">:</span> <span class="p">{}},</span>
             <span class="s2">"IVF_FLAT"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"metric_type"</span><span class="p">:</span> <span class="s2">"L2"</span><span class="p">,</span> <span class="s2">"params"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"nprobe"</span><span class="p">:</span> <span class="mi">10</span><span class="p">}},</span>
             <span class="s2">"IVF_SQ8"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"metric_type"</span><span class="p">:</span> <span class="s2">"L2"</span><span class="p">,</span> <span class="s2">"params"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"nprobe"</span><span class="p">:</span> <span class="mi">10</span><span class="p">}},</span>
             <span class="s2">"IVF_PQ"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"metric_type"</span><span class="p">:</span> <span class="s2">"L2"</span><span class="p">,</span> <span class="s2">"params"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"nprobe"</span><span class="p">:</span> <span class="mi">10</span><span class="p">}},</span>
@@ -558,11 +576,16 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_shards</span> <span class="o">=</span> <span class="n">num_shards</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metadata_schema</span> <span class="o">=</span> <span class="n">metadata_schema</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vector_schema</span> <span class="o">=</span> <span class="n">vector_schema</span>
 
         <span class="c1"># Create the connection to the server</span>
         <span class="k">if</span> <span class="n">connection_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">connection_args</span> <span class="o">=</span> <span class="n">DEFAULT_MILVUS_CONNECTION</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">alias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_connection_alias</span><span class="p">(</span><span class="n">connection_args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_milvus_client</span> <span class="o">=</span> <span class="n">MilvusClient</span><span class="p">(</span>
+            <span class="o">**</span><span class="n">connection_args</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_using</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Collection</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># Grab the existing collection if it exists</span>
@@ -590,64 +613,10 @@ document.write(`
     <span class="k">def</span> <span class="nf">embeddings</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Embeddings</span><span class="p">,</span> <span class="n">BaseSparseEmbedding</span><span class="p">]:</span>  <span class="c1"># type: ignore</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span>
 
-    <span class="k">def</span> <span class="nf">_create_connection_alias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Create the connection to the Milvus server."""</span>
-        <span class="kn">from</span> <span class="nn">pymilvus</span> <span class="kn">import</span> <span class="n">MilvusException</span><span class="p">,</span> <span class="n">connections</span>
-
-        <span class="c1"># Grab the connection arguments that are used for checking existing connection</span>
-        <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">connection_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"host"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">port</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">connection_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"port"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">address</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">connection_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"address"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">uri</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">connection_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"uri"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">user</span> <span class="o">=</span> <span class="n">connection_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"user"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">db_name</span> <span class="o">=</span> <span class="n">connection_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"db_name"</span><span class="p">,</span> <span class="s2">"default"</span><span class="p">)</span>
-
-        <span class="c1"># Order of use is host/port, uri, address</span>
-        <span class="k">if</span> <span class="n">host</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">port</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">given_address</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">host</span><span class="p">)</span> <span class="o">+</span> <span class="s2">":"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">uri</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"https://"</span><span class="p">):</span>
-                <span class="n">given_address</span> <span class="o">=</span> <span class="n">uri</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"https://"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="n">uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"http://"</span><span class="p">):</span>
-                <span class="n">given_address</span> <span class="o">=</span> <span class="n">uri</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"http://"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">given_address</span> <span class="o">=</span> <span class="n">uri</span>  <span class="c1"># Milvus lite</span>
-        <span class="k">elif</span> <span class="n">address</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">given_address</span> <span class="o">=</span> <span class="n">address</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">given_address</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Missing standard address type for reuse attempt"</span><span class="p">)</span>
-
-        <span class="c1"># User defaults to empty string when getting connection info</span>
-        <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">tmp_user</span> <span class="o">=</span> <span class="n">user</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">tmp_user</span> <span class="o">=</span> <span class="s2">""</span>
-
-        <span class="c1"># If a valid address was given, then check if a connection exists</span>
-        <span class="k">if</span> <span class="n">given_address</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">con</span> <span class="ow">in</span> <span class="n">connections</span><span class="o">.</span><span class="n">list_connections</span><span class="p">():</span>
-                <span class="n">addr</span> <span class="o">=</span> <span class="n">connections</span><span class="o">.</span><span class="n">get_connection_addr</span><span class="p">(</span><span class="n">con</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-                <span class="k">if</span> <span class="p">(</span>
-                    <span class="n">con</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="ow">and</span> <span class="p">(</span><span class="s2">"address"</span> <span class="ow">in</span> <span class="n">addr</span><span class="p">)</span>
-                    <span class="ow">and</span> <span class="p">(</span><span class="n">addr</span><span class="p">[</span><span class="s2">"address"</span><span class="p">]</span> <span class="o">==</span> <span class="n">given_address</span><span class="p">)</span>
-                    <span class="ow">and</span> <span class="p">(</span><span class="s2">"user"</span> <span class="ow">in</span> <span class="n">addr</span><span class="p">)</span>
-                    <span class="ow">and</span> <span class="p">(</span><span class="n">addr</span><span class="p">[</span><span class="s2">"user"</span><span class="p">]</span> <span class="o">==</span> <span class="n">tmp_user</span><span class="p">)</span>
-                    <span class="ow">and</span> <span class="p">(</span><span class="n">addr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"db_name"</span><span class="p">,</span> <span class="s2">"default"</span><span class="p">)</span> <span class="o">==</span> <span class="n">db_name</span><span class="p">)</span>
-                <span class="p">):</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Using previous connection: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">con</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-                    <span class="k">return</span> <span class="n">con</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="c1"># Generate a new connection if one doesn't exist</span>
-        <span class="n">alias</span> <span class="o">=</span> <span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">connections</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">alias</span><span class="o">=</span><span class="n">alias</span><span class="p">,</span> <span class="o">**</span><span class="n">connection_args</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Created new connection using: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">alias</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">alias</span>
-        <span class="k">except</span> <span class="n">MilvusException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Failed to create new connection using: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">alias</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">e</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Get client."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_milvus_client</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_is_sparse_embedding</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -730,12 +699,9 @@ document.write(`
                         <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_schema</span>  <span class="c1"># type: ignore</span>
                         <span class="ow">and</span> <span class="s2">"dtype"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_schema</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
                     <span class="p">):</span>
-                        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_schema</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"kwargs"</span><span class="p">,</span> <span class="p">{})</span>  <span class="c1"># type: ignore</span>
                         <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                            <span class="n">FieldSchema</span><span class="p">(</span>
-                                <span class="n">name</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
-                                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata_schema</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">"dtype"</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
-                                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_get_field_schema_from_dict</span><span class="p">(</span>
+                                <span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_schema</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
                             <span class="p">)</span>
                         <span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
@@ -789,15 +755,23 @@ document.write(`
                     <span class="n">max_length</span><span class="o">=</span><span class="mi">65_535</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-        <span class="c1"># Create the vector field, supports binary or float vectors</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_sparse_embedding</span><span class="p">:</span>
-            <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FieldSchema</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">,</span> <span class="n">DataType</span><span class="o">.</span><span class="n">SPARSE_FLOAT_VECTOR</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Create the vector field</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_schema</span> <span class="ow">and</span> <span class="s2">"dtype"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_schema</span><span class="p">:</span>
             <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">FieldSchema</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">,</span> <span class="n">infer_dtype_bydata</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dim</span><span class="o">=</span><span class="n">dim</span>
-                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_get_field_schema_from_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_schema</span><span class="p">)</span>
             <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_sparse_embedding</span><span class="p">:</span>
+                <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">FieldSchema</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">,</span> <span class="n">DataType</span><span class="o">.</span><span class="n">SPARSE_FLOAT_VECTOR</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Supports binary or float vectors</span>
+                <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">FieldSchema</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">,</span> <span class="n">infer_dtype_bydata</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dim</span><span class="o">=</span><span class="n">dim</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
 
         <span class="c1"># Create the schema for the collection</span>
         <span class="n">schema</span> <span class="o">=</span> <span class="n">CollectionSchema</span><span class="p">(</span>
@@ -834,6 +808,18 @@ document.write(`
                 <span class="s2">"Failed to create collection: </span><span class="si">%s</span><span class="s2"> error: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span> <span class="n">e</span>
             <span class="p">)</span>
             <span class="k">raise</span> <span class="n">e</span>
+
+    <span class="k">def</span> <span class="nf">_get_field_schema_from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">schema_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>  <span class="c1"># type: ignore[no-untyped-def]</span>
+        <span class="kn">from</span> <span class="nn">pymilvus</span> <span class="kn">import</span> <span class="n">FieldSchema</span>
+
+        <span class="k">assert</span> <span class="s2">"dtype"</span> <span class="ow">in</span> <span class="n">schema_dict</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Please provide `dtype` in the schema dict. "</span>
+            <span class="sa">f</span><span class="s2">"Existing keys are: </span><span class="si">{</span><span class="n">schema_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">)</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">schema_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"dtype"</span><span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="n">schema_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"kwargs"</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">schema_dict</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">FieldSchema</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">field_name</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_extract_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Grab the existing fields from the Collection"""</span>
@@ -1466,13 +1452,14 @@ document.write(`
         <span class="n">embedding</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Embeddings</span><span class="p">,</span> <span class="n">BaseSparseEmbedding</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
         <span class="n">metadatas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">collection_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"LangChainCollection"</span><span class="p">,</span>
-        <span class="n">connection_args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_MILVUS_CONNECTION</span><span class="p">,</span>
+        <span class="n">connection_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">consistency_level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Session"</span><span class="p">,</span>
         <span class="n">index_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">search_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">drop_old</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">auto_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Milvus</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Create a Milvus collection, indexes it with HNSW, and insert data.</span>
@@ -1495,11 +1482,18 @@ document.write(`
 <span class="sd">            drop_old (Optional[bool], optional): Whether to drop the collection with</span>
 <span class="sd">                that name if it exists. Defaults to False.</span>
 <span class="sd">            ids (Optional[List[str]]): List of text ids. Defaults to None.</span>
+<span class="sd">            auto_id (bool): Whether to enable auto id for primary key. Defaults to</span>
+<span class="sd">                False. If False, you need to provide text ids (string less than 65535</span>
+<span class="sd">                bytes). If True, Milvus will generate unique integers as primary keys.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Milvus: Milvus Vector Store</span>
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">auto_id</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">"Both ids and auto_id are provided. "</span> <span class="s2">"Ignore auto_id and use ids."</span>
+                <span class="p">)</span>
             <span class="n">auto_id</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">auto_id</span> <span class="o">=</span> <span class="kc">True</span>

@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -426,7 +426,7 @@ document.write(`
 <span class="sd">        +----------------------------------+--------------------------------------------------------------------+-------------------+</span>
 
 <span class="sd">        Follow the guide for more information on how to implement a custom Chat Model:</span>
-<span class="sd">        [Guide](https://python.langchain.com/v0.2/docs/how_to/custom_chat_model/).</span>
+<span class="sd">        [Guide](https://python.langchain.com/docs/how_to/custom_chat_model/).</span>
 
 <span class="sd">    """</span>  <span class="c1"># noqa: E501</span>
 
@@ -445,8 +445,8 @@ document.write(`
 
     <span class="n">disable_streaming</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"tool_calling"</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="w">    </span><span class="sd">"""Whether to disable streaming for this model.</span>
-<span class="sd">    </span>
-<span class="sd">    If streaming is bypassed, then ``stream()/astream()`` will defer to </span>
+
+<span class="sd">    If streaming is bypassed, then ``stream()/astream()`` will defer to</span>
 <span class="sd">    ``invoke()/ainvoke()``.</span>
 
 <span class="sd">    - If True, will always bypass streaming case.</span>
@@ -1357,7 +1357,9 @@ document.write(`
 <a class="viewcode-back" href="../../../core/language_models/langchain_core.language_models.chat_models.BaseChatModel.html#langchain_cohere.chat_models.BaseChatModel.bind_tools">[docs]</a>
     <span class="k">def</span> <span class="nf">bind_tools</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">tools</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">type</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">BaseTool</span><span class="p">]],</span>  <span class="c1"># noqa: UP006</span>
+        <span class="n">tools</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span>
+            <span class="n">Union</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">type</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">BaseTool</span><span class="p">]</span>  <span class="c1"># noqa: UP006</span>
+        <span class="p">],</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Runnable</span><span class="p">[</span><span class="n">LanguageModelInput</span><span class="p">,</span> <span class="n">BaseMessage</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>

@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -783,26 +783,26 @@ document.write(`
 
     <span class="n">num_deleted</span><span class="p">:</span> <span class="nb">int</span>
 <span class="w">    </span><span class="sd">"""The number of items that were successfully deleted.</span>
-<span class="sd">    </span>
+
 <span class="sd">    If returned, this should only include *actual* deletions.</span>
-<span class="sd">    </span>
-<span class="sd">    If the ID did not exist to begin with, </span>
+
+<span class="sd">    If the ID did not exist to begin with,</span>
 <span class="sd">    it should not be included in this count.</span>
 <span class="sd">    """</span>
 
     <span class="n">succeeded</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 <span class="w">    </span><span class="sd">"""The IDs that were successfully deleted.</span>
-<span class="sd">    </span>
+
 <span class="sd">    If returned, this should only include *actual* deletions.</span>
-<span class="sd">    </span>
+
 <span class="sd">    If the ID did not exist to begin with,</span>
 <span class="sd">    it should not be included in this list.</span>
 <span class="sd">    """</span>
 
     <span class="n">failed</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 <span class="w">    </span><span class="sd">"""The IDs that failed to be deleted.</span>
-<span class="sd">    </span>
-<span class="sd">    Please note that deleting an ID that </span>
+
+<span class="sd">    Please note that deleting an ID that</span>
 <span class="sd">    does not exist is **NOT** considered a failure.</span>
 <span class="sd">    """</span>
 

@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -588,7 +588,7 @@ document.write(`
 <span class="w">    </span><span class="sd">"""The unique name of the tool that clearly communicates its purpose."""</span>
     <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
 <span class="w">    </span><span class="sd">"""Used to tell the model how/when/why to use the tool.</span>
-<span class="sd">    </span>
+
 <span class="sd">    You can provide few-shot examples as a part of the description.</span>
 <span class="sd">    """</span>
 
@@ -596,17 +596,17 @@ document.write(`
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"The tool schema."</span>
     <span class="p">)</span>
 <span class="w">    </span><span class="sd">"""Pydantic model class to validate and parse the tool's input arguments.</span>
-<span class="sd">    </span>
-<span class="sd">    Args schema should be either: </span>
-<span class="sd">    </span>
+
+<span class="sd">    Args schema should be either:</span>
+
 <span class="sd">    - A subclass of pydantic.BaseModel.</span>
-<span class="sd">    or </span>
+<span class="sd">    or</span>
 <span class="sd">    - A subclass of pydantic.v1.BaseModel if accessing v1 namespace in pydantic 2</span>
 <span class="sd">    """</span>
     <span class="n">return_direct</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="w">    </span><span class="sd">"""Whether to return the tool's output directly. </span>
-<span class="sd">    </span>
-<span class="sd">    Setting this to True means    </span>
+<span class="w">    </span><span class="sd">"""Whether to return the tool's output directly.</span>
+
+<span class="sd">    Setting this to True means</span>
 <span class="sd">    that after the tool is called, the AgentExecutor will stop looping.</span>
 <span class="sd">    """</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
@@ -650,8 +650,8 @@ document.write(`
     <span class="n">response_format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"content"</span><span class="p">,</span> <span class="s2">"content_and_artifact"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"content"</span>
 <span class="w">    </span><span class="sd">"""The tool response format. Defaults to 'content'.</span>
 
-<span class="sd">    If "content" then the output of the tool is interpreted as the contents of a </span>
-<span class="sd">    ToolMessage. If "content_and_artifact" then the output is expected to be a </span>
+<span class="sd">    If "content" then the output of the tool is interpreted as the contents of a</span>
+<span class="sd">    ToolMessage. If "content_and_artifact" then the output is expected to be a</span>
 <span class="sd">    two-tuple corresponding to the (content, artifact) of a ToolMessage.</span>
 <span class="sd">    """</span>
 

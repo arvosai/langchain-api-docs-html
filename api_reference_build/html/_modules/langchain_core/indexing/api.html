@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -620,16 +620,17 @@ document.write(`
 
             <span class="c1"># mypy isn't good enough to determine that source ids cannot be None</span>
             <span class="c1"># here due to a check that's happening above, so we check again.</span>
-            <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="n">source_ids</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">source_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">"Source ids cannot be None here."</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">source_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="n">source_ids</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">"Source ids cannot be if cleanup=='incremental'."</span><span class="p">)</span>
 
-            <span class="n">_source_ids</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">source_ids</span><span class="p">)</span>
+            <span class="n">indexed_source_ids</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span>
+                <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="p">[</span><span class="n">source_id_assigner</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs_to_index</span><span class="p">]</span>
+            <span class="p">)</span>
 
             <span class="n">uids_to_delete</span> <span class="o">=</span> <span class="n">record_manager</span><span class="o">.</span><span class="n">list_keys</span><span class="p">(</span>
-                <span class="n">group_ids</span><span class="o">=</span><span class="n">_source_ids</span><span class="p">,</span> <span class="n">before</span><span class="o">=</span><span class="n">index_start_dt</span>
+                <span class="n">group_ids</span><span class="o">=</span><span class="n">indexed_source_ids</span><span class="p">,</span> <span class="n">before</span><span class="o">=</span><span class="n">index_start_dt</span>
             <span class="p">)</span>
-            <span class="k">if</span> <span class="n">uids_to_delete</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">indexed_source_ids</span> <span class="ow">and</span> <span class="n">uids_to_delete</span><span class="p">:</span>
                 <span class="c1"># Then delete from vector store.</span>
                 <span class="n">destination</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">uids_to_delete</span><span class="p">)</span>
                 <span class="c1"># First delete from record store.</span>
@@ -863,16 +864,17 @@ document.write(`
 
             <span class="c1"># mypy isn't good enough to determine that source ids cannot be None</span>
             <span class="c1"># here due to a check that's happening above, so we check again.</span>
-            <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="n">source_ids</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">source_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">"Source ids cannot be None here."</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">source_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="n">source_ids</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">"Source ids cannot be if cleanup=='incremental'."</span><span class="p">)</span>
 
-            <span class="n">_source_ids</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">source_ids</span><span class="p">)</span>
+            <span class="n">indexed_source_ids</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span>
+                <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="p">[</span><span class="n">source_id_assigner</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs_to_index</span><span class="p">]</span>
+            <span class="p">)</span>
 
             <span class="n">uids_to_delete</span> <span class="o">=</span> <span class="k">await</span> <span class="n">record_manager</span><span class="o">.</span><span class="n">alist_keys</span><span class="p">(</span>
-                <span class="n">group_ids</span><span class="o">=</span><span class="n">_source_ids</span><span class="p">,</span> <span class="n">before</span><span class="o">=</span><span class="n">index_start_dt</span>
+                <span class="n">group_ids</span><span class="o">=</span><span class="n">indexed_source_ids</span><span class="p">,</span> <span class="n">before</span><span class="o">=</span><span class="n">index_start_dt</span>
             <span class="p">)</span>
-            <span class="k">if</span> <span class="n">uids_to_delete</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">indexed_source_ids</span> <span class="ow">and</span> <span class="n">uids_to_delete</span><span class="p">:</span>
                 <span class="c1"># Then delete from vector store.</span>
                 <span class="k">await</span> <span class="n">destination</span><span class="o">.</span><span class="n">adelete</span><span class="p">(</span><span class="n">uids_to_delete</span><span class="p">)</span>
                 <span class="c1"># First delete from record store.</span>

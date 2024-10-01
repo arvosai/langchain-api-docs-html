@@ -40,7 +40,7 @@
 <link href="langchain_community.embeddings.fake.FakeEmbeddings.html" rel="prev" title="FakeEmbeddings"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -279,7 +279,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.embeddings.oci_generative_ai.OCIAuthType.html">OCIAuthType</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.embeddings.oci_generative_ai.OCIGenAIEmbeddings.html">OCIGenAIEmbeddings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.embeddings.octoai_embeddings.OctoAIEmbeddings.html">OctoAIEmbeddings</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.embeddings.ollama.OllamaEmbeddings.html">OllamaEmbeddings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.embeddings.openvino.OpenVINOBgeEmbeddings.html">OpenVINOBgeEmbeddings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.embeddings.openvino.OpenVINOEmbeddings.html">OpenVINOEmbeddings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.embeddings.optimum_intel.QuantizedBiEncoderEmbeddings.html">QuantizedBiEncoderEmbeddings</a></li>
@@ -332,6 +331,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.embeddings.huggingface.HuggingFaceEmbeddings.html">HuggingFaceEmbeddings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.embeddings.huggingface_hub.HuggingFaceHubEmbeddings.html">HuggingFaceHubEmbeddings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.embeddings.nemo.NeMoEmbeddings.html">NeMoEmbeddings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.embeddings.ollama.OllamaEmbeddings.html">OllamaEmbeddings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.embeddings.openai.OpenAIEmbeddings.html">OpenAIEmbeddings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.embeddings.solar.SolarEmbeddings.html">SolarEmbeddings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.embeddings.vertexai.VertexAIEmbeddings.html">VertexAIEmbeddings</a></li>
@@ -468,6 +468,10 @@ The available options are: “default” and “passage”</p>
 Unknown behavior for values &gt; 512.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_community.embeddings.fastembed.FastEmbedEmbeddings.model">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_community.embeddings.fastembed.FastEmbedEmbeddings.model" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.embeddings.fastembed.FastEmbedEmbeddings.model_name">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'BAAI/bge-small-en-v1.5'</span></em><a class="headerlink" href="#langchain_community.embeddings.fastembed.FastEmbedEmbeddings.model_name" title="Link to this definition">#</a></dt>
 <dd><p>Name of the FastEmbedding model to use
@@ -586,6 +590,7 @@ Defaults to None</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.embeddings.fastembed.FastEmbedEmbeddings.cache_dir"><code class="docutils literal notranslate"><span class="pre">cache_dir</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.embeddings.fastembed.FastEmbedEmbeddings.doc_embed_type"><code class="docutils literal notranslate"><span class="pre">doc_embed_type</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.embeddings.fastembed.FastEmbedEmbeddings.max_length"><code class="docutils literal notranslate"><span class="pre">max_length</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.embeddings.fastembed.FastEmbedEmbeddings.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.embeddings.fastembed.FastEmbedEmbeddings.model_name"><code class="docutils literal notranslate"><span class="pre">model_name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.embeddings.fastembed.FastEmbedEmbeddings.parallel"><code class="docutils literal notranslate"><span class="pre">parallel</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.embeddings.fastembed.FastEmbedEmbeddings.threads"><code class="docutils literal notranslate"><span class="pre">threads</span></code></a></li>

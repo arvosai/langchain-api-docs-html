@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -228,9 +228,7 @@ document.write(`
 <article class="bd-article">
 <h1>Source code for langchain_milvus.utils.sparse</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
-
-<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_array</span>  <span class="c1"># type: ignore</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
 
 <div class="viewcode-block" id="BaseSparseEmbedding">
@@ -295,7 +293,7 @@ document.write(`
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_sparse_to_dict</span><span class="p">(</span><span class="n">sparse_array</span><span class="p">)</span> <span class="k">for</span> <span class="n">sparse_array</span> <span class="ow">in</span> <span class="n">sparse_arrays</span><span class="p">]</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_sparse_to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sparse_array</span><span class="p">:</span> <span class="n">csr_array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_sparse_to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sparse_array</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
         <span class="n">row_indices</span><span class="p">,</span> <span class="n">col_indices</span> <span class="o">=</span> <span class="n">sparse_array</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()</span>
         <span class="n">non_zero_values</span> <span class="o">=</span> <span class="n">sparse_array</span><span class="o">.</span><span class="n">data</span>
         <span class="n">result_dict</span> <span class="o">=</span> <span class="p">{}</span>

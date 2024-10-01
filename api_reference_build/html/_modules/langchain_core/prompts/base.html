@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -276,11 +276,11 @@ document.write(`
 <span class="w">    </span><span class="sd">"""Base class for all prompt templates, returning a prompt."""</span>
 
     <span class="n">input_variables</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-<span class="w">    </span><span class="sd">"""A list of the names of the variables whose values are required as inputs to the </span>
+<span class="w">    </span><span class="sd">"""A list of the names of the variables whose values are required as inputs to the</span>
 <span class="sd">    prompt."""</span>
     <span class="n">optional_variables</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="p">[])</span>
 <span class="w">    </span><span class="sd">"""optional_variables: A list of the names of the variables for placeholder</span>
-<span class="sd">       or MessagePlaceholder that are optional. These variables are auto inferred </span>
+<span class="sd">       or MessagePlaceholder that are optional. These variables are auto inferred</span>
 <span class="sd">       from the prompt and user need not provide them."""</span>
     <span class="n">input_types</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># noqa: UP006</span>
 <span class="w">    </span><span class="sd">"""A dictionary of the types of the variables the prompt template expects.</span>
@@ -289,7 +289,7 @@ document.write(`
 <span class="w">    </span><span class="sd">"""How to parse the output of calling an LLM on this formatted prompt."""</span>
     <span class="n">partial_variables</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">"""A dictionary of the partial variables the prompt template carries.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Partial variables populate the template so that you don't need to</span>
 <span class="sd">    pass them in every time you call the prompt."""</span>
     <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># noqa: UP006</span>
@@ -407,7 +407,7 @@ document.write(`
 <div class="viewcode-block" id="BasePromptTemplate.invoke">
 <a class="viewcode-back" href="../../../core/prompts/langchain_core.prompts.base.BasePromptTemplate.html#langchain.agents.schema.BasePromptTemplate.invoke">[docs]</a>
     <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RunnableConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RunnableConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PromptValue</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Invoke the prompt.</span>
 

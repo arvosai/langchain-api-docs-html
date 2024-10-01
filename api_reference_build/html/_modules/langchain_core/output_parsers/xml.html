@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -241,12 +241,12 @@ document.write(`
 <span class="kn">from</span> <span class="nn">langchain_core.runnables.utils</span> <span class="kn">import</span> <span class="n">AddableDict</span>
 
 <span class="n">XML_FORMAT_INSTRUCTIONS</span> <span class="o">=</span> <span class="s2">"""The output should be formatted as a XML file.</span>
-<span class="s2">1. Output should conform to the tags below. </span>
+<span class="s2">1. Output should conform to the tags below.</span>
 <span class="s2">2. If tags are not given, make them on your own.</span>
 <span class="s2">3. Remember to always open and close all the tags.</span>
 
 <span class="s2">As an example, for the tags ["foo", "bar", "baz"]:</span>
-<span class="s2">1. String "&lt;foo&gt;</span><span class="se">\n</span><span class="s2">   &lt;bar&gt;</span><span class="se">\n</span><span class="s2">      &lt;baz&gt;&lt;/baz&gt;</span><span class="se">\n</span><span class="s2">   &lt;/bar&gt;</span><span class="se">\n</span><span class="s2">&lt;/foo&gt;" is a well-formatted instance of the schema. </span>
+<span class="s2">1. String "&lt;foo&gt;</span><span class="se">\n</span><span class="s2">   &lt;bar&gt;</span><span class="se">\n</span><span class="s2">      &lt;baz&gt;&lt;/baz&gt;</span><span class="se">\n</span><span class="s2">   &lt;/bar&gt;</span><span class="se">\n</span><span class="s2">&lt;/foo&gt;" is a well-formatted instance of the schema.</span>
 <span class="s2">2. String "&lt;foo&gt;</span><span class="se">\n</span><span class="s2">   &lt;bar&gt;</span><span class="se">\n</span><span class="s2">   &lt;/foo&gt;" is a badly-formatted instance.</span>
 <span class="s2">3. String "&lt;foo&gt;</span><span class="se">\n</span><span class="s2">   &lt;tag&gt;</span><span class="se">\n</span><span class="s2">   &lt;/tag&gt;</span><span class="se">\n</span><span class="s2">&lt;/foo&gt;" is a badly-formatted instance.</span>
 
@@ -377,23 +377,23 @@ document.write(`
     <span class="p">)</span>
     <span class="n">parser</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"defusedxml"</span><span class="p">,</span> <span class="s2">"xml"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"defusedxml"</span>
 <span class="w">    </span><span class="sd">"""Parser to use for XML parsing. Can be either 'defusedxml' or 'xml'.</span>
-<span class="sd">    </span>
-<span class="sd">    * 'defusedxml' is the default parser and is used to prevent XML vulnerabilities </span>
+
+<span class="sd">    * 'defusedxml' is the default parser and is used to prevent XML vulnerabilities</span>
 <span class="sd">       present in some distributions of Python's standard library xml.</span>
 <span class="sd">       `defusedxml` is a wrapper around the standard library parser that</span>
 <span class="sd">       sets up the parser with secure defaults.</span>
 <span class="sd">    * 'xml' is the standard library parser.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Use `xml` only if you are sure that your distribution of the standard library</span>
-<span class="sd">    is not vulnerable to XML vulnerabilities. </span>
-<span class="sd">    </span>
+<span class="sd">    is not vulnerable to XML vulnerabilities.</span>
+
 <span class="sd">    Please review the following resources for more information:</span>
-<span class="sd">    </span>
+
 <span class="sd">    * https://docs.python.org/3/library/xml.html#xml-vulnerabilities</span>
-<span class="sd">    * https://github.com/tiran/defusedxml </span>
-<span class="sd">    </span>
+<span class="sd">    * https://github.com/tiran/defusedxml</span>
+
 <span class="sd">    The standard library relies on libexpat for parsing XML:</span>
-<span class="sd">    https://github.com/libexpat/libexpat </span>
+<span class="sd">    https://github.com/libexpat/libexpat</span>
 <span class="sd">    """</span>
 
 <div class="viewcode-block" id="XMLOutputParser.get_format_instructions">

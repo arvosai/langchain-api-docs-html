@@ -40,7 +40,7 @@
 <link href="langchain_google_community.vertex_ai_search.VertexAIMultiTurnSearchRetriever.html" rel="prev" title="VertexAIMultiTurnSearchRetriever"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -389,12 +389,12 @@ the environment.</p>
 <dt class="sig sig-object py" id="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.max_extractive_answer_count">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_extractive_answer_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.max_extractive_answer_count" title="Link to this definition">#</a></dt>
 <dd><p>The maximum number of extractive answers returned in each search result.
-At most 5 answers will be returned for each SearchResult.</p>
+Currently one extractive answer will be returned for each SearchResult.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ge</strong> = 1</p></li>
-<li><p><strong>le</strong> = 5</p></li>
+<li><p><strong>le</strong> = 1</p></li>
 </ul>
 </dd>
 </dl>
@@ -423,6 +423,34 @@ You can use these to eg identify a specific instance of a retriever with its
 use case.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.num_next_segments">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_next_segments</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.num_next_segments" title="Link to this definition">#</a></dt>
+<dd><p>Specifies the number of text segments following the matched segment to return.
+This provides context after the relevant text. Value must be between 1 and 3.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Constraints<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ge</strong> = 1</p></li>
+<li><p><strong>le</strong> = 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.num_previous_segments">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_previous_segments</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.num_previous_segments" title="Link to this definition">#</a></dt>
+<dd><p>Specifies the number of text segments preceding the matched segment to return.
+This provides context before the relevant text. Value must be between 1 and 3.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Constraints<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ge</strong> = 1</p></li>
+<li><p><strong>le</strong> = 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.project_id">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">project_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.project_id" title="Link to this definition">#</a></dt>
 <dd><p>Google Cloud Project ID.</p>
@@ -448,6 +476,12 @@ use case.</p>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.return_extractive_segment_score">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">return_extractive_segment_score</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.return_extractive_segment_score" title="Link to this definition">#</a></dt>
+<dd><p>If set to True, the relevance score for each extractive segment will be included
+in the search results. This can be useful for ranking or filtering segments.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.serving_config_id">
@@ -1489,8 +1523,11 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.max_extractive_answer_count"><code class="docutils literal notranslate"><span class="pre">max_extractive_answer_count</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.max_extractive_segment_count"><code class="docutils literal notranslate"><span class="pre">max_extractive_segment_count</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.metadata"><code class="docutils literal notranslate"><span class="pre">metadata</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.num_next_segments"><code class="docutils literal notranslate"><span class="pre">num_next_segments</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.num_previous_segments"><code class="docutils literal notranslate"><span class="pre">num_previous_segments</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.project_id"><code class="docutils literal notranslate"><span class="pre">project_id</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.query_expansion_condition"><code class="docutils literal notranslate"><span class="pre">query_expansion_condition</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.return_extractive_segment_score"><code class="docutils literal notranslate"><span class="pre">return_extractive_segment_score</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.serving_config_id"><code class="docutils literal notranslate"><span class="pre">serving_config_id</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.spell_correction_mode"><code class="docutils literal notranslate"><span class="pre">spell_correction_mode</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.tags"><code class="docutils literal notranslate"><span class="pre">tags</span></code></a></li>

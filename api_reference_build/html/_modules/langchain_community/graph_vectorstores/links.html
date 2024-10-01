@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -240,10 +240,113 @@ document.write(`
 <span class="nd">@beta</span><span class="p">()</span>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Link</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""A link to/from a tag of a given tag.</span>
+<span class="w">    </span><span class="sd">"""A link to/from a tag of a given kind.</span>
 
-<span class="sd">    Edges exist from nodes with an outgoing link to nodes with a matching incoming link.</span>
-<span class="sd">    """</span>
+<span class="sd">    Documents in a :class:`graph vector store &lt;langchain_community.graph_vectorstores.base.GraphVectorStore&gt;`</span>
+<span class="sd">    are connected via "links".</span>
+<span class="sd">    Links form a bipartite graph between documents and tags: documents are connected</span>
+<span class="sd">    to tags, and tags are connected to other documents.</span>
+<span class="sd">    When documents are retrieved from a graph vector store, a pair of documents are</span>
+<span class="sd">    connected with a depth of one if both documents are connected to the same tag.</span>
+
+<span class="sd">    Links have a ``kind`` property, used to namespace different tag identifiers.</span>
+<span class="sd">    For example a link to a keyword might use kind ``kw``, while a link to a URL might</span>
+<span class="sd">    use kind ``url``.</span>
+<span class="sd">    This allows the same tag value to be used in different contexts without causing</span>
+<span class="sd">    name collisions.</span>
+
+<span class="sd">    Links are directed. The directionality of links controls how the graph is</span>
+<span class="sd">    traversed at retrieval time.</span>
+<span class="sd">    For example, given documents ``A`` and ``B``, connected by links to tag ``T``:</span>
+
+<span class="sd">    +----------+----------+---------------------------------+</span>
+<span class="sd">    | A to T   | B to T   | Result                          |</span>
+<span class="sd">    +==========+==========+=================================+</span>
+<span class="sd">    | outgoing | incoming | Retrieval traverses from A to B |</span>
+<span class="sd">    +----------+----------+---------------------------------+</span>
+<span class="sd">    | incoming | incoming | No traversal from A to B        |</span>
+<span class="sd">    +----------+----------+---------------------------------+</span>
+<span class="sd">    | outgoing | incoming | No traversal from A to B        |</span>
+<span class="sd">    +----------+----------+---------------------------------+</span>
+<span class="sd">    | bidir    | incoming | Retrieval traverses from A to B |</span>
+<span class="sd">    +----------+----------+---------------------------------+</span>
+<span class="sd">    | bidir    | outgoing | No traversal from A to B        |</span>
+<span class="sd">    +----------+----------+---------------------------------+</span>
+<span class="sd">    | outgoing | bidir    | Retrieval traverses from A to B |</span>
+<span class="sd">    +----------+----------+---------------------------------+</span>
+<span class="sd">    | incoming | bidir    | No traversal from A to B        |</span>
+<span class="sd">    +----------+----------+---------------------------------+</span>
+
+<span class="sd">    Directed links make it possible to describe relationships such as term</span>
+<span class="sd">    references / definitions: term definitions are generally relevant to any documents</span>
+<span class="sd">    that use the term, but the full set of documents using a term generally aren't</span>
+<span class="sd">    relevant to the term's definition.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        - :mod:`How to use a graph vector store &lt;langchain_community.graph_vectorstores&gt;`</span>
+<span class="sd">        - :class:`How to link Documents on hyperlinks in HTML &lt;langchain_community.graph_vectorstores.extractors.html_link_extractor.HtmlLinkExtractor&gt;`</span>
+<span class="sd">        - :class:`How to link Documents on common keywords (using KeyBERT) &lt;langchain_community.graph_vectorstores.extractors.keybert_link_extractor.KeybertLinkExtractor&gt;`</span>
+<span class="sd">        - :class:`How to link Documents on common named entities (using GliNER) &lt;langchain_community.graph_vectorstores.extractors.gliner_link_extractor.GLiNERLinkExtractor&gt;`</span>
+
+<span class="sd">    How to add links to a Document</span>
+<span class="sd">    ==============================</span>
+
+<span class="sd">    How to create links</span>
+<span class="sd">    -------------------</span>
+
+<span class="sd">    You can create links using the Link class's constructors :meth:`incoming`,</span>
+<span class="sd">    :meth:`outgoing`, and :meth:`bidir`::</span>
+
+<span class="sd">        from langchain_community.graph_vectorstores.links import Link</span>
+
+<span class="sd">        print(Link.bidir(kind="location", tag="Paris"))</span>
+
+<span class="sd">    .. code-block:: output</span>
+
+<span class="sd">        Link(kind='location', direction='bidir', tag='Paris')</span>
+
+<span class="sd">    Extending documents with links</span>
+<span class="sd">    ------------------------------</span>
+
+<span class="sd">    Now that we know how to create links, let's associate them with some documents.</span>
+<span class="sd">    These edges will strengthen the connection between documents that share a keyword</span>
+<span class="sd">    when using a graph vector store to retrieve documents.</span>
+
+<span class="sd">    First, we'll load some text and chunk it into smaller pieces.</span>
+<span class="sd">    Then we'll add a link to each document to link them all together::</span>
+
+<span class="sd">        from langchain_community.document_loaders import TextLoader</span>
+<span class="sd">        from langchain_community.graph_vectorstores.links import add_links</span>
+<span class="sd">        from langchain_text_splitters import CharacterTextSplitter</span>
+
+<span class="sd">        loader = TextLoader("state_of_the_union.txt")</span>
+
+<span class="sd">        raw_documents = loader.load()</span>
+<span class="sd">        text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)</span>
+<span class="sd">        documents = text_splitter.split_documents(raw_documents)</span>
+
+<span class="sd">        for doc in documents:</span>
+<span class="sd">            add_links(doc, Link.bidir(kind="genre", tag="oratory"))</span>
+
+<span class="sd">        print(documents[0].metadata)</span>
+
+<span class="sd">    .. code-block:: output</span>
+
+<span class="sd">        {'source': 'state_of_the_union.txt', 'links': [Link(kind='genre', direction='bidir', tag='oratory')]}</span>
+
+<span class="sd">    As we can see, each document's metadata now includes a bidirectional link to the</span>
+<span class="sd">    genre ``oratory``.</span>
+
+<span class="sd">    The documents can then be added to a graph vector store::</span>
+
+<span class="sd">        from langchain_community.graph_vectorstores import CassandraGraphVectorStore</span>
+
+<span class="sd">        graph_vectorstore = CassandraGraphVectorStore.from_documents(</span>
+<span class="sd">            documents=documents, embeddings=...</span>
+<span class="sd">        )</span>
+
+<span class="sd">    """</span>  <span class="c1"># noqa: E501</span>
 
     <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span>
 <span class="w">    </span><span class="sd">"""The kind of link. Allows different extractors to use the same tag name without</span>
@@ -257,7 +360,12 @@ document.write(`
 <a class="viewcode-back" href="../../../community/graph_vectorstores/langchain_community.graph_vectorstores.links.Link.html#langchain_community.graph_vectorstores.links.Link.incoming">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">incoming</span><span class="p">(</span><span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Link"</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Create an incoming link."""</span>
+<span class="w">        </span><span class="sd">"""Create an incoming link.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            kind: the link kind.</span>
+<span class="sd">            tag: the link tag.</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">Link</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">"in"</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">)</span></div>
 
 
@@ -265,7 +373,12 @@ document.write(`
 <a class="viewcode-back" href="../../../community/graph_vectorstores/langchain_community.graph_vectorstores.links.Link.html#langchain_community.graph_vectorstores.links.Link.outgoing">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">outgoing</span><span class="p">(</span><span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Link"</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Create an outgoing link."""</span>
+<span class="w">        </span><span class="sd">"""Create an outgoing link.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            kind: the link kind.</span>
+<span class="sd">            tag: the link tag.</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">Link</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">"out"</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">)</span></div>
 
 
@@ -273,7 +386,12 @@ document.write(`
 <a class="viewcode-back" href="../../../community/graph_vectorstores/langchain_community.graph_vectorstores.links.Link.html#langchain_community.graph_vectorstores.links.Link.bidir">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">bidir</span><span class="p">(</span><span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Link"</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Create a bidirectional link."""</span>
+<span class="w">        </span><span class="sd">"""Create a bidirectional link.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            kind: the link kind.</span>
+<span class="sd">            tag: the link tag.</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">Link</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">"bidir"</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">)</span></div>
 </div>
 

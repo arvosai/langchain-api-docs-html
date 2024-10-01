@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -702,6 +702,18 @@ document.write(`
 <span class="sd">        embedding: Any embedding function implementing</span>
 <span class="sd">            `langchain.embeddings.base.Embeddings` interface.</span>
 <span class="sd">        distance_strategy: The distance strategy to use. (default: COSINE)</span>
+<span class="sd">        search_type: The type of search to be performed, either</span>
+<span class="sd">            'vector' or 'hybrid'</span>
+<span class="sd">        node_label: The label used for nodes in the Neo4j database.</span>
+<span class="sd">            (default: "Chunk")</span>
+<span class="sd">        embedding_node_property: The property name in Neo4j to store embeddings.</span>
+<span class="sd">            (default: "embedding")</span>
+<span class="sd">        text_node_property: The property name in Neo4j to store the text.</span>
+<span class="sd">            (default: "text")</span>
+<span class="sd">        retrieval_query: The Cypher query to be used for customizing retrieval.</span>
+<span class="sd">            If empty, a default query will be used.</span>
+<span class="sd">        index_type: The type of index to be used, either</span>
+<span class="sd">            'NODE' or 'RELATIONSHIP'</span>
 <span class="sd">        pre_delete_collection: If True, will delete existing data if it exists.</span>
 <span class="sd">            (default: False). Useful for testing.</span>
 
@@ -841,7 +853,7 @@ document.write(`
 
             <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"MATCH (n:`</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">node_label</span><span class="si">}</span><span class="s2">`) "</span>
-                <span class="s2">"CALL { WITH n DETACH DELETE n } "</span>
+                <span class="s2">"CALL (n) { DETACH DELETE n } "</span>
                 <span class="s2">"IN TRANSACTIONS OF 10000 ROWS;"</span>
             <span class="p">)</span>
             <span class="c1"># Delete index</span>
@@ -1028,18 +1040,14 @@ document.write(`
 <span class="sd">        to create a new vector index in Neo4j.</span>
 <span class="sd">        """</span>
         <span class="n">index_query</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">"CALL db.index.vector.createNodeIndex("</span>
-            <span class="s2">"$index_name,"</span>
-            <span class="s2">"$node_label,"</span>
-            <span class="s2">"$embedding_node_property,"</span>
-            <span class="s2">"toInteger($embedding_dimension),"</span>
-            <span class="s2">"$similarity_metric )"</span>
+            <span class="sa">f</span><span class="s2">"CREATE VECTOR INDEX </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">index_name</span><span class="si">}</span><span class="s2"> IF NOT EXISTS "</span>
+            <span class="sa">f</span><span class="s2">"FOR (m:`</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">node_label</span><span class="si">}</span><span class="s2">`) ON m.`</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_node_property</span><span class="si">}</span><span class="s2">` "</span>
+            <span class="s2">"OPTIONS { indexConfig: { "</span>
+            <span class="s2">"`vector.dimensions`: toInteger($embedding_dimension), "</span>
+            <span class="s2">"`vector.similarity_function`: $similarity_metric }}"</span>
         <span class="p">)</span>
 
         <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"index_name"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_name</span><span class="p">,</span>
-            <span class="s2">"node_label"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_label</span><span class="p">,</span>
-            <span class="s2">"embedding_node_property"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_node_property</span><span class="p">,</span>
             <span class="s2">"embedding_dimension"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_dimension</span><span class="p">,</span>
             <span class="s2">"similarity_metric"</span><span class="p">:</span> <span class="n">DISTANCE_MAPPING</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_distance_strategy</span><span class="p">],</span>
         <span class="p">}</span>

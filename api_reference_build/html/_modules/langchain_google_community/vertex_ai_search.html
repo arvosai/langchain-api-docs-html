@@ -38,7 +38,7 @@
 <link href="../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -369,25 +369,35 @@ document.write(`
             <span class="n">document_dict</span> <span class="o">=</span> <span class="n">MessageToDict</span><span class="p">(</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">_pb</span><span class="p">,</span> <span class="n">preserving_proto_field_name</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
-            <span class="n">derived_struct_data</span> <span class="o">=</span> <span class="n">document_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"derived_struct_data"</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">derived_struct_data</span><span class="p">:</span>
+            <span class="n">derived_struct_data</span> <span class="o">=</span> <span class="n">document_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"derived_struct_data"</span><span class="p">,</span> <span class="p">{})</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">derived_struct_data</span> <span class="ow">or</span> <span class="n">chunk_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">derived_struct_data</span><span class="p">:</span>
                 <span class="k">continue</span>
 
-            <span class="n">doc_metadata</span> <span class="o">=</span> <span class="n">document_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"struct_data"</span><span class="p">,</span> <span class="p">{})</span>
-            <span class="n">doc_metadata</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">document_dict</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span>
-
-            <span class="k">if</span> <span class="n">chunk_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">derived_struct_data</span><span class="p">:</span>
-                <span class="k">continue</span>
+            <span class="n">doc_metadata</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"id"</span><span class="p">:</span> <span class="n">document_dict</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span>
+                <span class="s2">"source"</span><span class="p">:</span> <span class="n">derived_struct_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"link"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
+                <span class="o">**</span><span class="n">document_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"struct_data"</span><span class="p">,</span> <span class="p">{}),</span>
+            <span class="p">}</span>
 
             <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">derived_struct_data</span><span class="p">[</span><span class="n">chunk_type</span><span class="p">]:</span>
                 <span class="n">chunk_metadata</span> <span class="o">=</span> <span class="n">doc_metadata</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-                <span class="n">chunk_metadata</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="n">derived_struct_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"link"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
 
-                <span class="k">if</span> <span class="p">(</span>
-                    <span class="n">chunk_type</span> <span class="o">==</span> <span class="s2">"extractive_answers"</span>
-                    <span class="ow">or</span> <span class="n">chunk_type</span> <span class="o">==</span> <span class="s2">"extractive_segments"</span>
-                <span class="p">):</span>
-                    <span class="n">chunk_metadata</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">":</span><span class="si">{</span><span class="n">chunk</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'pageNumber'</span><span class="p">,</span><span class="w"> </span><span class="s1">''</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+                <span class="k">if</span> <span class="n">chunk_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"extractive_answers"</span><span class="p">,</span> <span class="s2">"extractive_segments"</span><span class="p">):</span>
+                    <span class="n">chunk_metadata</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">chunk</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'pageNumber'</span><span class="p">,</span><span class="w"> </span><span class="s1">''</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+
+                    <span class="k">if</span> <span class="n">chunk_type</span> <span class="o">==</span> <span class="s2">"extractive_segments"</span><span class="p">:</span>
+                        <span class="n">chunk_metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                            <span class="p">{</span>
+                                <span class="s2">"previous_segments"</span><span class="p">:</span> <span class="n">chunk</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"previous_segments"</span><span class="p">,</span> <span class="p">[]),</span>
+                                <span class="s2">"next_segments"</span><span class="p">:</span> <span class="n">chunk</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"next_segments"</span><span class="p">,</span> <span class="p">[]),</span>
+                            <span class="p">}</span>
+                        <span class="p">)</span>
+                        <span class="k">if</span> <span class="s2">"relevanceScore"</span> <span class="ow">in</span> <span class="n">chunk</span><span class="p">:</span>
+                            <span class="n">chunk_metadata</span><span class="p">[</span><span class="s2">"relevance_score"</span><span class="p">]</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                <span class="s2">"relevanceScore"</span>
+                            <span class="p">)</span>
+
                 <span class="n">documents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">Document</span><span class="p">(</span>
                         <span class="n">page_content</span><span class="o">=</span><span class="n">chunk</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"content"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">metadata</span><span class="o">=</span><span class="n">chunk_metadata</span>
@@ -454,13 +464,25 @@ document.write(`
 <span class="w">    </span><span class="sd">"""If True return Extractive Answers, otherwise return Extractive Segments or Snippets."""</span>  <span class="c1"># noqa: E501</span>
     <span class="n">max_documents</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">"""The maximum number of documents to return."""</span>
-    <span class="n">max_extractive_answer_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">max_extractive_answer_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">"""The maximum number of extractive answers returned in each search result.</span>
-<span class="sd">    At most 5 answers will be returned for each SearchResult.</span>
+<span class="sd">    Currently one extractive answer will be returned for each SearchResult.</span>
 <span class="sd">    """</span>
     <span class="n">max_extractive_segment_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">"""The maximum number of extractive segments returned in each search result.</span>
 <span class="sd">    Currently one segment will be returned for each SearchResult.</span>
+<span class="sd">    """</span>
+    <span class="n">return_extractive_segment_score</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">"""If set to True, the relevance score for each extractive segment will be included</span>
+<span class="sd">    in the search results. This can be useful for ranking or filtering segments.</span>
+<span class="sd">    """</span>
+    <span class="n">num_previous_segments</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Specifies the number of text segments preceding the matched segment to return.</span>
+<span class="sd">    This provides context before the relevant text. Value must be between 1 and 3.</span>
+<span class="sd">    """</span>
+    <span class="n">num_next_segments</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Specifies the number of text segments following the matched segment to return.</span>
+<span class="sd">    This provides context after the relevant text. Value must be between 1 and 3.</span>
 <span class="sd">    """</span>
     <span class="n">query_expansion_condition</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">"""Specification to determine under which conditions query expansion should occur.</span>
@@ -543,6 +565,11 @@ document.write(`
                 <span class="n">extractive_content_spec</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">SearchRequest</span><span class="o">.</span><span class="n">ContentSearchSpec</span><span class="o">.</span><span class="n">ExtractiveContentSpec</span><span class="p">(</span>
                         <span class="n">max_extractive_segment_count</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_extractive_segment_count</span><span class="p">,</span>
+                        <span class="n">num_previous_segments</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_previous_segments</span><span class="p">,</span>
+                        <span class="n">num_next_segments</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_next_segments</span><span class="p">,</span>
+                        <span class="n">return_extractive_segment_score</span><span class="o">=</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">return_extractive_segment_score</span>
+                        <span class="p">),</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
             <span class="n">content_search_spec</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">extractive_content_spec</span><span class="o">=</span><span class="n">extractive_content_spec</span><span class="p">)</span>

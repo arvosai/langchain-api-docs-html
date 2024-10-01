@@ -40,7 +40,7 @@
 <link href="langchain_community.graph_vectorstores.extractors.link_extractor_transformer.LinkExtractorTransformer.html" rel="prev" title="LinkExtractorTransformer"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -342,8 +342,124 @@ document.write(`
 <p class="admonition-title">Beta</p>
 <p>This feature is in beta. It is actively being worked on, so the API may change.</p>
 </div>
-<p>A link to/from a tag of a given tag.</p>
-<p>Edges exist from nodes with an outgoing link to nodes with a matching incoming link.</p>
+<p>A link to/from a tag of a given kind.</p>
+<p>Documents in a <a class="reference internal" href="langchain_community.graph_vectorstores.base.GraphVectorStore.html#langchain_community.graph_vectorstores.base.GraphVectorStore" title="langchain_community.graph_vectorstores.base.GraphVectorStore"><code class="xref py py-class docutils literal notranslate"><span class="pre">graph</span> <span class="pre">vector</span> <span class="pre">store</span></code></a>
+are connected via “links”.
+Links form a bipartite graph between documents and tags: documents are connected
+to tags, and tags are connected to other documents.
+When documents are retrieved from a graph vector store, a pair of documents are
+connected with a depth of one if both documents are connected to the same tag.</p>
+<p>Links have a <code class="docutils literal notranslate"><span class="pre">kind</span></code> property, used to namespace different tag identifiers.
+For example a link to a keyword might use kind <code class="docutils literal notranslate"><span class="pre">kw</span></code>, while a link to a URL might
+use kind <code class="docutils literal notranslate"><span class="pre">url</span></code>.
+This allows the same tag value to be used in different contexts without causing
+name collisions.</p>
+<p>Links are directed. The directionality of links controls how the graph is
+traversed at retrieval time.
+For example, given documents <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code>, connected by links to tag <code class="docutils literal notranslate"><span class="pre">T</span></code>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>A to T</p></th>
+<th class="head"><p>B to T</p></th>
+<th class="head"><p>Result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>outgoing</p></td>
+<td><p>incoming</p></td>
+<td><p>Retrieval traverses from A to B</p></td>
+</tr>
+<tr class="row-odd"><td><p>incoming</p></td>
+<td><p>incoming</p></td>
+<td><p>No traversal from A to B</p></td>
+</tr>
+<tr class="row-even"><td><p>outgoing</p></td>
+<td><p>incoming</p></td>
+<td><p>No traversal from A to B</p></td>
+</tr>
+<tr class="row-odd"><td><p>bidir</p></td>
+<td><p>incoming</p></td>
+<td><p>Retrieval traverses from A to B</p></td>
+</tr>
+<tr class="row-even"><td><p>bidir</p></td>
+<td><p>outgoing</p></td>
+<td><p>No traversal from A to B</p></td>
+</tr>
+<tr class="row-odd"><td><p>outgoing</p></td>
+<td><p>bidir</p></td>
+<td><p>Retrieval traverses from A to B</p></td>
+</tr>
+<tr class="row-even"><td><p>incoming</p></td>
+<td><p>bidir</p></td>
+<td><p>No traversal from A to B</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Directed links make it possible to describe relationships such as term
+references / definitions: term definitions are generally relevant to any documents
+that use the term, but the full set of documents using a term generally aren’t
+relevant to the term’s definition.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../graph_vectorstores.html#module-langchain_community.graph_vectorstores" title="langchain_community.graph_vectorstores"><code class="xref py py-mod docutils literal notranslate"><span class="pre">How</span> <span class="pre">to</span> <span class="pre">use</span> <span class="pre">a</span> <span class="pre">graph</span> <span class="pre">vector</span> <span class="pre">store</span></code></a></p></li>
+<li><p><a class="reference internal" href="langchain_community.graph_vectorstores.extractors.html_link_extractor.HtmlLinkExtractor.html#langchain_community.graph_vectorstores.extractors.html_link_extractor.HtmlLinkExtractor" title="langchain_community.graph_vectorstores.extractors.html_link_extractor.HtmlLinkExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">How</span> <span class="pre">to</span> <span class="pre">link</span> <span class="pre">Documents</span> <span class="pre">on</span> <span class="pre">hyperlinks</span> <span class="pre">in</span> <span class="pre">HTML</span></code></a></p></li>
+<li><p><a class="reference internal" href="langchain_community.graph_vectorstores.extractors.keybert_link_extractor.KeybertLinkExtractor.html#langchain_community.graph_vectorstores.extractors.keybert_link_extractor.KeybertLinkExtractor" title="langchain_community.graph_vectorstores.extractors.keybert_link_extractor.KeybertLinkExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">How</span> <span class="pre">to</span> <span class="pre">link</span> <span class="pre">Documents</span> <span class="pre">on</span> <span class="pre">common</span> <span class="pre">keywords</span> <span class="pre">(using</span> <span class="pre">KeyBERT)</span></code></a></p></li>
+<li><p><a class="reference internal" href="langchain_community.graph_vectorstores.extractors.gliner_link_extractor.GLiNERLinkExtractor.html#langchain_community.graph_vectorstores.extractors.gliner_link_extractor.GLiNERLinkExtractor" title="langchain_community.graph_vectorstores.extractors.gliner_link_extractor.GLiNERLinkExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">How</span> <span class="pre">to</span> <span class="pre">link</span> <span class="pre">Documents</span> <span class="pre">on</span> <span class="pre">common</span> <span class="pre">named</span> <span class="pre">entities</span> <span class="pre">(using</span> <span class="pre">GliNER)</span></code></a></p></li>
+</ul>
+</div>
+<section id="how-to-add-links-to-a-document">
+<h2>How to add links to a Document<a class="headerlink" href="#how-to-add-links-to-a-document" title="Link to this heading">#</a></h2>
+<section id="how-to-create-links">
+<h3>How to create links<a class="headerlink" href="#how-to-create-links" title="Link to this heading">#</a></h3>
+<p>You can create links using the Link class’s constructors <a class="reference internal" href="#langchain_community.graph_vectorstores.links.Link.incoming" title="langchain_community.graph_vectorstores.links.Link.incoming"><code class="xref py py-meth docutils literal notranslate"><span class="pre">incoming()</span></code></a>,
+<a class="reference internal" href="#langchain_community.graph_vectorstores.links.Link.outgoing" title="langchain_community.graph_vectorstores.links.Link.outgoing"><code class="xref py py-meth docutils literal notranslate"><span class="pre">outgoing()</span></code></a>, and <a class="reference internal" href="#langchain_community.graph_vectorstores.links.Link.bidir" title="langchain_community.graph_vectorstores.links.Link.bidir"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bidir()</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_community.graph_vectorstores.links</span> <span class="kn">import</span> <span class="n">Link</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">Link</span><span class="o">.</span><span class="n">bidir</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">"location"</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="s2">"Paris"</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Link(kind='location', direction='bidir', tag='Paris')</span>
+</pre></div>
+</div>
+</section>
+<section id="extending-documents-with-links">
+<h3>Extending documents with links<a class="headerlink" href="#extending-documents-with-links" title="Link to this heading">#</a></h3>
+<p>Now that we know how to create links, let’s associate them with some documents.
+These edges will strengthen the connection between documents that share a keyword
+when using a graph vector store to retrieve documents.</p>
+<p>First, we’ll load some text and chunk it into smaller pieces.
+Then we’ll add a link to each document to link them all together:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_community.document_loaders</span> <span class="kn">import</span> <span class="n">TextLoader</span>
+<span class="kn">from</span> <span class="nn">langchain_community.graph_vectorstores.links</span> <span class="kn">import</span> <span class="n">add_links</span>
+<span class="kn">from</span> <span class="nn">langchain_text_splitters</span> <span class="kn">import</span> <span class="n">CharacterTextSplitter</span>
+
+<span class="n">loader</span> <span class="o">=</span> <span class="n">TextLoader</span><span class="p">(</span><span class="s2">"state_of_the_union.txt"</span><span class="p">)</span>
+
+<span class="n">raw_documents</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="n">text_splitter</span> <span class="o">=</span> <span class="n">CharacterTextSplitter</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">documents</span> <span class="o">=</span> <span class="n">text_splitter</span><span class="o">.</span><span class="n">split_documents</span><span class="p">(</span><span class="n">raw_documents</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">:</span>
+    <span class="n">add_links</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">Link</span><span class="o">.</span><span class="n">bidir</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">"genre"</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="s2">"oratory"</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">documents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">{'source': 'state_of_the_union.txt', 'links': [Link(kind='genre', direction='bidir', tag='oratory')]}</span>
+</pre></div>
+</div>
+<p>As we can see, each document’s metadata now includes a bidirectional link to the
+genre <code class="docutils literal notranslate"><span class="pre">oratory</span></code>.</p>
+<p>The documents can then be added to a graph vector store:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_community.graph_vectorstores</span> <span class="kn">import</span> <span class="n">CassandraGraphVectorStore</span>
+
+<span class="n">graph_vectorstore</span> <span class="o">=</span> <span class="n">CassandraGraphVectorStore</span><span class="o">.</span><span class="n">from_documents</span><span class="p">(</span>
+    <span class="n">documents</span><span class="o">=</span><span class="n">documents</span><span class="p">,</span> <span class="n">embeddings</span><span class="o">=...</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 <p class="rubric">Attributes</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
@@ -368,15 +484,6 @@ document.write(`
 </tbody>
 </table>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>kind</strong> (<em>str</em>)</p></li>
-<li><p><strong>direction</strong> (<em>Literal</em><em>[</em><em>'in'</em><em>, </em><em>'out'</em><em>, </em><em>'bidir'</em><em>]</em>)</p></li>
-<li><p><strong>tag</strong> (<em>str</em>)</p></li>
-</ul>
-</dd>
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_community.graph_vectorstores.links.Link.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'in'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'out'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'bidir'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#langchain_community.graph_vectorstores.links.Link.__init__" title="Link to this definition">#</a></dt>
@@ -400,8 +507,8 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>kind</strong> (<em>str</em>)</p></li>
-<li><p><strong>tag</strong> (<em>str</em>)</p></li>
+<li><p><strong>kind</strong> (<em>str</em>) – the link kind.</p></li>
+<li><p><strong>tag</strong> (<em>str</em>) – the link tag.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -416,8 +523,8 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>kind</strong> (<em>str</em>)</p></li>
-<li><p><strong>tag</strong> (<em>str</em>)</p></li>
+<li><p><strong>kind</strong> (<em>str</em>) – the link kind.</p></li>
+<li><p><strong>tag</strong> (<em>str</em>) – the link tag.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -432,8 +539,8 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>kind</strong> (<em>str</em>)</p></li>
-<li><p><strong>tag</strong> (<em>str</em>)</p></li>
+<li><p><strong>kind</strong> (<em>str</em>) – the link kind.</p></li>
+<li><p><strong>tag</strong> (<em>str</em>) – the link tag.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -441,6 +548,17 @@ document.write(`
 </dd>
 </dl>
 </dd></dl>
+</section>
+</section>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kind</strong> (<em>str</em>)</p></li>
+<li><p><strong>direction</strong> (<em>Literal</em><em>[</em><em>'in'</em><em>, </em><em>'out'</em><em>, </em><em>'bidir'</em><em>]</em>)</p></li>
+<li><p><strong>tag</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 <ul class="simple">
 </ul>

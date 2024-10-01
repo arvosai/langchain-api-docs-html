@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -324,13 +324,13 @@ document.write(`
 <span class="w">    </span><span class="sd">"""A sequence of fallbacks to try."""</span>
     <span class="n">exceptions_to_handle</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="ne">Exception</span><span class="p">,)</span>
 <span class="w">    </span><span class="sd">"""The exceptions on which fallbacks should be tried.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Any exception that is not a subclass of these exceptions will be raised immediately.</span>
 <span class="sd">    """</span>
     <span class="n">exception_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">"""If string is specified then handled exceptions will be passed to fallbacks as </span>
+<span class="w">    </span><span class="sd">"""If string is specified then handled exceptions will be passed to fallbacks as</span>
 <span class="sd">        part of the input under the specified key. If None, exceptions</span>
-<span class="sd">        will not be passed to fallbacks. If used, the base Runnable and its fallbacks </span>
+<span class="sd">        will not be passed to fallbacks. If used, the base Runnable and its fallbacks</span>
 <span class="sd">        must accept a dictionary as input."""</span>
 
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>

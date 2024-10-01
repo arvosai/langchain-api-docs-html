@@ -40,7 +40,7 @@
 <link href="langchain_community.vectorstores.neo4j_vector.IndexType.html" rel="prev" title="IndexType"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -540,18 +540,24 @@ Defaults to “neo4j”</p></li>
 <li><p><strong>embedding</strong> (<a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><em>Embeddings</em></a>) – Any embedding function implementing
 <cite>langchain.embeddings.base.Embeddings</cite> interface.</p></li>
 <li><p><strong>distance_strategy</strong> (<a class="reference internal" href="../../aws/utilities/langchain_aws.utilities.utils.DistanceStrategy.html#langchain_aws.utilities.utils.DistanceStrategy" title="langchain_aws.utilities.utils.DistanceStrategy"><em>DistanceStrategy</em></a>) – The distance strategy to use. (default: COSINE)</p></li>
+<li><p><strong>search_type</strong> (<a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.SearchType.html#langchain_community.vectorstores.neo4j_vector.SearchType" title="langchain_community.vectorstores.neo4j_vector.SearchType"><em>SearchType</em></a>) – The type of search to be performed, either
+‘vector’ or ‘hybrid’</p></li>
+<li><p><strong>node_label</strong> (<em>str</em>) – The label used for nodes in the Neo4j database.
+(default: “Chunk”)</p></li>
+<li><p><strong>embedding_node_property</strong> (<em>str</em>) – The property name in Neo4j to store embeddings.
+(default: “embedding”)</p></li>
+<li><p><strong>text_node_property</strong> (<em>str</em>) – The property name in Neo4j to store the text.
+(default: “text”)</p></li>
+<li><p><strong>retrieval_query</strong> (<em>str</em>) – The Cypher query to be used for customizing retrieval.
+If empty, a default query will be used.</p></li>
+<li><p><strong>index_type</strong> (<a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.IndexType.html#langchain_community.vectorstores.neo4j_vector.IndexType" title="langchain_community.vectorstores.neo4j_vector.IndexType"><em>IndexType</em></a>) – The type of index to be used, either
+‘NODE’ or ‘RELATIONSHIP’</p></li>
 <li><p><strong>pre_delete_collection</strong> (<em>bool</em>) – If True, will delete existing data if it exists.
 (default: False). Useful for testing.</p></li>
-<li><p><strong>search_type</strong> (<a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.SearchType.html#langchain_community.vectorstores.neo4j_vector.SearchType" title="langchain_community.vectorstores.neo4j_vector.SearchType"><em>SearchType</em></a>)</p></li>
 <li><p><strong>keyword_index_name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>)</p></li>
 <li><p><strong>index_name</strong> (<em>str</em>)</p></li>
-<li><p><strong>node_label</strong> (<em>str</em>)</p></li>
-<li><p><strong>embedding_node_property</strong> (<em>str</em>)</p></li>
-<li><p><strong>text_node_property</strong> (<em>str</em>)</p></li>
 <li><p><strong>logger</strong> (<em>Optional</em><em>[</em><em>logging.Logger</em><em>]</em>)</p></li>
-<li><p><strong>retrieval_query</strong> (<em>str</em>)</p></li>
 <li><p><strong>relevance_score_fn</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>float</em><em>]</em><em>, </em><em>float</em><em>]</em><em>]</em>)</p></li>
-<li><p><strong>index_type</strong> (<a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.IndexType.html#langchain_community.vectorstores.neo4j_vector.IndexType" title="langchain_community.vectorstores.neo4j_vector.IndexType"><em>IndexType</em></a>)</p></li>
 <li><p><strong>graph</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../graphs/langchain_community.graphs.neo4j_graph.Neo4jGraph.html#langchain_community.graphs.neo4j_graph.Neo4jGraph" title="langchain_community.graphs.neo4j_graph.Neo4jGraph"><em>Neo4jGraph</em></a><em>]</em>)</p></li>
 </ul>
 </dd>

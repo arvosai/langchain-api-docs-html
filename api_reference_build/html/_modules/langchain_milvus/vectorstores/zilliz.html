@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -230,11 +230,7 @@ document.write(`
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">langchain_core.embeddings</span> <span class="kn">import</span> <span class="n">Embeddings</span>
-
-<span class="kn">from</span> <span class="nn">langchain_milvus.utils.sparse</span> <span class="kn">import</span> <span class="n">BaseSparseEmbedding</span>
 <span class="kn">from</span> <span class="nn">langchain_milvus.vectorstores.milvus</span> <span class="kn">import</span> <span class="n">Milvus</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -269,53 +265,34 @@ document.write(`
 <span class="sd">        drop_old (Optional[bool]): Whether to drop the current collection. Defaults</span>
 <span class="sd">            to False.</span>
 <span class="sd">        auto_id (bool): Whether to enable auto id for primary key. Defaults to False.</span>
-<span class="sd">            If False, you needs to provide text ids (string less than 65535 bytes).</span>
+<span class="sd">            If False, you need to provide text ids (string less than 65535 bytes).</span>
 <span class="sd">            If True, Milvus will generate unique integers as primary keys.</span>
 
 <span class="sd">    The connection args used for this class comes in the form of a dict,</span>
-<span class="sd">    here are a few of the options:</span>
-<span class="sd">        address (str): The actual address of Zilliz</span>
-<span class="sd">            instance. Example address: "localhost:19530"</span>
-<span class="sd">        uri (str): The uri of Zilliz instance. Example uri:</span>
+<span class="sd">    the two major arguments are:</span>
+<span class="sd">        uri (str): The Public Endpoint of Zilliz instance. Example uri:</span>
 <span class="sd">            "https://in03-ba4234asae.api.gcp-us-west1.zillizcloud.com",</span>
-<span class="sd">        host (str): The host of Zilliz instance. Default at "localhost",</span>
-<span class="sd">            PyMilvus will fill in the default host if only port is provided.</span>
-<span class="sd">        port (str/int): The port of Zilliz instance. Default at 19530, PyMilvus</span>
-<span class="sd">            will fill in the default port if only host is provided.</span>
-<span class="sd">        user (str): Use which user to connect to Zilliz instance. If user and</span>
-<span class="sd">            password are provided, we will add related header in every RPC call.</span>
-<span class="sd">        password (str): Required when user is provided. The password</span>
-<span class="sd">            corresponding to the user.</span>
 <span class="sd">        token (str): API key, for serverless clusters which can be used as</span>
 <span class="sd">            replacements for user and password.</span>
-<span class="sd">        secure (bool): Default is false. If set to true, tls will be enabled.</span>
-<span class="sd">        client_key_path (str): If use tls two-way authentication, need to</span>
-<span class="sd">            write the client.key path.</span>
-<span class="sd">        client_pem_path (str): If use tls two-way authentication, need to</span>
-<span class="sd">            write the client.pem path.</span>
-<span class="sd">        ca_pem_path (str): If use tls two-way authentication, need to write</span>
-<span class="sd">            the ca.pem path.</span>
-<span class="sd">        server_pem_path (str): If use tls one-way authentication, need to</span>
-<span class="sd">            write the server.pem path.</span>
-<span class="sd">        server_name (str): If use tls, need to write the common name.</span>
+<span class="sd">    For more information, please refer to:</span>
+<span class="sd">    https://docs.zilliz.com/docs/on-zilliz-cloud-console#cluster-details</span>
+<span class="sd">    and</span>
+<span class="sd">    https://docs.zilliz.com/reference/python/python/Connections-connect</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">        from langchain_community.vectorstores import Zilliz</span>
-<span class="sd">        from langchain_community.embeddings import OpenAIEmbeddings</span>
+<span class="sd">        from langchain_milvus import Zilliz</span>
+<span class="sd">        from langchain_openai import OpenAIEmbeddings</span>
 
 <span class="sd">        embedding = OpenAIEmbeddings()</span>
 <span class="sd">        # Connect to a Zilliz instance</span>
-<span class="sd">        milvus_store = Milvus(</span>
+<span class="sd">        milvus_store = Zilliz(</span>
 <span class="sd">            embedding_function = embedding,</span>
 <span class="sd">            collection_name = "LangChainCollection",</span>
 <span class="sd">            connection_args = {</span>
 <span class="sd">                "uri": "https://in03-ba4234asae.api.gcp-us-west1.zillizcloud.com",</span>
-<span class="sd">                "user": "temp",</span>
-<span class="sd">                "password": "temp",</span>
-<span class="sd">                "token": "temp", # API key as replacements for user and password</span>
-<span class="sd">                "secure": True</span>
+<span class="sd">                "token": "temp", # API key</span>
 <span class="sd">            }</span>
 <span class="sd">            drop_old: True,</span>
 <span class="sd">        )</span>
@@ -332,11 +309,18 @@ document.write(`
             <span class="k">try</span><span class="p">:</span>
                 <span class="c1"># If no index params, use a default AutoIndex based one</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">index_params</span> <span class="o">=</span> <span class="p">{</span>
-                        <span class="s2">"metric_type"</span><span class="p">:</span> <span class="s2">"L2"</span><span class="p">,</span>
-                        <span class="s2">"index_type"</span><span class="p">:</span> <span class="s2">"AUTOINDEX"</span><span class="p">,</span>
-                        <span class="s2">"params"</span><span class="p">:</span> <span class="p">{},</span>
-                    <span class="p">}</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_sparse_embedding</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">index_params</span> <span class="o">=</span> <span class="p">{</span>
+                            <span class="s2">"metric_type"</span><span class="p">:</span> <span class="s2">"IP"</span><span class="p">,</span>
+                            <span class="s2">"index_type"</span><span class="p">:</span> <span class="s2">"SPARSE_INVERTED_INDEX"</span><span class="p">,</span>
+                            <span class="s2">"params"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"drop_ratio_build"</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
+                        <span class="p">}</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">index_params</span> <span class="o">=</span> <span class="p">{</span>
+                            <span class="s2">"metric_type"</span><span class="p">:</span> <span class="s2">"L2"</span><span class="p">,</span>
+                            <span class="s2">"index_type"</span><span class="p">:</span> <span class="s2">"AUTOINDEX"</span><span class="p">,</span>
+                            <span class="s2">"params"</span><span class="p">:</span> <span class="p">{},</span>
+                        <span class="p">}</span>
 
                 <span class="k">try</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span>
@@ -367,68 +351,7 @@ document.write(`
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                     <span class="s2">"Failed to create an index on collection: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span>
                 <span class="p">)</span>
-                <span class="k">raise</span> <span class="n">e</span>
-
-<div class="viewcode-block" id="Zilliz.from_texts">
-<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.zilliz.Zilliz.html#langchain_milvus.vectorstores.zilliz.Zilliz.from_texts">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_texts</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span>
-        <span class="n">texts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-        <span class="n">embedding</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Embeddings</span><span class="p">,</span> <span class="n">BaseSparseEmbedding</span><span class="p">],</span>
-        <span class="n">metadatas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">collection_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"LangChainCollection"</span><span class="p">,</span>
-        <span class="n">connection_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">consistency_level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Session"</span><span class="p">,</span>
-        <span class="n">index_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">search_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">drop_old</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">auto_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Zilliz</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Create a Zilliz collection, indexes it with HNSW, and insert data.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            texts (List[str]): Text data.</span>
-<span class="sd">            embedding (Embeddings): Embedding function.</span>
-<span class="sd">            metadatas (Optional[List[dict]]): Metadata for each text if it exists.</span>
-<span class="sd">                Defaults to None.</span>
-<span class="sd">            collection_name (str, optional): Collection name to use. Defaults to</span>
-<span class="sd">                "LangChainCollection".</span>
-<span class="sd">            connection_args (dict[str, Any], optional): Connection args to use. Defaults</span>
-<span class="sd">                to DEFAULT_MILVUS_CONNECTION.</span>
-<span class="sd">            consistency_level (str, optional): Which consistency level to use. Defaults</span>
-<span class="sd">                to "Session".</span>
-<span class="sd">            index_params (Optional[dict], optional): Which index_params to use.</span>
-<span class="sd">                Defaults to None.</span>
-<span class="sd">            search_params (Optional[dict], optional): Which search params to use.</span>
-<span class="sd">                Defaults to None.</span>
-<span class="sd">            drop_old (Optional[bool], optional): Whether to drop the collection with</span>
-<span class="sd">                that name if it exists. Defaults to False.</span>
-<span class="sd">            ids (Optional[List[str]]): List of text ids.</span>
-<span class="sd">            auto_id (bool): Whether to enable auto id for primary key. Defaults to</span>
-<span class="sd">                False. If False, you needs to provide text ids (string less than 65535</span>
-<span class="sd">                bytes). If True, Milvus will generate unique integers as primary keys.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Zilliz: Zilliz Vector Store</span>
-<span class="sd">        """</span>
-        <span class="n">vector_db</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">embedding_function</span><span class="o">=</span><span class="n">embedding</span><span class="p">,</span>
-            <span class="n">collection_name</span><span class="o">=</span><span class="n">collection_name</span><span class="p">,</span>
-            <span class="n">connection_args</span><span class="o">=</span><span class="n">connection_args</span> <span class="ow">or</span> <span class="p">{},</span>
-            <span class="n">consistency_level</span><span class="o">=</span><span class="n">consistency_level</span><span class="p">,</span>
-            <span class="n">index_params</span><span class="o">=</span><span class="n">index_params</span><span class="p">,</span>
-            <span class="n">search_params</span><span class="o">=</span><span class="n">search_params</span><span class="p">,</span>
-            <span class="n">drop_old</span><span class="o">=</span><span class="n">drop_old</span><span class="p">,</span>
-            <span class="n">auto_id</span><span class="o">=</span><span class="n">auto_id</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">vector_db</span><span class="o">.</span><span class="n">add_texts</span><span class="p">(</span><span class="n">texts</span><span class="o">=</span><span class="n">texts</span><span class="p">,</span> <span class="n">metadatas</span><span class="o">=</span><span class="n">metadatas</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">ids</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">vector_db</span></div>
-</div>
+                <span class="k">raise</span> <span class="n">e</span></div>
 
 </pre></div>
 </article>

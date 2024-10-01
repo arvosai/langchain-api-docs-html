@@ -36,11 +36,11 @@
 <script>DOCUMENTATION_OPTIONS.pagename = 'community/llms/langchain_community.llms.ollama.Ollama';</script>
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
-<link href="langchain_community.llms.ollama.OllamaEndpointNotFoundError.html" rel="next" title="OllamaEndpointNotFoundError"/>
-<link href="langchain_community.llms.octoai_endpoint.OctoAIEndpoint.html" rel="prev" title="OctoAIEndpoint"/>
+<link href="langchain_community.llms.openai.AzureOpenAI.html" rel="next" title="AzureOpenAI"/>
+<link href="langchain_community.llms.huggingface_text_gen_inference.HuggingFaceTextGenInference.html" rel="prev" title="HuggingFaceTextGenInference"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -316,7 +316,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.oci_generative_ai.OCIGenAIBase.html">OCIGenAIBase</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.oci_generative_ai.Provider.html">Provider</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.octoai_endpoint.OctoAIEndpoint.html">OctoAIEndpoint</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Ollama</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.ollama.OllamaEndpointNotFoundError.html">OllamaEndpointNotFoundError</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.opaqueprompts.OpaquePrompts.html">OpaquePrompts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.openai.BaseOpenAI.html">BaseOpenAI</a></li>
@@ -409,6 +408,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.huggingface_hub.HuggingFaceHub.html">HuggingFaceHub</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.huggingface_pipeline.HuggingFacePipeline.html">HuggingFacePipeline</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.huggingface_text_gen_inference.HuggingFaceTextGenInference.html">HuggingFaceTextGenInference</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Ollama</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.openai.AzureOpenAI.html">AzureOpenAI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.openai.OpenAI.html">OpenAI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.openai.OpenAIChat.html">OpenAIChat</a></li>
@@ -504,6 +504,9 @@ document.write(`
 <dt class="sig sig-object py" id="langchain_community.llms.ollama.Ollama">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_community.llms.ollama.</span></span><span class="sig-name descname"><span class="pre">Ollama</span></span><a class="reference internal" href="../../_modules/langchain_community/llms/ollama.html#Ollama"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.llms.ollama.Ollama" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../core/language_models/langchain_core.language_models.llms.BaseLLM.html#langchain_core.language_models.llms.BaseLLM" title="langchain_core.language_models.llms.BaseLLM"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLLM</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">_OllamaCommon</span></code></p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.3.1: </span>Use <code class="docutils literal notranslate"><span class="pre">:class:`~langchain_ollama.OllamaLLM`</span></code> instead.</p>
+</div>
 <p>Ollama locally runs large language models.
 To use, follow the instructions at <a class="reference external" href="https://ollama.ai/">https://ollama.ai/</a>.
 .. rubric:: Example</p>

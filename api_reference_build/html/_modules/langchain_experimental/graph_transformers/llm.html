@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Sep 30, 2024" name="docbuild:last-update"/>
+<meta content="Oct 01, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -243,6 +243,8 @@ document.write(`
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">langchain_core.runnables</span> <span class="kn">import</span> <span class="n">RunnableConfig</span>
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">create_model</span>
+
+<span class="n">DEFAULT_NODE_TYPE</span> <span class="o">=</span> <span class="s2">"Node"</span>
 
 <span class="n">examples</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
@@ -726,7 +728,7 @@ document.write(`
         <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="n">Node</span><span class="p">(</span>
                 <span class="nb">id</span><span class="o">=</span><span class="n">node</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span>
-                <span class="nb">type</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">,</span> <span class="s2">"Node"</span><span class="p">),</span>
+                <span class="nb">type</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">,</span> <span class="n">DEFAULT_NODE_TYPE</span><span class="p">),</span>
                 <span class="n">properties</span><span class="o">=</span><span class="n">node_properties</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -749,7 +751,7 @@ document.write(`
                     <span class="k">if</span> <span class="n">el</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="o">==</span> <span class="n">rel</span><span class="p">[</span><span class="s2">"source_node_id"</span><span class="p">]</span>
                 <span class="p">][</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-                <span class="n">rel</span><span class="p">[</span><span class="s2">"source_node_type"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">rel</span><span class="p">[</span><span class="s2">"source_node_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_NODE_TYPE</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"target_node_type"</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">rel</span><span class="p">[</span><span class="s2">"target_node_type"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
@@ -758,7 +760,7 @@ document.write(`
                     <span class="k">if</span> <span class="n">el</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="o">==</span> <span class="n">rel</span><span class="p">[</span><span class="s2">"target_node_id"</span><span class="p">]</span>
                 <span class="p">][</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-                <span class="n">rel</span><span class="p">[</span><span class="s2">"target_node_type"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">rel</span><span class="p">[</span><span class="s2">"target_node_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_NODE_TYPE</span>
 
         <span class="n">rel_properties</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="s2">"properties"</span> <span class="ow">in</span> <span class="n">rel</span> <span class="ow">and</span> <span class="n">rel</span><span class="p">[</span><span class="s2">"properties"</span><span class="p">]:</span>
@@ -790,7 +792,7 @@ document.write(`
             <span class="nb">id</span><span class="o">=</span><span class="n">el</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">el</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="n">el</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>  <span class="c1"># type: ignore[arg-type]</span>
             <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">type</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># handle empty strings  # type: ignore[arg-type]</span>
+            <span class="k">else</span> <span class="n">DEFAULT_NODE_TYPE</span><span class="p">,</span>  <span class="c1"># handle empty strings  # type: ignore[arg-type]</span>
             <span class="n">properties</span><span class="o">=</span><span class="n">el</span><span class="o">.</span><span class="n">properties</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">nodes</span>
@@ -1015,11 +1017,15 @@ document.write(`
                     <span class="k">continue</span>
                 <span class="c1"># Nodes need to be deduplicated using a set</span>
                 <span class="c1"># Use default Node label for nodes if missing</span>
-                <span class="n">nodes_set</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">rel</span><span class="p">[</span><span class="s2">"head"</span><span class="p">],</span> <span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"head_type"</span><span class="p">,</span> <span class="s2">"Node"</span><span class="p">)))</span>
-                <span class="n">nodes_set</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">rel</span><span class="p">[</span><span class="s2">"tail"</span><span class="p">],</span> <span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tail_type"</span><span class="p">,</span> <span class="s2">"Node"</span><span class="p">)))</span>
+                <span class="n">nodes_set</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">rel</span><span class="p">[</span><span class="s2">"head"</span><span class="p">],</span> <span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"head_type"</span><span class="p">,</span> <span class="n">DEFAULT_NODE_TYPE</span><span class="p">)))</span>
+                <span class="n">nodes_set</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">rel</span><span class="p">[</span><span class="s2">"tail"</span><span class="p">],</span> <span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tail_type"</span><span class="p">,</span> <span class="n">DEFAULT_NODE_TYPE</span><span class="p">)))</span>
 
-                <span class="n">source_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">rel</span><span class="p">[</span><span class="s2">"head"</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"head_type"</span><span class="p">,</span> <span class="s2">"Node"</span><span class="p">))</span>
-                <span class="n">target_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">rel</span><span class="p">[</span><span class="s2">"tail"</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tail_type"</span><span class="p">,</span> <span class="s2">"Node"</span><span class="p">))</span>
+                <span class="n">source_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
+                    <span class="nb">id</span><span class="o">=</span><span class="n">rel</span><span class="p">[</span><span class="s2">"head"</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"head_type"</span><span class="p">,</span> <span class="n">DEFAULT_NODE_TYPE</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">target_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
+                    <span class="nb">id</span><span class="o">=</span><span class="n">rel</span><span class="p">[</span><span class="s2">"tail"</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tail_type"</span><span class="p">,</span> <span class="n">DEFAULT_NODE_TYPE</span><span class="p">)</span>
+                <span class="p">)</span>
                 <span class="n">relationships</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">Relationship</span><span class="p">(</span>
                         <span class="n">source</span><span class="o">=</span><span class="n">source_node</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target_node</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">rel</span><span class="p">[</span><span class="s2">"relation"</span><span class="p">]</span>
@@ -1101,11 +1107,15 @@ document.write(`
                     <span class="k">continue</span>
                 <span class="c1"># Nodes need to be deduplicated using a set</span>
                 <span class="c1"># Use default Node label for nodes if missing</span>
-                <span class="n">nodes_set</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">rel</span><span class="p">[</span><span class="s2">"head"</span><span class="p">],</span> <span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"head_type"</span><span class="p">,</span> <span class="s2">"Node"</span><span class="p">)))</span>
-                <span class="n">nodes_set</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">rel</span><span class="p">[</span><span class="s2">"tail"</span><span class="p">],</span> <span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tail_type"</span><span class="p">,</span> <span class="s2">"Node"</span><span class="p">)))</span>
+                <span class="n">nodes_set</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">rel</span><span class="p">[</span><span class="s2">"head"</span><span class="p">],</span> <span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"head_type"</span><span class="p">,</span> <span class="n">DEFAULT_NODE_TYPE</span><span class="p">)))</span>
+                <span class="n">nodes_set</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">rel</span><span class="p">[</span><span class="s2">"tail"</span><span class="p">],</span> <span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tail_type"</span><span class="p">,</span> <span class="n">DEFAULT_NODE_TYPE</span><span class="p">)))</span>
 
-                <span class="n">source_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">rel</span><span class="p">[</span><span class="s2">"head"</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"head_type"</span><span class="p">,</span> <span class="s2">"Node"</span><span class="p">))</span>
-                <span class="n">target_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">rel</span><span class="p">[</span><span class="s2">"tail"</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tail_type"</span><span class="p">,</span> <span class="s2">"Node"</span><span class="p">))</span>
+                <span class="n">source_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
+                    <span class="nb">id</span><span class="o">=</span><span class="n">rel</span><span class="p">[</span><span class="s2">"head"</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"head_type"</span><span class="p">,</span> <span class="n">DEFAULT_NODE_TYPE</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">target_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
+                    <span class="nb">id</span><span class="o">=</span><span class="n">rel</span><span class="p">[</span><span class="s2">"tail"</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tail_type"</span><span class="p">,</span> <span class="n">DEFAULT_NODE_TYPE</span><span class="p">)</span>
+                <span class="p">)</span>
                 <span class="n">relationships</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">Relationship</span><span class="p">(</span>
                         <span class="n">source</span><span class="o">=</span><span class="n">source_node</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target_node</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">rel</span><span class="p">[</span><span class="s2">"relation"</span><span class="p">]</span>
