@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 02, 2024" name="docbuild:last-update"/>
+<meta content="Oct 03, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -614,7 +614,17 @@ document.write(`
             <span class="p">):</span>
                 <span class="k">return</span>
 
-            <span class="k">elif</span> <span class="p">(</span>
+            <span class="n">generation_chunk</span> <span class="o">=</span> <span class="n">_stream_response_to_generation_chunk</span><span class="p">(</span>
+                <span class="n">chunk_obj</span><span class="p">,</span>
+                <span class="n">provider</span><span class="o">=</span><span class="n">provider</span><span class="p">,</span>
+                <span class="n">output_key</span><span class="o">=</span><span class="n">output_key</span><span class="p">,</span>
+                <span class="n">messages_api</span><span class="o">=</span><span class="n">messages_api</span><span class="p">,</span>
+                <span class="n">coerce_content_to_string</span><span class="o">=</span><span class="n">coerce_content_to_string</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">generation_chunk</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">generation_chunk</span>
+
+            <span class="k">if</span> <span class="p">(</span>
                 <span class="n">provider</span> <span class="o">==</span> <span class="s2">"mistral"</span>
                 <span class="ow">and</span> <span class="n">chunk_obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">output_key</span><span class="p">,</span> <span class="p">[{}])[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"stop_reason"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"stop"</span>
             <span class="p">):</span>
@@ -627,19 +637,7 @@ document.write(`
 
             <span class="k">elif</span> <span class="n">messages_api</span> <span class="ow">and</span> <span class="p">(</span><span class="n">chunk_obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"message_stop"</span><span class="p">):</span>
                 <span class="k">yield</span> <span class="n">_get_invocation_metrics_chunk</span><span class="p">(</span><span class="n">chunk_obj</span><span class="p">)</span>
-                <span class="k">return</span>
-
-            <span class="n">generation_chunk</span> <span class="o">=</span> <span class="n">_stream_response_to_generation_chunk</span><span class="p">(</span>
-                <span class="n">chunk_obj</span><span class="p">,</span>
-                <span class="n">provider</span><span class="o">=</span><span class="n">provider</span><span class="p">,</span>
-                <span class="n">output_key</span><span class="o">=</span><span class="n">output_key</span><span class="p">,</span>
-                <span class="n">messages_api</span><span class="o">=</span><span class="n">messages_api</span><span class="p">,</span>
-                <span class="n">coerce_content_to_string</span><span class="o">=</span><span class="n">coerce_content_to_string</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">generation_chunk</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">generation_chunk</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">continue</span></div>
+                <span class="k">return</span></div>
 
 
 <div class="viewcode-block" id="LLMInputOutputAdapter.aprepare_output_stream">

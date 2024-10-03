@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 02, 2024" name="docbuild:last-update"/>
+<meta content="Oct 03, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -276,6 +276,8 @@ document.write(`
 <span class="sd">        content_field: Name of the column storing document content (default: "content").</span>
 <span class="sd">        embedding_field: Name of the column storing text embeddings (default:</span>
 <span class="sd">            "embedding").</span>
+<span class="sd">        temp_dataset_name: Name of the BigQuery dataset to be used to upload temporary</span>
+<span class="sd">            BQ tables. If None, will default to "{dataset_name}_temp".</span>
 <span class="sd">        doc_id_field: Name of the column storing document IDs (default: "doc_id").</span>
 <span class="sd">        credentials: Optional Google Cloud credentials object.</span>
 <span class="sd">        embedding_dimension: Dimension of the embedding vectors (inferred if not</span>
@@ -297,6 +299,7 @@ document.write(`
     <span class="n">content_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"content"</span>
     <span class="n">embedding_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"embedding"</span>
     <span class="n">doc_id_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"doc_id"</span>
+    <span class="n">temp_dataset_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">credentials</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">embedding_dimension</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">extra_fields</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -367,17 +370,20 @@ document.write(`
         <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_dimension</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">embedding_dimension</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="s2">"test"</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_dataset_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">temp_dataset_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">_temp"</span>
         <span class="n">full_table_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">project_id</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table_name</span><span class="si">}</span><span class="s2">"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_full_table_id</span> <span class="o">=</span> <span class="n">full_table_id</span>
-        <span class="n">temp_dataset_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">_temp"</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">check_bq_dataset_exists</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_bq_client</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_name</span>
         <span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_bq_client</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">exists_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">check_bq_dataset_exists</span><span class="p">(</span>
-            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_bq_client</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="n">temp_dataset_id</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_bq_client</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dataset_name</span>
         <span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_bq_client</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">temp_dataset_id</span><span class="p">,</span> <span class="n">exists_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bq_client</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span>
+                <span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dataset_name</span><span class="p">,</span> <span class="n">exists_ok</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
         <span class="n">table_ref</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">full_table_id</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bq_client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">,</span> <span class="n">exists_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
@@ -462,18 +468,6 @@ document.write(`
                         <span class="n">expected_modes</span><span class="o">=</span><span class="p">[</span><span class="s2">"NULLABLE"</span><span class="p">,</span> <span class="s2">"REQUIRED"</span><span class="p">],</span>
                     <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Table </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">full_table_id</span><span class="si">}</span><span class="s2"> validated"</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">table_ref</span>
-
-    <span class="k">def</span> <span class="nf">_initialize_bq_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Validates or creates the BigQuery table."""</span>
-        <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery</span>  <span class="c1"># type: ignore[attr-defined]</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bq_client</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">exists_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bq_client</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span>
-            <span class="n">dataset</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">_temp"</span><span class="p">,</span> <span class="n">exists_ok</span><span class="o">=</span><span class="kc">True</span>
-        <span class="p">)</span>
-        <span class="n">table_ref</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_table_id</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bq_client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">,</span> <span class="n">exists_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">table_ref</span>
 
     <span class="k">def</span> <span class="nf">add_texts</span><span class="p">(</span>  <span class="c1"># type: ignore[override]</span>

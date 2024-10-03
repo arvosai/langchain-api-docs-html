@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 02, 2024" name="docbuild:last-update"/>
+<meta content="Oct 03, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -513,7 +513,7 @@ document.write(`
     <span class="n">fn_description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""Create a pydantic model with a subset of the model fields."""</span>
-    <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">create_model</span>
+    <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">create_model</span>
     <span class="kn">from</span> <span class="nn">pydantic.fields</span> <span class="kn">import</span> <span class="n">FieldInfo</span>
 
     <span class="n">descriptions_</span> <span class="o">=</span> <span class="n">descriptions</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -525,7 +525,10 @@ document.write(`
         <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
             <span class="n">field_info</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">metadata</span>
         <span class="n">fields</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">annotation</span><span class="p">,</span> <span class="n">field_info</span><span class="p">)</span>
-    <span class="n">rtn</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">fields</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+    <span class="n">rtn</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+        <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">fields</span><span class="p">,</span> <span class="n">__config__</span><span class="o">=</span><span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="p">)</span>
 
     <span class="c1"># TODO(0.3): Determine if there is a more "pydantic" way to preserve annotations.</span>
     <span class="c1"># This is done to preserve __annotations__ when working with pydantic 2.x</span>

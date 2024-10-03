@@ -38,7 +38,7 @@
 <link href="../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 02, 2024" name="docbuild:last-update"/>
+<meta content="Oct 03, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -460,17 +460,19 @@ document.write(`
 
     <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">"""Filter expression."""</span>
+    <span class="n">order_by</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Comma-separated list of fields to order by."""</span>
+    <span class="n">canonical_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Canonical filter expression."""</span>
     <span class="n">get_extractive_answers</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="w">    </span><span class="sd">"""If True return Extractive Answers, otherwise return Extractive Segments or Snippets."""</span>  <span class="c1"># noqa: E501</span>
     <span class="n">max_documents</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">"""The maximum number of documents to return."""</span>
-    <span class="n">max_extractive_answer_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">"""The maximum number of extractive answers returned in each search result.</span>
-<span class="sd">    Currently one extractive answer will be returned for each SearchResult.</span>
+    <span class="n">max_extractive_answer_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""The maximum number of extractive answers to return per search result.</span>
 <span class="sd">    """</span>
-    <span class="n">max_extractive_segment_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">"""The maximum number of extractive segments returned in each search result.</span>
-<span class="sd">    Currently one segment will be returned for each SearchResult.</span>
+    <span class="n">max_extractive_segment_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""The maximum number of extractive segments to return per search result.</span>
 <span class="sd">    """</span>
     <span class="n">return_extractive_segment_score</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="w">    </span><span class="sd">"""If set to True, the relevance score for each extractive segment will be included</span>
@@ -616,6 +618,8 @@ document.write(`
         <span class="k">return</span> <span class="n">SearchRequest</span><span class="p">(</span>
             <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
             <span class="nb">filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">,</span>
+            <span class="n">order_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_by</span><span class="p">,</span>
+            <span class="n">canonical_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">canonical_filter</span><span class="p">,</span>
             <span class="n">serving_config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_serving_config</span><span class="p">,</span>
             <span class="n">page_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_documents</span><span class="p">,</span>
             <span class="n">content_search_spec</span><span class="o">=</span><span class="n">content_search_spec</span><span class="p">,</span>

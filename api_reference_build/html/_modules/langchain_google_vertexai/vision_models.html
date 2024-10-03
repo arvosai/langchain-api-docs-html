@@ -38,7 +38,7 @@
 <link href="../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 02, 2024" name="docbuild:last-update"/>
+<meta content="Oct 03, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -239,11 +239,12 @@ document.write(`
 <span class="kn">from</span> <span class="nn">langchain_core.outputs.chat_generation</span> <span class="kn">import</span> <span class="n">ChatGeneration</span>
 <span class="kn">from</span> <span class="nn">langchain_core.outputs.generation</span> <span class="kn">import</span> <span class="n">Generation</span>
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span>
-<span class="kn">from</span> <span class="nn">vertexai.preview.vision_models</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># type: ignore[import-untyped]</span>
+<span class="kn">from</span> <span class="nn">vertexai.vision_models</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># type: ignore[import-untyped]</span>
     <span class="n">GeneratedImage</span><span class="p">,</span>
+    <span class="n">Image</span><span class="p">,</span>
     <span class="n">ImageGenerationModel</span><span class="p">,</span>
+    <span class="n">ImageTextModel</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">vertexai.vision_models</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageTextModel</span>  <span class="c1"># type: ignore[import-untyped]</span>
 
 <span class="kn">from</span> <span class="nn">langchain_google_vertexai._image_utils</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">ImageBytesLoader</span><span class="p">,</span>
@@ -326,7 +327,7 @@ document.write(`
     <span class="k">def</span> <span class="nf">_prepare_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_params</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">params</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">return</span> <span class="n">params</span>
 
@@ -339,6 +340,7 @@ document.write(`
         <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="p">,</span>
         <span class="n">number_of_results</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Uses the sdk methods to generate a list of captions.</span>
 
@@ -352,7 +354,7 @@ document.write(`
 <span class="sd">        """</span>
         <span class="k">with</span> <span class="n">telemetry</span><span class="o">.</span><span class="n">tool_context_manager</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user_agent</span><span class="p">):</span>
             <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_params</span><span class="p">(</span>
-                <span class="n">number_of_results</span><span class="o">=</span><span class="n">number_of_results</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">language</span>
+                <span class="n">number_of_results</span><span class="o">=</span><span class="n">number_of_results</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
             <span class="p">)</span>
             <span class="n">captions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_captions</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">captions</span>
@@ -458,7 +460,7 @@ document.write(`
                 <span class="s2">"{'type': 'image_url', 'image_url': {'image': &lt;image_str&gt;}}"</span>
             <span class="p">)</span>
 
-        <span class="n">captions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_captions</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="o">**</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="p">)</span>
+        <span class="n">captions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_captions</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="o">**</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="n">generations</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">ChatGeneration</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">AIMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">caption</span><span class="p">))</span> <span class="k">for</span> <span class="n">caption</span> <span class="ow">in</span> <span class="n">captions</span>
@@ -524,7 +526,7 @@ document.write(`
             <span class="p">)</span>
 
         <span class="n">answers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ask_questions</span><span class="p">(</span>
-            <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">user_question</span><span class="p">,</span> <span class="o">**</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">additional_kwargs</span>
+            <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">user_question</span><span class="p">,</span> <span class="o">**</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
         <span class="n">generations</span> <span class="o">=</span> <span class="p">[</span>
@@ -599,7 +601,7 @@ document.write(`
         <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"number_of_results"</span><span class="p">:</span> <span class="s2">"number_of_images"</span><span class="p">}</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">key</span> <span class="o">=</span> <span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">params</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
 
@@ -717,7 +719,7 @@ document.write(`
             <span class="p">)</span>
 
         <span class="n">image_str_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_images</span><span class="p">(</span>
-            <span class="n">prompt</span><span class="o">=</span><span class="n">user_query</span><span class="p">,</span> <span class="o">**</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">additional_kwargs</span>
+            <span class="n">prompt</span><span class="o">=</span><span class="n">user_query</span><span class="p">,</span> <span class="o">**</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
         <span class="n">image_content_part_list</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">create_image_content_part</span><span class="p">(</span><span class="n">image_str</span><span class="o">=</span><span class="n">image_str</span><span class="p">)</span>
@@ -769,7 +771,10 @@ document.write(`
             <span class="p">)</span>
 
         <span class="n">image_str_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edit_images</span><span class="p">(</span>
-            <span class="n">image_str</span><span class="o">=</span><span class="n">image_str</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">user_query</span><span class="p">,</span> <span class="o">**</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">additional_kwargs</span>
+            <span class="n">image_str</span><span class="o">=</span><span class="n">image_str</span><span class="p">,</span>
+            <span class="n">prompt</span><span class="o">=</span><span class="n">user_query</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">image_content_part_list</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">create_image_content_part</span><span class="p">(</span><span class="n">image_str</span><span class="o">=</span><span class="n">image_str</span><span class="p">)</span>
