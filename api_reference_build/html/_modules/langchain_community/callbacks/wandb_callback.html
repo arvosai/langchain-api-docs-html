@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 03, 2024" name="docbuild:last-update"/>
+<meta content="Oct 04, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -233,6 +233,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
 
+<span class="kn">from</span> <span class="nn">langchain_core._api</span> <span class="kn">import</span> <span class="n">warn_deprecated</span>
 <span class="kn">from</span> <span class="nn">langchain_core.agents</span> <span class="kn">import</span> <span class="n">AgentAction</span><span class="p">,</span> <span class="n">AgentFinish</span>
 <span class="kn">from</span> <span class="nn">langchain_core.callbacks</span> <span class="kn">import</span> <span class="n">BaseCallbackHandler</span>
 <span class="kn">from</span> <span class="nn">langchain_core.outputs</span> <span class="kn">import</span> <span class="n">LLMResult</span>
@@ -450,7 +451,23 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">action_records</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">complexity_metrics</span> <span class="o">=</span> <span class="n">complexity_metrics</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">visualize</span> <span class="o">=</span> <span class="n">visualize</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"en_core_web_sm"</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"en_core_web_sm"</span><span class="p">)</span>
+        <span class="n">warn_deprecated</span><span class="p">(</span>
+            <span class="s2">"0.3.8"</span><span class="p">,</span>
+            <span class="n">pending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">"Please use the WeaveTracer instead of the WandbCallbackHandler. "</span>
+                <span class="s2">"The WeaveTracer is a more flexible and powerful tool for logging "</span>
+                <span class="s2">"and tracing your LangChain callables."</span>
+                <span class="s2">"Find more information at https://weave-docs.wandb.ai/guides/integrations/langchain"</span>
+            <span class="p">),</span>
+            <span class="n">alternative</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">"Please instantiate the WeaveTracer from "</span>
+                <span class="s2">"weave.integrations.langchain import WeaveTracer ."</span>
+                <span class="s2">"For autologging simply use weave.init() and log all traces "</span>
+                <span class="s2">"from your LangChain callables."</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
 
 
     <span class="k">def</span> <span class="nf">_init_resp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>

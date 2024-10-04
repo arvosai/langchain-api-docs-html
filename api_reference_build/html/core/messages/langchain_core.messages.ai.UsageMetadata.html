@@ -37,10 +37,10 @@
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
 <link href="langchain_core.messages.base.BaseMessage.html" rel="next" title="BaseMessage"/>
-<link href="langchain_core.messages.ai.AIMessageChunk.html" rel="prev" title="AIMessageChunk"/>
+<link href="langchain_core.messages.ai.OutputTokenDetails.html" rel="prev" title="OutputTokenDetails"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 03, 2024" name="docbuild:last-update"/>
+<meta content="Oct 04, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -229,6 +229,8 @@ document.write(`
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../messages.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">messages</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.ai.AIMessage.html">AIMessage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.ai.AIMessageChunk.html">AIMessageChunk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.ai.InputTokenDetails.html">InputTokenDetails</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.ai.OutputTokenDetails.html">OutputTokenDetails</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">UsageMetadata</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.base.BaseMessage.html">BaseMessage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.base.BaseMessageChunk.html">BaseMessageChunk</a></li>
@@ -362,26 +364,50 @@ document.write(`
 <p>This is a standard representation of token usage that is consistent across models.</p>
 <p class="rubric">Example</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">"input_tokens"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-    <span class="s2">"output_tokens"</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
-    <span class="s2">"total_tokens"</span><span class="p">:</span> <span class="mi">30</span>
+    <span class="s2">"input_tokens"</span><span class="p">:</span> <span class="mi">350</span><span class="p">,</span>
+    <span class="s2">"output_tokens"</span><span class="p">:</span> <span class="mi">240</span><span class="p">,</span>
+    <span class="s2">"total_tokens"</span><span class="p">:</span> <span class="mi">590</span><span class="p">,</span>
+    <span class="s2">"input_token_details"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"audio"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s2">"cache_creation"</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+        <span class="s2">"cache_read"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">"output_token_details"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"audio"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s2">"reasoning"</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.3.9: </span>Added <code class="docutils literal notranslate"><span class="pre">input_token_details</span></code> and <code class="docutils literal notranslate"><span class="pre">output_token_details</span></code>.</p>
 </div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="langchain_core.messages.ai.UsageMetadata.input_tokens">
 <span class="sig-name descname"><span class="pre">input_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#langchain_core.messages.ai.UsageMetadata.input_tokens" title="Link to this definition">#</a></dt>
-<dd><p>Count of input (or prompt) tokens.</p>
+<dd><p>Count of input (or prompt) tokens. Sum of all input token types.</p>
 </dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="langchain_core.messages.ai.UsageMetadata.output_tokens">
 <span class="sig-name descname"><span class="pre">output_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#langchain_core.messages.ai.UsageMetadata.output_tokens" title="Link to this definition">#</a></dt>
-<dd><p>Count of output (or completion) tokens.</p>
+<dd><p>Count of output (or completion) tokens. Sum of all output token types.</p>
 </dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="langchain_core.messages.ai.UsageMetadata.total_tokens">
 <span class="sig-name descname"><span class="pre">total_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#langchain_core.messages.ai.UsageMetadata.total_tokens" title="Link to this definition">#</a></dt>
-<dd><p>Total token count.</p>
+<dd><p>Total token count. Sum of input_tokens + output_tokens.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="langchain_core.messages.ai.UsageMetadata.input_token_details">
+<span class="sig-name descname"><span class="pre">input_token_details</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NotRequired</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="langchain_core.messages.ai.InputTokenDetails.html#langchain_core.messages.ai.InputTokenDetails" title="langchain_core.messages.ai.InputTokenDetails"><span class="pre">InputTokenDetails</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#langchain_core.messages.ai.UsageMetadata.input_token_details" title="Link to this definition">#</a></dt>
+<dd><p>Breakdown of input token counts.</p>
+<p>Does <em>not</em> need to sum to full input token count. Does <em>not</em> need to have all keys.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="langchain_core.messages.ai.UsageMetadata.output_token_details">
+<span class="sig-name descname"><span class="pre">output_token_details</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NotRequired</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="langchain_core.messages.ai.OutputTokenDetails.html#langchain_core.messages.ai.OutputTokenDetails" title="langchain_core.messages.ai.OutputTokenDetails"><span class="pre">OutputTokenDetails</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#langchain_core.messages.ai.UsageMetadata.output_token_details" title="Link to this definition">#</a></dt>
+<dd><p>Breakdown of output token counts.</p>
+<p>Does <em>not</em> need to sum to full output token count. Does <em>not</em> need to have all keys.</p>
 </dd></dl>
 </dd></dl>
 <ul class="simple">
@@ -400,6 +426,8 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_core.messages.ai.UsageMetadata.input_tokens"><code class="docutils literal notranslate"><span class="pre">input_tokens</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_core.messages.ai.UsageMetadata.output_tokens"><code class="docutils literal notranslate"><span class="pre">output_tokens</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_core.messages.ai.UsageMetadata.total_tokens"><code class="docutils literal notranslate"><span class="pre">total_tokens</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_core.messages.ai.UsageMetadata.input_token_details"><code class="docutils literal notranslate"><span class="pre">input_token_details</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_core.messages.ai.UsageMetadata.output_token_details"><code class="docutils literal notranslate"><span class="pre">output_token_details</span></code></a></li>
 </ul>
 </li>
 </ul>

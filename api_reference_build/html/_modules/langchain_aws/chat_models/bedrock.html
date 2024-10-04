@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 03, 2024" name="docbuild:last-update"/>
+<meta content="Oct 04, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -683,9 +683,9 @@ document.write(`
             <span class="n">ls_model_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">,</span>
             <span class="n">ls_model_type</span><span class="o">=</span><span class="s2">"chat"</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="n">ls_temperature</span> <span class="o">:=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"temperature"</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">ls_temperature</span> <span class="o">:=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"temperature"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">):</span>
             <span class="n">ls_params</span><span class="p">[</span><span class="s2">"ls_temperature"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ls_temperature</span>
-        <span class="k">if</span> <span class="n">ls_max_tokens</span> <span class="o">:=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"max_tokens"</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">ls_max_tokens</span> <span class="o">:=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"max_tokens"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span><span class="p">):</span>
             <span class="n">ls_params</span><span class="p">[</span><span class="s2">"ls_max_tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ls_max_tokens</span>
         <span class="k">if</span> <span class="n">ls_stop</span> <span class="o">:=</span> <span class="n">stop</span> <span class="ow">or</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"stop"</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
             <span class="n">ls_params</span><span class="p">[</span><span class="s2">"ls_stop"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ls_stop</span>
@@ -1085,6 +1085,10 @@ document.write(`
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_kwargs</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"stop"</span><span class="p">,</span> <span class="s2">"stop_sequences"</span><span class="p">,</span> <span class="s2">"max_tokens"</span><span class="p">,</span> <span class="s2">"temperature"</span><span class="p">,</span> <span class="s2">"top_p"</span><span class="p">)</span>
         <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"max_tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"temperature"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span>
         <span class="k">return</span> <span class="n">ChatBedrockConverse</span><span class="p">(</span>
             <span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">,</span>
             <span class="n">region_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">region_name</span><span class="p">,</span>

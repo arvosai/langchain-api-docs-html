@@ -40,7 +40,7 @@
 <link href="langchain_aws.llms.bedrock.AnthropicTool.html" rel="prev" title="AnthropicTool"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 03, 2024" name="docbuild:last-update"/>
+<meta content="Oct 04, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -443,6 +443,10 @@ if reason == “GUARDRAIL_INTERVENED”:</p>
 </dl>
 </dd></dl>
 <dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_aws.llms.bedrock.BedrockBase.max_tokens">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_aws.llms.bedrock.BedrockBase.max_tokens" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_aws.llms.bedrock.BedrockBase.metadata">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_aws.llms.bedrock.BedrockBase.metadata" title="Link to this definition">#</a></dt>
 <dd><p>Metadata to add to the run trace.</p>
@@ -478,7 +482,7 @@ associated with them.</p>
 <dd></dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_aws.llms.bedrock.BedrockBase.region_name">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">region_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_aws.llms.bedrock.BedrockBase.region_name" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">region_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'region')</span></em><a class="headerlink" href="#langchain_aws.llms.bedrock.BedrockBase.region_name" title="Link to this definition">#</a></dt>
 <dd><p>The aws region e.g., <cite>us-west-2</cite>. Fallsback to AWS_DEFAULT_REGION env variable
 or region specified in ~/.aws/config in case it is not provided here.</p>
 </dd></dl>
@@ -492,6 +496,10 @@ or region specified in ~/.aws/config in case it is not provided here.</p>
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tags</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_aws.llms.bedrock.BedrockBase.tags" title="Link to this definition">#</a></dt>
 <dd><p>Tags to add to the run trace.</p>
 </dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_aws.llms.bedrock.BedrockBase.temperature">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">temperature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_aws.llms.bedrock.BedrockBase.temperature" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_aws.llms.bedrock.BedrockBase.verbose">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">verbose</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"> <span class="pre">[Optional]</span></em><a class="headerlink" href="#langchain_aws.llms.bedrock.BedrockBase.verbose" title="Link to this definition">#</a></dt>
@@ -1490,6 +1498,7 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.custom_get_token_ids"><code class="docutils literal notranslate"><span class="pre">custom_get_token_ids</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.endpoint_url"><code class="docutils literal notranslate"><span class="pre">endpoint_url</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.guardrails"><code class="docutils literal notranslate"><span class="pre">guardrails</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.max_tokens"><code class="docutils literal notranslate"><span class="pre">max_tokens</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.metadata"><code class="docutils literal notranslate"><span class="pre">metadata</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.model_id"><code class="docutils literal notranslate"><span class="pre">model_id</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.model_kwargs"><code class="docutils literal notranslate"><span class="pre">model_kwargs</span></code></a></li>
@@ -1499,6 +1508,7 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.region_name"><code class="docutils literal notranslate"><span class="pre">region_name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.streaming"><code class="docutils literal notranslate"><span class="pre">streaming</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.tags"><code class="docutils literal notranslate"><span class="pre">tags</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.temperature"><code class="docutils literal notranslate"><span class="pre">temperature</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.verbose"><code class="docutils literal notranslate"><span class="pre">verbose</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.abatch"><code class="docutils literal notranslate"><span class="pre">abatch()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.abatch_as_completed"><code class="docutils literal notranslate"><span class="pre">abatch_as_completed()</span></code></a></li>

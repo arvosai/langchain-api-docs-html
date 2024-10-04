@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 03, 2024" name="docbuild:last-update"/>
+<meta content="Oct 04, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -231,7 +231,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">model_validator</span>
-<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Self</span><span class="p">,</span> <span class="n">TypedDict</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">NotRequired</span><span class="p">,</span> <span class="n">Self</span><span class="p">,</span> <span class="n">TypedDict</span>
 
 <span class="kn">from</span> <span class="nn">langchain_core.messages.base</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">BaseMessage</span><span class="p">,</span>
@@ -258,6 +258,72 @@ document.write(`
 <span class="kn">from</span> <span class="nn">langchain_core.utils.json</span> <span class="kn">import</span> <span class="n">parse_partial_json</span>
 
 
+<div class="viewcode-block" id="InputTokenDetails">
+<a class="viewcode-back" href="../../../core/messages/langchain_core.messages.ai.InputTokenDetails.html#langchain_core.messages.ai.InputTokenDetails">[docs]</a>
+<span class="k">class</span> <span class="nc">InputTokenDetails</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Breakdown of input token counts.</span>
+
+<span class="sd">    Does *not* need to sum to full input token count. Does *not* need to have all keys.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            {</span>
+<span class="sd">                "audio": 10,</span>
+<span class="sd">                "cache_creation": 200,</span>
+<span class="sd">                "cache_read": 100,</span>
+<span class="sd">            }</span>
+
+<span class="sd">    .. versionadded:: 0.3.9</span>
+<span class="sd">    """</span>
+
+    <span class="n">audio</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">"""Audio input tokens."""</span>
+    <span class="n">cache_creation</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">"""Input tokens that were cached and there was a cache miss.</span>
+
+<span class="sd">    Since there was a cache miss, the cache was created from these tokens.</span>
+<span class="sd">    """</span>
+    <span class="n">cache_read</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">"""Input tokens that were cached and there was a cache hit.</span>
+
+<span class="sd">    Since there was a cache hit, the tokens were read from the cache. More precisely,</span>
+<span class="sd">    the model state given these tokens was read from the cache.</span>
+<span class="sd">    """</span></div>
+
+
+
+<div class="viewcode-block" id="OutputTokenDetails">
+<a class="viewcode-back" href="../../../core/messages/langchain_core.messages.ai.OutputTokenDetails.html#langchain_core.messages.ai.OutputTokenDetails">[docs]</a>
+<span class="k">class</span> <span class="nc">OutputTokenDetails</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Breakdown of output token counts.</span>
+
+<span class="sd">    Does *not* need to sum to full output token count. Does *not* need to have all keys.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            {</span>
+<span class="sd">                "audio": 10,</span>
+<span class="sd">                "reasoning": 200,</span>
+<span class="sd">            }</span>
+
+<span class="sd">    .. versionadded:: 0.3.9</span>
+<span class="sd">    """</span>
+
+    <span class="n">audio</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">"""Audio output tokens."""</span>
+    <span class="n">reasoning</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">"""Reasoning output tokens.</span>
+
+<span class="sd">    Tokens generated by the model in a chain of thought process (i.e. by OpenAI's o1</span>
+<span class="sd">    models) that are not returned as part of model output.</span>
+<span class="sd">    """</span></div>
+
+
+
 <div class="viewcode-block" id="UsageMetadata">
 <a class="viewcode-back" href="../../../core/messages/langchain_core.messages.ai.UsageMetadata.html#langchain_core.messages.ai.UsageMetadata">[docs]</a>
 <span class="k">class</span> <span class="nc">UsageMetadata</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
@@ -270,18 +336,41 @@ document.write(`
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            {</span>
-<span class="sd">                "input_tokens": 10,</span>
-<span class="sd">                "output_tokens": 20,</span>
-<span class="sd">                "total_tokens": 30</span>
+<span class="sd">                "input_tokens": 350,</span>
+<span class="sd">                "output_tokens": 240,</span>
+<span class="sd">                "total_tokens": 590,</span>
+<span class="sd">                "input_token_details": {</span>
+<span class="sd">                    "audio": 10,</span>
+<span class="sd">                    "cache_creation": 200,</span>
+<span class="sd">                    "cache_read": 100,</span>
+<span class="sd">                },</span>
+<span class="sd">                "output_token_details": {</span>
+<span class="sd">                    "audio": 10,</span>
+<span class="sd">                    "reasoning": 200,</span>
+<span class="sd">                }</span>
 <span class="sd">            }</span>
+
+<span class="sd">    .. versionchanged:: 0.3.9</span>
+
+<span class="sd">        Added ``input_token_details`` and ``output_token_details``.</span>
 <span class="sd">    """</span>
 
     <span class="n">input_tokens</span><span class="p">:</span> <span class="nb">int</span>
-<span class="w">    </span><span class="sd">"""Count of input (or prompt) tokens."""</span>
+<span class="w">    </span><span class="sd">"""Count of input (or prompt) tokens. Sum of all input token types."""</span>
     <span class="n">output_tokens</span><span class="p">:</span> <span class="nb">int</span>
-<span class="w">    </span><span class="sd">"""Count of output (or completion) tokens."""</span>
+<span class="w">    </span><span class="sd">"""Count of output (or completion) tokens. Sum of all output token types."""</span>
     <span class="n">total_tokens</span><span class="p">:</span> <span class="nb">int</span>
-<span class="w">    </span><span class="sd">"""Total token count."""</span></div>
+<span class="w">    </span><span class="sd">"""Total token count. Sum of input_tokens + output_tokens."""</span>
+    <span class="n">input_token_details</span><span class="p">:</span> <span class="n">NotRequired</span><span class="p">[</span><span class="n">InputTokenDetails</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">"""Breakdown of input token counts.</span>
+<span class="sd"> </span>
+<span class="sd">    Does *not* need to sum to full input token count. Does *not* need to have all keys.</span>
+<span class="sd">    """</span>
+    <span class="n">output_token_details</span><span class="p">:</span> <span class="n">NotRequired</span><span class="p">[</span><span class="n">OutputTokenDetails</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">"""Breakdown of output token counts.</span>
+
+<span class="sd">    Does *not* need to sum to full output token count. Does *not* need to have all keys.</span>
+<span class="sd">    """</span></div>
 
 
 
