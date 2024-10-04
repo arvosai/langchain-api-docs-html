@@ -1239,13 +1239,13 @@ document.write(`
 <span class="sd">        supported in Gemini 1.5 and later models. Supported mimetype:</span>
 <span class="sd">            * "text/plain": (default) Text output.</span>
 <span class="sd">            * "application/json": JSON response in the candidates.</span>
+<span class="sd">            * "text/x.enum": Enum in plain text.</span>
 <span class="sd">       The model also needs to be prompted to output the appropriate response</span>
 <span class="sd">       type, otherwise the behavior is undefined. This is a preview feature.</span>
 <span class="sd">    """</span>
 
     <span class="n">response_schema</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">""" Optional. Enforce an schema to the output. Only works when `response_mime_type`</span>
-<span class="sd">        is set to `application/json`.</span>
+<span class="w">    </span><span class="sd">""" Optional. Enforce an schema to the output.</span>
 <span class="sd">        The format of the dictionary should follow Open API schema.</span>
 <span class="sd">    """</span>
 
@@ -1346,10 +1346,11 @@ document.write(`
             <span class="n">updated_params</span><span class="p">[</span><span class="s2">"response_mime_type"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_mime_type</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_mime_type</span> <span class="o">!=</span> <span class="s2">"application/json"</span><span class="p">:</span>
+            <span class="n">allowed_mime_types</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"application/json"</span><span class="p">,</span> <span class="s2">"text/x.enum"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_mime_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_mime_types</span><span class="p">:</span>
                 <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="s2">"`response_schema` is only supported when "</span>
-                    <span class="s2">"`response_mime_type` is set to `application/json`."</span>
+                    <span class="sa">f</span><span class="s2">"`response_mime_type` is set to one of </span><span class="si">{</span><span class="n">allowed_mime_types</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
 
