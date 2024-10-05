@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 04, 2024" name="docbuild:last-update"/>
+<meta content="Oct 05, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -435,6 +435,14 @@ document.write(`
 <span class="sd">                region_name=region_name,</span>
 <span class="sd">                credentials_profile_name=credentials_profile_name</span>
 <span class="sd">            )</span>
+<span class="sd">        </span>
+<span class="sd">            # Usage with Inference Component</span>
+<span class="sd">            se = SagemakerEndpoint(</span>
+<span class="sd">                endpoint_name=endpoint_name,</span>
+<span class="sd">                inference_component_name=inference_component_name,</span>
+<span class="sd">                region_name=region_name,</span>
+<span class="sd">                credentials_profile_name=credentials_profile_name</span>
+<span class="sd">            )</span>
 
 <span class="sd">        #Use with boto3 client</span>
 <span class="sd">            client = boto3.client(</span>
@@ -454,6 +462,10 @@ document.write(`
     <span class="n">endpoint_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
 <span class="w">    </span><span class="sd">"""The name of the endpoint from the deployed Sagemaker model.</span>
 <span class="sd">    Must be unique within an AWS Region."""</span>
+
+    <span class="n">inference_component_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Optional name of the inference component to invoke </span>
+<span class="sd">    if specified with endpoint name."""</span>
 
     <span class="n">region_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
 <span class="w">    </span><span class="sd">"""The aws region where the Sagemaker model is deployed, eg. `us-west-2`."""</span>
@@ -548,6 +560,7 @@ document.write(`
         <span class="n">_model_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="o">**</span><span class="p">{</span><span class="s2">"endpoint_name"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_name</span><span class="p">},</span>
+            <span class="o">**</span><span class="p">{</span><span class="s2">"inference_component_name"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inference_component_name</span><span class="p">},</span>
             <span class="o">**</span><span class="p">{</span><span class="s2">"model_kwargs"</span><span class="p">:</span> <span class="n">_model_kwargs</span><span class="p">},</span>
         <span class="p">}</span>
 
@@ -567,13 +580,19 @@ document.write(`
         <span class="n">_model_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">_model_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">}</span>
         <span class="n">_endpoint_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
 
+        <span class="n">invocation_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"EndpointName"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_name</span><span class="p">,</span>
+            <span class="s2">"Body"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_handler</span><span class="o">.</span><span class="n">transform_input</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">_model_kwargs</span><span class="p">),</span>
+            <span class="s2">"ContentType"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_handler</span><span class="o">.</span><span class="n">content_type</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">_endpoint_kwargs</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1"># If inference_component_name is specified, append it to invocation_params</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inference_component_name</span><span class="p">:</span>
+            <span class="n">invocation_params</span><span class="p">[</span><span class="s2">"InferenceComponentName"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inference_component_name</span>
+
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">invoke_endpoint_with_response_stream</span><span class="p">(</span>
-                <span class="n">EndpointName</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint_name</span><span class="p">,</span>
-                <span class="n">Body</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">content_handler</span><span class="o">.</span><span class="n">transform_input</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">_model_kwargs</span><span class="p">),</span>
-                <span class="n">ContentType</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">content_handler</span><span class="o">.</span><span class="n">content_type</span><span class="p">,</span>
-                <span class="o">**</span><span class="n">_endpoint_kwargs</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">invoke_endpoint_with_response_stream</span><span class="p">(</span><span class="o">**</span><span class="n">invocation_params</span><span class="p">)</span>
             <span class="n">iterator</span> <span class="o">=</span> <span class="n">LineIterator</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s2">"Body"</span><span class="p">])</span>
 
             <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
@@ -601,7 +620,8 @@ document.write(`
         <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Call out to Sagemaker inference endpoint.</span>
+<span class="w">        </span><span class="sd">"""Call out to SageMaker inference endpoint or inference component</span>
+<span class="sd">            of SageMaker inference endpoint.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            prompt: The prompt to pass into the model.</span>
@@ -623,6 +643,18 @@ document.write(`
         <span class="n">content_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_handler</span><span class="o">.</span><span class="n">content_type</span>
         <span class="n">accepts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_handler</span><span class="o">.</span><span class="n">accepts</span>
 
+        <span class="n">invocation_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"EndpointName"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_name</span><span class="p">,</span>
+            <span class="s2">"Body"</span><span class="p">:</span> <span class="n">body</span><span class="p">,</span>
+            <span class="s2">"ContentType"</span><span class="p">:</span> <span class="n">content_type</span><span class="p">,</span>
+            <span class="s2">"Accept"</span><span class="p">:</span> <span class="n">accepts</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">_endpoint_kwargs</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1"># If inference_compoent_name is specified, append it to invocation_params</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inference_component_name</span><span class="p">:</span>
+            <span class="n">invocation_params</span><span class="p">[</span><span class="s2">"InferenceComponentName"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inference_component_name</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span> <span class="ow">and</span> <span class="n">run_manager</span><span class="p">:</span>
             <span class="n">completion</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
             <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">run_manager</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -630,13 +662,7 @@ document.write(`
             <span class="k">return</span> <span class="n">completion</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">invoke_endpoint</span><span class="p">(</span>
-                <span class="n">EndpointName</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint_name</span><span class="p">,</span>
-                <span class="n">Body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
-                <span class="n">ContentType</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span>
-                <span class="n">Accept</span><span class="o">=</span><span class="n">accepts</span><span class="p">,</span>
-                <span class="o">**</span><span class="n">_endpoint_kwargs</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">invoke_endpoint</span><span class="p">(</span><span class="o">**</span><span class="n">invocation_params</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error raised by inference endpoint: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">run_manager</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

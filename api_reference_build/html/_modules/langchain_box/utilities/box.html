@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 04, 2024" name="docbuild:last-update"/>
+<meta content="Oct 05, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -1058,7 +1058,13 @@ document.write(`
                 <span class="sa">f</span><span class="s2">"BoxSDKError: Error getting search results: </span><span class="si">{</span><span class="n">bse</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">ask_box_ai</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">box_file_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">ask_box_ai</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">box_file_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">answer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">citations</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_box_client</span><span class="p">()</span>
 
@@ -1072,13 +1078,16 @@ document.write(`
         <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">file_id</span> <span class="ow">in</span> <span class="n">box_file_ids</span><span class="p">:</span>
-            <span class="n">item</span> <span class="o">=</span> <span class="n">box_sdk_gen</span><span class="o">.</span><span class="n">CreateAiAskItems</span><span class="p">(</span>
-                <span class="nb">id</span><span class="o">=</span><span class="n">file_id</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">box_sdk_gen</span><span class="o">.</span><span class="n">CreateAiAskItemsTypeField</span><span class="o">.</span><span class="n">FILE</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">box_sdk_gen</span><span class="o">.</span><span class="n">AiItemBase</span><span class="p">(</span>
+                <span class="nb">id</span><span class="o">=</span><span class="n">file_id</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">box_sdk_gen</span><span class="o">.</span><span class="n">AiItemBaseTypeField</span><span class="o">.</span><span class="n">FILE</span><span class="o">.</span><span class="n">value</span>
             <span class="p">)</span>
             <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">ai</span><span class="o">.</span><span class="n">create_ai_ask</span><span class="p">(</span><span class="n">ai_mode</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>  <span class="c1">#  type: ignore[union-attr]</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">ai</span><span class="o">.</span><span class="n">create_ai_ask</span><span class="p">(</span>  <span class="c1">#  type: ignore[union-attr]</span>
+                <span class="n">mode</span><span class="o">=</span><span class="n">ai_mode</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">items</span><span class="o">=</span><span class="n">items</span><span class="p">,</span> <span class="n">include_citations</span><span class="o">=</span><span class="n">citations</span>
+            <span class="p">)</span>
+
         <span class="k">except</span> <span class="n">box_sdk_gen</span><span class="o">.</span><span class="n">BoxAPIError</span> <span class="k">as</span> <span class="n">bae</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"BoxAPIError: Error getting Box AI result: </span><span class="si">{</span><span class="n">bae</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span>
@@ -1088,11 +1097,35 @@ document.write(`
                 <span class="sa">f</span><span class="s2">"BoxSDKError: Error getting Box AI result: </span><span class="si">{</span><span class="n">bse</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
-        <span class="n">content</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">answer</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"source"</span><span class="p">:</span> <span class="s2">"Box AI"</span><span class="p">,</span> <span class="s2">"title"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Box AI </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">"</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">answer</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">answer</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"source"</span><span class="p">:</span> <span class="s2">"Box AI"</span><span class="p">,</span> <span class="s2">"title"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Box AI </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">"</span><span class="p">}</span>
 
-        <span class="k">return</span> <span class="p">[</span><span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)]</span>
+            <span class="n">document</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+            <span class="n">docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">citations</span><span class="p">:</span>
+            <span class="n">box_citations</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">citations</span>
+
+            <span class="k">for</span> <span class="n">citation</span> <span class="ow">in</span> <span class="n">box_citations</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">citation</span><span class="o">.</span><span class="n">content</span>
+                <span class="n">file_name</span> <span class="o">=</span> <span class="n">citation</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">file_id</span> <span class="o">=</span> <span class="n">citation</span><span class="o">.</span><span class="n">id</span>
+                <span class="n">file_type</span> <span class="o">=</span> <span class="n">citation</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">value</span>
+
+                <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">"source"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Box AI </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="s2">"file_name"</span><span class="p">:</span> <span class="n">file_name</span><span class="p">,</span>
+                    <span class="s2">"file_id"</span><span class="p">:</span> <span class="n">file_id</span><span class="p">,</span>
+                    <span class="s2">"file_type"</span><span class="p">:</span> <span class="n">file_type</span><span class="p">,</span>
+                <span class="p">}</span>
+
+                <span class="n">document</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+                <span class="n">docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">docs</span>
 </pre></div>
 </article>
 </div>

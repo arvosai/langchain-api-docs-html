@@ -38,7 +38,7 @@
 <link href="../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 04, 2024" name="docbuild:last-update"/>
+<meta content="Oct 05, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -285,13 +285,13 @@ document.write(`
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">langchain_core.tools</span> <span class="kn">import</span> <span class="n">BaseTool</span>
 <span class="kn">from</span> <span class="nn">langchain_core.utils</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">build_extra_kwargs</span><span class="p">,</span>
     <span class="n">from_env</span><span class="p">,</span>
     <span class="n">get_pydantic_field_names</span><span class="p">,</span>
     <span class="n">secret_from_env</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">langchain_core.utils.function_calling</span> <span class="kn">import</span> <span class="n">convert_to_openai_tool</span>
 <span class="kn">from</span> <span class="nn">langchain_core.utils.pydantic</span> <span class="kn">import</span> <span class="n">is_basemodel_subclass</span>
+<span class="kn">from</span> <span class="nn">langchain_core.utils.utils</span> <span class="kn">import</span> <span class="n">_build_model_kwargs</span>
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">BaseModel</span><span class="p">,</span>
     <span class="n">ConfigDict</span><span class="p">,</span>
@@ -347,9 +347,13 @@ document.write(`
     <span class="k">for</span> <span class="n">curr</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
         <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">model_copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">curr</span><span class="p">,</span> <span class="n">ToolMessage</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">curr</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span>
-                <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">block</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"tool_result"</span>
-                <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">curr</span><span class="o">.</span><span class="n">content</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">curr</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">curr</span><span class="o">.</span><span class="n">content</span>
+                <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span>
+                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">block</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"tool_result"</span>
+                    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">curr</span><span class="o">.</span><span class="n">content</span>
+                <span class="p">)</span>
             <span class="p">):</span>
                 <span class="n">curr</span> <span class="o">=</span> <span class="n">HumanMessage</span><span class="p">(</span><span class="n">curr</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>  <span class="c1"># type: ignore[misc]</span>
             <span class="k">else</span><span class="p">:</span>
@@ -877,11 +881,8 @@ document.write(`
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">build_extra</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="n">extra</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model_kwargs"</span><span class="p">,</span> <span class="p">{})</span>
         <span class="n">all_required_field_names</span> <span class="o">=</span> <span class="n">get_pydantic_field_names</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
-        <span class="n">values</span><span class="p">[</span><span class="s2">"model_kwargs"</span><span class="p">]</span> <span class="o">=</span> <span class="n">build_extra_kwargs</span><span class="p">(</span>
-            <span class="n">extra</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">all_required_field_names</span>
-        <span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">_build_model_kwargs</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">all_required_field_names</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
 
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
@@ -1499,7 +1500,12 @@ document.write(`
         <span class="s2">"cache_creation"</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">anthropic_usage</span><span class="p">,</span> <span class="s2">"cache_creation_input_tokens"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
     <span class="p">}</span>
 
-    <span class="n">input_tokens</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">anthropic_usage</span><span class="p">,</span> <span class="s2">"input_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># Anthropic input_tokens exclude cached token counts.</span>
+    <span class="n">input_tokens</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">anthropic_usage</span><span class="p">,</span> <span class="s2">"input_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">input_token_details</span><span class="p">[</span><span class="s2">"cache_read"</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">input_token_details</span><span class="p">[</span><span class="s2">"cache_creation"</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">)</span>
     <span class="n">output_tokens</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">anthropic_usage</span><span class="p">,</span> <span class="s2">"output_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">UsageMetadata</span><span class="p">(</span>
         <span class="n">input_tokens</span><span class="o">=</span><span class="n">input_tokens</span><span class="p">,</span>

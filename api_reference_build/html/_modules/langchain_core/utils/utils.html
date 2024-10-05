@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 04, 2024" name="docbuild:last-update"/>
+<meta content="Oct 05, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -457,6 +457,51 @@ document.write(`
 
 
 
+<span class="k">def</span> <span class="nf">_build_model_kwargs</span><span class="p">(</span>
+    <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">all_required_field_names</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Build "model_kwargs" param from Pydanitc constructor values.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        values: All init args passed in by user.</span>
+<span class="sd">        all_required_field_names: All required field names for the pydantic class.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dict[str, Any]: Extra kwargs.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If a field is specified in both values and extra_kwargs.</span>
+<span class="sd">        ValueError: If a field is specified in model_kwargs.</span>
+<span class="sd">    """</span>
+    <span class="n">extra_kwargs</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model_kwargs"</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">extra_kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Found </span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2"> supplied twice."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">field_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_required_field_names</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"""WARNING! </span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2"> is not default parameter.</span>
+<span class="s2">                </span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2"> was transferred to model_kwargs.</span>
+<span class="s2">                Please confirm that </span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2"> is what you intended."""</span><span class="p">,</span>
+                <span class="n">stacklevel</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">extra_kwargs</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+
+    <span class="n">invalid_model_kwargs</span> <span class="o">=</span> <span class="n">all_required_field_names</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">extra_kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">invalid_model_kwargs</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Parameters </span><span class="si">{</span><span class="n">invalid_model_kwargs</span><span class="si">}</span><span class="s2"> should be specified explicitly. "</span>
+            <span class="sa">f</span><span class="s2">"Instead they were passed in as part of `model_kwargs` parameter."</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">invalid_model_kwargs</span><span class="p">:</span>
+            <span class="n">values</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">extra_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+
+    <span class="n">values</span><span class="p">[</span><span class="s2">"model_kwargs"</span><span class="p">]</span> <span class="o">=</span> <span class="n">extra_kwargs</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+
+<span class="c1"># DON'T USE! Kept for backwards-compatibility but should never have been public.</span>
 <div class="viewcode-block" id="build_extra_kwargs">
 <a class="viewcode-back" href="../../../core/utils/langchain_core.utils.utils.build_extra_kwargs.html#langchain_core.utils.utils.build_extra_kwargs">[docs]</a>
 <span class="k">def</span> <span class="nf">build_extra_kwargs</span><span class="p">(</span>

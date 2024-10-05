@@ -40,7 +40,7 @@
 <link href="../retrievers.html" rel="prev" title="retrievers"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 04, 2024" name="docbuild:last-update"/>
+<meta content="Oct 05, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -399,6 +399,12 @@ he decides to go to the pool with Carlos.'
 <p>The <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Runnable</span> <span class="pre">Interface</span></code></a> has additional methods that are available on runnables, such as <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.with_types" title="langchain_core.runnables.base.Runnable.with_types"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_types</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.with_retry" title="langchain_core.runnables.base.Runnable.with_retry"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_retry</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.assign" title="langchain_core.runnables.base.Runnable.assign"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assign</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.bind" title="langchain_core.runnables.base.Runnable.bind"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bind</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.get_graph" title="langchain_core.runnables.base.Runnable.get_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_graph</span></code></a>, and more.</p>
 </div>
 <dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_box.retrievers.box.BoxRetriever.answer">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">answer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#langchain_box.retrievers.box.BoxRetriever.answer" title="Link to this definition">#</a></dt>
+<dd><p>When using Box AI, return the answer to the prompt as a <cite>Document</cite>
+object. Returned as <cite>List[Document</cite>]. Default is <cite>True</cite>.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_box.retrievers.box.BoxRetriever.box_auth">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">box_auth</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../utilities/langchain_box.utilities.box.BoxAuth.html#langchain_box.utilities.box.BoxAuth" title="langchain_box.utilities.box.BoxAuth"><span class="pre">BoxAuth</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_box.retrievers.box.BoxRetriever.box_auth" title="Link to this definition">#</a></dt>
 <dd><p>Configured
@@ -407,9 +413,8 @@ object</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_box.retrievers.box.BoxRetriever.box_developer_token">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">box_developer_token</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_box.retrievers.box.BoxRetriever.box_developer_token" title="Link to this definition">#</a></dt>
-<dd><p>String containing the Box Developer Token generated in the developer console</p>
-</dd></dl>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">box_developer_token</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"> <span class="pre">[Optional]</span></em><a class="headerlink" href="#langchain_box.retrievers.box.BoxRetriever.box_developer_token" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_box.retrievers.box.BoxRetriever.box_file_ids">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">box_file_ids</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_box.retrievers.box.BoxRetriever.box_file_ids" title="Link to this definition">#</a></dt>
@@ -425,6 +430,13 @@ object</p>
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">character_limit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-1</span></em><a class="headerlink" href="#langchain_box.retrievers.box.BoxRetriever.character_limit" title="Link to this definition">#</a></dt>
 <dd><p>character_limit is an int that caps the number of characters to
 return per document.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_box.retrievers.box.BoxRetriever.citations">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">citations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#langchain_box.retrievers.box.BoxRetriever.citations" title="Link to this definition">#</a></dt>
+<dd><p>When using Box AI, return the citations from to the prompt as
+<cite>Document</cite> objects. Can be used with answer. Returned as <cite>List[Document</cite>].
+Default is <cite>False</cite>.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_box.retrievers.box.BoxRetriever.metadata">
@@ -1431,11 +1443,13 @@ between retries</p></li>
 <nav aria-labelledby="pst-page-navigation-heading-2" class="bd-toc-nav page-toc">
 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.retrievers.box.BoxRetriever"><code class="docutils literal notranslate"><span class="pre">BoxRetriever</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.retrievers.box.BoxRetriever.answer"><code class="docutils literal notranslate"><span class="pre">answer</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.retrievers.box.BoxRetriever.box_auth"><code class="docutils literal notranslate"><span class="pre">box_auth</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.retrievers.box.BoxRetriever.box_developer_token"><code class="docutils literal notranslate"><span class="pre">box_developer_token</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.retrievers.box.BoxRetriever.box_file_ids"><code class="docutils literal notranslate"><span class="pre">box_file_ids</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.retrievers.box.BoxRetriever.box_search_options"><code class="docutils literal notranslate"><span class="pre">box_search_options</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.retrievers.box.BoxRetriever.character_limit"><code class="docutils literal notranslate"><span class="pre">character_limit</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.retrievers.box.BoxRetriever.citations"><code class="docutils literal notranslate"><span class="pre">citations</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.retrievers.box.BoxRetriever.metadata"><code class="docutils literal notranslate"><span class="pre">metadata</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.retrievers.box.BoxRetriever.tags"><code class="docutils literal notranslate"><span class="pre">tags</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.retrievers.box.BoxRetriever.abatch"><code class="docutils literal notranslate"><span class="pre">abatch()</span></code></a></li>

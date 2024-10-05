@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 04, 2024" name="docbuild:last-update"/>
+<meta content="Oct 05, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -232,7 +232,8 @@ document.write(`
 <span class="kn">from</span> <span class="nn">langchain_core.callbacks</span> <span class="kn">import</span> <span class="n">CallbackManagerForRetrieverRun</span>
 <span class="kn">from</span> <span class="nn">langchain_core.documents</span> <span class="kn">import</span> <span class="n">Document</span>
 <span class="kn">from</span> <span class="nn">langchain_core.retrievers</span> <span class="kn">import</span> <span class="n">BaseRetriever</span>
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">model_validator</span>
+<span class="kn">from</span> <span class="nn">langchain_core.utils</span> <span class="kn">import</span> <span class="n">from_env</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
 <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Self</span>
 
 <span class="kn">from</span> <span class="nn">langchain_box.utilities</span> <span class="kn">import</span> <span class="n">BoxAuth</span><span class="p">,</span> <span class="n">BoxSearchOptions</span><span class="p">,</span> <span class="n">_BoxAPIWrapper</span>
@@ -344,8 +345,9 @@ document.write(`
 <span class="s2">            he decides to go to the pool with Carlos.'</span>
 <span class="s2">    """</span>  <span class="c1"># noqa: E501</span>
 
-    <span class="n">box_developer_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">"""String containing the Box Developer Token generated in the developer console"""</span>
+    <span class="n">box_developer_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">from_env</span><span class="p">(</span><span class="s2">"BOX_DEVELOPER_TOKEN"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="p">)</span>
 
     <span class="n">box_auth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BoxAuth</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">"""Configured </span>
@@ -361,6 +363,15 @@ document.write(`
 
     <span class="n">box_search_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BoxSearchOptions</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">"""Search options to configure BoxRetriever to narrow search results."""</span>
+
+    <span class="n">answer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="w">    </span><span class="sd">"""When using Box AI, return the answer to the prompt as a `Document` </span>
+<span class="sd">       object. Returned as `List[Document`]. Default is `True`."""</span>
+
+    <span class="n">citations</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">"""When using Box AI, return the citations from to the prompt as </span>
+<span class="sd">       `Document` objects. Can be used with answer. Returned as `List[Document`].</span>
+<span class="sd">       Default is `False`."""</span>
 
     <span class="n">_box</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_BoxAPIWrapper</span><span class="p">]</span>
 
@@ -395,7 +406,12 @@ document.write(`
         <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">run_manager</span><span class="p">:</span> <span class="n">CallbackManagerForRetrieverRun</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_file_ids</span><span class="p">:</span>  <span class="c1"># If using Box AI</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">ask_box_ai</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">box_file_ids</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">box_file_ids</span><span class="p">)</span>  <span class="c1">#  type: ignore[union-attr]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">ask_box_ai</span><span class="p">(</span>  <span class="c1">#  type: ignore[union-attr]</span>
+                <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+                <span class="n">box_file_ids</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">box_file_ids</span><span class="p">,</span>
+                <span class="n">answer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">answer</span><span class="p">,</span>  <span class="c1">#  type: ignore[arg-type]</span>
+                <span class="n">citations</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">citations</span><span class="p">,</span>  <span class="c1">#  type: ignore[arg-type]</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># If using Search</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">search_box</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>  <span class="c1">#  type: ignore[union-attr]</span></div>
 
