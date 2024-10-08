@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -526,10 +526,11 @@ document.write(`
             <span class="k">if</span> <span class="n">type_args</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">type_args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">type_args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">"Runnable </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2"> doesn't have an inferable InputType. "</span>
             <span class="s2">"Override the InputType property to specify the input type."</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">OutputType</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">Output</span><span class="p">]:</span>  <span class="c1"># noqa: N802</span>
@@ -547,10 +548,11 @@ document.write(`
             <span class="k">if</span> <span class="n">type_args</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">type_args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">type_args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">"Runnable </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2"> doesn't have an inferable OutputType. "</span>
             <span class="s2">"Override the OutputType property to specify the output type."</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">input_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">]:</span>
@@ -1457,7 +1459,7 @@ document.write(`
 <span class="sd">        - ``data``: **Dict[str, Any]**</span>
 
 
-<span class="sd">        Below is a table that illustrates some evens that might be emitted by various</span>
+<span class="sd">        Below is a table that illustrates some events that might be emitted by various</span>
 <span class="sd">        chains. Metadata fields have been omitted from the table for brevity.</span>
 <span class="sd">        Chain definitions have been included after the table.</span>
 
@@ -1675,9 +1677,8 @@ document.write(`
                 <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                <span class="s1">'Only versions "v1" and "v2" of the schema is currently supported.'</span>
-            <span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">'Only versions "v1" and "v2" of the schema is currently supported.'</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">async</span> <span class="k">with</span> <span class="n">aclosing</span><span class="p">(</span><span class="n">event_stream</span><span class="p">):</span>
             <span class="k">async</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">event_stream</span><span class="p">:</span>
@@ -2848,10 +2849,11 @@ document.write(`
 
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Configuration key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> not found in </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">: "</span>
                     <span class="sa">f</span><span class="s2">"available keys are </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model_fields</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">RunnableConfigurableFields</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -3114,9 +3116,8 @@ document.write(`
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">steps_flat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coerce_to_runnable</span><span class="p">(</span><span class="n">step</span><span class="p">))</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">steps_flat</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"RunnableSequence must have at least 2 steps, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">steps_flat</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
-            <span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"RunnableSequence must have at least 2 steps, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">steps_flat</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>  <span class="c1"># type: ignore[call-arg]</span>
             <span class="n">first</span><span class="o">=</span><span class="n">steps_flat</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
             <span class="n">middle</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">steps_flat</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
@@ -3265,7 +3266,8 @@ document.write(`
                 <span class="n">step_graph</span><span class="o">.</span><span class="n">trim_last_node</span><span class="p">()</span>
             <span class="n">step_first_node</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">step_graph</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">step_first_node</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Runnable </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2"> has no first node"</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Runnable </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2"> has no first node"</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">current_last_node</span><span class="p">:</span>
                 <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">current_last_node</span><span class="p">,</span> <span class="n">step_first_node</span><span class="p">)</span>
 
@@ -4018,9 +4020,11 @@ document.write(`
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">step_first_node</span><span class="p">,</span> <span class="n">step_last_node</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">step_graph</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">step_first_node</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Runnable </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2"> has no first node"</span><span class="p">)</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Runnable </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2"> has no first node"</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">step_last_node</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Runnable </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2"> has no last node"</span><span class="p">)</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Runnable </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2"> has no last node"</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                 <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">input_node</span><span class="p">,</span> <span class="n">step_first_node</span><span class="p">)</span>
                 <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">step_last_node</span><span class="p">,</span> <span class="n">output_node</span><span class="p">)</span>
 
@@ -4427,10 +4431,11 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span> <span class="o">=</span> <span class="n">transform</span>
             <span class="n">func_for_name</span> <span class="o">=</span> <span class="n">transform</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s2">"Expected a generator function type for `transform`."</span>
                 <span class="sa">f</span><span class="s2">"Instead got an unsupported type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">transform</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="n">func_for_name</span><span class="o">.</span><span class="vm">__name__</span>
@@ -4539,7 +4544,8 @@ document.write(`
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Output</span><span class="p">]:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_transform"</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> only supports async methods."</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> only supports async methods."</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_stream_with_config</span><span class="p">(</span>
             <span class="nb">input</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">,</span>  <span class="c1"># type: ignore[arg-type]</span>
@@ -4570,7 +4576,8 @@ document.write(`
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Output</span><span class="p">]:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_atransform"</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> only supports sync methods."</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> only supports sync methods."</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_atransform_stream_with_config</span><span class="p">(</span>
             <span class="nb">input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_atransform</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -4701,21 +4708,23 @@ document.write(`
 
         <span class="k">if</span> <span class="n">is_async_callable</span><span class="p">(</span><span class="n">func</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_async_generator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">afunc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="s2">"Func was provided as a coroutine function, but afunc was "</span>
                     <span class="s2">"also provided. If providing both, func should be a regular "</span>
                     <span class="s2">"function to avoid ambiguity."</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">afunc</span> <span class="o">=</span> <span class="n">func</span>
             <span class="n">func_for_name</span> <span class="o">=</span> <span class="n">func</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Input</span><span class="p">],</span> <span class="n">Output</span><span class="p">],</span> <span class="n">func</span><span class="p">)</span>
             <span class="n">func_for_name</span> <span class="o">=</span> <span class="n">func</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s2">"Expected a callable type for `func`."</span>
                 <span class="sa">f</span><span class="s2">"Instead got an unsupported type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -4878,9 +4887,11 @@ document.write(`
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">dep_first_node</span><span class="p">,</span> <span class="n">dep_last_node</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">dep_graph</span><span class="p">)</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">dep_first_node</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Runnable </span><span class="si">{</span><span class="n">dep</span><span class="si">}</span><span class="s2"> has no first node"</span><span class="p">)</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Runnable </span><span class="si">{</span><span class="n">dep</span><span class="si">}</span><span class="s2"> has no first node"</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">dep_last_node</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Runnable </span><span class="si">{</span><span class="n">dep</span><span class="si">}</span><span class="s2"> has no last node"</span><span class="p">)</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Runnable </span><span class="si">{</span><span class="n">dep</span><span class="si">}</span><span class="s2"> has no last node"</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                     <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">input_node</span><span class="p">,</span> <span class="n">dep_first_node</span><span class="p">)</span>
                     <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">dep_last_node</span><span class="p">,</span> <span class="n">output_node</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -4941,9 +4952,10 @@ document.write(`
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">Runnable</span><span class="p">):</span>
             <span class="n">recursion_limit</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"recursion_limit"</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">recursion_limit</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">RecursionError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Recursion limit reached when invoking </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> with input </span><span class="si">{</span><span class="nb">input</span><span class="si">}</span><span class="s2">."</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RecursionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
                 <span class="nb">input</span><span class="p">,</span>
                 <span class="n">patch_config</span><span class="p">(</span>
@@ -5040,9 +5052,10 @@ document.write(`
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">Runnable</span><span class="p">):</span>
             <span class="n">recursion_limit</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"recursion_limit"</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">recursion_limit</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">RecursionError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Recursion limit reached when invoking </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> with input </span><span class="si">{</span><span class="nb">input</span><span class="si">}</span><span class="s2">."</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RecursionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="n">output</span> <span class="o">=</span> <span class="k">await</span> <span class="n">output</span><span class="o">.</span><span class="n">ainvoke</span><span class="p">(</span>
                 <span class="nb">input</span><span class="p">,</span>
                 <span class="n">patch_config</span><span class="p">(</span>
@@ -5085,10 +5098,11 @@ document.write(`
                 <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s2">"Cannot invoke a coroutine function synchronously."</span>
                 <span class="s2">"Use `ainvoke` instead."</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">ainvoke</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -5159,10 +5173,11 @@ document.write(`
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">Runnable</span><span class="p">):</span>
             <span class="n">recursion_limit</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"recursion_limit"</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">recursion_limit</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">RecursionError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Recursion limit reached when invoking "</span>
                     <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> with input </span><span class="si">{</span><span class="n">final</span><span class="si">}</span><span class="s2">."</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RecursionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span>
                 <span class="n">final</span><span class="p">,</span>
                 <span class="n">patch_config</span><span class="p">(</span>
@@ -5190,10 +5205,11 @@ document.write(`
                 <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s2">"Cannot stream a coroutine function synchronously."</span>
                 <span class="s2">"Use `astream` instead."</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -5230,10 +5246,11 @@ document.write(`
             <span class="n">afunc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">afunc</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgeneratorfunction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="s2">"Cannot stream from a generator function asynchronously."</span>
                     <span class="s2">"Use .stream() instead."</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
             <span class="k">def</span> <span class="nf">func</span><span class="p">(</span>
                 <span class="nb">input</span><span class="p">:</span> <span class="n">Input</span><span class="p">,</span>
@@ -5280,10 +5297,11 @@ document.write(`
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">Runnable</span><span class="p">):</span>
             <span class="n">recursion_limit</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"recursion_limit"</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">recursion_limit</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">RecursionError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Recursion limit reached when invoking "</span>
                     <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> with input </span><span class="si">{</span><span class="n">final</span><span class="si">}</span><span class="s2">."</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RecursionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">astream</span><span class="p">(</span>
                 <span class="n">final</span><span class="p">,</span>
                 <span class="n">patch_config</span><span class="p">(</span>
@@ -5453,9 +5471,8 @@ document.write(`
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">StreamEvent</span><span class="p">]:</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                <span class="s2">"RunnableEach does not support astream_events yet."</span>
-            <span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"RunnableEach does not support astream_events yet."</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">yield</span></div>
 </div>
 
@@ -6278,10 +6295,11 @@ document.write(`
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">thing</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">Runnable</span><span class="p">[</span><span class="n">Input</span><span class="p">,</span> <span class="n">Output</span><span class="p">],</span> <span class="n">RunnableParallel</span><span class="p">(</span><span class="n">thing</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">"Expected a Runnable, callable or dict."</span>
             <span class="sa">f</span><span class="s2">"Instead got an unsupported type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">thing</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 
 

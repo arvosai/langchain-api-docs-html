@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -484,10 +484,11 @@ document.write(`
             <span class="k">else</span> <span class="n">kwargs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_name</span><span class="p">]</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"variable </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_name</span><span class="si">}</span><span class="s2"> should be a list of base messages, "</span>
                 <span class="sa">f</span><span class="s2">"got </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">convert_to_messages</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_messages</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">n_messages</span> <span class="p">:]</span>
@@ -800,9 +801,8 @@ document.write(`
             <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">partial_variables</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">partial_variables</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">"Partial variables are not supported for list of templates."</span>
-                <span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Partial variables are not supported for list of templates."</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="n">prompt</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">tmpl</span> <span class="ow">in</span> <span class="n">template</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tmpl</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tmpl</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">"text"</span> <span class="ow">in</span> <span class="n">tmpl</span><span class="p">:</span>
@@ -822,11 +822,12 @@ document.write(`
                         <span class="nb">vars</span> <span class="o">=</span> <span class="n">get_template_variables</span><span class="p">(</span><span class="n">img_template</span><span class="p">,</span> <span class="s2">"f-string"</span><span class="p">)</span>
                         <span class="k">if</span> <span class="nb">vars</span><span class="p">:</span>
                             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">vars</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                                     <span class="s2">"Only one format variable allowed per image"</span>
                                     <span class="sa">f</span><span class="s2">" template.</span><span class="se">\n</span><span class="s2">Got: </span><span class="si">{</span><span class="nb">vars</span><span class="si">}</span><span class="s2">"</span>
                                     <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">From: </span><span class="si">{</span><span class="n">tmpl</span><span class="si">}</span><span class="s2">"</span>
                                 <span class="p">)</span>
+                                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                             <span class="n">input_variables</span> <span class="o">=</span> <span class="p">[</span><span class="nb">vars</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
                         <span class="n">img_template</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"url"</span><span class="p">:</span> <span class="n">img_template</span><span class="p">}</span>
                         <span class="n">img_template_obj</span> <span class="o">=</span> <span class="n">ImagePromptTemplate</span><span class="p">(</span>
@@ -845,13 +846,16 @@ document.write(`
                             <span class="n">input_variables</span><span class="o">=</span><span class="n">input_variables</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="n">img_template</span>
                         <span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid image template: </span><span class="si">{</span><span class="n">tmpl</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Invalid image template: </span><span class="si">{</span><span class="n">tmpl</span><span class="si">}</span><span class="s2">"</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                     <span class="n">prompt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img_template_obj</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid template: </span><span class="si">{</span><span class="n">tmpl</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Invalid template: </span><span class="si">{</span><span class="n">tmpl</span><span class="si">}</span><span class="s2">"</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid template: </span><span class="si">{</span><span class="n">template</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Invalid template: </span><span class="si">{</span><span class="n">template</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_template_file</span><span class="p">(</span>
@@ -1366,7 +1370,8 @@ document.write(`
             <span class="n">prompt</span> <span class="o">=</span> <span class="n">HumanMessagePromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">ChatPromptTemplate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">+</span> <span class="p">[</span><span class="n">prompt</span><span class="p">])</span>  <span class="c1"># type: ignore[call-arg]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported operand type for +: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unsupported operand type for +: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
@@ -1409,11 +1414,12 @@ document.write(`
             <span class="n">input_vars</span> <span class="o">=</span> <span class="n">input_vars</span> <span class="o">-</span> <span class="n">optional_variables</span>
         <span class="k">if</span> <span class="s2">"input_variables"</span> <span class="ow">in</span> <span class="n">values</span> <span class="ow">and</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"validate_template"</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">input_vars</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"input_variables"</span><span class="p">]):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="s2">"Got mismatched input_variables. "</span>
                     <span class="sa">f</span><span class="s2">"Expected: </span><span class="si">{</span><span class="n">input_vars</span><span class="si">}</span><span class="s2">. "</span>
                     <span class="sa">f</span><span class="s2">"Got: </span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">'input_variables'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">values</span><span class="p">[</span><span class="s2">"input_variables"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">input_vars</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">optional_variables</span><span class="p">:</span>
@@ -1552,7 +1558,8 @@ document.write(`
                 <span class="n">message</span> <span class="o">=</span> <span class="n">message_template</span><span class="o">.</span><span class="n">format_messages</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unexpected input: </span><span class="si">{</span><span class="n">message_template</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unexpected input: </span><span class="si">{</span><span class="n">message_template</span><span class="si">}</span><span class="s2">"</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
 
@@ -1582,7 +1589,8 @@ document.write(`
                 <span class="n">message</span> <span class="o">=</span> <span class="k">await</span> <span class="n">message_template</span><span class="o">.</span><span class="n">aformat_messages</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unexpected input: </span><span class="si">{</span><span class="n">message_template</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unexpected input: </span><span class="si">{</span><span class="n">message_template</span><span class="si">}</span><span class="s2">"</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
 
@@ -1681,7 +1689,7 @@ document.write(`
 <span class="sd">        Args:</span>
 <span class="sd">            file_path: path to file.</span>
 <span class="sd">        """</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
 <div class="viewcode-block" id="ChatPromptTemplate.pretty_repr">
@@ -1734,38 +1742,43 @@ document.write(`
     <span class="k">elif</span> <span class="n">message_type</span> <span class="o">==</span> <span class="s2">"placeholder"</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">template</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"{"</span> <span class="ow">or</span> <span class="n">template</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"}"</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Invalid placeholder template: </span><span class="si">{</span><span class="n">template</span><span class="si">}</span><span class="s2">."</span>
                     <span class="s2">" Expected a variable name surrounded by curly braces."</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="n">var_name</span> <span class="o">=</span> <span class="n">template</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">message</span> <span class="o">=</span> <span class="n">MessagesPlaceholder</span><span class="p">(</span><span class="n">variable_name</span><span class="o">=</span><span class="n">var_name</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">template</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
             <span class="n">var_name_wrapped</span><span class="p">,</span> <span class="n">is_optional</span> <span class="o">=</span> <span class="n">template</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">var_name_wrapped</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="s2">"Expected variable name to be a string."</span> <span class="sa">f</span><span class="s2">" Got: </span><span class="si">{</span><span class="n">var_name_wrapped</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">var_name_wrapped</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"{"</span> <span class="ow">or</span> <span class="n">var_name_wrapped</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"}"</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Invalid placeholder template: </span><span class="si">{</span><span class="n">var_name_wrapped</span><span class="si">}</span><span class="s2">."</span>
                     <span class="s2">" Expected a variable name surrounded by curly braces."</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="n">var_name</span> <span class="o">=</span> <span class="n">var_name_wrapped</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="n">message</span> <span class="o">=</span> <span class="n">MessagesPlaceholder</span><span class="p">(</span><span class="n">variable_name</span><span class="o">=</span><span class="n">var_name</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="n">is_optional</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s2">"Unexpected arguments for placeholder message type."</span>
                 <span class="s2">" Expected either a single string variable name"</span>
                 <span class="s2">" or a list of [variable_name: str, is_optional: bool]."</span>
                 <span class="sa">f</span><span class="s2">" Got: </span><span class="si">{</span><span class="n">template</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">"Unexpected message type: </span><span class="si">{</span><span class="n">message_type</span><span class="si">}</span><span class="s2">. Use one of 'human',"</span>
             <span class="sa">f</span><span class="s2">" 'user', 'ai', 'assistant', or 'system'."</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">message</span>
 
 
@@ -1806,7 +1819,8 @@ document.write(`
         <span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected 2-tuple of (role, template), got </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Expected 2-tuple of (role, template), got </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="n">message_type_str</span><span class="p">,</span> <span class="n">template</span> <span class="o">=</span> <span class="n">message</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message_type_str</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">_message</span> <span class="o">=</span> <span class="n">_create_template_from_message_type</span><span class="p">(</span>
@@ -1819,7 +1833,8 @@ document.write(`
                 <span class="p">)</span>
             <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported message type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unsupported message type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">_message</span>
 </pre></div>

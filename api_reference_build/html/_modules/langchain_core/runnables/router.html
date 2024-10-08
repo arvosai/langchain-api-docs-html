@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -337,7 +337,8 @@ document.write(`
         <span class="n">key</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="s2">"key"</span><span class="p">]</span>
         <span class="n">actual_input</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="s2">"input"</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runnables</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No runnable associated with key '</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"No runnable associated with key '</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">'"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="n">runnable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runnables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">runnable</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">actual_input</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span></div>
@@ -354,7 +355,8 @@ document.write(`
         <span class="n">key</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="s2">"key"</span><span class="p">]</span>
         <span class="n">actual_input</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="s2">"input"</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runnables</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No runnable associated with key '</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"No runnable associated with key '</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">'"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="n">runnable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runnables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="k">return</span> <span class="k">await</span> <span class="n">runnable</span><span class="o">.</span><span class="n">ainvoke</span><span class="p">(</span><span class="n">actual_input</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span></div>
@@ -376,7 +378,8 @@ document.write(`
         <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="nb">input</span><span class="p">[</span><span class="s2">"key"</span><span class="p">]</span> <span class="k">for</span> <span class="nb">input</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
         <span class="n">actual_inputs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">input</span><span class="p">[</span><span class="s2">"input"</span><span class="p">]</span> <span class="k">for</span> <span class="nb">input</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runnables</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"One or more keys do not have a corresponding runnable"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"One or more keys do not have a corresponding runnable"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span>
             <span class="n">runnable</span><span class="p">:</span> <span class="n">Runnable</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">Input</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">RunnableConfig</span>
@@ -414,7 +417,8 @@ document.write(`
         <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="nb">input</span><span class="p">[</span><span class="s2">"key"</span><span class="p">]</span> <span class="k">for</span> <span class="nb">input</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
         <span class="n">actual_inputs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">input</span><span class="p">[</span><span class="s2">"input"</span><span class="p">]</span> <span class="k">for</span> <span class="nb">input</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runnables</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"One or more keys do not have a corresponding runnable"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"One or more keys do not have a corresponding runnable"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">async</span> <span class="k">def</span> <span class="nf">ainvoke</span><span class="p">(</span>
             <span class="n">runnable</span><span class="p">:</span> <span class="n">Runnable</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">Input</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">RunnableConfig</span>
@@ -449,7 +453,8 @@ document.write(`
         <span class="n">key</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="s2">"key"</span><span class="p">]</span>
         <span class="n">actual_input</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="s2">"input"</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runnables</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No runnable associated with key '</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"No runnable associated with key '</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">'"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="n">runnable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runnables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="k">yield from</span> <span class="n">runnable</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">actual_input</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span></div>
@@ -466,7 +471,8 @@ document.write(`
         <span class="n">key</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="s2">"key"</span><span class="p">]</span>
         <span class="n">actual_input</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="s2">"input"</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runnables</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No runnable associated with key '</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"No runnable associated with key '</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">'"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="n">runnable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runnables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="k">async</span> <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">runnable</span><span class="o">.</span><span class="n">astream</span><span class="p">(</span><span class="n">actual_input</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>

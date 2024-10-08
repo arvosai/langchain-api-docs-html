@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -368,10 +368,11 @@ document.write(`
         <span class="k">while</span> <span class="n">parent_id</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">run_id</span><span class="p">):</span>
             <span class="n">str_parent_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">parent_id</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">str_parent_id</span> <span class="ow">in</span> <span class="n">parent_ids</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Parent ID </span><span class="si">{</span><span class="n">parent_id</span><span class="si">}</span><span class="s2"> is already in the parent_ids list. "</span>
                     <span class="sa">f</span><span class="s2">"This should never happen."</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="n">parent_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">str_parent_id</span><span class="p">)</span>
             <span class="n">run_id</span> <span class="o">=</span> <span class="n">parent_id</span>
 
@@ -643,7 +644,8 @@ document.write(`
         <span class="n">chunk_</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">GenerationChunk</span><span class="p">,</span> <span class="n">BaseMessageChunk</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">run_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Run ID </span><span class="si">{</span><span class="n">run_id</span><span class="si">}</span><span class="s2"> not found in run map."</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Run ID </span><span class="si">{</span><span class="n">run_id</span><span class="si">}</span><span class="s2"> not found in run map."</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_tapped</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">run_id</span><span class="p">):</span>
             <span class="k">return</span>
         <span class="k">if</span> <span class="n">run_info</span><span class="p">[</span><span class="s2">"run_type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"chat_model"</span><span class="p">:</span>
@@ -661,7 +663,8 @@ document.write(`
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">chunk_</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">GenerationChunk</span><span class="p">,</span> <span class="n">chunk</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unexpected run type: </span><span class="si">{</span><span class="n">run_info</span><span class="p">[</span><span class="s1">'run_type'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unexpected run type: </span><span class="si">{</span><span class="n">run_info</span><span class="p">[</span><span class="s1">'run_type'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span>
             <span class="p">{</span>
@@ -716,7 +719,8 @@ document.write(`
             <span class="p">}</span>
             <span class="n">event</span> <span class="o">=</span> <span class="s2">"on_llm_end"</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unexpected run type: </span><span class="si">{</span><span class="n">run_info</span><span class="p">[</span><span class="s1">'run_type'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unexpected run type: </span><span class="si">{</span><span class="n">run_info</span><span class="p">[</span><span class="s1">'run_type'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span>
             <span class="p">{</span>
@@ -858,10 +862,11 @@ document.write(`
 <span class="w">        </span><span class="sd">"""End a trace for a tool run."""</span>
         <span class="n">run_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_map</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">run_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="s2">"inputs"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">run_info</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"Run ID </span><span class="si">{</span><span class="n">run_id</span><span class="si">}</span><span class="s2"> is a tool call and is expected to have "</span>
                 <span class="sa">f</span><span class="s2">"inputs associated with it."</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="n">inputs</span> <span class="o">=</span> <span class="n">run_info</span><span class="p">[</span><span class="s2">"inputs"</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span>
@@ -1071,11 +1076,12 @@ document.write(`
             <span class="k">if</span> <span class="n">event_type</span> <span class="o">==</span> <span class="s2">"stream"</span><span class="p">:</span>
                 <span class="n">num_chunks</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">log_entry</span><span class="p">[</span><span class="s2">"streamed_output"</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">num_chunks</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                         <span class="sa">f</span><span class="s2">"Expected exactly one chunk of streamed output, "</span>
                         <span class="sa">f</span><span class="s2">"got </span><span class="si">{</span><span class="n">num_chunks</span><span class="si">}</span><span class="s2"> instead. This is impossible. "</span>
                         <span class="sa">f</span><span class="s2">"Encountered in: </span><span class="si">{</span><span class="n">log_entry</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
                     <span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
                 <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"chunk"</span><span class="p">:</span> <span class="n">log_entry</span><span class="p">[</span><span class="s2">"streamed_output"</span><span class="p">][</span><span class="mi">0</span><span class="p">]}</span>
                 <span class="c1"># Clean up the stream, we don't need it anymore.</span>
@@ -1098,11 +1104,12 @@ document.write(`
         <span class="k">if</span> <span class="n">state</span><span class="p">[</span><span class="s2">"streamed_output"</span><span class="p">]:</span>
             <span class="n">num_chunks</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">"streamed_output"</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">num_chunks</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Expected exactly one chunk of streamed output, "</span>
                     <span class="sa">f</span><span class="s2">"got </span><span class="si">{</span><span class="n">num_chunks</span><span class="si">}</span><span class="s2"> instead. This is impossible. "</span>
                     <span class="sa">f</span><span class="s2">"Encountered in: </span><span class="si">{</span><span class="n">state</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
             <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"chunk"</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s2">"streamed_output"</span><span class="p">][</span><span class="mi">0</span><span class="p">]}</span>
             <span class="c1"># Clean up the stream, we don't need it anymore.</span>
@@ -1177,10 +1184,11 @@ document.write(`
         <span class="n">callbacks</span><span class="o">.</span><span class="n">add_handler</span><span class="p">(</span><span class="n">event_streamer</span><span class="p">,</span> <span class="n">inherit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">config</span><span class="p">[</span><span class="s2">"callbacks"</span><span class="p">]</span> <span class="o">=</span> <span class="n">callbacks</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">"Unexpected type for callbacks: </span><span class="si">{</span><span class="n">callbacks</span><span class="si">}</span><span class="s2">."</span>
             <span class="s2">"Expected None, list or AsyncCallbackManager."</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="c1"># Call the runnable in streaming mode,</span>
     <span class="c1"># add each chunk to the output stream</span>

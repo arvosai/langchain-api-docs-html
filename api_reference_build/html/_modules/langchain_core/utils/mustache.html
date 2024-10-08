@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -387,7 +387,8 @@ document.write(`
     <span class="k">try</span><span class="p">:</span>
         <span class="n">tag</span><span class="p">,</span> <span class="n">template</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">r_del</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">ChevronError</span><span class="p">(</span><span class="s2">"unclosed tag "</span> <span class="sa">f</span><span class="s2">"at line </span><span class="si">{</span><span class="n">_CURRENT_LINE</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"unclosed tag "</span> <span class="sa">f</span><span class="s2">"at line </span><span class="si">{</span><span class="n">_CURRENT_LINE</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">raise</span> <span class="n">ChevronError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
 
     <span class="c1"># Find the type meaning of the first character</span>
     <span class="n">tag_type</span> <span class="o">=</span> <span class="n">tag_types</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tag</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">"variable"</span><span class="p">)</span>
@@ -407,9 +408,8 @@ document.write(`
 
         <span class="c1"># Otherwise we should complain</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ChevronError</span><span class="p">(</span>
-                <span class="s2">"unclosed set delimiter tag</span><span class="se">\n</span><span class="s2">"</span> <span class="sa">f</span><span class="s2">"at line </span><span class="si">{</span><span class="n">_CURRENT_LINE</span><span class="si">}</span><span class="s2">"</span>
-            <span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"unclosed set delimiter tag</span><span class="se">\n</span><span class="s2">"</span> <span class="sa">f</span><span class="s2">"at line </span><span class="si">{</span><span class="n">_CURRENT_LINE</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="n">ChevronError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="p">(</span>
         <span class="c1"># If we might be a no html escape tag</span>
@@ -521,18 +521,20 @@ document.write(`
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">last_section</span> <span class="o">=</span> <span class="n">open_sections</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
             <span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">ChevronError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s1">'Trying to close tag "</span><span class="si">{</span><span class="n">tag_key</span><span class="si">}</span><span class="s1">"</span><span class="se">\n</span><span class="s1">'</span>
                     <span class="s2">"Looks like it was not opened.</span><span class="se">\n</span><span class="s2">"</span>
                     <span class="sa">f</span><span class="s2">"line </span><span class="si">{</span><span class="n">_CURRENT_LINE</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span>
-                <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="n">ChevronError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
             <span class="k">if</span> <span class="n">tag_key</span> <span class="o">!=</span> <span class="n">last_section</span><span class="p">:</span>
                 <span class="c1"># Otherwise we need to complain</span>
-                <span class="k">raise</span> <span class="n">ChevronError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s1">'Trying to close tag "</span><span class="si">{</span><span class="n">tag_key</span><span class="si">}</span><span class="s1">"</span><span class="se">\n</span><span class="s1">'</span>
                     <span class="sa">f</span><span class="s1">'last open tag is "</span><span class="si">{</span><span class="n">last_section</span><span class="si">}</span><span class="s1">"</span><span class="se">\n</span><span class="s1">'</span>
                     <span class="sa">f</span><span class="s2">"line </span><span class="si">{</span><span class="n">_CURRENT_LINE</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="n">ChevronError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="c1"># Do the second check to see if we're a standalone</span>
         <span class="n">is_standalone</span> <span class="o">=</span> <span class="n">r_sa_check</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">tag_type</span><span class="p">,</span> <span class="n">is_standalone</span><span class="p">)</span>
@@ -559,11 +561,12 @@ document.write(`
     <span class="c1"># If there are any open sections when we're done</span>
     <span class="k">if</span> <span class="n">open_sections</span><span class="p">:</span>
         <span class="c1"># Then we need to complain</span>
-        <span class="k">raise</span> <span class="n">ChevronError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="s2">"Unexpected EOF</span><span class="se">\n</span><span class="s2">"</span>
             <span class="sa">f</span><span class="s1">'the tag "</span><span class="si">{</span><span class="n">open_sections</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">" was never closed</span><span class="se">\n</span><span class="s1">'</span>
             <span class="sa">f</span><span class="s2">"was opened at line </span><span class="si">{</span><span class="n">_LAST_TAG_LINE</span><span class="si">}</span><span class="s2">"</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="n">ChevronError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 
 

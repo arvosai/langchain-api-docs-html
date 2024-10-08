@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -703,16 +703,16 @@ document.write(`
             <span class="c1"># This occurs for chat models - since we batch inputs</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_val</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_val</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">"Expected a single list of messages. Got </span><span class="si">{</span><span class="n">input_val</span><span class="si">}</span><span class="s2">."</span>
-                    <span class="p">)</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Expected a single list of messages. Got </span><span class="si">{</span><span class="n">input_val</span><span class="si">}</span><span class="s2">."</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">input_val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">input_val</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"Expected str, BaseMessage, List[BaseMessage], or Tuple[BaseMessage]. "</span>
                 <span class="sa">f</span><span class="s2">"Got </span><span class="si">{</span><span class="n">input_val</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_output_messages</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">output_val</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BaseMessage</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="nb">dict</span><span class="p">]</span>
@@ -744,10 +744,11 @@ document.write(`
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_val</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">output_val</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"Expected str, BaseMessage, List[BaseMessage], or Tuple[BaseMessage]. "</span>
                 <span class="sa">f</span><span class="s2">"Got </span><span class="si">{</span><span class="n">output_val</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_enter_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">RunnableConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]:</span>
         <span class="n">hist</span><span class="p">:</span> <span class="n">BaseChatMessageHistory</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"configurable"</span><span class="p">][</span><span class="s2">"message_history"</span><span class="p">]</span>
@@ -824,12 +825,13 @@ document.write(`
                 <span class="n">missing_key</span><span class="p">:</span> <span class="s2">"[your-value-here]"</span> <span class="k">for</span> <span class="n">missing_key</span> <span class="ow">in</span> <span class="n">missing_keys</span>
             <span class="p">}</span>
             <span class="n">example_config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"configurable"</span><span class="p">:</span> <span class="n">example_configurable</span><span class="p">}</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"Missing keys </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">missing_keys</span><span class="p">)</span><span class="si">}</span><span class="s2"> in config['configurable'] "</span>
                 <span class="sa">f</span><span class="s2">"Expected keys are </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">expected_keys</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
                 <span class="sa">f</span><span class="s2">"When using via .invoke() or .stream(), pass in a config; "</span>
                 <span class="sa">f</span><span class="s2">"e.g., chain.invoke(</span><span class="si">{</span><span class="n">example_input</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">example_config</span><span class="si">}</span><span class="s2">)"</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected_keys</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">parameter_names</span><span class="p">:</span>
@@ -844,10 +846,11 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># otherwise verify that names of keys patch and invoke by named arguments</span>
             <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">expected_keys</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">(</span><span class="n">parameter_names</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Expected keys </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">expected_keys</span><span class="p">)</span><span class="si">}</span><span class="s2"> do not match parameter "</span>
                     <span class="sa">f</span><span class="s2">"names </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">parameter_names</span><span class="p">)</span><span class="si">}</span><span class="s2"> of get_session_history."</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
             <span class="n">message_history</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_session_history</span><span class="p">(</span>
                 <span class="o">**</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">configurable</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">expected_keys</span><span class="p">}</span>

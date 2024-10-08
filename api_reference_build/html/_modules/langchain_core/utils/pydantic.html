@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -295,7 +295,8 @@ document.write(`
     <span class="n">PydanticBaseModel</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
     <span class="n">TypeBaseModel</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">],</span> <span class="nb">type</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">]]</span>  <span class="c1"># type: ignore</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported Pydantic version: </span><span class="si">{</span><span class="n">PYDANTIC_MAJOR_VERSION</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unsupported Pydantic version: </span><span class="si">{</span><span class="n">PYDANTIC_MAJOR_VERSION</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 
 <span class="n">TBaseModel</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"TBaseModel"</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">PydanticBaseModel</span><span class="p">)</span>
@@ -356,7 +357,8 @@ document.write(`
         <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">BaseModelV1</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported Pydantic version: </span><span class="si">{</span><span class="n">PYDANTIC_MAJOR_VERSION</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unsupported Pydantic version: </span><span class="si">{</span><span class="n">PYDANTIC_MAJOR_VERSION</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">False</span></div>
 
 
@@ -387,7 +389,8 @@ document.write(`
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">BaseModelV1</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported Pydantic version: </span><span class="si">{</span><span class="n">PYDANTIC_MAJOR_VERSION</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unsupported Pydantic version: </span><span class="si">{</span><span class="n">PYDANTIC_MAJOR_VERSION</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">False</span></div>
 
 
@@ -480,9 +483,8 @@ document.write(`
     <span class="k">elif</span> <span class="n">PYDANTIC_MAJOR_VERSION</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">pydantic.v1</span> <span class="kn">import</span> <span class="n">create_model</span>  <span class="c1"># type: ignore</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"Unsupported pydantic version: </span><span class="si">{</span><span class="n">PYDANTIC_MAJOR_VERSION</span><span class="si">}</span><span class="s2">"</span>
-        <span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unsupported pydantic version: </span><span class="si">{</span><span class="n">PYDANTIC_MAJOR_VERSION</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="n">fields</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -586,9 +588,8 @@ document.write(`
                 <span class="n">fn_description</span><span class="o">=</span><span class="n">fn_description</span><span class="p">,</span>
             <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"Unsupported pydantic version: </span><span class="si">{</span><span class="n">PYDANTIC_MAJOR_VERSION</span><span class="si">}</span><span class="s2">"</span>
-        <span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unsupported pydantic version: </span><span class="si">{</span><span class="n">PYDANTIC_MAJOR_VERSION</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 
 <span class="k">if</span> <span class="n">PYDANTIC_MAJOR_VERSION</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
@@ -623,7 +624,8 @@ document.write(`
         <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">"__fields__"</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">__fields__</span>  <span class="c1"># type: ignore</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected a Pydantic model. Got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Expected a Pydantic model. Got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 <span class="k">elif</span> <span class="n">PYDANTIC_MAJOR_VERSION</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span> <span class="k">as</span> <span class="n">BaseModelV1_</span>
 
@@ -636,7 +638,8 @@ document.write(`
         <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">__fields__</span>  <span class="c1"># type: ignore</span></div>
 
 <span class="k">else</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported Pydantic version: </span><span class="si">{</span><span class="n">PYDANTIC_MAJOR_VERSION</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unsupported Pydantic version: </span><span class="si">{</span><span class="n">PYDANTIC_MAJOR_VERSION</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 <span class="n">_SchemaConfig</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>
     <span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">protected_namespaces</span><span class="o">=</span><span class="p">()</span>
@@ -789,11 +792,12 @@ document.write(`
         <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_RESERVED_NAMES</span><span class="p">:</span>
             <span class="c1"># Let's add a prefix to avoid colliding with internal pydantic fields</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">FieldInfo</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Remapping for fields starting with '_' or fields with a name "</span>
                     <span class="sa">f</span><span class="s2">"matching a reserved name </span><span class="si">{</span><span class="n">_RESERVED_NAMES</span><span class="si">}</span><span class="s2"> is not supported if "</span>
                     <span class="sa">f</span><span class="s2">" the field is a pydantic Field instance. Got </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">."</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="n">type_</span><span class="p">,</span> <span class="n">default_</span> <span class="o">=</span> <span class="n">value</span>
             <span class="n">remapped</span><span class="p">[</span><span class="sa">f</span><span class="s2">"private_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">type_</span><span class="p">,</span>
@@ -838,10 +842,11 @@ document.write(`
 
     <span class="k">if</span> <span class="n">root</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">field_definitions</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s2">"When specifying __root__ no other "</span>
                 <span class="sa">f</span><span class="s2">"fields should be provided. Got </span><span class="si">{</span><span class="n">field_definitions</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type_"</span><span class="p">:</span> <span class="n">root</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">"default_"</span><span class="p">:</span> <span class="n">root</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>

@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -359,9 +359,8 @@ document.write(`
 <span class="w">    </span><span class="sd">"""Raise error if docstring arg is not in type annotations."""</span>
     <span class="k">for</span> <span class="n">docstring_arg</span> <span class="ow">in</span> <span class="n">arg_descriptions</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">docstring_arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">annotations</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"Arg </span><span class="si">{</span><span class="n">docstring_arg</span><span class="si">}</span><span class="s2"> in docstring not found in function signature."</span>
-            <span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Arg </span><span class="si">{</span><span class="n">docstring_arg</span><span class="si">}</span><span class="s2"> in docstring not found in function signature."</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_infer_arg_descriptions</span><span class="p">(</span>
@@ -415,10 +414,11 @@ document.write(`
         <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">signature</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">any_v1_annotations</span> <span class="ow">and</span> <span class="n">any_v2_annotations</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">"Function </span><span class="si">{</span><span class="n">func</span><span class="si">}</span><span class="s2"> contains a mix of Pydantic v1 and v2 annotations. "</span>
             <span class="s2">"Only one version of Pydantic annotations per function is supported."</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">any_v1_annotations</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">any_v2_annotations</span>
 
 
@@ -575,7 +575,7 @@ document.write(`
 <span class="s2">    args_schema: Type[BaseModel] = SchemaClass</span>
 <span class="s2">    ..."""</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span>
-            <span class="k">raise</span> <span class="n">SchemaAnnotationError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"Tool definition for </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must include valid type annotations"</span>
                 <span class="sa">f</span><span class="s2">" for argument 'args_schema' to behave as expected.</span><span class="se">\n</span><span class="s2">"</span>
                 <span class="sa">f</span><span class="s2">"Expected annotation of 'Type[BaseModel]'"</span>
@@ -583,6 +583,7 @@ document.write(`
                 <span class="sa">f</span><span class="s2">"Expected class looks like:</span><span class="se">\n</span><span class="s2">"</span>
                 <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">typehint_mandate</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SchemaAnnotationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
 <span class="w">    </span><span class="sd">"""The unique name of the tool that clearly communicates its purpose."""</span>
@@ -662,10 +663,11 @@ document.write(`
             <span class="ow">and</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"args_schema"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_basemodel_subclass</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">"args_schema"</span><span class="p">])</span>
         <span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"args_schema must be a subclass of pydantic BaseModel. "</span>
                 <span class="sa">f</span><span class="s2">"Got: </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">'args_schema'</span><span class="p">]</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>
@@ -761,10 +763,11 @@ document.write(`
                     <span class="n">result</span> <span class="o">=</span> <span class="n">input_args</span><span class="o">.</span><span class="n">parse_obj</span><span class="p">(</span><span class="n">tool_input</span><span class="p">)</span>
                     <span class="n">result_dict</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                         <span class="s2">"args_schema must be a Pydantic BaseModel, "</span>
                         <span class="sa">f</span><span class="s2">"got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">args_schema</span><span class="si">}</span><span class="s2">"</span>
                     <span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                 <span class="k">return</span> <span class="p">{</span>
                     <span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">result_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
@@ -901,12 +904,13 @@ document.write(`
             <span class="n">response</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">,</span> <span class="o">*</span><span class="n">tool_args</span><span class="p">,</span> <span class="o">**</span><span class="n">tool_kwargs</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_format</span> <span class="o">==</span> <span class="s2">"content_and_artifact"</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                         <span class="s2">"Since response_format='content_and_artifact' "</span>
                         <span class="s2">"a two-tuple of the message content and raw tool output is "</span>
                         <span class="sa">f</span><span class="s2">"expected. Instead generated response of type: "</span>
                         <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">response</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
                     <span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                 <span class="n">content</span><span class="p">,</span> <span class="n">artifact</span> <span class="o">=</span> <span class="n">response</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">content</span> <span class="o">=</span> <span class="n">response</span>
@@ -1020,12 +1024,13 @@ document.write(`
                 <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">coro</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_format</span> <span class="o">==</span> <span class="s2">"content_and_artifact"</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                         <span class="s2">"Since response_format='content_and_artifact' "</span>
                         <span class="s2">"a two-tuple of the message content and raw tool output is "</span>
                         <span class="sa">f</span><span class="s2">"expected. Instead generated response of type: "</span>
                         <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">response</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
                     <span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                 <span class="n">content</span><span class="p">,</span> <span class="n">artifact</span> <span class="o">=</span> <span class="n">response</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">content</span> <span class="o">=</span> <span class="n">response</span>
@@ -1081,10 +1086,11 @@ document.write(`
     <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">flag</span><span class="p">):</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">flag</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">"Got unexpected type of `handle_validation_error`. Expected bool, "</span>
             <span class="sa">f</span><span class="s2">"str or callable. Received: </span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">content</span>
 
 
@@ -1100,10 +1106,11 @@ document.write(`
     <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">flag</span><span class="p">):</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">flag</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">"Got unexpected type of `handle_tool_error`. Expected bool, str "</span>
             <span class="sa">f</span><span class="s2">"or callable. Received: </span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">content</span>
 
 

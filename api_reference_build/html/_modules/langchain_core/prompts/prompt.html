@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -320,12 +320,12 @@ document.write(`
 
         <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"validate_template"</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"template_format"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"mustache"</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Mustache templates cannot be validated."</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Mustache templates cannot be validated."</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="s2">"input_variables"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">"Input variables must be provided to validate the template."</span>
-                <span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Input variables must be provided to validate the template."</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
             <span class="n">all_inputs</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">"input_variables"</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"partial_variables"</span><span class="p">])</span>
             <span class="n">check_valid_template</span><span class="p">(</span>
@@ -362,13 +362,11 @@ document.write(`
         <span class="c1"># Allow for easy combining</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">PromptTemplate</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_format</span> <span class="o">!=</span> <span class="s2">"f-string"</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">"Adding prompt templates only supported for f-strings."</span>
-                <span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Adding prompt templates only supported for f-strings."</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">template_format</span> <span class="o">!=</span> <span class="s2">"f-string"</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">"Adding prompt templates only supported for f-strings."</span>
-                <span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Adding prompt templates only supported for f-strings."</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="n">input_variables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
                 <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_variables</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">input_variables</span><span class="p">)</span>
             <span class="p">)</span>
@@ -378,7 +376,8 @@ document.write(`
             <span class="n">partial_variables</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">partial_variables</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">partial_variables</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">partial_variables</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Cannot have same variable partialed twice."</span><span class="p">)</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Cannot have same variable partialed twice."</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">partial_variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
             <span class="k">return</span> <span class="n">PromptTemplate</span><span class="p">(</span>
@@ -392,7 +391,8 @@ document.write(`
             <span class="n">prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span> <span class="o">+</span> <span class="n">prompt</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported operand type for +: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unsupported operand type for +: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_prompt_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>

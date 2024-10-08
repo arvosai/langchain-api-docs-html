@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -292,11 +292,12 @@ document.write(`
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">GPT2TokenizerFast</span>  <span class="c1"># type: ignore[import]</span>
     <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="s2">"Could not import transformers python package. "</span>
             <span class="s2">"This is needed in order to calculate get_token_ids. "</span>
             <span class="s2">"Please install it with `pip install transformers`."</span>
-        <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
     <span class="c1"># create a GPT-2 tokenizer instance</span>
     <span class="k">return</span> <span class="n">GPT2TokenizerFast</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">"gpt2"</span><span class="p">)</span>
 
@@ -472,7 +473,7 @@ document.write(`
 <span class="w">        </span><span class="sd">"""Not implemented on this class."""</span>
         <span class="c1"># Implement this on child class if there is a way of steering the model to</span>
         <span class="c1"># generate responses that match a given schema.</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
     <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">"0.1.7"</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s2">"invoke"</span><span class="p">,</span> <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">)</span>

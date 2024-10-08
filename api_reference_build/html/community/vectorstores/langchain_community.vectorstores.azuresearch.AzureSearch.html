@@ -40,7 +40,7 @@
 <link href="langchain_community.vectorstores.azure_cosmos_db_no_sql.AzureCosmosDBNoSqlVectorSearch.html" rel="prev" title="AzureCosmosDBNoSqlVectorSearch"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -799,6 +799,7 @@ the vectorstore.</p>
 <li><p><strong>texts</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>) – Iterable of strings to add to the vectorstore.</p></li>
 <li><p><strong>metadatas</strong> (<em>List</em><em>[</em><em>dict</em><em>] </em><em>| </em><em>None</em>) – Optional list of metadatas associated with the texts.
 Default is None.</p></li>
+<li><p><strong>ids</strong> – Optional list</p></li>
 <li><p><strong>**kwargs</strong> (<em>Any</em>) – vectorstore specific parameters.</p></li>
 <li><p><strong>keys</strong> (<em>List</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
 <li><p><strong>**kwargs</strong></p></li>
@@ -949,6 +950,7 @@ False otherwise.</p>
 <li><p><strong>embedding</strong> (<a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><em>Embeddings</em></a>) – Embedding function to use.</p></li>
 <li><p><strong>metadatas</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>dict</em><em>]</em><em>]</em>) – Optional list of metadatas associated with the texts.
 Default is None.</p></li>
+<li><p><strong>ids</strong> – Optional list of IDs associated with the texts.</p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments.</p></li>
 <li><p><strong>azure_search_endpoint</strong> (<em>str</em>)</p></li>
 <li><p><strong>azure_search_key</strong> (<em>str</em>)</p></li>
@@ -1508,6 +1510,7 @@ False otherwise.</p>
 <li><p><strong>embedding</strong> (<a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><em>Embeddings</em></a>) – Embedding function to use.</p></li>
 <li><p><strong>metadatas</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>dict</em><em>]</em><em>]</em>) – Optional list of metadatas associated with the texts.
 Default is None.</p></li>
+<li><p><strong>ids</strong> – Optional list of IDs associated with the texts.</p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments.</p></li>
 <li><p><strong>azure_search_endpoint</strong> (<em>str</em>)</p></li>
 <li><p><strong>azure_search_key</strong> (<em>str</em>)</p></li>

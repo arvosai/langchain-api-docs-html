@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -320,7 +320,8 @@ document.write(`
     <span class="k">if</span> <span class="n">generation</span><span class="p">:</span>
         <span class="n">generation</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">generation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No generations found in stream."</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"No generations found in stream."</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ChatResult</span><span class="p">(</span>
         <span class="n">generations</span><span class="o">=</span><span class="p">[</span>
             <span class="n">ChatGeneration</span><span class="p">(</span>
@@ -502,10 +503,11 @@ document.write(`
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">ChatPromptValue</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">convert_to_messages</span><span class="p">(</span><span class="nb">input</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"Invalid input type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span><span class="si">}</span><span class="s2">. "</span>
                 <span class="s2">"Must be a PromptValue, str, or list of BaseMessages."</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BaseChatModel.invoke">
 <a class="viewcode-back" href="../../../core/language_models/langchain_core.language_models.chat_models.BaseChatModel.html#langchain_cohere.chat_models.BaseChatModel.invoke">[docs]</a>
@@ -1066,9 +1068,8 @@ document.write(`
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">pass</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">"Asked to cache, but no cache found at `langchain.cache`."</span>
-                <span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Asked to cache, but no cache found at `langchain.cache`."</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="c1"># Apply the rate limiter after checking the cache, since</span>
         <span class="c1"># we usually don't want to rate limit cache lookups, but</span>
@@ -1140,9 +1141,8 @@ document.write(`
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">pass</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">"Asked to cache, but no cache found at `langchain.cache`."</span>
-                <span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Asked to cache, but no cache found at `langchain.cache`."</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="c1"># Apply the rate limiter after checking the cache, since</span>
         <span class="c1"># we usually don't want to rate limit cache lookups, but</span>
@@ -1226,7 +1226,7 @@ document.write(`
         <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">ChatGenerationChunk</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_astream</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1271,7 +1271,8 @@ document.write(`
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">generation</span><span class="p">,</span> <span class="n">ChatGeneration</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">generation</span><span class="o">.</span><span class="n">message</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Unexpected generation type"</span><span class="p">)</span></div>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Unexpected generation type"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_call_async</span><span class="p">(</span>
@@ -1288,7 +1289,8 @@ document.write(`
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">generation</span><span class="p">,</span> <span class="n">ChatGeneration</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">generation</span><span class="o">.</span><span class="n">message</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Unexpected generation type"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Unexpected generation type"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">"0.1.7"</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s2">"invoke"</span><span class="p">,</span> <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">call_as_llm</span><span class="p">(</span>
@@ -1305,7 +1307,8 @@ document.write(`
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">content</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Cannot use predict when output is not a string."</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Cannot use predict when output is not a string."</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">"0.1.7"</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s2">"invoke"</span><span class="p">,</span> <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">predict_messages</span><span class="p">(</span>
@@ -1329,7 +1332,8 @@ document.write(`
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">content</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Cannot use predict when output is not a string."</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Cannot use predict when output is not a string."</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">"0.1.7"</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s2">"ainvoke"</span><span class="p">,</span> <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">)</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">apredict_messages</span><span class="p">(</span>
@@ -1362,7 +1366,7 @@ document.write(`
         <span class="p">],</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Runnable</span><span class="p">[</span><span class="n">LanguageModelInput</span><span class="p">,</span> <span class="n">BaseMessage</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
 <div class="viewcode-block" id="BaseChatModel.with_structured_output">
@@ -1477,7 +1481,8 @@ document.write(`
 <span class="sd">                # }</span>
 <span class="sd">        """</span>  <span class="c1"># noqa: E501</span>
         <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Received unsupported arguments </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Received unsupported arguments </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="kn">from</span> <span class="nn">langchain_core.output_parsers.openai_tools</span> <span class="kn">import</span> <span class="p">(</span>
             <span class="n">JsonOutputKeyToolsParser</span><span class="p">,</span>
@@ -1485,9 +1490,8 @@ document.write(`
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bind_tools</span> <span class="ow">is</span> <span class="n">BaseChatModel</span><span class="o">.</span><span class="n">bind_tools</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                <span class="s2">"with_structured_output is not implemented for this model."</span>
-            <span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"with_structured_output is not implemented for this model."</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="n">llm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bind_tools</span><span class="p">([</span><span class="n">schema</span><span class="p">],</span> <span class="n">tool_choice</span><span class="o">=</span><span class="s2">"any"</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_basemodel_subclass</span><span class="p">(</span><span class="n">schema</span><span class="p">):</span>
             <span class="n">output_parser</span><span class="p">:</span> <span class="n">OutputParserLike</span> <span class="o">=</span> <span class="n">PydanticToolsParser</span><span class="p">(</span>

@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -377,7 +377,8 @@ document.write(`
                 <span class="n">runnable</span> <span class="o">=</span> <span class="n">dec_func</span>
 
                 <span class="k">if</span> <span class="n">runnable</span><span class="o">.</span><span class="n">input_schema</span><span class="o">.</span><span class="n">model_json_schema</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">"object"</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Runnable must have an object schema."</span><span class="p">)</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Runnable must have an object schema."</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
                 <span class="k">async</span> <span class="k">def</span> <span class="nf">ainvoke_wrapper</span><span class="p">(</span>
                     <span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callbacks</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
@@ -420,10 +421,11 @@ document.write(`
             <span class="c1"># If someone doesn't want a schema applied, we must treat it as</span>
             <span class="c1"># a simple string-&gt;string function</span>
             <span class="k">if</span> <span class="n">dec_func</span><span class="o">.</span><span class="vm">__doc__</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="s2">"Function must have a docstring if "</span>
                     <span class="s2">"description not provided and infer_schema is False."</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">Tool</span><span class="p">(</span>
                 <span class="n">name</span><span class="o">=</span><span class="n">tool_name</span><span class="p">,</span>
                 <span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span>
@@ -453,7 +455,8 @@ document.write(`
 
         <span class="k">return</span> <span class="n">_partial</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Too many arguments for tool decorator"</span><span class="p">)</span></div>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Too many arguments for tool decorator"</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 
 
@@ -473,11 +476,12 @@ document.write(`
         <span class="k">try</span><span class="p">:</span>
             <span class="n">arg_types</span> <span class="o">=</span> <span class="n">get_type_hints</span><span class="p">(</span><span class="n">runnable</span><span class="o">.</span><span class="n">InputType</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s2">"Tool input must be str or dict. If dict, dict arguments must be "</span>
                 <span class="s2">"typed. Either annotate types (e.g., with TypedDict) or pass "</span>
                 <span class="sa">f</span><span class="s2">"arg_types into `.as_tool` to specify. </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
-            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">(</span><span class="n">key_type</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">key_type</span> <span class="ow">in</span> <span class="n">arg_types</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
     <span class="k">return</span> <span class="n">create_model</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">fields</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 

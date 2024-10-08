@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -302,20 +302,22 @@ document.write(`
 
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">forbidden_keys</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Metadata cannot contain key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> as it "</span>
                     <span class="sa">f</span><span class="s2">"is reserved for internal use."</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="n">content_hash</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">_hash_string_to_uuid</span><span class="p">(</span><span class="n">content</span><span class="p">))</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">metadata_hash</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">_hash_nested_dict_to_uuid</span><span class="p">(</span><span class="n">metadata</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"Failed to hash metadata: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">. "</span>
                 <span class="sa">f</span><span class="s2">"Please use a dict that can be serialized using json."</span>
-            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
 
         <span class="n">values</span><span class="p">[</span><span class="s2">"content_hash"</span><span class="p">]</span> <span class="o">=</span> <span class="n">content_hash</span>
         <span class="n">values</span><span class="p">[</span><span class="s2">"metadata_hash"</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata_hash</span>
@@ -383,10 +385,11 @@ document.write(`
     <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">source_id_key</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">source_id_key</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">"source_id_key should be either None, a string or a callable. "</span>
             <span class="sa">f</span><span class="s2">"Got </span><span class="si">{</span><span class="n">source_id_key</span><span class="si">}</span><span class="s2"> of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">source_id_key</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_deduplicate_in_order</span><span class="p">(</span>
@@ -432,6 +435,7 @@ document.write(`
     <span class="n">source_id_key</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Document</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">cleanup_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1_000</span><span class="p">,</span>
     <span class="n">force_update</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">upsert_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IndexingResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Index data from the loader into the vector store.</span>
 
@@ -483,6 +487,12 @@ document.write(`
 <span class="sd">        force_update: Force update documents even if they are present in the</span>
 <span class="sd">            record manager. Useful if you are re-indexing with updated embeddings.</span>
 <span class="sd">            Default is False.</span>
+<span class="sd">        upsert_kwargs: Additional keyword arguments to pass to the add_documents</span>
+<span class="sd">                       method of the VectorStore or the upsert method of the</span>
+<span class="sd">                       DocumentIndex. For example, you can use this to</span>
+<span class="sd">                       specify a custom vector_field:</span>
+<span class="sd">                       upsert_kwargs={"vector_field": "embedding"}</span>
+<span class="sd">            .. versionadded:: 0.3.10</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Indexing result which contains information about how many documents</span>
@@ -496,13 +506,15 @@ document.write(`
 <span class="sd">        ValueError: If source_id_key is not None, but is not a string or callable.</span>
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="n">cleanup</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"incremental"</span><span class="p">,</span> <span class="s2">"full"</span><span class="p">,</span> <span class="kc">None</span><span class="p">}:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">"cleanup should be one of 'incremental', 'full' or None. "</span>
             <span class="sa">f</span><span class="s2">"Got </span><span class="si">{</span><span class="n">cleanup</span><span class="si">}</span><span class="s2">."</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">cleanup</span> <span class="o">==</span> <span class="s2">"incremental"</span> <span class="ow">and</span> <span class="n">source_id_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Source id key is required when cleanup mode is incremental."</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Source id key is required when cleanup mode is incremental."</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="n">destination</span> <span class="o">=</span> <span class="n">vector_store</span>  <span class="c1"># Renaming internally for clarity</span>
 
@@ -513,21 +525,24 @@ document.write(`
 
         <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Vectorstore </span><span class="si">{</span><span class="n">destination</span><span class="si">}</span><span class="s2"> does not have required method </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span> <span class="o">==</span> <span class="n">VectorStore</span><span class="o">.</span><span class="n">delete</span><span class="p">:</span>
             <span class="c1"># Checking if the vectorstore has overridden the default delete method</span>
             <span class="c1"># implementation which just raises a NotImplementedError</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Vectorstore has not implemented the delete method"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Vectorstore has not implemented the delete method"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">DocumentIndex</span><span class="p">):</span>
         <span class="k">pass</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">"Vectorstore should be either a VectorStore or a DocumentIndex. "</span>
             <span class="sa">f</span><span class="s2">"Got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">docs_source</span><span class="p">,</span> <span class="n">BaseLoader</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
@@ -561,12 +576,13 @@ document.write(`
             <span class="c1"># If the cleanup mode is incremental, source ids are required.</span>
             <span class="k">for</span> <span class="n">source_id</span><span class="p">,</span> <span class="n">hashed_doc</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">source_ids</span><span class="p">,</span> <span class="n">hashed_docs</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">source_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                         <span class="s2">"Source ids are required when cleanup mode is incremental. "</span>
                         <span class="sa">f</span><span class="s2">"Document that starts with "</span>
                         <span class="sa">f</span><span class="s2">"content: </span><span class="si">{</span><span class="n">hashed_doc</span><span class="o">.</span><span class="n">page_content</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span><span class="si">}</span><span class="s2"> was not assigned "</span>
                         <span class="sa">f</span><span class="s2">"as source id."</span>
                     <span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="c1"># source ids cannot be None after for loop above.</span>
             <span class="n">source_ids</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">source_ids</span><span class="p">)</span>  <span class="c1"># type: ignore[assignment]</span>
 
@@ -597,10 +613,16 @@ document.write(`
         <span class="k">if</span> <span class="n">docs_to_index</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">VectorStore</span><span class="p">):</span>
                 <span class="n">destination</span><span class="o">.</span><span class="n">add_documents</span><span class="p">(</span>
-                    <span class="n">docs_to_index</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">uids</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span>
+                    <span class="n">docs_to_index</span><span class="p">,</span>
+                    <span class="n">ids</span><span class="o">=</span><span class="n">uids</span><span class="p">,</span>
+                    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+                    <span class="o">**</span><span class="p">(</span><span class="n">upsert_kwargs</span> <span class="ow">or</span> <span class="p">{}),</span>
                 <span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">DocumentIndex</span><span class="p">):</span>
-                <span class="n">destination</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span><span class="n">docs_to_index</span><span class="p">)</span>
+                <span class="n">destination</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+                    <span class="n">docs_to_index</span><span class="p">,</span>
+                    <span class="o">**</span><span class="p">(</span><span class="n">upsert_kwargs</span> <span class="ow">or</span> <span class="p">{}),</span>
+                <span class="p">)</span>
 
             <span class="n">num_added</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">docs_to_index</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">seen_docs</span><span class="p">)</span>
             <span class="n">num_updated</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seen_docs</span><span class="p">)</span>
@@ -621,7 +643,8 @@ document.write(`
             <span class="c1"># mypy isn't good enough to determine that source ids cannot be None</span>
             <span class="c1"># here due to a check that's happening above, so we check again.</span>
             <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">source_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="n">source_ids</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">"Source ids cannot be if cleanup=='incremental'."</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Source ids cannot be if cleanup=='incremental'."</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
             <span class="n">indexed_source_ids</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span>
                 <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="p">[</span><span class="n">source_id_assigner</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs_to_index</span><span class="p">]</span>
@@ -675,6 +698,7 @@ document.write(`
     <span class="n">source_id_key</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Document</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">cleanup_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1_000</span><span class="p">,</span>
     <span class="n">force_update</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">upsert_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IndexingResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Async index data from the loader into the vector store.</span>
 
@@ -717,6 +741,12 @@ document.write(`
 <span class="sd">        force_update: Force update documents even if they are present in the</span>
 <span class="sd">            record manager. Useful if you are re-indexing with updated embeddings.</span>
 <span class="sd">            Default is False.</span>
+<span class="sd">        upsert_kwargs: Additional keyword arguments to pass to the aadd_documents</span>
+<span class="sd">                       method of the VectorStore or the aupsert method of the</span>
+<span class="sd">                       DocumentIndex. For example, you can use this to</span>
+<span class="sd">                       specify a custom vector_field:</span>
+<span class="sd">                       upsert_kwargs={"vector_field": "embedding"}</span>
+<span class="sd">            .. versionadded:: 0.3.10</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Indexing result which contains information about how many documents</span>
@@ -731,13 +761,15 @@ document.write(`
 <span class="sd">    """</span>
 
     <span class="k">if</span> <span class="n">cleanup</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"incremental"</span><span class="p">,</span> <span class="s2">"full"</span><span class="p">,</span> <span class="kc">None</span><span class="p">}:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">"cleanup should be one of 'incremental', 'full' or None. "</span>
             <span class="sa">f</span><span class="s2">"Got </span><span class="si">{</span><span class="n">cleanup</span><span class="si">}</span><span class="s2">."</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">cleanup</span> <span class="o">==</span> <span class="s2">"incremental"</span> <span class="ow">and</span> <span class="n">source_id_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Source id key is required when cleanup mode is incremental."</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Source id key is required when cleanup mode is incremental."</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="n">destination</span> <span class="o">=</span> <span class="n">vector_store</span>  <span class="c1"># Renaming internally for clarity</span>
 
@@ -749,21 +781,24 @@ document.write(`
 
         <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Vectorstore </span><span class="si">{</span><span class="n">destination</span><span class="si">}</span><span class="s2"> does not have required method </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span><span class="o">.</span><span class="n">adelete</span> <span class="o">==</span> <span class="n">VectorStore</span><span class="o">.</span><span class="n">adelete</span><span class="p">:</span>
             <span class="c1"># Checking if the vectorstore has overridden the default delete method</span>
             <span class="c1"># implementation which just raises a NotImplementedError</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Vectorstore has not implemented the delete method"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Vectorstore has not implemented the delete method"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">DocumentIndex</span><span class="p">):</span>
         <span class="k">pass</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">"Vectorstore should be either a VectorStore or a DocumentIndex. "</span>
             <span class="sa">f</span><span class="s2">"Got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="n">async_doc_iterator</span><span class="p">:</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Document</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">docs_source</span><span class="p">,</span> <span class="n">BaseLoader</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
@@ -805,12 +840,13 @@ document.write(`
             <span class="c1"># If the cleanup mode is incremental, source ids are required.</span>
             <span class="k">for</span> <span class="n">source_id</span><span class="p">,</span> <span class="n">hashed_doc</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">source_ids</span><span class="p">,</span> <span class="n">hashed_docs</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">source_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                         <span class="s2">"Source ids are required when cleanup mode is incremental. "</span>
                         <span class="sa">f</span><span class="s2">"Document that starts with "</span>
                         <span class="sa">f</span><span class="s2">"content: </span><span class="si">{</span><span class="n">hashed_doc</span><span class="o">.</span><span class="n">page_content</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span><span class="si">}</span><span class="s2"> was not assigned "</span>
                         <span class="sa">f</span><span class="s2">"as source id."</span>
                     <span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="c1"># source ids cannot be None after for loop above.</span>
             <span class="n">source_ids</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">source_ids</span><span class="p">)</span>
 
@@ -841,10 +877,16 @@ document.write(`
         <span class="k">if</span> <span class="n">docs_to_index</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">VectorStore</span><span class="p">):</span>
                 <span class="k">await</span> <span class="n">destination</span><span class="o">.</span><span class="n">aadd_documents</span><span class="p">(</span>
-                    <span class="n">docs_to_index</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">uids</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span>
+                    <span class="n">docs_to_index</span><span class="p">,</span>
+                    <span class="n">ids</span><span class="o">=</span><span class="n">uids</span><span class="p">,</span>
+                    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+                    <span class="o">**</span><span class="p">(</span><span class="n">upsert_kwargs</span> <span class="ow">or</span> <span class="p">{}),</span>
                 <span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">DocumentIndex</span><span class="p">):</span>
-                <span class="k">await</span> <span class="n">destination</span><span class="o">.</span><span class="n">aupsert</span><span class="p">(</span><span class="n">docs_to_index</span><span class="p">)</span>
+                <span class="k">await</span> <span class="n">destination</span><span class="o">.</span><span class="n">aupsert</span><span class="p">(</span>
+                    <span class="n">docs_to_index</span><span class="p">,</span>
+                    <span class="o">**</span><span class="p">(</span><span class="n">upsert_kwargs</span> <span class="ow">or</span> <span class="p">{}),</span>
+                <span class="p">)</span>
             <span class="n">num_added</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">docs_to_index</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">seen_docs</span><span class="p">)</span>
             <span class="n">num_updated</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seen_docs</span><span class="p">)</span>
 
@@ -865,7 +907,8 @@ document.write(`
             <span class="c1"># mypy isn't good enough to determine that source ids cannot be None</span>
             <span class="c1"># here due to a check that's happening above, so we check again.</span>
             <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">source_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="n">source_ids</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">"Source ids cannot be if cleanup=='incremental'."</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Source ids cannot be if cleanup=='incremental'."</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
             <span class="n">indexed_source_ids</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span>
                 <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="p">[</span><span class="n">source_id_assigner</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs_to_index</span><span class="p">]</span>

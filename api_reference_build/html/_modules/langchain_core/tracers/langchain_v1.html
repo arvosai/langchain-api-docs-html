@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -234,10 +234,11 @@ document.write(`
 <a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.langchain_v1.get_headers.html#langchain_core.tracers.langchain_v1.get_headers">[docs]</a>
 <span class="k">def</span> <span class="nf">get_headers</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Throw an error because this has been replaced by get_headers."""</span>
-    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">"get_headers for LangChainTracerV1 is no longer supported. "</span>
         <span class="s2">"Please use LangChainTracer instead."</span>
-    <span class="p">)</span></div>
+    <span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 
 
@@ -245,9 +246,10 @@ document.write(`
 <a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.langchain_v1.LangChainTracerV1.html#langchain_core.tracers.langchain_v1.LangChainTracerV1">[docs]</a>
 <span class="k">def</span> <span class="nf">LangChainTracerV1</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>  <span class="c1"># noqa: N802</span>
 <span class="w">    </span><span class="sd">"""Throw an error because this has been replaced by LangChainTracer."""</span>
-    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">"LangChainTracerV1 is no longer supported. Please use LangChainTracer instead."</span>
-    <span class="p">)</span></div>
+    <span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 </pre></div>
 </article>

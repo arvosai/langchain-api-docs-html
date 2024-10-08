@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -619,7 +619,8 @@ document.write(`
                         <span class="p">)</span>
                     <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Malformed args."</span><span class="p">)</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Malformed args."</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">invalid_tool_calls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">create_invalid_tool_call</span><span class="p">(</span>
@@ -651,9 +652,8 @@ document.write(`
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AIMessageChunk</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Add multiple AIMessageChunks together."""</span>
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">example</span> <span class="o">!=</span> <span class="n">o</span><span class="o">.</span><span class="n">example</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">others</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">"Cannot concatenate AIMessageChunks with different example values."</span>
-        <span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Cannot concatenate AIMessageChunks with different example values."</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="n">content</span> <span class="o">=</span> <span class="n">merge_content</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">content</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">others</span><span class="p">))</span>
     <span class="n">additional_kwargs</span> <span class="o">=</span> <span class="n">merge_dicts</span><span class="p">(</span>

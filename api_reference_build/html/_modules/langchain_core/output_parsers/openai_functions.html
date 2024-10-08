@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -269,16 +269,14 @@ document.write(`
 <span class="sd">        """</span>
         <span class="n">generation</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">generation</span><span class="p">,</span> <span class="n">ChatGeneration</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span>
-                <span class="s2">"This output parser can only be used with a chat generation."</span>
-            <span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"This output parser can only be used with a chat generation."</span>
+            <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="n">message</span> <span class="o">=</span> <span class="n">generation</span><span class="o">.</span><span class="n">message</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">func_call</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="p">[</span><span class="s2">"function_call"</span><span class="p">])</span>
         <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"Could not parse function call: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">"</span>
-            <span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Could not parse function call: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_only</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">func_call</span><span class="p">[</span><span class="s2">"arguments"</span><span class="p">]</span>
@@ -327,14 +325,12 @@ document.write(`
 <span class="sd">        """</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"Expected exactly one result, but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
-            <span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Expected exactly one result, but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="n">generation</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">generation</span><span class="p">,</span> <span class="n">ChatGeneration</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span>
-                <span class="s2">"This output parser can only be used with a chat generation."</span>
-            <span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"This output parser can only be used with a chat generation."</span>
+            <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="n">message</span> <span class="o">=</span> <span class="n">generation</span><span class="o">.</span><span class="n">message</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">function_call</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="p">[</span><span class="s2">"function_call"</span><span class="p">]</span>
@@ -342,9 +338,8 @@ document.write(`
             <span class="k">if</span> <span class="n">partial</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">"Could not parse function call: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">"</span>
-                <span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Could not parse function call: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">"</span>
+                <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">partial</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -368,9 +363,8 @@ document.write(`
                             <span class="n">function_call</span><span class="p">[</span><span class="s2">"arguments"</span><span class="p">],</span> <span class="n">strict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">strict</span>
                         <span class="p">)</span>
                     <span class="k">except</span> <span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">"Could not parse function call data: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">"</span>
-                        <span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Could not parse function call data: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">"</span>
+                        <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="k">return</span> <span class="p">{</span>
@@ -380,9 +374,8 @@ document.write(`
                             <span class="p">),</span>
                         <span class="p">}</span>
                     <span class="k">except</span> <span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">"Could not parse function call data: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">"</span>
-                        <span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Could not parse function call data: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">"</span>
+                        <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span></div>
 
@@ -400,7 +393,7 @@ document.write(`
 <span class="sd">        Returns:</span>
 <span class="sd">            The parsed JSON object.</span>
 <span class="sd">        """</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 </div>
 
 
@@ -505,10 +498,11 @@ document.write(`
                 <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">values</span><span class="p">[</span><span class="s2">"args_only"</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s2">"If multiple pydantic schemas are provided then args_only should be"</span>
                 <span class="s2">" False."</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
 
 <div class="viewcode-block" id="PydanticOutputFunctionsParser.parse_result">

@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -366,17 +366,19 @@ document.write(`
         <span class="k">try</span><span class="p">:</span>
             <span class="n">run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_map</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">run_id</span><span class="p">)]</span>
         <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TracerException</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No indexed run ID </span><span class="si">{</span><span class="n">run_id</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"No indexed run ID </span><span class="si">{</span><span class="n">run_id</span><span class="si">}</span><span class="s2">."</span>
+            <span class="k">raise</span> <span class="n">TracerException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">run_type</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">run_types</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">run_type</span><span class="p">}</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">run_types</span> <span class="o">=</span> <span class="n">run_type</span>
         <span class="k">if</span> <span class="n">run_types</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">run</span><span class="o">.</span><span class="n">run_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">run_types</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TracerException</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"Found </span><span class="si">{</span><span class="n">run</span><span class="o">.</span><span class="n">run_type</span><span class="si">}</span><span class="s2"> run at ID </span><span class="si">{</span><span class="n">run_id</span><span class="si">}</span><span class="s2">, "</span>
                 <span class="sa">f</span><span class="s2">"but expected </span><span class="si">{</span><span class="n">run_types</span><span class="si">}</span><span class="s2"> run."</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="n">TracerException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">run</span>
 
     <span class="k">def</span> <span class="nf">_create_chat_model_run</span><span class="p">(</span>
@@ -399,10 +401,11 @@ document.write(`
             <span class="c1"># This can eventually be cleaned up by writing a "modern" tracer</span>
             <span class="c1"># that has all the updated schema changes corresponding to</span>
             <span class="c1"># the "streaming_events" format.</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"Chat model tracing is not supported in "</span>
                 <span class="sa">f</span><span class="s2">"for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_format</span><span class="si">}</span><span class="s2"> format."</span>
             <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"metadata"</span><span class="p">:</span> <span class="n">metadata</span><span class="p">})</span>
@@ -567,7 +570,8 @@ document.write(`
                 <span class="s2">"input"</span><span class="p">:</span> <span class="n">inputs</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid format: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_format</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Invalid format: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_format</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_chain_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Get the outputs for a chain run."""</span>
@@ -578,7 +582,8 @@ document.write(`
                 <span class="s2">"output"</span><span class="p">:</span> <span class="n">outputs</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid format: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_format</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Invalid format: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_format</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_complete_chain_run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -633,7 +638,8 @@ document.write(`
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_format</span> <span class="o">==</span> <span class="s2">"streaming_events"</span><span class="p">:</span>
             <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="n">inputs</span><span class="p">}</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid format: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_format</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Invalid format: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_format</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">Run</span><span class="p">(</span>
             <span class="nb">id</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>

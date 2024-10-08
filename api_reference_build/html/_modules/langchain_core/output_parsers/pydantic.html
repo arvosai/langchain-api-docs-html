@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -260,10 +260,9 @@ document.write(`
                 <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pydantic_object</span><span class="p">,</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">):</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pydantic_object</span><span class="o">.</span><span class="n">parse_obj</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">"Unsupported model version for PydanticOutputParser: </span><span class="se">\</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unsupported model version for PydanticOutputParser: </span><span class="se">\</span>
 <span class="s2">                            </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pydantic_object</span><span class="o">.</span><span class="vm">__class__</span><span class="si">}</span><span class="s2">"</span>
-                    <span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">OutputParserException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">except</span> <span class="p">(</span><span class="n">pydantic</span><span class="o">.</span><span class="n">ValidationError</span><span class="p">,</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">ValidationError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser_exception</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># pydantic v1</span>

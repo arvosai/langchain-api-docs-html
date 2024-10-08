@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 07, 2024" name="docbuild:last-update"/>
+<meta content="Oct 08, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -312,7 +312,8 @@ document.write(`
             <span class="k">if</span> <span class="n">config_param</span> <span class="o">:=</span> <span class="n">_get_runnable_config_param</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">):</span>
                 <span class="n">kwargs</span><span class="p">[</span><span class="n">config_param</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"StructuredTool does not support sync invocation."</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"StructuredTool does not support sync invocation."</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_arun</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -403,7 +404,8 @@ document.write(`
         <span class="k">elif</span> <span class="n">coroutine</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">source_function</span> <span class="o">=</span> <span class="n">coroutine</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Function and/or coroutine must be provided"</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Function and/or coroutine must be provided"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="n">source_function</span><span class="o">.</span><span class="vm">__name__</span>
         <span class="k">if</span> <span class="n">args_schema</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">infer_schema</span><span class="p">:</span>
             <span class="c1"># schema name is appended within function</span>
@@ -420,9 +422,8 @@ document.write(`
         <span class="k">if</span> <span class="n">description_</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">args_schema</span><span class="p">:</span>
             <span class="n">description_</span> <span class="o">=</span> <span class="n">args_schema</span><span class="o">.</span><span class="vm">__doc__</span> <span class="ow">or</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">description_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">"Function must have a docstring if description not provided."</span>
-            <span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Function must have a docstring if description not provided."</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">description</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Only apply if using the function's docstring</span>
             <span class="n">description_</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">description_</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
