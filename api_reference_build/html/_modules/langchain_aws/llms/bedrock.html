@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 08, 2024" name="docbuild:last-update"/>
+<meta content="Oct 10, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -376,8 +376,8 @@ document.write(`
             <span class="k">return</span> <span class="n">AIMessageChunk</span><span class="p">(</span>
                 <span class="n">content</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
                 <span class="n">response_metadata</span><span class="o">=</span><span class="p">{</span>
-                    <span class="s2">"stop_reason"</span><span class="p">:</span> <span class="n">stream_response</span><span class="p">[</span><span class="s2">"delta"</span><span class="p">][</span><span class="s2">"stop_reason"</span><span class="p">],</span>
-                    <span class="s2">"stop_sequence"</span><span class="p">:</span> <span class="n">stream_response</span><span class="p">[</span><span class="s2">"delta"</span><span class="p">][</span><span class="s2">"stop_sequence"</span><span class="p">],</span>
+                    <span class="s2">"stop_reason"</span><span class="p">:</span> <span class="n">stream_response</span><span class="p">[</span><span class="s2">"delta"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"stop_reason"</span><span class="p">),</span>
+                    <span class="s2">"stop_sequence"</span><span class="p">:</span> <span class="n">stream_response</span><span class="p">[</span><span class="s2">"delta"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"stop_sequence"</span><span class="p">),</span>
                 <span class="p">},</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>

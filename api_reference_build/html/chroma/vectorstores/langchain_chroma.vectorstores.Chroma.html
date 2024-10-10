@@ -40,7 +40,7 @@
 <link href="../vectorstores.html" rel="prev" title="vectorstores"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 08, 2024" name="docbuild:last-update"/>
+<meta content="Oct 10, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -1150,7 +1150,7 @@ Defaults to None.</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ids</strong> (<em>Optional</em><em>[</em><em>OneOrMany</em><em>[</em><em>ID</em><em>]</em><em>]</em>) – The ids of the embeddings to get. Optional.</p></li>
 <li><p><strong>where</strong> (<em>Optional</em><em>[</em><em>Where</em><em>]</em>) – A Where type dict used to filter results by.
-E.g. <cite>{“color” : “red”, “price”: 4.20}</cite>. Optional.</p></li>
+E.g. <cite>{“$and”: [{“color”: “red”}, {“price”: 4.20}]}</cite> Optional.</p></li>
 <li><p><strong>limit</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – The number of documents to return. Optional.</p></li>
 <li><p><strong>offset</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – The offset to start returning results from.
 Useful for paging results with limit. Optional.</p></li>

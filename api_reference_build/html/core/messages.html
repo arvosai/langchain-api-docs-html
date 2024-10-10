@@ -40,7 +40,7 @@
 <link href="load/langchain_core.load.serializable.try_neq_default.html" rel="prev" title="try_neq_default"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 08, 2024" name="docbuild:last-update"/>
+<meta content="Oct 10, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -246,6 +246,8 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="messages/langchain_core.messages.tool.ToolMessage.html">ToolMessage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="messages/langchain_core.messages.tool.ToolMessageChunk.html">ToolMessageChunk</a></li>
 <li class="toctree-l3"><a class="reference internal" href="messages/langchain_core.messages.ai.add_ai_message_chunks.html">add_ai_message_chunks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="messages/langchain_core.messages.ai.add_usage.html">add_usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="messages/langchain_core.messages.ai.subtract_usage.html">subtract_usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="messages/langchain_core.messages.base.get_msg_title_repr.html">get_msg_title_repr</a></li>
 <li class="toctree-l3"><a class="reference internal" href="messages/langchain_core.messages.base.merge_content.html">merge_content</a></li>
 <li class="toctree-l3"><a class="reference internal" href="messages/langchain_core.messages.base.message_to_dict.html">message_to_dict</a></li>
@@ -343,7 +345,7 @@ document.write(`
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="index.html">langchain-core: 0.3.9</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="index.html">langchain-core: 0.3.10</a></li>
 <li aria-current="page" class="breadcrumb-item active"><code...< li="">
 </code...<></li></ul>
 </nav>
@@ -439,6 +441,12 @@ document.write(`
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="messages/langchain_core.messages.ai.add_ai_message_chunks.html#langchain_core.messages.ai.add_ai_message_chunks" title="langchain_core.messages.ai.add_ai_message_chunks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.ai.add_ai_message_chunks</span></code></a>(left, *others)</p></td>
 <td><p>Add multiple AIMessageChunks together.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="messages/langchain_core.messages.ai.add_usage.html#langchain_core.messages.ai.add_usage" title="langchain_core.messages.ai.add_usage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.ai.add_usage</span></code></a>(left, right)</p></td>
+<td><p>Recursively add two UsageMetadata objects.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="messages/langchain_core.messages.ai.subtract_usage.html#langchain_core.messages.ai.subtract_usage" title="langchain_core.messages.ai.subtract_usage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.ai.subtract_usage</span></code></a>(left, right)</p></td>
+<td><p>Recursively subtract two UsageMetadata objects.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="messages/langchain_core.messages.base.get_msg_title_repr.html#langchain_core.messages.base.get_msg_title_repr" title="langchain_core.messages.base.get_msg_title_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.base.get_msg_title_repr</span></code></a>(title, *[, ...])</p></td>
 <td><p>Get a title representation for a message.</p></td>

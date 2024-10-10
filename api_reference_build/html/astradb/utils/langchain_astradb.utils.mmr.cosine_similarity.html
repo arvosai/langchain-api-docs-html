@@ -40,7 +40,7 @@
 <link href="langchain_astradb.utils.mmr_traversal.MmrHelper.html" rel="prev" title="MmrHelper"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 08, 2024" name="docbuild:last-update"/>
+<meta content="Oct 10, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -308,12 +308,15 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>] </em><em>| </em><em>List</em><em>[</em><em>ndarray</em><em>] </em><em>| </em><em>ndarray</em>)</p></li>
-<li><p><strong>y</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>] </em><em>| </em><em>List</em><em>[</em><em>ndarray</em><em>] </em><em>| </em><em>ndarray</em>)</p></li>
+<li><p><strong>x</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>] </em><em>| </em><em>List</em><em>[</em><em>ndarray</em><em>] </em><em>| </em><em>ndarray</em>) – First matrix.</p></li>
+<li><p><strong>y</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>] </em><em>| </em><em>List</em><em>[</em><em>ndarray</em><em>] </em><em>| </em><em>ndarray</em>) – Second matrix.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>ndarray</em></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Cosine similarity matrix.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>

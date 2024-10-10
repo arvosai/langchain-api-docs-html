@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 08, 2024" name="docbuild:last-update"/>
+<meta content="Oct 10, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -672,7 +672,7 @@ document.write(`
         <span class="k">try</span><span class="p">:</span>
             <span class="n">data</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span>
                 <span class="n">Query</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">),</span>
-                <span class="n">database</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="p">,</span>
+                <span class="n">database_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="p">,</span>
                 <span class="n">parameters_</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">json_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
@@ -699,7 +699,7 @@ document.write(`
             <span class="p">):</span>
                 <span class="k">raise</span>
         <span class="c1"># fallback to allow implicit transactions</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">session</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">Query</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">),</span> <span class="n">params</span><span class="p">)</span>
             <span class="n">json_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sanitize</span><span class="p">:</span>

@@ -38,7 +38,7 @@
 <link href="../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 08, 2024" name="docbuild:last-update"/>
+<meta content="Oct 10, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -237,6 +237,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">uuid</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">TYPE_CHECKING</span><span class="p">,</span>
     <span class="n">Any</span><span class="p">,</span>
@@ -380,8 +381,8 @@ document.write(`
 
 <span class="sd">    Setup:</span>
 <span class="sd">        Install the ``langchain-astradb`` package and head to the</span>
-<span class="sd">        `AstraDB website &lt;https://astra.datastax.com&gt;`, create an account, create a</span>
-<span class="sd">        new database and `create an application token &lt;https://docs.datastax.com/en/astra-db-serverless/administration/manage-application-tokens.html&gt;`.</span>
+<span class="sd">        `AstraDB website &lt;https://astra.datastax.com&gt;`_, create an account, create a</span>
+<span class="sd">        new database and `create an application token &lt;https://docs.datastax.com/en/astra-db-serverless/administration/manage-application-tokens.html&gt;`_.</span>
 
 <span class="sd">        .. code-block:: bash</span>
 
@@ -402,7 +403,6 @@ document.write(`
 <span class="sd">            Namespace (aka keyspace) where the collection is created</span>
 
 <span class="sd">    Instantiate:</span>
-
 <span class="sd">        Get your API endpoint and application token from the dashboard of your database.</span>
 
 <span class="sd">        .. code-block:: python</span>
@@ -422,7 +422,7 @@ document.write(`
 <span class="sd">            )</span>
 
 <span class="sd">        Have the vector store figure out its configuration (documents scheme on DB)</span>
-<span class="sd">        from an existing collection, in the case of `server-side-embeddings &lt;https://docs.datastax.com/en/astra-db-serverless/databases/embedding-generation.html&gt;`:</span>
+<span class="sd">        from an existing collection, in the case of `server-side-embeddings &lt;https://docs.datastax.com/en/astra-db-serverless/databases/embedding-generation.html&gt;`_:</span>
 
 <span class="sd">        .. code-block:: python</span>
 
@@ -440,7 +440,6 @@ document.write(`
 <span class="sd">            )</span>
 
 <span class="sd">    Add Documents:</span>
-
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            from langchain_core.documents import Document</span>
@@ -454,13 +453,11 @@ document.write(`
 <span class="sd">            vector_store.add_documents(documents=documents, ids=ids)</span>
 
 <span class="sd">    Delete Documents:</span>
-
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            vector_store.delete(ids=["3"])</span>
 
 <span class="sd">    Search:</span>
-
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            results = vector_store.similarity_search(query="thud",k=1)</span>
@@ -472,7 +469,6 @@ document.write(`
 <span class="sd">            thud [{'bar': 'baz'}]</span>
 
 <span class="sd">    Search with filter:</span>
-
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            results = vector_store.similarity_search(query="thud",k=1,filter={"bar": "baz"})</span>
@@ -484,7 +480,6 @@ document.write(`
 <span class="sd">            thud [{'bar': 'baz'}]</span>
 
 <span class="sd">    Search with score:</span>
-
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            results = vector_store.similarity_search_with_score(query="qux",k=1)</span>
@@ -496,7 +491,6 @@ document.write(`
 <span class="sd">            [SIM=0.916135] foo [{'baz': 'bar'}]</span>
 
 <span class="sd">    Async:</span>
-
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            # add documents</span>
@@ -518,7 +512,6 @@ document.write(`
 <span class="sd">            [SIM=0.916135] foo [{'baz': 'bar'}]</span>
 
 <span class="sd">    Use as Retriever:</span>
-
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            retriever = vector_store.as_retriever(</span>
@@ -943,6 +936,7 @@ document.write(`
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span>
 
+    <span class="nd">@override</span>
     <span class="k">def</span> <span class="nf">_select_relevance_score_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>
         <span class="c1"># The underlying API calls already returns a "score proper",</span>
         <span class="c1"># i.e. one in [0, 1] where higher means more *similar*,</span>
@@ -1202,7 +1196,7 @@ document.write(`
         <span class="c1"># make unique by id, keeping the last</span>
         <span class="k">return</span> <span class="n">_unique_list</span><span class="p">(</span>
             <span class="n">documents_to_insert</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-            <span class="k">lambda</span> <span class="n">document</span><span class="p">:</span> <span class="n">document</span><span class="p">[</span><span class="s2">"_id"</span><span class="p">],</span>
+            <span class="n">itemgetter</span><span class="p">(</span><span class="s2">"_id"</span><span class="p">),</span>
         <span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@staticmethod</span>

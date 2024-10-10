@@ -40,7 +40,7 @@
 <link href="../vectorstores.html" rel="prev" title="vectorstores"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 08, 2024" name="docbuild:last-update"/>
+<meta content="Oct 10, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -304,8 +304,8 @@ document.write(`
 <dd><p>AstraDB vector store integration.</p>
 <dl>
 <dt>Setup:</dt><dd><p>Install the <code class="docutils literal notranslate"><span class="pre">langchain-astradb</span></code> package and head to the
-<cite>AstraDB website &lt;https://astra.datastax.com&gt;</cite>, create an account, create a
-new database and <cite>create an application token &lt;https://docs.datastax.com/en/astra-db-serverless/administration/manage-application-tokens.html&gt;</cite>.</p>
+<a class="reference external" href="https://astra.datastax.com">AstraDB website</a>, create an account, create a
+new database and <a class="reference external" href="https://docs.datastax.com/en/astra-db-serverless/administration/manage-application-tokens.html">create an application token</a>.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-qU<span class="w"> </span>langchain-astradb
 </pre></div>
 </div>
@@ -326,10 +326,7 @@ new database and <cite>create an application token &lt;https://docs.datastax.com
 </dd>
 </dl>
 </dd>
-</dl>
-<p>Instantiate:</p>
-<blockquote>
-<div><p>Get your API endpoint and application token from the dashboard of your database.</p>
+<dt>Instantiate:</dt><dd><p>Get your API endpoint and application token from the dashboard of your database.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">getpass</span>
 <span class="kn">from</span> <span class="nn">langchain_astradb</span> <span class="kn">import</span> <span class="n">AstraDBVectorStore</span>
 <span class="kn">from</span> <span class="nn">langchain_openai</span> <span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
@@ -346,7 +343,7 @@ new database and <cite>create an application token &lt;https://docs.datastax.com
 </pre></div>
 </div>
 <p>Have the vector store figure out its configuration (documents scheme on DB)
-from an existing collection, in the case of <cite>server-side-embeddings &lt;https://docs.datastax.com/en/astra-db-serverless/databases/embedding-generation.html&gt;</cite>:</p>
+from an existing collection, in the case of <a class="reference external" href="https://docs.datastax.com/en/astra-db-serverless/databases/embedding-generation.html">server-side-embeddings</a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">getpass</span>
 <span class="kn">from</span> <span class="nn">langchain_astradb</span> <span class="kn">import</span> <span class="n">AstraDBVectorStore</span>
 
@@ -361,10 +358,8 @@ from an existing collection, in the case of <cite>server-side-embeddings &lt;htt
 <span class="p">)</span>
 </pre></div>
 </div>
-</div></blockquote>
-<p>Add Documents:</p>
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_core.documents</span> <span class="kn">import</span> <span class="n">Document</span>
+</dd>
+<dt>Add Documents:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_core.documents</span> <span class="kn">import</span> <span class="n">Document</span>
 
 <span class="n">document_1</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="s2">"foo"</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">"baz"</span><span class="p">:</span> <span class="s2">"bar"</span><span class="p">})</span>
 <span class="n">document_2</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="s2">"thud"</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">"bar"</span><span class="p">:</span> <span class="s2">"baz"</span><span class="p">})</span>
@@ -375,16 +370,12 @@ from an existing collection, in the case of <cite>server-side-embeddings &lt;htt
 <span class="n">vector_store</span><span class="o">.</span><span class="n">add_documents</span><span class="p">(</span><span class="n">documents</span><span class="o">=</span><span class="n">documents</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">ids</span><span class="p">)</span>
 </pre></div>
 </div>
-</div></blockquote>
-<p>Delete Documents:</p>
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vector_store</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">ids</span><span class="o">=</span><span class="p">[</span><span class="s2">"3"</span><span class="p">])</span>
+</dd>
+<dt>Delete Documents:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vector_store</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">ids</span><span class="o">=</span><span class="p">[</span><span class="s2">"3"</span><span class="p">])</span>
 </pre></div>
 </div>
-</div></blockquote>
-<p>Search:</p>
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">vector_store</span><span class="o">.</span><span class="n">similarity_search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">"thud"</span><span class="p">,</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</dd>
+<dt>Search:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">vector_store</span><span class="o">.</span><span class="n">similarity_search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">"thud"</span><span class="p">,</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"* </span><span class="si">{</span><span class="n">doc</span><span class="o">.</span><span class="n">page_content</span><span class="si">}</span><span class="s2"> [</span><span class="si">{</span><span class="n">doc</span><span class="o">.</span><span class="n">metadata</span><span class="si">}</span><span class="s2">]"</span><span class="p">)</span>
 </pre></div>
@@ -392,10 +383,8 @@ from an existing collection, in the case of <cite>server-side-embeddings &lt;htt
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>thud [{'bar': 'baz'}]
 </pre></div>
 </div>
-</div></blockquote>
-<p>Search with filter:</p>
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">vector_store</span><span class="o">.</span><span class="n">similarity_search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">"thud"</span><span class="p">,</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">filter</span><span class="o">=</span><span class="p">{</span><span class="s2">"bar"</span><span class="p">:</span> <span class="s2">"baz"</span><span class="p">})</span>
+</dd>
+<dt>Search with filter:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">vector_store</span><span class="o">.</span><span class="n">similarity_search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">"thud"</span><span class="p">,</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">filter</span><span class="o">=</span><span class="p">{</span><span class="s2">"bar"</span><span class="p">:</span> <span class="s2">"baz"</span><span class="p">})</span>
 <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"* </span><span class="si">{</span><span class="n">doc</span><span class="o">.</span><span class="n">page_content</span><span class="si">}</span><span class="s2"> [</span><span class="si">{</span><span class="n">doc</span><span class="o">.</span><span class="n">metadata</span><span class="si">}</span><span class="s2">]"</span><span class="p">)</span>
 </pre></div>
@@ -403,10 +392,8 @@ from an existing collection, in the case of <cite>server-side-embeddings &lt;htt
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>thud [{'bar': 'baz'}]
 </pre></div>
 </div>
-</div></blockquote>
-<p>Search with score:</p>
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">vector_store</span><span class="o">.</span><span class="n">similarity_search_with_score</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">"qux"</span><span class="p">,</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</dd>
+<dt>Search with score:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">vector_store</span><span class="o">.</span><span class="n">similarity_search_with_score</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">"qux"</span><span class="p">,</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">doc</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"* [SIM=</span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">3f</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">doc</span><span class="o">.</span><span class="n">page_content</span><span class="si">}</span><span class="s2"> [</span><span class="si">{</span><span class="n">doc</span><span class="o">.</span><span class="n">metadata</span><span class="si">}</span><span class="s2">]"</span><span class="p">)</span>
 </pre></div>
@@ -414,10 +401,8 @@ from an existing collection, in the case of <cite>server-side-embeddings &lt;htt
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[SIM=0.916135] foo [{'baz': 'bar'}]
 </pre></div>
 </div>
-</div></blockquote>
-<p>Async:</p>
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># add documents</span>
+</dd>
+<dt>Async:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># add documents</span>
 <span class="k">await</span> <span class="n">vector_store</span><span class="o">.</span><span class="n">aadd_documents</span><span class="p">(</span><span class="n">documents</span><span class="o">=</span><span class="n">documents</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">ids</span><span class="p">)</span>
 
 <span class="c1"># delete documents</span>
@@ -435,10 +420,8 @@ from an existing collection, in the case of <cite>server-side-embeddings &lt;htt
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[SIM=0.916135] foo [{'baz': 'bar'}]
 </pre></div>
 </div>
-</div></blockquote>
-<p>Use as Retriever:</p>
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">retriever</span> <span class="o">=</span> <span class="n">vector_store</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span>
+</dd>
+<dt>Use as Retriever:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">retriever</span> <span class="o">=</span> <span class="n">vector_store</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span>
     <span class="n">search_type</span><span class="o">=</span><span class="s2">"similarity_score_threshold"</span><span class="p">,</span>
     <span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">"k"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"score_threshold"</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
 <span class="p">)</span>
@@ -448,7 +431,8 @@ from an existing collection, in the case of <cite>server-side-embeddings &lt;htt
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[Document(metadata={'bar': 'baz'}, page_content='thud')]
 </pre></div>
 </div>
-</div></blockquote>
+</dd>
+</dl>
 <p>Wrapper around DataStax Astra DB for vector-store workloads.</p>
 <p>For quickstart and details, visit
 <a class="reference external" href="https://docs.datastax.com/en/astra-db-serverless/index.html">https://docs.datastax.com/en/astra-db-serverless/index.html</a></p>

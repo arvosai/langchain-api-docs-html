@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 08, 2024" name="docbuild:last-update"/>
+<meta content="Oct 10, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -264,6 +264,7 @@ document.write(`
     <span class="n">validate_arguments</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pydantic.v1</span> <span class="kn">import</span> <span class="n">BaseModel</span> <span class="k">as</span> <span class="n">BaseModelV1</span>
+<span class="kn">from</span> <span class="nn">pydantic.v1</span> <span class="kn">import</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">ValidationErrorV1</span>
 <span class="kn">from</span> <span class="nn">pydantic.v1</span> <span class="kn">import</span> <span class="n">validate_arguments</span> <span class="k">as</span> <span class="n">validate_arguments_v1</span>
 
 <span class="kn">from</span> <span class="nn">langchain_core._api</span> <span class="kn">import</span> <span class="n">deprecated</span>
@@ -644,7 +645,7 @@ document.write(`
 <span class="w">    </span><span class="sd">"""Handle the content of the ToolException thrown."""</span>
 
     <span class="n">handle_validation_error</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
-        <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ValidationError</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span>
+        <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Union</span><span class="p">[</span><span class="n">ValidationError</span><span class="p">,</span> <span class="n">ValidationErrorV1</span><span class="p">]],</span> <span class="nb">str</span><span class="p">]]</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="w">    </span><span class="sd">"""Handle the content of the ValidationError thrown."""</span>
 
@@ -915,7 +916,7 @@ document.write(`
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">content</span> <span class="o">=</span> <span class="n">response</span>
             <span class="n">status</span> <span class="o">=</span> <span class="s2">"success"</span>
-        <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">ValidationError</span><span class="p">,</span> <span class="n">ValidationErrorV1</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_validation_error</span><span class="p">:</span>
                 <span class="n">error_to_raise</span> <span class="o">=</span> <span class="n">e</span>
             <span class="k">else</span><span class="p">:</span>
@@ -1075,9 +1076,11 @@ document.write(`
 
 
 <span class="k">def</span> <span class="nf">_handle_validation_error</span><span class="p">(</span>
-    <span class="n">e</span><span class="p">:</span> <span class="n">ValidationError</span><span class="p">,</span>
+    <span class="n">e</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ValidationError</span><span class="p">,</span> <span class="n">ValidationErrorV1</span><span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">flag</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ValidationError</span><span class="p">],</span> <span class="nb">str</span><span class="p">]],</span>
+    <span class="n">flag</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+        <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Union</span><span class="p">[</span><span class="n">ValidationError</span><span class="p">,</span> <span class="n">ValidationErrorV1</span><span class="p">]],</span> <span class="nb">str</span><span class="p">]</span>
+    <span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">flag</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
         <span class="n">content</span> <span class="o">=</span> <span class="s2">"Tool input validation error"</span>

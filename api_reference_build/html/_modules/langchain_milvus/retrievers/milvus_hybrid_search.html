@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 08, 2024" name="docbuild:last-update"/>
+<meta content="Oct 10, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -377,6 +377,19 @@ document.write(`
             <span class="n">documents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">documents</span>
 
+<div class="viewcode-block" id="MilvusCollectionHybridSearchRetriever.hybrid_search">
+<a class="viewcode-back" href="../../../milvus/retrievers/langchain_milvus.retrievers.milvus_hybrid_search.MilvusCollectionHybridSearchRetriever.html#langchain_milvus.retrievers.milvus_hybrid_search.MilvusCollectionHybridSearchRetriever.hybrid_search">[docs]</a>
+    <span class="k">def</span> <span class="nf">hybrid_search</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SearchResult</span><span class="p">]:</span>
+        <span class="n">requests</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_ann_search_requests</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">search_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">hybrid_search</span><span class="p">(</span>
+            <span class="n">requests</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rerank</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">top_k</span><span class="p">,</span> <span class="n">output_fields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">output_fields</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">search_result</span></div>
+
+
     <span class="k">def</span> <span class="nf">_get_relevant_documents</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -384,10 +397,7 @@ document.write(`
         <span class="n">run_manager</span><span class="p">:</span> <span class="n">CallbackManagerForRetrieverRun</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
-        <span class="n">requests</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_ann_search_requests</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-        <span class="n">search_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">hybrid_search</span><span class="p">(</span>
-            <span class="n">requests</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rerank</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">top_k</span><span class="p">,</span> <span class="n">output_fields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">output_fields</span>
-        <span class="p">)</span>
+        <span class="n">search_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hybrid_search</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="n">documents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_search_result</span><span class="p">(</span><span class="n">search_result</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">documents</span></div>
 

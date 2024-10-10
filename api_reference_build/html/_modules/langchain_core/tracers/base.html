@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 08, 2024" name="docbuild:last-update"/>
+<meta content="Oct 10, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -259,7 +259,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BaseTracer">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer">[docs]</a>
 <span class="k">class</span> <span class="nc">BaseTracer</span><span class="p">(</span><span class="n">_TracerCore</span><span class="p">,</span> <span class="n">BaseCallbackHandler</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Base interface for tracers."""</span>
 
@@ -280,7 +280,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_on_run_update</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BaseTracer.on_chat_model_start">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer.on_chat_model_start">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_chat_model_start">[docs]</a>
     <span class="k">def</span> <span class="nf">on_chat_model_start</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">serialized</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -324,7 +324,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BaseTracer.on_llm_start">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer.on_llm_start">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_llm_start">[docs]</a>
     <span class="k">def</span> <span class="nf">on_llm_start</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">serialized</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -368,7 +368,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BaseTracer.on_llm_new_token">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer.on_llm_new_token">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_llm_new_token">[docs]</a>
     <span class="k">def</span> <span class="nf">on_llm_new_token</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -404,7 +404,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BaseTracer.on_retry">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer.on_retry">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_retry">[docs]</a>
     <span class="k">def</span> <span class="nf">on_retry</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">retry_state</span><span class="p">:</span> <span class="n">RetryCallState</span><span class="p">,</span>
@@ -430,7 +430,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BaseTracer.on_llm_end">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer.on_llm_end">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_llm_end">[docs]</a>
     <span class="k">def</span> <span class="nf">on_llm_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">LLMResult</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">run_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Run</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""End a trace for an LLM run.</span>
 
@@ -454,7 +454,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BaseTracer.on_llm_error">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer.on_llm_error">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_llm_error">[docs]</a>
     <span class="k">def</span> <span class="nf">on_llm_error</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">error</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span>
@@ -484,7 +484,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BaseTracer.on_chain_start">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer.on_chain_start">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_chain_start">[docs]</a>
     <span class="k">def</span> <span class="nf">on_chain_start</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">serialized</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -531,7 +531,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BaseTracer.on_chain_end">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer.on_chain_end">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_chain_end">[docs]</a>
     <span class="k">def</span> <span class="nf">on_chain_end</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">outputs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -563,7 +563,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BaseTracer.on_chain_error">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer.on_chain_error">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_chain_error">[docs]</a>
     <span class="k">def</span> <span class="nf">on_chain_error</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">error</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span>
@@ -595,7 +595,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BaseTracer.on_tool_start">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer.on_tool_start">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_tool_start">[docs]</a>
     <span class="k">def</span> <span class="nf">on_tool_start</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">serialized</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -642,7 +642,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BaseTracer.on_tool_end">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer.on_tool_end">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_tool_end">[docs]</a>
     <span class="k">def</span> <span class="nf">on_tool_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">run_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Run</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""End a trace for a tool run.</span>
 
@@ -665,7 +665,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BaseTracer.on_tool_error">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer.on_tool_error">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_tool_error">[docs]</a>
     <span class="k">def</span> <span class="nf">on_tool_error</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">error</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span>
@@ -693,7 +693,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BaseTracer.on_retriever_start">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer.on_retriever_start">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_retriever_start">[docs]</a>
     <span class="k">def</span> <span class="nf">on_retriever_start</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">serialized</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -737,7 +737,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BaseTracer.on_retriever_error">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer.on_retriever_error">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_retriever_error">[docs]</a>
     <span class="k">def</span> <span class="nf">on_retriever_error</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">error</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span>
@@ -766,7 +766,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BaseTracer.on_retriever_end">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain_community.callbacks.tracers.comet.BaseTracer.on_retriever_end">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_retriever_end">[docs]</a>
     <span class="k">def</span> <span class="nf">on_retriever_end</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">documents</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Document</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">run_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Run</span><span class="p">:</span>
@@ -801,7 +801,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AsyncBaseTracer">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer">[docs]</a>
 <span class="k">class</span> <span class="nc">AsyncBaseTracer</span><span class="p">(</span><span class="n">_TracerCore</span><span class="p">,</span> <span class="n">AsyncCallbackHandler</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Async Base interface for tracers."""</span>
 
@@ -832,7 +832,7 @@ document.write(`
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_run_update</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
 
 <div class="viewcode-block" id="AsyncBaseTracer.on_chat_model_start">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer.on_chat_model_start">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer.on_chat_model_start">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">on_chat_model_start</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">serialized</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -864,7 +864,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AsyncBaseTracer.on_llm_start">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer.on_llm_start">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer.on_llm_start">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">on_llm_start</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">serialized</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -890,7 +890,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AsyncBaseTracer.on_llm_new_token">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer.on_llm_new_token">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer.on_llm_new_token">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">on_llm_new_token</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -911,7 +911,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AsyncBaseTracer.on_retry">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer.on_retry">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer.on_retry">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">on_retry</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">retry_state</span><span class="p">:</span> <span class="n">RetryCallState</span><span class="p">,</span>
@@ -926,7 +926,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AsyncBaseTracer.on_llm_end">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer.on_llm_end">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer.on_llm_end">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">on_llm_end</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">response</span><span class="p">:</span> <span class="n">LLMResult</span><span class="p">,</span>
@@ -945,7 +945,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AsyncBaseTracer.on_llm_error">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer.on_llm_error">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer.on_llm_error">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">on_llm_error</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">error</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span>
@@ -964,7 +964,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AsyncBaseTracer.on_chain_start">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer.on_chain_start">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer.on_chain_start">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">on_chain_start</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">serialized</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -994,7 +994,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AsyncBaseTracer.on_chain_end">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer.on_chain_end">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer.on_chain_end">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">on_chain_end</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">outputs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -1014,7 +1014,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AsyncBaseTracer.on_chain_error">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer.on_chain_error">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer.on_chain_error">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">on_chain_error</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">error</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span>
@@ -1034,7 +1034,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AsyncBaseTracer.on_tool_start">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer.on_tool_start">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer.on_tool_start">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">on_tool_start</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">serialized</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -1063,7 +1063,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AsyncBaseTracer.on_tool_end">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer.on_tool_end">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer.on_tool_end">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">on_tool_end</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">output</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
@@ -1081,7 +1081,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AsyncBaseTracer.on_tool_error">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer.on_tool_error">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer.on_tool_error">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">on_tool_error</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">error</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span>
@@ -1100,7 +1100,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AsyncBaseTracer.on_retriever_start">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer.on_retriever_start">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer.on_retriever_start">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">on_retriever_start</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">serialized</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -1130,7 +1130,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AsyncBaseTracer.on_retriever_error">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer.on_retriever_error">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer.on_retriever_error">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">on_retriever_error</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">error</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span>
@@ -1153,7 +1153,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AsyncBaseTracer.on_retriever_end">
-<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain_community.callbacks.tracers.comet.AsyncBaseTracer.on_retriever_end">[docs]</a>
+<a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.AsyncBaseTracer.html#langchain.callbacks.tracers.logging.AsyncBaseTracer.on_retriever_end">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">on_retriever_end</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">documents</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Document</span><span class="p">],</span>

@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 08, 2024" name="docbuild:last-update"/>
+<meta content="Oct 10, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -230,13 +230,26 @@ document.write(`
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">Iterable</span><span class="p">,</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Literal</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Tuple</span><span class="p">,</span>
+    <span class="n">TypeVar</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+    <span class="n">cast</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">langchain_core.documents</span> <span class="kn">import</span> <span class="n">Document</span>
 <span class="kn">from</span> <span class="nn">langchain_core.embeddings</span> <span class="kn">import</span> <span class="n">Embeddings</span>
 <span class="kn">from</span> <span class="nn">langchain_core.vectorstores</span> <span class="kn">import</span> <span class="n">VectorStore</span>
+<span class="kn">from</span> <span class="nn">pymilvus</span> <span class="kn">import</span> <span class="n">RRFRanker</span><span class="p">,</span> <span class="n">WeightedRanker</span>
 
+<span class="kn">from</span> <span class="nn">langchain_milvus</span> <span class="kn">import</span> <span class="n">MilvusCollectionHybridSearchRetriever</span>
 <span class="kn">from</span> <span class="nn">langchain_milvus.utils.sparse</span> <span class="kn">import</span> <span class="n">BaseSparseEmbedding</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -346,6 +359,10 @@ document.write(`
         <span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">selected</span><span class="p">,</span> <span class="p">[</span><span class="n">embedding_list</span><span class="p">[</span><span class="n">idx_to_add</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">idxs</span></div>
 
+
+
+<span class="n">EmbeddingType</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">Embeddings</span><span class="p">,</span> <span class="n">BaseSparseEmbedding</span><span class="p">]</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"T"</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Milvus">
@@ -476,20 +493,20 @@ document.write(`
 <a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">embedding_function</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Embeddings</span><span class="p">,</span> <span class="n">BaseSparseEmbedding</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+        <span class="n">embedding_function</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EmbeddingType</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EmbeddingType</span><span class="p">]],</span>  <span class="c1"># type: ignore</span>
         <span class="n">collection_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"LangChainCollection"</span><span class="p">,</span>
         <span class="n">collection_description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
         <span class="n">collection_properties</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">connection_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">consistency_level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Session"</span><span class="p">,</span>
-        <span class="n">index_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">search_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">index_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">search_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">drop_old</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">auto_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">primary_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"pk"</span><span class="p">,</span>
         <span class="n">text_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"text"</span><span class="p">,</span>
-        <span class="n">vector_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"vector"</span><span class="p">,</span>
+        <span class="n">vector_field</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">"vector"</span><span class="p">,</span>
         <span class="n">enable_dynamic_field</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">metadata_field</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">partition_key_field</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -497,7 +514,7 @@ document.write(`
         <span class="n">replica_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">num_shards</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">vector_schema</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">vector_schema</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">metadata_schema</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Initialize the Milvus vector store."""</span>
@@ -555,6 +572,23 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_primary_field</span> <span class="o">=</span> <span class="n">primary_field</span>
         <span class="c1"># In order for compatibility, the text field will need to be called "text"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_text_field</span> <span class="o">=</span> <span class="n">text_field</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">EmbeddingType</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vector_field</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">vector_field</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="sa">f</span><span class="s2">"vector_</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">)</span>
+                    <span class="p">]</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="s2">"When multiple embeddings function are used, one should provide"</span>
+                        <span class="s2">"matching `vector_field` names. "</span>
+                        <span class="s2">"Using generated vector names </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
+                        <span class="n">vector_field</span><span class="p">,</span>
+                    <span class="p">)</span>
+
         <span class="c1"># In order for compatibility, the vector field needs to be called "vector"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span> <span class="o">=</span> <span class="n">vector_field</span>
         <span class="k">if</span> <span class="n">metadata_field</span><span class="p">:</span>
@@ -610,7 +644,7 @@ document.write(`
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">embeddings</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Embeddings</span><span class="p">,</span> <span class="n">BaseSparseEmbedding</span><span class="p">]:</span>  <span class="c1"># type: ignore</span>
+    <span class="k">def</span> <span class="nf">embeddings</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">EmbeddingType</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EmbeddingType</span><span class="p">]]:</span>  <span class="c1"># type: ignore</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span>
 
     <span class="nd">@property</span>
@@ -619,12 +653,16 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_milvus_client</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_is_sparse_embedding</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">,</span> <span class="n">BaseSparseEmbedding</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_is_multi_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_is_sparse_embedding</span><span class="p">(</span><span class="n">embeddings_function</span><span class="p">:</span> <span class="n">EmbeddingType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">embeddings_function</span><span class="p">,</span> <span class="n">BaseSparseEmbedding</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">embeddings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">embeddings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">list</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">metadatas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">partition_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">replica_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
@@ -642,7 +680,7 @@ document.write(`
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_create_collection</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">metadatas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">list</span><span class="p">],</span> <span class="n">metadatas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">pymilvus</span> <span class="kn">import</span> <span class="p">(</span>
             <span class="n">Collection</span><span class="p">,</span>
@@ -653,9 +691,8 @@ document.write(`
         <span class="p">)</span>
         <span class="kn">from</span> <span class="nn">pymilvus.orm.types</span> <span class="kn">import</span> <span class="n">infer_dtype_bydata</span>  <span class="c1"># type: ignore</span>
 
-        <span class="c1"># Determine embedding dim</span>
-        <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">vector_fields</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">)</span>
         <span class="c1"># If enable_dynamic_field, we don't need to create fields, and just pass it.</span>
         <span class="c1"># In the future, when metadata_field is deprecated,</span>
         <span class="c1"># This logical structure will be simplified like this:</span>
@@ -680,11 +717,14 @@ document.write(`
             <span class="k">if</span> <span class="n">metadatas</span><span class="p">:</span>
                 <span class="c1"># Create FieldSchema for each entry in metadata.</span>
                 <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadatas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_primary_field</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_text_field</span><span class="p">,</span>
-                    <span class="p">]:</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="n">key</span>
+                        <span class="ow">in</span> <span class="p">[</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_primary_field</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_text_field</span><span class="p">,</span>
+                        <span class="p">]</span>
+                        <span class="o">+</span> <span class="n">vector_fields</span>
+                    <span class="p">):</span>
                         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                             <span class="p">(</span>
                                 <span class="s2">"Failure to create collection, "</span>
@@ -755,23 +795,36 @@ document.write(`
                     <span class="n">max_length</span><span class="o">=</span><span class="mi">65_535</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-        <span class="c1"># Create the vector field</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_schema</span> <span class="ow">and</span> <span class="s2">"dtype"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_schema</span><span class="p">:</span>
-            <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_get_field_schema_from_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_schema</span><span class="p">)</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_sparse_embedding</span><span class="p">:</span>
+
+        <span class="n">embeddings_functions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EmbeddingType</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">)</span>
+        <span class="n">vector_schemas</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_schema</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_schema</span>
+            <span class="k">else</span> <span class="p">[{}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings_functions</span><span class="p">))]</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">vector_field</span><span class="p">,</span> <span class="n">vector_schema</span><span class="p">,</span> <span class="n">embedding_func</span><span class="p">,</span> <span class="n">vector_field_embeddings</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">vector_fields</span><span class="p">,</span> <span class="n">vector_schemas</span><span class="p">,</span> <span class="n">embeddings_functions</span><span class="p">,</span> <span class="n">embeddings</span>
+        <span class="p">):</span>
+            <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vector_field_embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="c1"># Create the vector field</span>
+            <span class="k">if</span> <span class="n">vector_schema</span> <span class="ow">and</span> <span class="s2">"dtype"</span> <span class="ow">in</span> <span class="n">vector_schema</span><span class="p">:</span>
                 <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="n">FieldSchema</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">,</span> <span class="n">DataType</span><span class="o">.</span><span class="n">SPARSE_FLOAT_VECTOR</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_get_field_schema_from_dict</span><span class="p">(</span><span class="n">vector_field</span><span class="p">,</span> <span class="n">vector_schema</span><span class="p">)</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># Supports binary or float vectors</span>
-                <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="n">FieldSchema</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">,</span> <span class="n">infer_dtype_bydata</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dim</span><span class="o">=</span><span class="n">dim</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_sparse_embedding</span><span class="p">(</span><span class="n">embedding_func</span><span class="p">):</span>
+                    <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">FieldSchema</span><span class="p">(</span><span class="n">vector_field</span><span class="p">,</span> <span class="n">DataType</span><span class="o">.</span><span class="n">SPARSE_FLOAT_VECTOR</span><span class="p">)</span>
                     <span class="p">)</span>
-                <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Supports binary or float vectors</span>
+                    <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">FieldSchema</span><span class="p">(</span>
+                            <span class="n">vector_field</span><span class="p">,</span>
+                            <span class="n">infer_dtype_bydata</span><span class="p">(</span><span class="n">vector_field_embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                            <span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
 
         <span class="c1"># Create the schema for the collection</span>
         <span class="n">schema</span> <span class="o">=</span> <span class="n">CollectionSchema</span><span class="p">(</span>
@@ -830,79 +883,114 @@ document.write(`
             <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">schema</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_get_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+    <span class="k">def</span> <span class="nf">_get_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">"""Return the vector index information if it exists"""</span>
         <span class="kn">from</span> <span class="nn">pymilvus</span> <span class="kn">import</span> <span class="n">Collection</span>
 
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_multi_vector</span><span class="p">:</span>
+            <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field_name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span>  <span class="c1"># type: ignore</span>
+
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="p">,</span> <span class="n">Collection</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="o">.</span><span class="n">indexes</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">field_name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">field_name</span> <span class="o">==</span> <span class="n">field_name</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">_create_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Create a index on the collection"""</span>
+<span class="w">        </span><span class="sd">"""Create an index on the collection"""</span>
         <span class="kn">from</span> <span class="nn">pymilvus</span> <span class="kn">import</span> <span class="n">Collection</span><span class="p">,</span> <span class="n">MilvusException</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="p">,</span> <span class="n">Collection</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_index</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="c1"># If no index params, use a default HNSW based one</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_sparse_embedding</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">index_params</span> <span class="o">=</span> <span class="p">{</span>
-                            <span class="s2">"metric_type"</span><span class="p">:</span> <span class="s2">"IP"</span><span class="p">,</span>
-                            <span class="s2">"index_type"</span><span class="p">:</span> <span class="s2">"SPARSE_INVERTED_INDEX"</span><span class="p">,</span>
-                            <span class="s2">"params"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"drop_ratio_build"</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
-                        <span class="p">}</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">index_params</span> <span class="o">=</span> <span class="p">{</span>
-                            <span class="s2">"metric_type"</span><span class="p">:</span> <span class="s2">"L2"</span><span class="p">,</span>
-                            <span class="s2">"index_type"</span><span class="p">:</span> <span class="s2">"HNSW"</span><span class="p">,</span>
-                            <span class="s2">"params"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"M"</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s2">"efConstruction"</span><span class="p">:</span> <span class="mi">64</span><span class="p">},</span>
-                        <span class="p">}</span>
+            <span class="n">embeddings_functions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EmbeddingType</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span>
+            <span class="p">)</span>
+            <span class="n">vector_fields</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">indexes_params</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="p">{}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings_functions</span><span class="p">))</span>
+                <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">indexes_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index_params</span><span class="p">)</span>
 
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">,</span>
-                        <span class="n">index_params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">index_params</span><span class="p">,</span>
-                        <span class="n">using</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alias</span><span class="p">,</span>
-                    <span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">embeddings_func</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">embeddings_functions</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_index</span><span class="p">(</span><span class="n">vector_fields</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="c1"># If no index params, use a default HNSW based one</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">indexes_params</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_sparse_embedding</span><span class="p">(</span><span class="n">embeddings_func</span><span class="p">):</span>
+                                <span class="n">indexes_params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                                    <span class="s2">"metric_type"</span><span class="p">:</span> <span class="s2">"IP"</span><span class="p">,</span>
+                                    <span class="s2">"index_type"</span><span class="p">:</span> <span class="s2">"SPARSE_INVERTED_INDEX"</span><span class="p">,</span>
+                                    <span class="s2">"params"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"drop_ratio_build"</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
+                                <span class="p">}</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">indexes_params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                                    <span class="s2">"metric_type"</span><span class="p">:</span> <span class="s2">"L2"</span><span class="p">,</span>
+                                    <span class="s2">"index_type"</span><span class="p">:</span> <span class="s2">"HNSW"</span><span class="p">,</span>
+                                    <span class="s2">"params"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"M"</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s2">"efConstruction"</span><span class="p">:</span> <span class="mi">64</span><span class="p">},</span>
+                                <span class="p">}</span>
 
-                <span class="c1"># If default did not work, most likely on Zilliz Cloud</span>
-                <span class="k">except</span> <span class="n">MilvusException</span><span class="p">:</span>
-                    <span class="c1"># Use AUTOINDEX based index</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">index_params</span> <span class="o">=</span> <span class="p">{</span>
-                        <span class="s2">"metric_type"</span><span class="p">:</span> <span class="s2">"L2"</span><span class="p">,</span>
-                        <span class="s2">"index_type"</span><span class="p">:</span> <span class="s2">"AUTOINDEX"</span><span class="p">,</span>
-                        <span class="s2">"params"</span><span class="p">:</span> <span class="p">{},</span>
-                    <span class="p">}</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">,</span>
-                        <span class="n">index_params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">index_params</span><span class="p">,</span>
-                        <span class="n">using</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alias</span><span class="p">,</span>
-                    <span class="p">)</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                    <span class="s2">"Successfully created an index on collection: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
-                <span class="p">)</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span>
+                                <span class="n">vector_fields</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                                <span class="n">index_params</span><span class="o">=</span><span class="n">indexes_params</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                                <span class="n">using</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alias</span><span class="p">,</span>
+                            <span class="p">)</span>
 
-            <span class="k">except</span> <span class="n">MilvusException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="s2">"Failed to create an index on collection: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span>
-                <span class="p">)</span>
-                <span class="k">raise</span> <span class="n">e</span>
+                        <span class="c1"># If default did not work, most likely on Zilliz Cloud</span>
+                        <span class="k">except</span> <span class="n">MilvusException</span><span class="p">:</span>
+                            <span class="c1"># Use AUTOINDEX based index</span>
+                            <span class="n">index_params</span> <span class="o">=</span> <span class="p">{</span>
+                                <span class="s2">"metric_type"</span><span class="p">:</span> <span class="s2">"L2"</span><span class="p">,</span>
+                                <span class="s2">"index_type"</span><span class="p">:</span> <span class="s2">"AUTOINDEX"</span><span class="p">,</span>
+                                <span class="s2">"params"</span><span class="p">:</span> <span class="p">{},</span>
+                            <span class="p">}</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span>
+                                <span class="n">vector_fields</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                                <span class="n">index_params</span><span class="o">=</span><span class="n">index_params</span><span class="p">,</span>
+                                <span class="n">using</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alias</span><span class="p">,</span>
+                            <span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                            <span class="s2">"Successfully created an index"</span>
+                            <span class="s2">"on </span><span class="si">%s</span><span class="s2"> field on collection: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
+                            <span class="n">vector_fields</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="k">except</span> <span class="n">MilvusException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                            <span class="s2">"Failed to create an index on collection: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
+                        <span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">e</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_multi_vector</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index_params</span> <span class="o">=</span> <span class="n">indexes_params</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index_params</span> <span class="o">=</span> <span class="n">indexes_params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_create_search_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Generate search params based on the current index type"""</span>
+        <span class="kn">import</span> <span class="nn">copy</span>
+
         <span class="kn">from</span> <span class="nn">pymilvus</span> <span class="kn">import</span> <span class="n">Collection</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="p">,</span> <span class="n">Collection</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_index</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">index_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="s2">"index_param"</span><span class="p">][</span><span class="s2">"index_type"</span><span class="p">]</span>
-                <span class="n">metric_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="s2">"index_param"</span><span class="p">][</span><span class="s2">"metric_type"</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">search_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_search_params</span><span class="p">[</span><span class="n">index_type</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">search_params</span><span class="p">[</span><span class="s2">"metric_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">metric_type</span>
+            <span class="n">vector_fields</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">)</span>
+            <span class="n">search_params_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">vector_field</span> <span class="ow">in</span> <span class="n">vector_fields</span><span class="p">:</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_index</span><span class="p">(</span><span class="n">vector_field</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">index_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="s2">"index_param"</span><span class="p">][</span><span class="s2">"index_type"</span><span class="p">]</span>
+                    <span class="n">metric_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="s2">"index_param"</span><span class="p">][</span><span class="s2">"metric_type"</span><span class="p">]</span>
+                    <span class="n">search_params</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">default_search_params</span><span class="p">[</span><span class="n">index_type</span><span class="p">]</span>
+                    <span class="p">)</span>
+                    <span class="n">search_params</span><span class="p">[</span><span class="s2">"metric_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">metric_type</span>
+                    <span class="n">search_params_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">search_params</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_multi_vector</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">search_params</span> <span class="o">=</span> <span class="n">search_params_list</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">search_params</span> <span class="o">=</span> <span class="n">search_params_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -990,10 +1078,21 @@ document.write(`
                     <span class="s2">"The ids will be generated automatically."</span>
                 <span class="p">)</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">embeddings</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="o">.</span><span class="n">embed_documents</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
-            <span class="n">embeddings</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]</span>
+        <span class="n">embeddings_functions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EmbeddingType</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">)</span>
+        <span class="n">vector_fields</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">)</span>
+        <span class="n">embeddings</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">embedding_func</span> <span class="ow">in</span> <span class="n">embeddings_functions</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">embeddings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">embedding_func</span><span class="o">.</span><span class="n">embed_documents</span><span class="p">(</span><span class="n">texts</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+                <span class="n">embeddings</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">embedding_func</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">])</span>
+
+        <span class="c1"># assuming [f1, f2] embeddings functions and [a, b, c] as texts:</span>
+        <span class="c1"># embeddings = [</span>
+        <span class="c1">#     [f1(a), f1(b), f1(c)],</span>
+        <span class="c1">#     [f2(a), f2(b), f2(c)]</span>
+        <span class="c1"># ]</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Nothing to insert, skipping."</span><span class="p">)</span>
@@ -1012,22 +1111,26 @@ document.write(`
 
         <span class="n">insert_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
-            <span class="n">embeddings</span>
-        <span class="p">),</span> <span class="s2">"Mismatched lengths of texts and embeddings."</span>
+        <span class="k">for</span> <span class="n">vector_field_embeddings</span> <span class="ow">in</span> <span class="n">embeddings</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="n">vector_field_embeddings</span>
+            <span class="p">),</span> <span class="s2">"Mismatched lengths of texts and embeddings."</span>
+
         <span class="k">if</span> <span class="n">metadatas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
                 <span class="n">metadatas</span>
             <span class="p">),</span> <span class="s2">"Mismatched lengths of texts and metadatas."</span>
 
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">embedding</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)),</span> <span class="n">texts</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)),</span> <span class="n">texts</span><span class="p">):</span>
             <span class="n">entity_dict</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="n">metadatas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">metadatas</span> <span class="k">else</span> <span class="p">{}</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_id</span><span class="p">:</span>
                 <span class="n">entity_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_primary_field</span><span class="p">]</span> <span class="o">=</span> <span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># type: ignore[index]</span>
 
             <span class="n">entity_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_text_field</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
-            <span class="n">entity_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">]</span> <span class="o">=</span> <span class="n">embedding</span>
+
+            <span class="k">for</span> <span class="n">vector_field</span><span class="p">,</span> <span class="n">vector_field_embeddings</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vector_fields</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">):</span>
+                <span class="n">entity_dict</span><span class="p">[</span><span class="n">vector_field</span><span class="p">]</span> <span class="o">=</span> <span class="n">vector_field_embeddings</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_field</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_dynamic_field</span><span class="p">:</span>
                 <span class="n">entity_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_metadata_field</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span>
@@ -1097,6 +1200,10 @@ document.write(`
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"No existing collection to search."</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">assert</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_params</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">,</span> <span class="nb">list</span>
+        <span class="p">),</span> <span class="s2">"_collection_search does not support multi-vector search."</span>
 
         <span class="k">if</span> <span class="n">param</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_params</span>
@@ -1226,13 +1333,40 @@ document.write(`
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"No existing collection to search."</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">[]</span>
-
-        <span class="c1"># Embed the query text.</span>
-        <span class="n">embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-        <span class="n">timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="ow">or</span> <span class="n">timeout</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">similarity_search_with_score_by_vector</span><span class="p">(</span>
-            <span class="n">embedding</span><span class="o">=</span><span class="n">embedding</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="n">param</span><span class="p">,</span> <span class="n">expr</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>  <span class="c1"># is multi-vector</span>
+            <span class="n">ranker</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_ranker</span><span class="p">(</span>
+                <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"ranker_type"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"ranker_params"</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="p">)</span>
+            <span class="n">hybrid_retriever</span> <span class="o">=</span> <span class="n">MilvusCollectionHybridSearchRetriever</span><span class="p">(</span>
+                <span class="n">collection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="p">,</span>
+                <span class="n">rerank</span><span class="o">=</span><span class="n">ranker</span><span class="p">,</span>
+                <span class="n">anns_fields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">,</span>
+                <span class="n">field_embeddings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span><span class="p">,</span>
+                <span class="n">field_search_params</span><span class="o">=</span><span class="n">param</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_params</span><span class="p">,</span>
+                <span class="n">field_exprs</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span>
+                <span class="n">top_k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+                <span class="n">text_field</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_text_field</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">col_search_res</span> <span class="o">=</span> <span class="n">hybrid_retriever</span><span class="o">.</span><span class="n">hybrid_search</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">col_search_res</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">entity</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">entity</span><span class="o">.</span><span class="n">fields</span><span class="p">}</span>
+                <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_document</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">doc</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">score</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Embed the query text.</span>
+            <span class="n">embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+            <span class="n">timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="ow">or</span> <span class="n">timeout</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">similarity_search_with_score_by_vector</span><span class="p">(</span>
+                <span class="n">embedding</span><span class="o">=</span><span class="n">embedding</span><span class="p">,</span>
+                <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+                <span class="n">param</span><span class="o">=</span><span class="n">param</span><span class="p">,</span>
+                <span class="n">expr</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span></div>
 
 
@@ -1321,6 +1455,9 @@ document.write(`
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"No existing collection to search."</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">[]</span>
 
+        <span class="k">assert</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">,</span> <span class="nb">list</span>
+        <span class="p">),</span> <span class="s2">"MMR is not-suported in multi-vector settings"</span>
         <span class="n">embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="n">timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="ow">or</span> <span class="n">timeout</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_marginal_relevance_search_by_vector</span><span class="p">(</span>
@@ -1449,13 +1586,13 @@ document.write(`
     <span class="k">def</span> <span class="nf">from_texts</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">texts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-        <span class="n">embedding</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Embeddings</span><span class="p">,</span> <span class="n">BaseSparseEmbedding</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+        <span class="n">embedding</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EmbeddingType</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EmbeddingType</span><span class="p">]],</span>  <span class="c1"># type: ignore</span>
         <span class="n">metadatas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">collection_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"LangChainCollection"</span><span class="p">,</span>
         <span class="n">connection_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">consistency_level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Session"</span><span class="p">,</span>
-        <span class="n">index_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">search_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">index_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">search_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">drop_old</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1514,8 +1651,10 @@ document.write(`
 
 
     <span class="k">def</span> <span class="nf">_parse_document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Document</span><span class="p">:</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-            <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">)</span>
+        <span class="n">vector_fields</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">vector_field</span> <span class="ow">in</span> <span class="n">vector_fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">vector_field</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">vector_field</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Document</span><span class="p">(</span>
             <span class="n">page_content</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_text_field</span><span class="p">),</span>
             <span class="n">metadata</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_metadata_field</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_field</span> <span class="k">else</span> <span class="n">data</span><span class="p">,</span>
@@ -1621,7 +1760,40 @@ document.write(`
                 <span class="s2">"Failed to upsert entities: </span><span class="si">%s</span><span class="s2"> error: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span> <span class="n">exc</span>
             <span class="p">)</span>
             <span class="k">raise</span> <span class="n">exc</span></div>
-</div>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_as_list</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">_create_ranker</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ranker_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">"rrf"</span><span class="p">,</span> <span class="s2">"weighted"</span><span class="p">]],</span>
+        <span class="n">ranker_params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">WeightedRanker</span><span class="p">,</span> <span class="n">RRFRanker</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""A Ranker factory method"""</span>
+        <span class="n">embeddings_functions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EmbeddingType</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">)</span>
+        <span class="n">default_weights</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">embeddings_functions</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ranker_type</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">WeightedRanker</span><span class="p">(</span><span class="o">*</span><span class="n">default_weights</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ranker_type</span> <span class="o">==</span> <span class="s2">"weighted"</span><span class="p">:</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">ranker_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"weights"</span><span class="p">,</span> <span class="n">default_weights</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">WeightedRanker</span><span class="p">(</span><span class="o">*</span><span class="n">weights</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ranker_type</span> <span class="o">==</span> <span class="s2">"rrf"</span><span class="p">:</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="n">ranker_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"k"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">k</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">RRFRanker</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">RRFRanker</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">"Ranker </span><span class="si">%s</span><span class="s2"> does not exist. "</span>
+                <span class="s2">"Please use on of the following rankers: </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
+                <span class="n">ranker_type</span><span class="p">,</span>
+                <span class="s2">"weighted"</span><span class="p">,</span>
+                <span class="s2">"rrf"</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Unrecognized ranker of type </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">ranker_type</span><span class="p">)</span></div>
 
 </pre></div>
 </article>

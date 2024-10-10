@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 08, 2024" name="docbuild:last-update"/>
+<meta content="Oct 10, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -228,7 +228,8 @@ document.write(`
 <article class="bd-article">
 <h1>Source code for langchain_core.messages.ai</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
 
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">model_validator</span>
 <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">NotRequired</span><span class="p">,</span> <span class="n">Self</span><span class="p">,</span> <span class="n">TypedDict</span>
@@ -256,6 +257,7 @@ document.write(`
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">langchain_core.utils._merge</span> <span class="kn">import</span> <span class="n">merge_dicts</span><span class="p">,</span> <span class="n">merge_lists</span>
 <span class="kn">from</span> <span class="nn">langchain_core.utils.json</span> <span class="kn">import</span> <span class="n">parse_partial_json</span>
+<span class="kn">from</span> <span class="nn">langchain_core.utils.usage</span> <span class="kn">import</span> <span class="n">_dict_int_op</span>
 
 
 <div class="viewcode-block" id="InputTokenDetails">
@@ -681,17 +683,9 @@ document.write(`
 
     <span class="c1"># Token usage</span>
     <span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">usage_metadata</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">usage_metadata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">others</span><span class="p">):</span>
-        <span class="n">usage_metadata_</span><span class="p">:</span> <span class="n">UsageMetadata</span> <span class="o">=</span> <span class="n">left</span><span class="o">.</span><span class="n">usage_metadata</span> <span class="ow">or</span> <span class="n">UsageMetadata</span><span class="p">(</span>
-            <span class="n">input_tokens</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">output_tokens</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">total_tokens</span><span class="o">=</span><span class="mi">0</span>
-        <span class="p">)</span>
+        <span class="n">usage_metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">UsageMetadata</span><span class="p">]</span> <span class="o">=</span> <span class="n">left</span><span class="o">.</span><span class="n">usage_metadata</span>
         <span class="k">for</span> <span class="n">other</span> <span class="ow">in</span> <span class="n">others</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">usage_metadata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">usage_metadata_</span><span class="p">[</span><span class="s2">"input_tokens"</span><span class="p">]</span> <span class="o">+=</span> <span class="n">other</span><span class="o">.</span><span class="n">usage_metadata</span><span class="p">[</span><span class="s2">"input_tokens"</span><span class="p">]</span>
-                <span class="n">usage_metadata_</span><span class="p">[</span><span class="s2">"output_tokens"</span><span class="p">]</span> <span class="o">+=</span> <span class="n">other</span><span class="o">.</span><span class="n">usage_metadata</span><span class="p">[</span>
-                    <span class="s2">"output_tokens"</span>
-                <span class="p">]</span>
-                <span class="n">usage_metadata_</span><span class="p">[</span><span class="s2">"total_tokens"</span><span class="p">]</span> <span class="o">+=</span> <span class="n">other</span><span class="o">.</span><span class="n">usage_metadata</span><span class="p">[</span><span class="s2">"total_tokens"</span><span class="p">]</span>
-        <span class="n">usage_metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">UsageMetadata</span><span class="p">]</span> <span class="o">=</span> <span class="n">usage_metadata_</span>
+            <span class="n">usage_metadata</span> <span class="o">=</span> <span class="n">add_usage</span><span class="p">(</span><span class="n">usage_metadata</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">usage_metadata</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">usage_metadata</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -703,6 +697,124 @@ document.write(`
         <span class="n">response_metadata</span><span class="o">=</span><span class="n">response_metadata</span><span class="p">,</span>
         <span class="n">usage_metadata</span><span class="o">=</span><span class="n">usage_metadata</span><span class="p">,</span>
         <span class="nb">id</span><span class="o">=</span><span class="n">left</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="add_usage">
+<a class="viewcode-back" href="../../../core/messages/langchain_core.messages.ai.add_usage.html#langchain_core.messages.ai.add_usage">[docs]</a>
+<span class="k">def</span> <span class="nf">add_usage</span><span class="p">(</span>
+    <span class="n">left</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">UsageMetadata</span><span class="p">],</span> <span class="n">right</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">UsageMetadata</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UsageMetadata</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Recursively add two UsageMetadata objects.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain_core.messages.ai import add_usage</span>
+
+<span class="sd">            left = UsageMetadata(</span>
+<span class="sd">                input_tokens=5,</span>
+<span class="sd">                output_tokens=0,</span>
+<span class="sd">                total_tokens=5,</span>
+<span class="sd">                input_token_details=InputTokenDetails(cache_read=3)</span>
+<span class="sd">            )</span>
+<span class="sd">            right = UsageMetadata(</span>
+<span class="sd">                input_tokens=0,</span>
+<span class="sd">                output_tokens=10,</span>
+<span class="sd">                total_tokens=10,</span>
+<span class="sd">                output_token_details=OutputTokenDetails(reasoning=4)</span>
+<span class="sd">            )</span>
+
+<span class="sd">            add_usage(left, right)</span>
+
+<span class="sd">        results in</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            UsageMetadata(</span>
+<span class="sd">                input_tokens=5,</span>
+<span class="sd">                output_tokens=10,</span>
+<span class="sd">                total_tokens=15,</span>
+<span class="sd">                input_token_details=InputTokenDetails(cache_read=3),</span>
+<span class="sd">                output_token_details=OutputTokenDetails(reasoning=4)</span>
+<span class="sd">            )</span>
+
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">left</span> <span class="ow">or</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">UsageMetadata</span><span class="p">(</span><span class="n">input_tokens</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">output_tokens</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">total_tokens</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">left</span> <span class="ow">and</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">UsageMetadata</span><span class="p">,</span> <span class="n">left</span> <span class="ow">or</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">UsageMetadata</span><span class="p">(</span>
+        <span class="o">**</span><span class="n">cast</span><span class="p">(</span>
+            <span class="n">UsageMetadata</span><span class="p">,</span>
+            <span class="n">_dict_int_op</span><span class="p">(</span>
+                <span class="n">cast</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">left</span><span class="p">),</span>
+                <span class="n">cast</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">right</span><span class="p">),</span>
+                <span class="n">operator</span><span class="o">.</span><span class="n">add</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="subtract_usage">
+<a class="viewcode-back" href="../../../core/messages/langchain_core.messages.ai.subtract_usage.html#langchain_core.messages.ai.subtract_usage">[docs]</a>
+<span class="k">def</span> <span class="nf">subtract_usage</span><span class="p">(</span>
+    <span class="n">left</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">UsageMetadata</span><span class="p">],</span> <span class="n">right</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">UsageMetadata</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UsageMetadata</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Recursively subtract two UsageMetadata objects.</span>
+
+<span class="sd">    Token counts cannot be negative so the actual operation is max(left - right, 0).</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain_core.messages.ai import subtract_usage</span>
+
+<span class="sd">            left = UsageMetadata(</span>
+<span class="sd">                input_tokens=5,</span>
+<span class="sd">                output_tokens=10,</span>
+<span class="sd">                total_tokens=15,</span>
+<span class="sd">                input_token_details=InputTokenDetails(cache_read=4)</span>
+<span class="sd">            )</span>
+<span class="sd">            right = UsageMetadata(</span>
+<span class="sd">                input_tokens=3,</span>
+<span class="sd">                output_tokens=8,</span>
+<span class="sd">                total_tokens=11,</span>
+<span class="sd">                output_token_details=OutputTokenDetails(reasoning=4)</span>
+<span class="sd">            )</span>
+
+<span class="sd">            subtract_usage(left, right)</span>
+
+<span class="sd">        results in</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            UsageMetadata(</span>
+<span class="sd">                input_tokens=2,</span>
+<span class="sd">                output_tokens=2,</span>
+<span class="sd">                total_tokens=4,</span>
+<span class="sd">                input_token_details=InputTokenDetails(cache_read=4),</span>
+<span class="sd">                output_token_details=OutputTokenDetails(reasoning=0)</span>
+<span class="sd">            )</span>
+
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">left</span> <span class="ow">or</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">UsageMetadata</span><span class="p">(</span><span class="n">input_tokens</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">output_tokens</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">total_tokens</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">left</span> <span class="ow">and</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">UsageMetadata</span><span class="p">,</span> <span class="n">left</span> <span class="ow">or</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">UsageMetadata</span><span class="p">(</span>
+        <span class="o">**</span><span class="n">cast</span><span class="p">(</span>
+            <span class="n">UsageMetadata</span><span class="p">,</span>
+            <span class="n">_dict_int_op</span><span class="p">(</span>
+                <span class="n">cast</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">left</span><span class="p">),</span>
+                <span class="n">cast</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">right</span><span class="p">),</span>
+                <span class="p">(</span><span class="k">lambda</span> <span class="n">le</span><span class="p">,</span> <span class="n">ri</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="n">le</span> <span class="o">-</span> <span class="n">ri</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
     <span class="p">)</span></div>
 
 </pre></div>

@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 08, 2024" name="docbuild:last-update"/>
+<meta content="Oct 10, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -234,9 +234,10 @@ document.write(`
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">uuid</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">cast</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
 
-<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">httpx</span> <span class="kn">import</span> <span class="n">Response</span>
 <span class="kn">from</span> <span class="nn">langchain_core.documents</span> <span class="kn">import</span> <span class="n">Document</span>
 <span class="kn">from</span> <span class="nn">langchain_core.embeddings</span> <span class="kn">import</span> <span class="n">Embeddings</span>
 <span class="kn">from</span> <span class="nn">langchain_core.vectorstores</span> <span class="kn">import</span> <span class="n">VectorStore</span>
@@ -280,7 +281,7 @@ document.write(`
 <span class="sd">                            embedding=RGBEmbeddings(),</span>
 <span class="sd">                            output_fields: ["texture", "color"],</span>
 <span class="sd">                            lambda_key: lambda text,meta: str(meta["_key"]),</span>
-<span class="sd">                            lambda_content: lambda item: item["color"]})</span>
+<span class="sd">                            lambda_content: lambda item: item["color"])</span>
 <span class="sd">    """</span>
 
 <div class="viewcode-block" id="InfinispanVS.__init__">
@@ -291,13 +292,48 @@ document.write(`
         <span class="n">ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cache_name: str</span>
+<span class="sd">            Embeddings cache name. Default "vector"</span>
+<span class="sd">        entity_name: str</span>
+<span class="sd">            Protobuf entity name for the embeddings. Default "vector"</span>
+<span class="sd">        text_field: str</span>
+<span class="sd">            Protobuf field name for text. Default "text"</span>
+<span class="sd">        vector_field: str</span>
+<span class="sd">            Protobuf field name for vector. Default "vector"</span>
+<span class="sd">        lambda_content: lambda</span>
+<span class="sd">            Lambda returning the content part of an item. Default returns text_field</span>
+<span class="sd">        lambda_metadata: lambda</span>
+<span class="sd">            Lambda returning the metadata part of an item. Default returns items</span>
+<span class="sd">            fields excepts text_field, vector_field, _type</span>
+<span class="sd">        output_fields: List[str]</span>
+<span class="sd">            List of fields to be returned from item, if None return all fields.</span>
+<span class="sd">            Default None</span>
+<span class="sd">        kwargs: Any</span>
+<span class="sd">            Rest of arguments passed to Infinispan. See docs"""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ispn</span> <span class="o">=</span> <span class="n">Infinispan</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span> <span class="o">=</span> <span class="n">kwargs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cache_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cache_name"</span><span class="p">,</span> <span class="s2">"vector"</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_entity_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"entity_name"</span><span class="p">,</span> <span class="s2">"vector"</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_embedding</span> <span class="o">=</span> <span class="n">embedding</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_textfield</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"textfield"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_vectorfield</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"vectorfield"</span><span class="p">,</span> <span class="s2">"vector"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_textfield</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"textfield"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_textfield</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_textfield</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"text_field"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">"`textfield` is deprecated. Please use `text_field` "</span> <span class="s2">"param."</span><span class="p">,</span>
+                <span class="ne">DeprecationWarning</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vectorfield</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"vectorfield"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vectorfield</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vectorfield</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"vector_field"</span><span class="p">,</span> <span class="s2">"vector"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">"`vectorfield` is deprecated. Please use `vector_field` "</span> <span class="s2">"param."</span><span class="p">,</span>
+                <span class="ne">DeprecationWarning</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_to_content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
             <span class="s2">"lambda_content"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_content</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         <span class="p">)</span>
@@ -360,7 +396,7 @@ document.write(`
 
 <div class="viewcode-block" id="InfinispanVS.schema_create">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.InfinispanVS.html#langchain_community.vectorstores.infinispanvs.InfinispanVS.schema_create">[docs]</a>
-    <span class="k">def</span> <span class="nf">schema_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proto</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">schema_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proto</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Deploy the schema for the vector db</span>
 <span class="sd">        Args:</span>
 <span class="sd">            proto(str): protobuf schema</span>
@@ -372,7 +408,7 @@ document.write(`
 
 <div class="viewcode-block" id="InfinispanVS.schema_delete">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.InfinispanVS.html#langchain_community.vectorstores.infinispanvs.InfinispanVS.schema_delete">[docs]</a>
-    <span class="k">def</span> <span class="nf">schema_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">schema_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Delete the schema for the vector db</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            An http Response containing the result of the operation</span>
@@ -382,7 +418,7 @@ document.write(`
 
 <div class="viewcode-block" id="InfinispanVS.cache_create">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.InfinispanVS.html#langchain_community.vectorstores.infinispanvs.InfinispanVS.cache_create">[docs]</a>
-    <span class="k">def</span> <span class="nf">cache_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">cache_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Create the cache for the vector db</span>
 <span class="sd">        Args:</span>
 <span class="sd">            config(str): configuration of the cache.</span>
@@ -420,7 +456,7 @@ document.write(`
 
 <div class="viewcode-block" id="InfinispanVS.cache_delete">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.InfinispanVS.html#langchain_community.vectorstores.infinispanvs.InfinispanVS.cache_delete">[docs]</a>
-    <span class="k">def</span> <span class="nf">cache_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">cache_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Delete the cache for the vector db</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            An http Response containing the result of the operation</span>
@@ -430,7 +466,7 @@ document.write(`
 
 <div class="viewcode-block" id="InfinispanVS.cache_clear">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.InfinispanVS.html#langchain_community.vectorstores.infinispanvs.InfinispanVS.cache_clear">[docs]</a>
-    <span class="k">def</span> <span class="nf">cache_clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">cache_clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Clear the cache for the vector db</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            An http Response containing the result of the operation</span>
@@ -450,7 +486,7 @@ document.write(`
 
 <div class="viewcode-block" id="InfinispanVS.cache_index_clear">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.InfinispanVS.html#langchain_community.vectorstores.infinispanvs.InfinispanVS.cache_index_clear">[docs]</a>
-    <span class="k">def</span> <span class="nf">cache_index_clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">cache_index_clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Clear the index for the vector db</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            An http Response containing the result of the operation</span>
@@ -460,7 +496,7 @@ document.write(`
 
 <div class="viewcode-block" id="InfinispanVS.cache_index_reindex">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.InfinispanVS.html#langchain_community.vectorstores.infinispanvs.InfinispanVS.cache_index_reindex">[docs]</a>
-    <span class="k">def</span> <span class="nf">cache_index_reindex</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">cache_index_reindex</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Rebuild the for the vector db</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            An http Response containing the result of the operation</span>
@@ -603,12 +639,16 @@ document.write(`
     <span class="k">def</span> <span class="nf">configure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">dimension</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema_builder</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span>
         <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema_create</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="n">output</span><span class="o">.</span><span class="n">ok</span><span class="p">,</span> <span class="s2">"Unable to create schema. Already exists? "</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ispn</span><span class="o">.</span><span class="n">Codes</span><span class="o">.</span><span class="n">OK</span>
+        <span class="p">),</span> <span class="s2">"Unable to create schema. Already exists? "</span>
         <span class="s2">"Consider using clear_old=True"</span>
         <span class="k">assert</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="s2">"error"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_exists</span><span class="p">():</span>
             <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_create</span><span class="p">()</span>
-            <span class="k">assert</span> <span class="n">output</span><span class="o">.</span><span class="n">ok</span><span class="p">,</span> <span class="s2">"Unable to create cache. Already exists? "</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ispn</span><span class="o">.</span><span class="n">Codes</span><span class="o">.</span><span class="n">OK</span>
+            <span class="p">),</span> <span class="s2">"Unable to create cache. Already exists? "</span>
             <span class="s2">"Consider using clear_old=True"</span>
             <span class="c1"># Ensure index is clean</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cache_index_clear</span><span class="p">()</span></div>
@@ -634,7 +674,24 @@ document.write(`
         <span class="n">auto_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InfinispanVS</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Return VectorStore initialized from texts and embeddings."""</span>
+<span class="w">        </span><span class="sd">"""Return VectorStore initialized from texts and embeddings.</span>
+
+<span class="sd">        In addition to parameters described by the super method, this</span>
+<span class="sd">        implementation provides other configuration params if different</span>
+<span class="sd">        configuration from default is needed.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ids : List[str]</span>
+<span class="sd">            Additional list of keys associated to the embedding. If not</span>
+<span class="sd">            provided UUIDs will be generated</span>
+<span class="sd">        clear_old : bool</span>
+<span class="sd">            Whether old data must be deleted. Default True</span>
+<span class="sd">        auto_config: bool</span>
+<span class="sd">            Whether to do a complete server setup (caches,</span>
+<span class="sd">            protobuf definition...). Default True</span>
+<span class="sd">        kwargs: Any</span>
+<span class="sd">            Rest of arguments passed to InfinispanVS. See docs"""</span>
         <span class="n">infinispanvs</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">embedding</span><span class="o">=</span><span class="n">embedding</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">ids</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">auto_config</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">metadatas</span> <span class="ow">or</span> <span class="p">[])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">clear_old</span><span class="p">:</span>
@@ -671,23 +728,86 @@ document.write(`
 
 <div class="viewcode-block" id="Infinispan.__init__">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.Infinispan.html#langchain_community.vectorstores.infinispanvs.Infinispan.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"http"</span><span class="p">,</span>
+        <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="n">password</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="n">hosts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"127.0.0.1:11222"</span><span class="p">],</span>
+        <span class="n">cache_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"/rest/v2/caches"</span><span class="p">,</span>
+        <span class="n">schema_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"/rest/v2/schemas"</span><span class="p">,</span>
+        <span class="n">use_post_for_query</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">http2</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">verify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        schema: str</span>
+<span class="sd">            Schema for HTTP request: "http" or "https". Default "http"</span>
+<span class="sd">        user, password: str</span>
+<span class="sd">            User and password if auth is required. Default None</span>
+<span class="sd">        hosts: List[str]</span>
+<span class="sd">            List of server addresses. Default ["127.0.0.1:11222"]</span>
+<span class="sd">        cache_url: str</span>
+<span class="sd">            URL endpoint for cache API. Default "/rest/v2/caches"</span>
+<span class="sd">        schema_url: str</span>
+<span class="sd">            URL endpoint for schema API. Default "/rest/v2/schemas"</span>
+<span class="sd">        use_post_for_query: bool</span>
+<span class="sd">            Whether POST method should be used for query. Default True</span>
+<span class="sd">        http2: bool</span>
+<span class="sd">            Whether HTTP/2 protocol should be used. `pip install "httpx[http2]"` is</span>
+<span class="sd">            needed for HTTP/2. Default True</span>
+<span class="sd">        verify:  bool</span>
+<span class="sd">            Whether TLS certificate must be verified. Default True</span>
+<span class="sd">        """</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">httpx</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+                <span class="s2">"Could not import httpx python package. "</span>
+                <span class="s2">"Please install it with `pip install httpx`"</span>
+                <span class="s1">'or `pip install "httpx[http2]"` if you need HTTP/2.'</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Codes</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">codes</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span> <span class="o">=</span> <span class="n">kwargs</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"schema"</span><span class="p">,</span> <span class="s2">"http"</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_host</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"hosts"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"127.0.0.1:11222"</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="n">schema</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_password</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_host</span> <span class="o">=</span> <span class="n">hosts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_default_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">+</span> <span class="s2">"://"</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cache_url</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cache_url"</span><span class="p">,</span> <span class="s2">"/rest/v2/caches"</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_schema_url</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cache_url"</span><span class="p">,</span> <span class="s2">"/rest/v2/schemas"</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_use_post_for_query</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"use_post_for_query"</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-        <span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache_url</span> <span class="o">=</span> <span class="n">cache_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema_url</span> <span class="o">=</span> <span class="n">schema_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_use_post_for_query</span> <span class="o">=</span> <span class="n">use_post_for_query</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_http2</span> <span class="o">=</span> <span class="n">http2</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">==</span> <span class="s2">"http"</span><span class="p">:</span>
+                <span class="n">auth</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">httpx</span><span class="o">.</span><span class="n">DigestAuth</span><span class="p">]</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">DigestAuth</span><span class="p">(</span>
+                    <span class="n">username</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_password</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">auth</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_h2c</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span>
+                <span class="n">http2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_http2</span><span class="p">,</span>
+                <span class="n">http1</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http2</span><span class="p">,</span>
+                <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span>
+                <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_h2c</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span>
+                <span class="n">http2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_http2</span><span class="p">,</span>
+                <span class="n">http1</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http2</span><span class="p">,</span>
+                <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">,</span>
+            <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Infinispan.req_query">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.Infinispan.html#langchain_community.vectorstores.infinispanvs.Infinispan.req_query">[docs]</a>
-    <span class="k">def</span> <span class="nf">req_query</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">local</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">req_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">local</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Request a query</span>
 <span class="sd">        Args:</span>
 <span class="sd">            query(str): query requested</span>
@@ -703,7 +823,7 @@ document.write(`
 
     <span class="k">def</span> <span class="nf">_query_post</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">query_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">local</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
         <span class="n">api_url</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_default_node</span>
             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_url</span>
@@ -714,9 +834,9 @@ document.write(`
         <span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"query"</span><span class="p">:</span> <span class="n">query_str</span><span class="p">}</span>
         <span class="n">data_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h2c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
             <span class="n">api_url</span><span class="p">,</span>
-            <span class="n">data_json</span><span class="p">,</span>
+            <span class="n">content</span><span class="o">=</span><span class="n">data_json</span><span class="p">,</span>
             <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">},</span>
             <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">,</span>
         <span class="p">)</span>
@@ -724,7 +844,7 @@ document.write(`
 
     <span class="k">def</span> <span class="nf">_query_get</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">query_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">local</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
         <span class="n">api_url</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_default_node</span>
             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_url</span>
@@ -735,12 +855,12 @@ document.write(`
             <span class="o">+</span> <span class="s2">"&amp;local="</span>
             <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">local</span><span class="p">)</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h2c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span>
 
 <div class="viewcode-block" id="Infinispan.post">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.Infinispan.html#langchain_community.vectorstores.infinispanvs.Infinispan.post">[docs]</a>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Post an entry</span>
 <span class="sd">        Args:</span>
 <span class="sd">            key(str): key of the entry</span>
@@ -750,9 +870,9 @@ document.write(`
 <span class="sd">            An http Response containing the result of the operation</span>
 <span class="sd">        """</span>
         <span class="n">api_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_node</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_url</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="n">cache_name</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="n">key</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h2c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
             <span class="n">api_url</span><span class="p">,</span>
-            <span class="n">data</span><span class="p">,</span>
+            <span class="n">content</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
             <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">},</span>
             <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">,</span>
         <span class="p">)</span>
@@ -761,7 +881,7 @@ document.write(`
 
 <div class="viewcode-block" id="Infinispan.put">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.Infinispan.html#langchain_community.vectorstores.infinispanvs.Infinispan.put">[docs]</a>
-    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Put an entry</span>
 <span class="sd">        Args:</span>
 <span class="sd">            key(str): key of the entry</span>
@@ -771,9 +891,9 @@ document.write(`
 <span class="sd">            An http Response containing the result of the operation</span>
 <span class="sd">        """</span>
         <span class="n">api_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_node</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_url</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="n">cache_name</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="n">key</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h2c</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
             <span class="n">api_url</span><span class="p">,</span>
-            <span class="n">data</span><span class="p">,</span>
+            <span class="n">content</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
             <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">},</span>
             <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">,</span>
         <span class="p">)</span>
@@ -782,7 +902,7 @@ document.write(`
 
 <div class="viewcode-block" id="Infinispan.get">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.Infinispan.html#langchain_community.vectorstores.infinispanvs.Infinispan.get">[docs]</a>
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Get an entry</span>
 <span class="sd">        Args:</span>
 <span class="sd">            key(str): key of the entry</span>
@@ -791,7 +911,7 @@ document.write(`
 <span class="sd">            An http Response containing the entry or errors</span>
 <span class="sd">        """</span>
         <span class="n">api_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_node</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_url</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="n">cache_name</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="n">key</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h2c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
             <span class="n">api_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">},</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span></div>
@@ -799,7 +919,7 @@ document.write(`
 
 <div class="viewcode-block" id="Infinispan.schema_post">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.Infinispan.html#langchain_community.vectorstores.infinispanvs.Infinispan.schema_post">[docs]</a>
-    <span class="k">def</span> <span class="nf">schema_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">proto</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">schema_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">proto</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Deploy a schema</span>
 <span class="sd">        Args:</span>
 <span class="sd">            name(str): name of the schema. Will be used as a key</span>
@@ -808,13 +928,13 @@ document.write(`
 <span class="sd">            An http Response containing the result of the operation</span>
 <span class="sd">        """</span>
         <span class="n">api_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_node</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_url</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="n">name</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">proto</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h2c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">proto</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span></div>
 
 
 <div class="viewcode-block" id="Infinispan.cache_post">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.Infinispan.html#langchain_community.vectorstores.infinispanvs.Infinispan.cache_post">[docs]</a>
-    <span class="k">def</span> <span class="nf">cache_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">cache_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Create a cache</span>
 <span class="sd">        Args:</span>
 <span class="sd">            name(str): name of the cache.</span>
@@ -823,9 +943,9 @@ document.write(`
 <span class="sd">            An http Response containing the result of the operation</span>
 <span class="sd">        """</span>
         <span class="n">api_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_node</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_url</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="n">name</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h2c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
             <span class="n">api_url</span><span class="p">,</span>
-            <span class="n">config</span><span class="p">,</span>
+            <span class="n">content</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
             <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">},</span>
             <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">,</span>
         <span class="p">)</span>
@@ -834,7 +954,7 @@ document.write(`
 
 <div class="viewcode-block" id="Infinispan.schema_delete">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.Infinispan.html#langchain_community.vectorstores.infinispanvs.Infinispan.schema_delete">[docs]</a>
-    <span class="k">def</span> <span class="nf">schema_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">schema_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Delete a schema</span>
 <span class="sd">        Args:</span>
 <span class="sd">            name(str): name of the schema.</span>
@@ -842,13 +962,13 @@ document.write(`
 <span class="sd">            An http Response containing the result of the operation</span>
 <span class="sd">        """</span>
         <span class="n">api_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_node</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_url</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="n">name</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h2c</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span></div>
 
 
 <div class="viewcode-block" id="Infinispan.cache_delete">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.Infinispan.html#langchain_community.vectorstores.infinispanvs.Infinispan.cache_delete">[docs]</a>
-    <span class="k">def</span> <span class="nf">cache_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">cache_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Delete a cache</span>
 <span class="sd">        Args:</span>
 <span class="sd">            name(str): name of the cache.</span>
@@ -856,13 +976,13 @@ document.write(`
 <span class="sd">            An http Response containing the result of the operation</span>
 <span class="sd">        """</span>
         <span class="n">api_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_node</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_url</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="n">name</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h2c</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span></div>
 
 
 <div class="viewcode-block" id="Infinispan.cache_clear">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.Infinispan.html#langchain_community.vectorstores.infinispanvs.Infinispan.cache_clear">[docs]</a>
-    <span class="k">def</span> <span class="nf">cache_clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">cache_clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Clear a cache</span>
 <span class="sd">        Args:</span>
 <span class="sd">            cache_name(str): name of the cache.</span>
@@ -872,7 +992,7 @@ document.write(`
         <span class="n">api_url</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_default_node</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_url</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="n">cache_name</span> <span class="o">+</span> <span class="s2">"?action=clear"</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h2c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span></div>
 
 
@@ -893,21 +1013,20 @@ document.write(`
 
 <div class="viewcode-block" id="Infinispan.resource_exists">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.Infinispan.html#langchain_community.vectorstores.infinispanvs.Infinispan.resource_exists">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">resource_exists</span><span class="p">(</span><span class="n">api_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">resource_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Check if a resource exists</span>
 <span class="sd">        Args:</span>
 <span class="sd">            api_url(str): url of the resource.</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            true if resource exists</span>
 <span class="sd">        """</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span></div>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h2c</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">Codes</span><span class="o">.</span><span class="n">OK</span></div>
 
 
 <div class="viewcode-block" id="Infinispan.index_clear">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.Infinispan.html#langchain_community.vectorstores.infinispanvs.Infinispan.index_clear">[docs]</a>
-    <span class="k">def</span> <span class="nf">index_clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">index_clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Clear an index on a cache</span>
 <span class="sd">        Args:</span>
 <span class="sd">            cache_name(str): name of the cache.</span>
@@ -921,12 +1040,12 @@ document.write(`
             <span class="o">+</span> <span class="n">cache_name</span>
             <span class="o">+</span> <span class="s2">"/search/indexes?action=clear"</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h2c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Infinispan.index_reindex">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.infinispanvs.Infinispan.html#langchain_community.vectorstores.infinispanvs.Infinispan.index_reindex">[docs]</a>
-    <span class="k">def</span> <span class="nf">index_reindex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">index_reindex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Rebuild index on a cache</span>
 <span class="sd">        Args:</span>
 <span class="sd">            cache_name(str): name of the cache.</span>
@@ -940,7 +1059,7 @@ document.write(`
             <span class="o">+</span> <span class="n">cache_name</span>
             <span class="o">+</span> <span class="s2">"/search/indexes?action=reindex"</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h2c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">REST_TIMEOUT</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

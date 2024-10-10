@@ -38,7 +38,7 @@
 <link href="../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 08, 2024" name="docbuild:last-update"/>
+<meta content="Oct 10, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -278,7 +278,9 @@ document.write(`
     <span class="n">ToolConfig</span><span class="p">,</span>
     <span class="n">VideoMetadata</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">google.generativeai.caching</span> <span class="kn">import</span> <span class="n">CachedContent</span>  <span class="c1"># type: ignore[import]</span>
 <span class="kn">from</span> <span class="nn">google.generativeai.types</span> <span class="kn">import</span> <span class="n">Tool</span> <span class="k">as</span> <span class="n">GoogleTool</span>  <span class="c1"># type: ignore[import]</span>
+<span class="kn">from</span> <span class="nn">google.generativeai.types</span> <span class="kn">import</span> <span class="n">caching_types</span><span class="p">,</span> <span class="n">content_types</span>
 <span class="kn">from</span> <span class="nn">google.generativeai.types.content_types</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># type: ignore[import]</span>
     <span class="n">FunctionDeclarationType</span><span class="p">,</span>
     <span class="n">ToolDict</span><span class="p">,</span>
@@ -807,11 +809,13 @@ document.write(`
         <span class="n">input_tokens</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">usage_metadata</span><span class="o">.</span><span class="n">prompt_token_count</span>
         <span class="n">output_tokens</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">usage_metadata</span><span class="o">.</span><span class="n">candidates_token_count</span>
         <span class="n">total_tokens</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">usage_metadata</span><span class="o">.</span><span class="n">total_token_count</span>
-        <span class="k">if</span> <span class="n">input_tokens</span> <span class="o">+</span> <span class="n">output_tokens</span> <span class="o">+</span> <span class="n">total_tokens</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">cache_read_tokens</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">usage_metadata</span><span class="o">.</span><span class="n">cached_content_token_count</span>
+        <span class="k">if</span> <span class="n">input_tokens</span> <span class="o">+</span> <span class="n">output_tokens</span> <span class="o">+</span> <span class="n">cache_read_tokens</span> <span class="o">+</span> <span class="n">total_tokens</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">lc_usage</span> <span class="o">=</span> <span class="n">UsageMetadata</span><span class="p">(</span>
                 <span class="n">input_tokens</span><span class="o">=</span><span class="n">input_tokens</span><span class="p">,</span>
                 <span class="n">output_tokens</span><span class="o">=</span><span class="n">output_tokens</span><span class="p">,</span>
                 <span class="n">total_tokens</span><span class="o">=</span><span class="n">total_tokens</span><span class="p">,</span>
+                <span class="n">input_token_details</span><span class="o">=</span><span class="p">{</span><span class="s2">"cache_read"</span><span class="p">:</span> <span class="n">cache_read_tokens</span><span class="p">},</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">lc_usage</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1043,7 +1047,7 @@ document.write(`
 <span class="sd">            {'input_tokens': 18, 'output_tokens': 5, 'total_tokens': 23}</span>
 
 
-<span class="sd">        Response metadata</span>
+<span class="sd">    Response metadata</span>
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            ai_msg = llm.invoke(messages)</span>
@@ -1075,6 +1079,14 @@ document.write(`
 
 <span class="sd">    Gemini does not support system messages; any unsupported messages will</span>
 <span class="sd">    raise an error."""</span>
+
+    <span class="n">cached_content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""The name of the cached content used as context to serve the prediction. </span>
+
+<span class="sd">    Note: only used in explicit caching, where users can have control over caching </span>
+<span class="sd">    (e.g. what content to cache) and enjoy guaranteed cost savings. Format: </span>
+<span class="sd">    ``cachedContents/{cachedContent}``.</span>
+<span class="sd">    """</span>
 
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>
         <span class="n">populate_by_name</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -1210,6 +1222,7 @@ document.write(`
         <span class="n">safety_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SafetySettingDict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">tool_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">_ToolConfigDict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">generation_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cached_content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ChatResult</span><span class="p">:</span>
         <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_request</span><span class="p">(</span>
@@ -1220,6 +1233,7 @@ document.write(`
             <span class="n">safety_settings</span><span class="o">=</span><span class="n">safety_settings</span><span class="p">,</span>
             <span class="n">tool_config</span><span class="o">=</span><span class="n">tool_config</span><span class="p">,</span>
             <span class="n">generation_config</span><span class="o">=</span><span class="n">generation_config</span><span class="p">,</span>
+            <span class="n">cached_content</span><span class="o">=</span><span class="n">cached_content</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_content</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">response</span><span class="p">:</span> <span class="n">GenerateContentResponse</span> <span class="o">=</span> <span class="n">_chat_with_retry</span><span class="p">(</span>
             <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
@@ -1240,6 +1254,7 @@ document.write(`
         <span class="n">safety_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SafetySettingDict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">tool_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">_ToolConfigDict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">generation_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cached_content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ChatResult</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_client</span><span class="p">:</span>
@@ -1265,6 +1280,7 @@ document.write(`
             <span class="n">safety_settings</span><span class="o">=</span><span class="n">safety_settings</span><span class="p">,</span>
             <span class="n">tool_config</span><span class="o">=</span><span class="n">tool_config</span><span class="p">,</span>
             <span class="n">generation_config</span><span class="o">=</span><span class="n">generation_config</span><span class="p">,</span>
+            <span class="n">cached_content</span><span class="o">=</span><span class="n">cached_content</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_content</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">response</span><span class="p">:</span> <span class="n">GenerateContentResponse</span> <span class="o">=</span> <span class="k">await</span> <span class="n">_achat_with_retry</span><span class="p">(</span>
             <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
@@ -1285,6 +1301,7 @@ document.write(`
         <span class="n">safety_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SafetySettingDict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">tool_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">_ToolConfigDict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">generation_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cached_content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">ChatGenerationChunk</span><span class="p">]:</span>
         <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_request</span><span class="p">(</span>
@@ -1295,6 +1312,7 @@ document.write(`
             <span class="n">safety_settings</span><span class="o">=</span><span class="n">safety_settings</span><span class="p">,</span>
             <span class="n">tool_config</span><span class="o">=</span><span class="n">tool_config</span><span class="p">,</span>
             <span class="n">generation_config</span><span class="o">=</span><span class="n">generation_config</span><span class="p">,</span>
+            <span class="n">cached_content</span><span class="o">=</span><span class="n">cached_content</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_content</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">response</span><span class="p">:</span> <span class="n">GenerateContentResponse</span> <span class="o">=</span> <span class="n">_chat_with_retry</span><span class="p">(</span>
             <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
@@ -1321,6 +1339,7 @@ document.write(`
         <span class="n">safety_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SafetySettingDict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">tool_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">_ToolConfigDict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">generation_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cached_content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">ChatGenerationChunk</span><span class="p">]:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_client</span><span class="p">:</span>
@@ -1347,6 +1366,7 @@ document.write(`
                 <span class="n">safety_settings</span><span class="o">=</span><span class="n">safety_settings</span><span class="p">,</span>
                 <span class="n">tool_config</span><span class="o">=</span><span class="n">tool_config</span><span class="p">,</span>
                 <span class="n">generation_config</span><span class="o">=</span><span class="n">generation_config</span><span class="p">,</span>
+                <span class="n">cached_content</span><span class="o">=</span><span class="n">cached_content</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_content</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="k">await</span> <span class="n">_achat_with_retry</span><span class="p">(</span>
                 <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
@@ -1371,6 +1391,7 @@ document.write(`
         <span class="n">safety_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SafetySettingDict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">tool_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">_ToolConfigDict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">generation_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cached_content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">GenerateContentRequest</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
         <span class="n">formatted_tools</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">tools</span><span class="p">:</span>
@@ -1402,6 +1423,7 @@ document.write(`
             <span class="n">generation_config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prepare_params</span><span class="p">(</span>
                 <span class="n">stop</span><span class="p">,</span> <span class="n">generation_config</span><span class="o">=</span><span class="n">generation_config</span>
             <span class="p">),</span>
+            <span class="n">cached_content</span><span class="o">=</span><span class="n">cached_content</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">system_instruction</span><span class="p">:</span>
             <span class="n">request</span><span class="o">.</span><span class="n">system_instruction</span> <span class="o">=</span> <span class="n">system_instruction</span>
@@ -1495,6 +1517,93 @@ document.write(`
             <span class="p">]</span>
             <span class="n">tool_config</span> <span class="o">=</span> <span class="n">_tool_choice_to_tool_config</span><span class="p">(</span><span class="n">tool_choice</span><span class="p">,</span> <span class="n">all_names</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">tools</span><span class="o">=</span><span class="n">genai_tools</span><span class="p">,</span> <span class="n">tool_config</span><span class="o">=</span><span class="n">tool_config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ChatGoogleGenerativeAI.create_cached_content">
+<a class="viewcode-back" href="../../google_genai/chat_models/langchain_google_genai.chat_models.ChatGoogleGenerativeAI.html#langchain_google_genai.chat_models.ChatGoogleGenerativeAI.create_cached_content">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_cached_content</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">contents</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="n">content_types</span><span class="o">.</span><span class="n">ContentsType</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">display_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">tools</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ToolDict</span><span class="p">,</span> <span class="n">GoogleTool</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">tool_choice</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">_ToolChoiceType</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ttl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">caching_types</span><span class="o">.</span><span class="n">TTLTypes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">expire_time</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">caching_types</span><span class="o">.</span><span class="n">ExpireTimeTypes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            display_name: The user-generated meaningful display name</span>
+<span class="sd">                of the cached content. `display_name` must be no</span>
+<span class="sd">                more than 128 unicode characters.</span>
+<span class="sd">            contents: Contents to cache.</span>
+<span class="sd">            tools: A list of `Tools` the model may use to generate response.</span>
+<span class="sd">            tool_choice: Which tool to require the model to call.</span>
+<span class="sd">            ttl: TTL for cached resource (in seconds). Defaults to 1 hour.</span>
+<span class="sd">                 `ttl` and `expire_time` are exclusive arguments.</span>
+<span class="sd">            expire_time: Expiration time for cached resource.</span>
+<span class="sd">                `ttl` and `expire_time` are exclusive arguments.</span>
+<span class="sd">        """</span>
+        <span class="n">system</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">content_types</span><span class="o">.</span><span class="n">ContentType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">genai_contents</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">BaseMessage</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">contents</span><span class="p">):</span>
+            <span class="n">system</span><span class="p">,</span> <span class="n">genai_contents</span> <span class="o">=</span> <span class="n">_parse_chat_history</span><span class="p">(</span>
+                <span class="n">contents</span><span class="p">,</span>
+                <span class="n">convert_system_message_to_human</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">convert_system_message_to_human</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">BaseMessage</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">contents</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"'contents' must either be a list of "</span>
+                <span class="sa">f</span><span class="s2">"langchain_core.messages.BaseMessage or a list "</span>
+                <span class="sa">f</span><span class="s2">"google.generativeai.types.content_types.ContentType, but not a mix "</span>
+                <span class="sa">f</span><span class="s2">"of the two. Received </span><span class="si">{</span><span class="n">contents</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">content</span> <span class="ow">in</span> <span class="n">contents</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="s2">"role"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">content</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="s2">"system"</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">system</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                            <span class="s2">"Received multiple pieces of content with role 'system'. "</span>
+                            <span class="s2">"Should only be one set of system instructions. Ignoring "</span>
+                            <span class="s2">"all but the first 'system' content."</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">system</span> <span class="o">=</span> <span class="n">content</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"role"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"system"</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">system</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                            <span class="s2">"Received multiple pieces of content with role 'system'. "</span>
+                            <span class="s2">"Should only be one set of system instructions. Ignoring "</span>
+                            <span class="s2">"all but the first 'system' content."</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">system</span> <span class="o">=</span> <span class="n">content</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">genai_contents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tools</span><span class="p">:</span>
+            <span class="n">genai_tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">convert_to_genai_function_declarations</span><span class="p">(</span><span class="n">tools</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">genai_tools</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">tool_choice</span> <span class="ow">and</span> <span class="n">genai_tools</span><span class="p">:</span>
+            <span class="n">all_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">genai_tools</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">function_declarations</span><span class="p">]</span>
+            <span class="n">tool_config</span> <span class="o">=</span> <span class="n">_tool_choice_to_tool_config</span><span class="p">(</span><span class="n">tool_choice</span><span class="p">,</span> <span class="n">all_names</span><span class="p">)</span>
+            <span class="n">genai_tool_config</span> <span class="o">=</span> <span class="n">ToolConfig</span><span class="p">(</span>
+                <span class="n">function_calling_config</span><span class="o">=</span><span class="n">tool_config</span><span class="p">[</span><span class="s2">"function_calling_config"</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">genai_tool_config</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">cached_content</span> <span class="o">=</span> <span class="n">CachedContent</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+            <span class="n">system_instruction</span><span class="o">=</span><span class="n">system</span><span class="p">,</span>
+            <span class="n">contents</span><span class="o">=</span><span class="n">genai_contents</span><span class="p">,</span>
+            <span class="n">display_name</span><span class="o">=</span><span class="n">display_name</span><span class="p">,</span>
+            <span class="n">tools</span><span class="o">=</span><span class="n">genai_tools</span><span class="p">,</span>
+            <span class="n">tool_config</span><span class="o">=</span><span class="n">genai_tool_config</span><span class="p">,</span>
+            <span class="n">ttl</span><span class="o">=</span><span class="n">ttl</span><span class="p">,</span>
+            <span class="n">expire_time</span><span class="o">=</span><span class="n">expire_time</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">cached_content</span><span class="o">.</span><span class="n">name</span></div>
 
 
     <span class="nd">@property</span>
