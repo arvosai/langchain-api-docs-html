@@ -28,7 +28,7 @@
 <link as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" rel="preload"/>
 <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 <script src="../../../_static/documentation_options.js?v=3b5cce75"></script>
-<script src="../../../_static/doctools.js?v=9a2dae69"></script>
+<script src="../../../_static/doctools.js?v=9bcbadda"></script>
 <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../../_static/copybutton.js?v=f281be69"></script>
@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 10, 2024" name="docbuild:last-update"/>
+<meta content="Oct 11, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -239,6 +239,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">asyncio</span> <span class="kn">import</span> <span class="n">InvalidStateError</span><span class="p">,</span> <span class="n">Task</span>
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">importlib.metadata</span> <span class="kn">import</span> <span class="n">version</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Awaitable</span>
 
 <span class="kn">import</span> <span class="nn">langchain_core</span>
@@ -255,6 +256,28 @@ document.write(`
 <span class="n">TOKEN_ENV_VAR</span> <span class="o">=</span> <span class="s2">"ASTRA_DB_APPLICATION_TOKEN"</span>  <span class="c1"># noqa: S105</span>
 <span class="n">API_ENDPOINT_ENV_VAR</span> <span class="o">=</span> <span class="s2">"ASTRA_DB_API_ENDPOINT"</span>
 <span class="n">KEYSPACE_ENV_VAR</span> <span class="o">=</span> <span class="s2">"ASTRA_DB_KEYSPACE"</span>
+
+<span class="c1"># Caller-related constants</span>
+<span class="n">LC_CORE_CALLER_NAME</span> <span class="o">=</span> <span class="s2">"langchain"</span>
+<span class="n">LC_CORE_CALLER_VERSION</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">langchain_core</span><span class="p">,</span> <span class="s2">"__version__"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">LC_CORE_CALLER</span> <span class="o">=</span> <span class="p">(</span><span class="n">LC_CORE_CALLER_NAME</span><span class="p">,</span> <span class="n">LC_CORE_CALLER_VERSION</span><span class="p">)</span>
+
+<span class="n">LC_ASTRADB_VERSION</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">LC_ASTRADB_VERSION</span> <span class="o">=</span> <span class="n">version</span><span class="p">(</span><span class="s2">"langchain_astradb"</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+    <span class="n">LC_ASTRADB_VERSION</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># component names for the 'callers' parameter</span>
+<span class="n">COMPONENT_NAME_CACHE</span> <span class="o">=</span> <span class="s2">"langchain_cache"</span>
+<span class="n">COMPONENT_NAME_SEMANTICCACHE</span> <span class="o">=</span> <span class="s2">"langchain_semanticcache"</span>
+<span class="n">COMPONENT_NAME_CHATMESSAGEHISTORY</span> <span class="o">=</span> <span class="s2">"langchain_chatmessagehistory"</span>
+<span class="n">COMPONENT_NAME_LOADER</span> <span class="o">=</span> <span class="s2">"langchain_loader"</span>
+<span class="n">COMPONENT_NAME_GRAPHVECTORSTORE</span> <span class="o">=</span> <span class="s2">"langchain_graphvectorstore"</span>
+<span class="n">COMPONENT_NAME_STORE</span> <span class="o">=</span> <span class="s2">"langchain_store"</span>
+<span class="n">COMPONENT_NAME_BYTESTORE</span> <span class="o">=</span> <span class="s2">"langchain_bytestore"</span>
+<span class="n">COMPONENT_NAME_VECTORSTORE</span> <span class="o">=</span> <span class="s2">"langchain_vectorstore"</span>
+
 
 <span class="c1"># Default settings for API data operations (concurrency &amp; similar):</span>
 <span class="c1"># Chunk size for many-document insertions (None meaning defer to astrapy):</span>
@@ -288,19 +311,23 @@ document.write(`
     <span class="o">*</span><span class="p">,</span>
     <span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">TokenProvider</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">api_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">keyspace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">environment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ext_callers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">astra_db_client</span><span class="p">:</span> <span class="n">AstraDB</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">async_astra_db_client</span><span class="p">:</span> <span class="n">AsyncAstraDB</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">keyspace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">CollectionDescriptor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
 <span class="w">    </span><span class="sd">"""Return the collection descriptor (if found) and a sample of documents."""</span>
     <span class="n">_astra_db_env</span> <span class="o">=</span> <span class="n">_AstraDBEnvironment</span><span class="p">(</span>
         <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span>
         <span class="n">api_endpoint</span><span class="o">=</span><span class="n">api_endpoint</span><span class="p">,</span>
+        <span class="n">keyspace</span><span class="o">=</span><span class="n">keyspace</span><span class="p">,</span>
         <span class="n">environment</span><span class="o">=</span><span class="n">environment</span><span class="p">,</span>
+        <span class="n">ext_callers</span><span class="o">=</span><span class="n">ext_callers</span><span class="p">,</span>
+        <span class="n">component_name</span><span class="o">=</span><span class="n">component_name</span><span class="p">,</span>
         <span class="n">astra_db_client</span><span class="o">=</span><span class="n">astra_db_client</span><span class="p">,</span>
         <span class="n">async_astra_db_client</span><span class="o">=</span><span class="n">async_astra_db_client</span><span class="p">,</span>
-        <span class="n">keyspace</span><span class="o">=</span><span class="n">keyspace</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">descriptors</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">coll_d</span>
@@ -344,12 +371,15 @@ document.write(`
 <span class="k">class</span> <span class="nc">_AstraDBEnvironment</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
         <span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">TokenProvider</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">api_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">keyspace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">environment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ext_callers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">astra_db_client</span><span class="p">:</span> <span class="n">AstraDB</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">async_astra_db_client</span><span class="p">:</span> <span class="n">AsyncAstraDB</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">keyspace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">TokenProvider</span> <span class="o">|</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">api_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
@@ -479,14 +509,30 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">api_endpoint</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># create the clients</span>
-        <span class="n">caller_name</span> <span class="o">=</span> <span class="s2">"langchain"</span>
-        <span class="n">caller_version</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">langchain_core</span><span class="p">,</span> <span class="s2">"__version__"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="c1"># prepare the "callers" list to create the clients.</span>
+        <span class="c1"># The callers, passed to astrapy, are made of these Caller pairs in this order:</span>
+        <span class="c1"># - zero, one or more are the "ext_callers" passed to this environment</span>
+        <span class="c1"># - a single ("langchain", &lt;version of langchain_core&gt;)</span>
+        <span class="c1"># - if such is provided, a (component_name, &lt;version of langchain_astradb&gt;)</span>
+        <span class="c1">#   (note: if component_name is None, astrapy strips it out automatically)</span>
+        <span class="n">norm_ext_callers</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">cpair</span>
+            <span class="k">for</span> <span class="n">cpair</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="n">_raw_caller</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_raw_caller</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="n">_raw_caller</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">_raw_caller</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ext_callers</span> <span class="ow">or</span> <span class="p">[])</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">cpair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">cpair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">]</span>
+        <span class="n">full_callers</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="o">*</span><span class="n">norm_ext_callers</span><span class="p">,</span>
+            <span class="n">LC_CORE_CALLER</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">component_name</span><span class="p">,</span> <span class="n">LC_ASTRADB_VERSION</span><span class="p">),</span>
+        <span class="p">]</span>
 
+        <span class="c1"># create the callers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_api_client</span> <span class="o">=</span> <span class="n">DataAPIClient</span><span class="p">(</span>
             <span class="n">environment</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="p">,</span>
-            <span class="n">caller_name</span><span class="o">=</span><span class="n">caller_name</span><span class="p">,</span>
-            <span class="n">caller_version</span><span class="o">=</span><span class="n">caller_version</span><span class="p">,</span>
+            <span class="n">callers</span><span class="o">=</span><span class="n">full_callers</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_api_client</span><span class="o">.</span><span class="n">get_database</span><span class="p">(</span>
             <span class="n">api_endpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">api_endpoint</span><span class="p">,</span>
@@ -503,10 +549,10 @@ document.write(`
         <span class="o">*</span><span class="p">,</span>
         <span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">TokenProvider</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">api_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">environment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">astra_db_client</span><span class="p">:</span> <span class="n">AstraDB</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">async_astra_db_client</span><span class="p">:</span> <span class="n">AsyncAstraDB</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">keyspace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">environment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ext_callers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">setup_mode</span><span class="p">:</span> <span class="n">SetupMode</span> <span class="o">=</span> <span class="n">SetupMode</span><span class="o">.</span><span class="n">SYNC</span><span class="p">,</span>
         <span class="n">pre_delete_collection</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">embedding_dimension</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Awaitable</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -515,14 +561,18 @@ document.write(`
         <span class="n">default_indexing_policy</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">collection_vector_service_options</span><span class="p">:</span> <span class="n">CollectionVectorServiceOptions</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">collection_embedding_api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">EmbeddingHeadersProvider</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">astra_db_client</span><span class="p">:</span> <span class="n">AstraDB</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">async_astra_db_client</span><span class="p">:</span> <span class="n">AsyncAstraDB</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span>
             <span class="n">api_endpoint</span><span class="o">=</span><span class="n">api_endpoint</span><span class="p">,</span>
+            <span class="n">keyspace</span><span class="o">=</span><span class="n">keyspace</span><span class="p">,</span>
             <span class="n">environment</span><span class="o">=</span><span class="n">environment</span><span class="p">,</span>
+            <span class="n">ext_callers</span><span class="o">=</span><span class="n">ext_callers</span><span class="p">,</span>
+            <span class="n">component_name</span><span class="o">=</span><span class="n">component_name</span><span class="p">,</span>
             <span class="n">astra_db_client</span><span class="o">=</span><span class="n">astra_db_client</span><span class="p">,</span>
             <span class="n">async_astra_db_client</span><span class="o">=</span><span class="n">async_astra_db_client</span><span class="p">,</span>
-            <span class="n">keyspace</span><span class="o">=</span><span class="n">keyspace</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span> <span class="o">=</span> <span class="n">collection_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span>
