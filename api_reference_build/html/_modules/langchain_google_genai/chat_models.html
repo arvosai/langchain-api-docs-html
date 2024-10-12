@@ -38,7 +38,7 @@
 <link href="../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 11, 2024" name="docbuild:last-update"/>
+<meta content="Oct 12, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -800,9 +800,16 @@ document.write(`
 <span class="k">def</span> <span class="nf">_response_to_result</span><span class="p">(</span>
     <span class="n">response</span><span class="p">:</span> <span class="n">GenerateContentResponse</span><span class="p">,</span>
     <span class="n">stream</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">prev_usage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">UsageMetadata</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ChatResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Converts a PaLM API response into a LangChain ChatResult."""</span>
     <span class="n">llm_output</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"prompt_feedback"</span><span class="p">:</span> <span class="n">proto</span><span class="o">.</span><span class="n">Message</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">prompt_feedback</span><span class="p">)}</span>
+
+    <span class="c1"># previous usage metadata needs to be subtracted because gemini api returns</span>
+    <span class="c1"># already-accumulated token counts with each chunk</span>
+    <span class="n">prev_input_tokens</span> <span class="o">=</span> <span class="n">prev_usage</span><span class="p">[</span><span class="s2">"input_tokens"</span><span class="p">]</span> <span class="k">if</span> <span class="n">prev_usage</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">prev_output_tokens</span> <span class="o">=</span> <span class="n">prev_usage</span><span class="p">[</span><span class="s2">"output_tokens"</span><span class="p">]</span> <span class="k">if</span> <span class="n">prev_usage</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">prev_total_tokens</span> <span class="o">=</span> <span class="n">prev_usage</span><span class="p">[</span><span class="s2">"total_tokens"</span><span class="p">]</span> <span class="k">if</span> <span class="n">prev_usage</span> <span class="k">else</span> <span class="mi">0</span>
 
     <span class="c1"># Get usage metadata</span>
     <span class="k">try</span><span class="p">:</span>
@@ -812,9 +819,9 @@ document.write(`
         <span class="n">cache_read_tokens</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">usage_metadata</span><span class="o">.</span><span class="n">cached_content_token_count</span>
         <span class="k">if</span> <span class="n">input_tokens</span> <span class="o">+</span> <span class="n">output_tokens</span> <span class="o">+</span> <span class="n">cache_read_tokens</span> <span class="o">+</span> <span class="n">total_tokens</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">lc_usage</span> <span class="o">=</span> <span class="n">UsageMetadata</span><span class="p">(</span>
-                <span class="n">input_tokens</span><span class="o">=</span><span class="n">input_tokens</span><span class="p">,</span>
-                <span class="n">output_tokens</span><span class="o">=</span><span class="n">output_tokens</span><span class="p">,</span>
-                <span class="n">total_tokens</span><span class="o">=</span><span class="n">total_tokens</span><span class="p">,</span>
+                <span class="n">input_tokens</span><span class="o">=</span><span class="n">input_tokens</span> <span class="o">-</span> <span class="n">prev_input_tokens</span><span class="p">,</span>
+                <span class="n">output_tokens</span><span class="o">=</span><span class="n">output_tokens</span> <span class="o">-</span> <span class="n">prev_output_tokens</span><span class="p">,</span>
+                <span class="n">total_tokens</span><span class="o">=</span><span class="n">total_tokens</span> <span class="o">-</span> <span class="n">prev_total_tokens</span><span class="p">,</span>
                 <span class="n">input_token_details</span><span class="o">=</span><span class="p">{</span><span class="s2">"cache_read"</span><span class="p">:</span> <span class="n">cache_read_tokens</span><span class="p">},</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1320,9 +1327,31 @@ document.write(`
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
             <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">default_metadata</span><span class="p">,</span>
         <span class="p">)</span>
+
+        <span class="n">prev_usage_metadata</span><span class="p">:</span> <span class="n">UsageMetadata</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
-            <span class="n">_chat_result</span> <span class="o">=</span> <span class="n">_response_to_result</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">_chat_result</span> <span class="o">=</span> <span class="n">_response_to_result</span><span class="p">(</span>
+                <span class="n">chunk</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prev_usage</span><span class="o">=</span><span class="n">prev_usage_metadata</span>
+            <span class="p">)</span>
             <span class="n">gen</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">ChatGenerationChunk</span><span class="p">,</span> <span class="n">_chat_result</span><span class="o">.</span><span class="n">generations</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">AIMessageChunk</span><span class="p">,</span> <span class="n">gen</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+
+            <span class="n">curr_usage_metadata</span><span class="p">:</span> <span class="n">UsageMetadata</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">message</span><span class="o">.</span><span class="n">usage_metadata</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="p">)</span>
+
+            <span class="n">prev_usage_metadata</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">message</span><span class="o">.</span><span class="n">usage_metadata</span>
+                <span class="k">if</span> <span class="n">prev_usage_metadata</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="n">UsageMetadata</span><span class="p">(</span>
+                    <span class="n">input_tokens</span><span class="o">=</span><span class="n">prev_usage_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"input_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="n">curr_usage_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"input_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                    <span class="n">output_tokens</span><span class="o">=</span><span class="n">prev_usage_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"output_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="n">curr_usage_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"output_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                    <span class="n">total_tokens</span><span class="o">=</span><span class="n">prev_usage_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"total_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="n">curr_usage_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"total_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">run_manager</span><span class="p">:</span>
                 <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
@@ -1368,14 +1397,35 @@ document.write(`
                 <span class="n">generation_config</span><span class="o">=</span><span class="n">generation_config</span><span class="p">,</span>
                 <span class="n">cached_content</span><span class="o">=</span><span class="n">cached_content</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_content</span><span class="p">,</span>
             <span class="p">)</span>
+            <span class="n">prev_usage_metadata</span><span class="p">:</span> <span class="n">UsageMetadata</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="k">await</span> <span class="n">_achat_with_retry</span><span class="p">(</span>
                 <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
                 <span class="n">generation_method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">async_client</span><span class="o">.</span><span class="n">stream_generate_content</span><span class="p">,</span>
                 <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
                 <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">default_metadata</span><span class="p">,</span>
             <span class="p">):</span>
-                <span class="n">_chat_result</span> <span class="o">=</span> <span class="n">_response_to_result</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">_chat_result</span> <span class="o">=</span> <span class="n">_response_to_result</span><span class="p">(</span>
+                    <span class="n">chunk</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prev_usage</span><span class="o">=</span><span class="n">prev_usage_metadata</span>
+                <span class="p">)</span>
                 <span class="n">gen</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">ChatGenerationChunk</span><span class="p">,</span> <span class="n">_chat_result</span><span class="o">.</span><span class="n">generations</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">AIMessageChunk</span><span class="p">,</span> <span class="n">gen</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+
+                <span class="n">curr_usage_metadata</span><span class="p">:</span> <span class="n">UsageMetadata</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">message</span><span class="o">.</span><span class="n">usage_metadata</span> <span class="ow">or</span> <span class="p">{}</span>
+                <span class="p">)</span>
+
+                <span class="n">prev_usage_metadata</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">message</span><span class="o">.</span><span class="n">usage_metadata</span>
+                    <span class="k">if</span> <span class="n">prev_usage_metadata</span> <span class="ow">is</span> <span class="kc">None</span>
+                    <span class="k">else</span> <span class="n">UsageMetadata</span><span class="p">(</span>
+                        <span class="n">input_tokens</span><span class="o">=</span><span class="n">prev_usage_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"input_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                        <span class="o">+</span> <span class="n">curr_usage_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"input_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                        <span class="n">output_tokens</span><span class="o">=</span><span class="n">prev_usage_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"output_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                        <span class="o">+</span> <span class="n">curr_usage_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"output_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                        <span class="n">total_tokens</span><span class="o">=</span><span class="n">prev_usage_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"total_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                        <span class="o">+</span> <span class="n">curr_usage_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"total_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">run_manager</span><span class="p">:</span>
                     <span class="k">await</span> <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
