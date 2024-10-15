@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 14, 2024" name="docbuild:last-update"/>
+<meta content="Oct 15, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -281,11 +281,11 @@ document.write(`
 <span class="sd">        credentials: Optional Google Cloud credentials object.</span>
 <span class="sd">        embedding_dimension: Dimension of the embedding vectors (inferred if not</span>
 <span class="sd">            provided).</span>
-<span class="sd">        distance_type (Literal["COSINE", "EUCLIDEAN"]): The distance metric used for</span>
-<span class="sd">            similarity search. Defaults to "EUCLIDEAN".</span>
+<span class="sd">        distance_type (Literal["COSINE", "EUCLIDEAN", "DOT_PRODUCT"]): The distance</span>
+<span class="sd">            metric used for similarity search. Defaults to "EUCLIDEAN".</span>
 <span class="sd">    """</span>
 
-    <span class="n">distance_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"COSINE"</span><span class="p">,</span> <span class="s2">"EUCLIDEAN"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"EUCLIDEAN"</span>
+    <span class="n">distance_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"COSINE"</span><span class="p">,</span> <span class="s2">"EUCLIDEAN"</span><span class="p">,</span> <span class="s2">"DOT_PRODUCT"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"EUCLIDEAN"</span>
     <span class="n">_creating_index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">_have_index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">_last_index_check</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">min</span>

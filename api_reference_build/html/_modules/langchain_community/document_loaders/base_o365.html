@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 14, 2024" name="docbuild:last-update"/>
+<meta content="Oct 15, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -352,8 +352,8 @@ document.write(`
                         <span class="n">metadata_dict</span><span class="p">[</span><span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
                             <span class="s2">"source"</span><span class="p">:</span> <span class="n">file</span><span class="o">.</span><span class="n">web_url</span><span class="p">,</span>
                             <span class="s2">"mime_type"</span><span class="p">:</span> <span class="n">file</span><span class="o">.</span><span class="n">mime_type</span><span class="p">,</span>
-                            <span class="s2">"created"</span><span class="p">:</span> <span class="n">file</span><span class="o">.</span><span class="n">created</span><span class="p">,</span>
-                            <span class="s2">"modified"</span><span class="p">:</span> <span class="n">file</span><span class="o">.</span><span class="n">modified</span><span class="p">,</span>
+                            <span class="s2">"created"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">created</span><span class="p">),</span>
+                            <span class="s2">"modified"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">modified</span><span class="p">),</span>
                             <span class="s2">"created_by"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">created_by</span><span class="p">),</span>
                             <span class="s2">"modified_by"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">modified_by</span><span class="p">),</span>
                             <span class="s2">"description"</span><span class="p">:</span> <span class="n">file</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>

@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 14, 2024" name="docbuild:last-update"/>
+<meta content="Oct 15, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -245,7 +245,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="SelfHostedEmbeddings">
-<a class="viewcode-back" href="../../../community/embeddings/langchain_community.embeddings.self_hosted.SelfHostedEmbeddings.html#langchain_community.embeddings.self_hosted.SelfHostedEmbeddings">[docs]</a>
+<a class="viewcode-back" href="../../../community/embeddings/langchain_community.embeddings.self_hosted.SelfHostedEmbeddings.html#langchain_community.embeddings.self_hosted_hugging_face.SelfHostedEmbeddings">[docs]</a>
 <span class="k">class</span> <span class="nc">SelfHostedEmbeddings</span><span class="p">(</span><span class="n">SelfHostedPipeline</span><span class="p">,</span> <span class="n">Embeddings</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Custom embedding models on self-hosted remote hardware.</span>
 
@@ -302,7 +302,7 @@ document.write(`
     <span class="p">)</span>
 
 <div class="viewcode-block" id="SelfHostedEmbeddings.embed_documents">
-<a class="viewcode-back" href="../../../community/embeddings/langchain_community.embeddings.self_hosted.SelfHostedEmbeddings.html#langchain_community.embeddings.self_hosted.SelfHostedEmbeddings.embed_documents">[docs]</a>
+<a class="viewcode-back" href="../../../community/embeddings/langchain_community.embeddings.self_hosted.SelfHostedEmbeddings.html#langchain_community.embeddings.self_hosted_hugging_face.SelfHostedEmbeddings.embed_documents">[docs]</a>
     <span class="k">def</span> <span class="nf">embed_documents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">"""Compute doc embeddings using a HuggingFace transformer model.</span>
 
@@ -320,7 +320,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="SelfHostedEmbeddings.embed_query">
-<a class="viewcode-back" href="../../../community/embeddings/langchain_community.embeddings.self_hosted.SelfHostedEmbeddings.html#langchain_community.embeddings.self_hosted.SelfHostedEmbeddings.embed_query">[docs]</a>
+<a class="viewcode-back" href="../../../community/embeddings/langchain_community.embeddings.self_hosted.SelfHostedEmbeddings.html#langchain_community.embeddings.self_hosted_hugging_face.SelfHostedEmbeddings.embed_query">[docs]</a>
     <span class="k">def</span> <span class="nf">embed_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Compute query embeddings using a HuggingFace transformer model.</span>
 
