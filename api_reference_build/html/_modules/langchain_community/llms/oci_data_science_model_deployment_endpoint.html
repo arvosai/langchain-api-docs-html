@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 15, 2024" name="docbuild:last-update"/>
+<meta content="Oct 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -227,24 +227,79 @@ document.write(`
 <div id="searchbox"></div>
 <article class="bd-article">
 <h1>Source code for langchain_community.llms.oci_data_science_model_deployment_endpoint</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span></span><span class="c1"># Copyright (c) 2023, 2024, Oracle and/or its affiliates.</span>
 
+<span class="sd">"""LLM for OCI data science model deployment endpoint."""</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">AsyncIterator</span><span class="p">,</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">Iterator</span><span class="p">,</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Literal</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">aiohttp</span>
 <span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">langchain_core.callbacks</span> <span class="kn">import</span> <span class="n">CallbackManagerForLLMRun</span>
-<span class="kn">from</span> <span class="nn">langchain_core.language_models.llms</span> <span class="kn">import</span> <span class="n">LLM</span>
-<span class="kn">from</span> <span class="nn">langchain_core.utils</span> <span class="kn">import</span> <span class="n">get_from_dict_or_env</span><span class="p">,</span> <span class="n">pre_init</span>
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span>
+<span class="kn">from</span> <span class="nn">langchain_core.callbacks</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">,</span>
+    <span class="n">CallbackManagerForLLMRun</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">langchain_core.language_models.llms</span> <span class="kn">import</span> <span class="n">BaseLLM</span><span class="p">,</span> <span class="n">create_base_retry_decorator</span>
+<span class="kn">from</span> <span class="nn">langchain_core.load.serializable</span> <span class="kn">import</span> <span class="n">Serializable</span>
+<span class="kn">from</span> <span class="nn">langchain_core.outputs</span> <span class="kn">import</span> <span class="n">Generation</span><span class="p">,</span> <span class="n">GenerationChunk</span><span class="p">,</span> <span class="n">LLMResult</span>
+<span class="kn">from</span> <span class="nn">langchain_core.utils</span> <span class="kn">import</span> <span class="n">get_from_dict_or_env</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
+
+<span class="kn">from</span> <span class="nn">langchain_community.utilities.requests</span> <span class="kn">import</span> <span class="n">Requests</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
+
 <span class="n">DEFAULT_TIME_OUT</span> <span class="o">=</span> <span class="mi">300</span>
 <span class="n">DEFAULT_CONTENT_TYPE_JSON</span> <span class="o">=</span> <span class="s2">"application/json"</span>
+<span class="n">DEFAULT_MODEL_NAME</span> <span class="o">=</span> <span class="s2">"odsc-llm"</span>
 
 
-<div class="viewcode-block" id="OCIModelDeploymentLLM">
-<a class="viewcode-back" href="../../../community/llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM">[docs]</a>
-<span class="k">class</span> <span class="nc">OCIModelDeploymentLLM</span><span class="p">(</span><span class="n">LLM</span><span class="p">):</span>
+<div class="viewcode-block" id="TokenExpiredError">
+<a class="viewcode-back" href="../../../community/llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.TokenExpiredError.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.TokenExpiredError">[docs]</a>
+<span class="k">class</span> <span class="nc">TokenExpiredError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Raises when token expired."""</span></div>
+
+
+
+<div class="viewcode-block" id="ServerError">
+<a class="viewcode-back" href="../../../community/llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.ServerError.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.ServerError">[docs]</a>
+<span class="k">class</span> <span class="nc">ServerError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Raises when encounter server error when making inference."""</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_create_retry_decorator</span><span class="p">(</span>
+    <span class="n">llm</span><span class="p">:</span> <span class="s2">"BaseOCIModelDeployment"</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span><span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">,</span> <span class="n">CallbackManagerForLLMRun</span><span class="p">]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Create a retry decorator."""</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectTimeout</span><span class="p">,</span> <span class="n">TokenExpiredError</span><span class="p">]</span>
+    <span class="n">decorator</span> <span class="o">=</span> <span class="n">create_base_retry_decorator</span><span class="p">(</span>
+        <span class="n">error_types</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="n">llm</span><span class="o">.</span><span class="n">max_retries</span><span class="p">,</span> <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">decorator</span>
+
+
+<div class="viewcode-block" id="BaseOCIModelDeployment">
+<a class="viewcode-back" href="../../../community/llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment">[docs]</a>
+<span class="k">class</span> <span class="nc">BaseOCIModelDeployment</span><span class="p">(</span><span class="n">Serializable</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Base class for LLM deployed on OCI Data Science Model Deployment."""</span>
 
     <span class="n">auth</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -254,20 +309,374 @@ document.write(`
 <span class="sd">    or `ads.common.auth.resource_principal()`. If this is not</span>
 <span class="sd">    provided then the `ads.common.default_signer()` will be used."""</span>
 
+    <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
+<span class="w">    </span><span class="sd">"""The uri of the endpoint from the deployed Model Deployment model."""</span>
+
+    <span class="n">streaming</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">"""Whether to stream the results or not."""</span>
+
+    <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="w">    </span><span class="sd">"""Maximum number of retries to make when generating."""</span>
+
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">validate_environment</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Checks if oracle-ads is installed and</span>
+<span class="sd">        get credentials/endpoint from environment.</span>
+<span class="sd">        """</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">ads</span>
+
+        <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+                <span class="s2">"Could not import ads python package. "</span>
+                <span class="s2">"Please install it with `pip install oracle_ads`."</span>
+            <span class="p">)</span> <span class="kn">from</span> <span class="nn">ex</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"auth"</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"auth"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ads</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">default_signer</span><span class="p">()</span>
+
+        <span class="n">values</span><span class="p">[</span><span class="s2">"endpoint"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_from_dict_or_env</span><span class="p">(</span>
+            <span class="n">values</span><span class="p">,</span>
+            <span class="s2">"endpoint"</span><span class="p">,</span>
+            <span class="s2">"OCI_LLM_ENDPOINT"</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">values</span>
+
+    <span class="k">def</span> <span class="nf">_headers</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">is_async</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Construct and return the headers for a request.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            is_async (bool, optional): Indicates if the request is asynchronous.</span>
+<span class="sd">                Defaults to `False`.</span>
+<span class="sd">            body (optional): The request body to be included in the headers if</span>
+<span class="sd">                the request is asynchronous.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict: A dictionary containing the appropriate headers for the request.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">is_async</span><span class="p">:</span>
+            <span class="n">signer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="p">[</span><span class="s2">"signer"</span><span class="p">]</span>
+            <span class="n">_req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="s2">"POST"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="n">_req</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="n">signer</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">req</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">headers</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">:</span>
+                <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="p">{</span><span class="s2">"enable-streaming"</span><span class="p">:</span> <span class="s2">"true"</span><span class="p">,</span> <span class="s2">"Accept"</span><span class="p">:</span> <span class="s2">"text/event-stream"</span><span class="p">}</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">headers</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">"Content-Type"</span><span class="p">:</span> <span class="n">DEFAULT_CONTENT_TYPE_JSON</span><span class="p">,</span>
+                <span class="s2">"enable-streaming"</span><span class="p">:</span> <span class="s2">"true"</span><span class="p">,</span>
+                <span class="s2">"Accept"</span><span class="p">:</span> <span class="s2">"text/event-stream"</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span>
+            <span class="k">else</span> <span class="p">{</span>
+                <span class="s2">"Content-Type"</span><span class="p">:</span> <span class="n">DEFAULT_CONTENT_TYPE_JSON</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="BaseOCIModelDeployment.completion_with_retry">
+<a class="viewcode-back" href="../../../community/llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment.completion_with_retry">[docs]</a>
+    <span class="k">def</span> <span class="nf">completion_with_retry</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Use tenacity to retry the completion call."""</span>
+        <span class="n">retry_decorator</span> <span class="o">=</span> <span class="n">_create_retry_decorator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span><span class="p">)</span>
+
+        <span class="nd">@retry_decorator</span>
+        <span class="k">def</span> <span class="nf">_completion_with_retry</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">request_timeout</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"request_timeout"</span><span class="p">,</span> <span class="n">DEFAULT_TIME_OUT</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"data"</span><span class="p">)</span>
+                <span class="n">stream</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"stream"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">)</span>
+
+                <span class="n">request</span> <span class="o">=</span> <span class="n">Requests</span><span class="p">(</span>
+                    <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_headers</span><span class="p">(),</span> <span class="n">auth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"signer"</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+                    <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span>
+                    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+                    <span class="n">timeout</span><span class="o">=</span><span class="n">request_timeout</span><span class="p">,</span>
+                    <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_check_response</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">response</span>
+            <span class="k">except</span> <span class="n">TokenExpiredError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Requests payload: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">. Requests arguments: "</span>
+                    <span class="sa">f</span><span class="s2">"url=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">,timeout=</span><span class="si">{</span><span class="n">request_timeout</span><span class="si">}</span><span class="s2">,stream=</span><span class="si">{</span><span class="n">stream</span><span class="si">}</span><span class="s2">. "</span>
+                    <span class="sa">f</span><span class="s2">"Additional request kwargs=</span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2">."</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Error occurs by inference endpoint: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+                <span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span>
+
+        <span class="k">return</span> <span class="n">_completion_with_retry</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseOCIModelDeployment.acompletion_with_retry">
+<a class="viewcode-back" href="../../../community/llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment.acompletion_with_retry">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">acompletion_with_retry</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Use tenacity to retry the async completion call."""</span>
+        <span class="n">retry_decorator</span> <span class="o">=</span> <span class="n">_create_retry_decorator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span><span class="p">)</span>
+
+        <span class="nd">@retry_decorator</span>
+        <span class="k">async</span> <span class="k">def</span> <span class="nf">_completion_with_retry</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">request_timeout</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"request_timeout"</span><span class="p">,</span> <span class="n">DEFAULT_TIME_OUT</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"data"</span><span class="p">)</span>
+                <span class="n">stream</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"stream"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">)</span>
+
+                <span class="n">request</span> <span class="o">=</span> <span class="n">Requests</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_headers</span><span class="p">(</span><span class="n">is_async</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">data</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">stream</span><span class="p">:</span>
+                    <span class="n">response</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">apost</span><span class="p">(</span>
+                        <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span>
+                        <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+                        <span class="n">timeout</span><span class="o">=</span><span class="n">request_timeout</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aiter_sse</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">async</span> <span class="k">with</span> <span class="n">request</span><span class="o">.</span><span class="n">apost</span><span class="p">(</span>
+                        <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span>
+                        <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+                        <span class="n">timeout</span><span class="o">=</span><span class="n">request_timeout</span><span class="p">,</span>
+                    <span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_check_response</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+                        <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+                        <span class="k">return</span> <span class="n">data</span>
+            <span class="k">except</span> <span class="n">TokenExpiredError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Requests payload: `</span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">`. "</span>
+                    <span class="sa">f</span><span class="s2">"Stream mode=</span><span class="si">{</span><span class="n">stream</span><span class="si">}</span><span class="s2">. "</span>
+                    <span class="sa">f</span><span class="s2">"Requests kwargs: url=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">, timeout=</span><span class="si">{</span><span class="n">request_timeout</span><span class="si">}</span><span class="s2">."</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Error occurs by inference endpoint: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+                <span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">_completion_with_retry</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_check_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Handle server error by checking the response status.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            response:</span>
+<span class="sd">                The response object from either `requests` or `aiohttp` library.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TokenExpiredError:</span>
+<span class="sd">                If the response status code is 401 and the token refresh is successful.</span>
+<span class="sd">            ServerError:</span>
+<span class="sd">                If any other HTTP error occurs.</span>
+<span class="sd">        """</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HTTPError</span> <span class="k">as</span> <span class="n">http_err</span><span class="p">:</span>
+            <span class="n">status_code</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s2">"status_code"</span><span class="p">)</span>
+                <span class="k">else</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">status_code</span> <span class="o">==</span> <span class="mi">401</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_signer</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="n">TokenExpiredError</span><span class="p">()</span> <span class="kn">from</span> <span class="nn">http_err</span>
+
+            <span class="k">raise</span> <span class="n">ServerError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Server error: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">http_err</span><span class="p">)</span><span class="si">}</span><span class="s2">. </span><span class="se">\n</span><span class="s2">Message: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span> <span class="kn">from</span> <span class="nn">http_err</span>
+
+    <span class="k">def</span> <span class="nf">_parse_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">bytes</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Parse a stream of byte lines and yield parsed string lines.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            lines (Iterator[bytes]):</span>
+<span class="sd">                An iterator that yields lines in byte format.</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            Iterator[str]:</span>
+<span class="sd">                An iterator that yields parsed lines as strings.</span>
+<span class="sd">        """</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="n">_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_stream_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">_line</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">_line</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_parse_stream_async</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">lines</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">StreamReader</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Asynchronously parse a stream of byte lines and yield parsed string lines.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            lines (aiohttp.StreamReader):</span>
+<span class="sd">                An `aiohttp.StreamReader` object that yields lines in byte format.</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            AsyncIterator[str]:</span>
+<span class="sd">                An asynchronous iterator that yields parsed lines as strings.</span>
+<span class="sd">        """</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="n">_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_stream_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">_line</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">_line</span>
+
+    <span class="k">def</span> <span class="nf">_parse_stream_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Parse a single byte line and return a processed string line if valid.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            line (bytes): A single line in byte format.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Optional[str]:</span>
+<span class="sd">                The processed line as a string if valid, otherwise `None`.</span>
+<span class="sd">        """</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">_line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"data:"</span><span class="p">):</span>
+            <span class="n">_line</span> <span class="o">=</span> <span class="n">_line</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">_line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"[DONE]"</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="n">_line</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_aiter_sse</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">async_cntx_mgr</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Asynchronously iterate over server-sent events (SSE).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            async_cntx_mgr: An asynchronous context manager that yields a client</span>
+<span class="sd">                response object.</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            AsyncIterator[str]: An asynchronous iterator that yields parsed server-sent</span>
+<span class="sd">                event lines as json string.</span>
+<span class="sd">        """</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">async_cntx_mgr</span> <span class="k">as</span> <span class="n">client_resp</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_check_response</span><span class="p">(</span><span class="n">client_resp</span><span class="p">)</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_stream_async</span><span class="p">(</span><span class="n">client_resp</span><span class="o">.</span><span class="n">content</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">line</span>
+
+    <span class="k">def</span> <span class="nf">_refresh_signer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Attempt to refresh the security token using the signer.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">                bool: `True` if the token was successfully refreshed, `False` otherwise.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"signer"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="p">[</span><span class="s2">"signer"</span><span class="p">],</span> <span class="s2">"refresh_security_token"</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="p">[</span><span class="s2">"signer"</span><span class="p">]</span><span class="o">.</span><span class="n">refresh_security_token</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">is_lc_serializable</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return whether this model can be serialized by LangChain."""</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="OCIModelDeploymentLLM">
+<a class="viewcode-back" href="../../../community/llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM">[docs]</a>
+<span class="k">class</span> <span class="nc">OCIModelDeploymentLLM</span><span class="p">(</span><span class="n">BaseLLM</span><span class="p">,</span> <span class="n">BaseOCIModelDeployment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""LLM deployed on OCI Data Science Model Deployment.</span>
+
+<span class="sd">    To use, you must provide the model HTTP endpoint from your deployed</span>
+<span class="sd">    model, e.g. https://modeldeployment.&lt;region&gt;.oci.customer-oci.com/&lt;md_ocid&gt;/predict.</span>
+
+<span class="sd">    To authenticate, `oracle-ads` has been used to automatically load</span>
+<span class="sd">    credentials: https://accelerated-data-science.readthedocs.io/en/latest/user_guide/cli/authentication.html</span>
+
+<span class="sd">    Make sure to have the required policies to access the OCI Data</span>
+<span class="sd">    Science Model Deployment endpoint. See:</span>
+<span class="sd">    https://docs.oracle.com/en-us/iaas/data-science/using/model-dep-policies-auth.htm#model_dep_policies_auth__predict-endpoint</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain_community.llms import OCIModelDeploymentLLM</span>
+
+<span class="sd">            llm = OCIModelDeploymentLLM(</span>
+<span class="sd">                endpoint="https://modeldeployment.us-ashburn-1.oci.customer-oci.com/&lt;ocid&gt;/predict",</span>
+<span class="sd">                model="odsc-llm",</span>
+<span class="sd">                streaming=True,</span>
+<span class="sd">                model_kwargs={"frequency_penalty": 1.0},</span>
+<span class="sd">            )</span>
+<span class="sd">            llm.invoke("tell me a joke.")</span>
+
+<span class="sd">        Customized Usage:</span>
+
+<span class="sd">        User can inherit from our base class and overrwrite the `_process_response`, `_process_stream_response`,</span>
+<span class="sd">        `_construct_json_body` for satisfying customized needed.</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain_community.llms import OCIModelDeploymentLLM</span>
+
+<span class="sd">            class MyCutomizedModel(OCIModelDeploymentLLM):</span>
+<span class="sd">                def _process_stream_response(self, response_json:dict) -&gt; GenerationChunk:</span>
+<span class="sd">                    print("My customized output stream handler.")</span>
+<span class="sd">                    return GenerationChunk()</span>
+
+<span class="sd">                def _process_response(self, response_json:dict) -&gt; List[Generation]:</span>
+<span class="sd">                    print("My customized output handler.")</span>
+<span class="sd">                    return [Generation()]</span>
+
+<span class="sd">                def _construct_json_body(self, prompt: str, param:dict) -&gt; dict:</span>
+<span class="sd">                    print("My customized input handler.")</span>
+<span class="sd">                    return {}</span>
+
+<span class="sd">            llm = MyCutomizedModel(</span>
+<span class="sd">                endpoint=f"https://modeldeployment.us-ashburn-1.oci.customer-oci.com/{ocid}/predict",</span>
+<span class="sd">                model="&lt;model_name&gt;",</span>
+<span class="sd">            }</span>
+
+<span class="sd">            llm.invoke("tell me a joke.")</span>
+
+<span class="sd">    """</span>  <span class="c1"># noqa: E501</span>
+
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_MODEL_NAME</span>
+<span class="w">    </span><span class="sd">"""The name of the model."""</span>
+
     <span class="n">max_tokens</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span>
 <span class="w">    </span><span class="sd">"""Denotes the number of tokens to predict per generation."""</span>
 
     <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span>
 <span class="w">    </span><span class="sd">"""A non-negative float that tunes the degree of randomness in generation."""</span>
 
-    <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 <span class="w">    </span><span class="sd">"""Number of most likely tokens to consider at each step."""</span>
 
     <span class="n">p</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.75</span>
 <span class="w">    </span><span class="sd">"""Total probability mass of tokens to consider at each step."""</span>
-
-    <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
-<span class="w">    </span><span class="sd">"""The uri of the endpoint from the deployed Model Deployment model."""</span>
 
     <span class="n">best_of</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="w">    </span><span class="sd">"""Generates best_of completions server-side and returns the "best"</span>
@@ -278,74 +687,130 @@ document.write(`
 <span class="w">    </span><span class="sd">"""Stop words to use when generating. Model output is cut off</span>
 <span class="sd">    at the first occurrence of any of these substrings."""</span>
 
-<div class="viewcode-block" id="OCIModelDeploymentLLM.validate_environment">
-<a class="viewcode-back" href="../../../community/llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.validate_environment">[docs]</a>
-    <span class="nd">@pre_init</span>
-    <span class="k">def</span> <span class="nf">validate_environment</span><span class="p">(</span>  <span class="c1"># pylint: disable=no-self-argument</span>
-        <span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">Dict</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Validate that python package exists in environment."""</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">ads</span>
+    <span class="n">model_kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Keyword arguments to pass to the model."""</span>
 
-        <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-                <span class="s2">"Could not import ads python package. "</span>
-                <span class="s2">"Please install it with `pip install oracle_ads`."</span>
-            <span class="p">)</span> <span class="kn">from</span> <span class="nn">ex</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"auth"</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="n">values</span><span class="p">[</span><span class="s2">"auth"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ads</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">default_signer</span><span class="p">()</span>
-        <span class="n">values</span><span class="p">[</span><span class="s2">"endpoint"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_from_dict_or_env</span><span class="p">(</span>
-            <span class="n">values</span><span class="p">,</span>
-            <span class="s2">"endpoint"</span><span class="p">,</span>
-            <span class="s2">"OCI_LLM_ENDPOINT"</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">values</span></div>
-
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_llm_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return type of llm."""</span>
+        <span class="k">return</span> <span class="s2">"oci_model_deployment_endpoint"</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_default_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Default parameters for the model."""</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+<span class="w">        </span><span class="sd">"""Get the default parameters."""</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">"best_of"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_of</span><span class="p">,</span>
+            <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span><span class="p">,</span>
+            <span class="s2">"model"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+            <span class="s2">"stop"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span>
+            <span class="s2">"stream"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">,</span>
+            <span class="s2">"temperature"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
+            <span class="s2">"top_k"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span>
+            <span class="s2">"top_p"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">,</span>
+        <span class="p">}</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_identifying_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Get the identifying parameters."""</span>
+        <span class="n">_model_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="o">**</span><span class="p">{</span><span class="s2">"endpoint"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">},</span>
+            <span class="o">**</span><span class="p">{</span><span class="s2">"endpoint"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="s2">"model_kwargs"</span><span class="p">:</span> <span class="n">_model_kwargs</span><span class="p">},</span>
             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_params</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">_construct_json_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Constructs the request body as a dictionary (JSON)."""</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+    <span class="k">def</span> <span class="nf">_generate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prompts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LLMResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Call out to OCI Data Science Model Deployment endpoint with k unique prompts.</span>
 
-    <span class="k">def</span> <span class="nf">_invocation_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Combines the invocation parameters with default parameters."""</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_params</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">stop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`stop` found in both the input and default params."</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s2">"stop"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span>
-        <span class="k">elif</span> <span class="n">stop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s2">"stop"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stop</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Don't set "stop" in param as None. It should be a list.</span>
-            <span class="n">params</span><span class="p">[</span><span class="s2">"stop"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="sd">        Args:</span>
+<span class="sd">            prompts: The prompts to pass into the service.</span>
+<span class="sd">            stop: Optional list of stop words to use when generating.</span>
 
-        <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">}</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            The full LLM output.</span>
 
-    <span class="k">def</span> <span class="nf">_process_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_json</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+<span class="sd">        Example:</span>
+<span class="sd">            .. code-block:: python</span>
 
-    <span class="k">def</span> <span class="nf">_call</span><span class="p">(</span>
+<span class="sd">                response = llm.invoke("Tell me a joke.")</span>
+<span class="sd">                response = llm.generate(["Tell me a joke."])</span>
+<span class="sd">        """</span>
+        <span class="n">generations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Generation</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invocation_params</span><span class="p">(</span><span class="n">stop</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="n">prompts</span><span class="p">:</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_json_body</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">:</span>
+                <span class="n">generation</span> <span class="o">=</span> <span class="n">GenerationChunk</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream</span><span class="p">(</span>
+                    <span class="n">prompt</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span> <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+                <span class="p">):</span>
+                    <span class="n">generation</span> <span class="o">+=</span> <span class="n">chunk</span>
+                <span class="n">generations</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">generation</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">completion_with_retry</span><span class="p">(</span>
+                    <span class="n">data</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
+                    <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">generations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_process_response</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">LLMResult</span><span class="p">(</span><span class="n">generations</span><span class="o">=</span><span class="n">generations</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_agenerate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prompts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LLMResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Call out to OCI Data Science Model Deployment endpoint async with k unique prompts.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            prompts: The prompts to pass into the service.</span>
+<span class="sd">            stop: Optional list of stop words to use when generating.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The full LLM output.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                response = await llm.ainvoke("Tell me a joke.")</span>
+<span class="sd">                response = await llm.agenerate(["Tell me a joke."])</span>
+<span class="sd">        """</span>  <span class="c1"># noqa: E501</span>
+        <span class="n">generations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Generation</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invocation_params</span><span class="p">(</span><span class="n">stop</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="n">prompts</span><span class="p">:</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_json_body</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">:</span>
+                <span class="n">generation</span> <span class="o">=</span> <span class="n">GenerationChunk</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_astream</span><span class="p">(</span>
+                    <span class="n">prompt</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span> <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+                <span class="p">):</span>
+                    <span class="n">generation</span> <span class="o">+=</span> <span class="n">chunk</span>
+                <span class="n">generations</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">generation</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">acompletion_with_retry</span><span class="p">(</span>
+                    <span class="n">data</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
+                    <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">generations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_process_response</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">LLMResult</span><span class="p">(</span><span class="n">generations</span><span class="o">=</span><span class="n">generations</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_stream</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Call out to OCI Data Science Model Deployment endpoint.</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">GenerationChunk</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Stream OCI Data Science Model Deployment endpoint on given prompt.</span>
+
 
 <span class="sd">        Args:</span>
 <span class="sd">            prompt (str):</span>
@@ -357,93 +822,155 @@ document.write(`
 <span class="sd">                    Additional ``**kwargs`` to pass to requests.post</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            The string generated by the model.</span>
+<span class="sd">            An iterator of GenerationChunks.</span>
+
 
 <span class="sd">        Example:</span>
+
 <span class="sd">            .. code-block:: python</span>
 
-<span class="sd">                response = oci_md("Tell me a joke.")</span>
+<span class="sd">            response = llm.stream("Tell me a joke.")</span>
 
 <span class="sd">        """</span>
         <span class="n">requests_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"requests_kwargs"</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invocation_params</span><span class="p">(</span><span class="n">stop</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_json_body</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LLM API Request:</span><span class="se">\n</span><span class="si">{</span><span class="n">prompt</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_request</span><span class="p">(</span>
-            <span class="n">data</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="o">**</span><span class="n">requests_kwargs</span>
-        <span class="p">)</span>
-        <span class="n">completion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_response</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LLM API Completion:</span><span class="se">\n</span><span class="si">{</span><span class="n">completion</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">completion</span>
 
-    <span class="k">def</span> <span class="nf">_send_request</span><span class="p">(</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">completion_with_retry</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">requests_kwargs</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_stream</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">iter_lines</span><span class="p">()):</span>
+            <span class="n">chunk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_sse_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">run_manager</span><span class="p">:</span>
+                <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">chunk</span><span class="o">=</span><span class="n">chunk</span><span class="p">)</span>
+
+            <span class="k">yield</span> <span class="n">chunk</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_astream</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-        <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">header</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
+        <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Sends request to the oci data science model deployment endpoint.</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">GenerationChunk</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Stream OCI Data Science Model Deployment endpoint async on given prompt.</span>
+
 
 <span class="sd">        Args:</span>
-<span class="sd">            data (Json serializable):</span>
-<span class="sd">                data need to be sent to the endpoint.</span>
-<span class="sd">            endpoint (str):</span>
-<span class="sd">                The model HTTP endpoint.</span>
-<span class="sd">            header (dict, optional):</span>
-<span class="sd">                A dictionary of HTTP headers to send to the specified url.</span>
-<span class="sd">                Defaults to {}.</span>
+<span class="sd">            prompt (str):</span>
+<span class="sd">                The prompt to pass into the model.</span>
+<span class="sd">            stop (List[str], Optional):</span>
+<span class="sd">                List of stop words to use when generating.</span>
 <span class="sd">            kwargs:</span>
-<span class="sd">                Additional ``**kwargs`` to pass to requests.post.</span>
-<span class="sd">        Raises:</span>
-<span class="sd">            Exception:</span>
-<span class="sd">                Raise when invoking fails.</span>
+<span class="sd">                requests_kwargs:</span>
+<span class="sd">                    Additional ``**kwargs`` to pass to requests.post</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A JSON representation of a requests.Response object.</span>
+<span class="sd">            An iterator of GenerationChunks.</span>
+
+
+<span class="sd">        Example:</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">            async for chunk in llm.astream(("Tell me a joke."):</span>
+<span class="sd">                print(chunk, end="", flush=True)</span>
+
 <span class="sd">        """</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">header</span><span class="p">:</span>
-            <span class="n">header</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">header</span><span class="p">[</span><span class="s2">"Content-Type"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">header</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"content_type"</span><span class="p">,</span> <span class="n">DEFAULT_CONTENT_TYPE_JSON</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="n">DEFAULT_CONTENT_TYPE_JSON</span>
-        <span class="p">)</span>
-        <span class="n">request_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"json"</span><span class="p">:</span> <span class="n">data</span><span class="p">}</span>
-        <span class="n">request_kwargs</span><span class="p">[</span><span class="s2">"headers"</span><span class="p">]</span> <span class="o">=</span> <span class="n">header</span>
-        <span class="n">timeout</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"timeout"</span><span class="p">,</span> <span class="n">DEFAULT_TIME_OUT</span><span class="p">)</span>
+        <span class="n">requests_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"requests_kwargs"</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invocation_params</span><span class="p">(</span><span class="n">stop</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_json_body</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
 
-        <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">while</span> <span class="n">attempts</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">request_kwargs</span><span class="p">[</span><span class="s2">"auth"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"signer"</span><span class="p">)</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-                <span class="n">endpoint</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">request_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">401</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_signer</span><span class="p">()</span>
-                <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">continue</span>
-            <span class="k">break</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-            <span class="n">response_json</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">"DEBUG INFO: request_kwargs=</span><span class="si">%s</span><span class="s2">, status_code=</span><span class="si">%s</span><span class="s2">, content=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
-                <span class="n">request_kwargs</span><span class="p">,</span>
-                <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
-                <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="k">raise</span>
-
-        <span class="k">return</span> <span class="n">response_json</span>
-
-    <span class="k">def</span> <span class="nf">_refresh_signer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"signer"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="p">[</span><span class="s2">"signer"</span><span class="p">],</span> <span class="s2">"refresh_security_token"</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">acompletion_with_retry</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">requests_kwargs</span>
         <span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="p">[</span><span class="s2">"signer"</span><span class="p">]</span><span class="o">.</span><span class="n">refresh_security_token</span><span class="p">()</span></div>
+            <span class="n">chunk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_sse_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">run_manager</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">chunk</span><span class="o">=</span><span class="n">chunk</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">chunk</span>
+
+    <span class="k">def</span> <span class="nf">_construct_json_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Constructs the request body as a dictionary (JSON)."""</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">"prompt"</span><span class="p">:</span> <span class="n">prompt</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">params</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_invocation_params</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Combines the invocation parameters with default parameters."""</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_params</span>
+        <span class="n">_model_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">"stop"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stop</span> <span class="ow">or</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"stop"</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">params</span><span class="p">,</span> <span class="o">**</span><span class="n">_model_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_process_stream_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_json</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GenerationChunk</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Formats streaming response for OpenAI spec into GenerationChunk."""</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">choice</span> <span class="o">=</span> <span class="n">response_json</span><span class="p">[</span><span class="s2">"choices"</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">choice</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"Endpoint response is not well formed."</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Error while formatting response payload."</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+
+        <span class="k">return</span> <span class="n">GenerationChunk</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">choice</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"text"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_process_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_json</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Generation</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Formats response in OpenAI spec.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            response_json (dict): The JSON response from the chat model endpoint.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ChatResult: An object containing the list of `ChatGeneration` objects</span>
+<span class="sd">            and additional LLM output information.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the response JSON is not well-formed or does not</span>
+<span class="sd">            contain the expected structure.</span>
+
+<span class="sd">        """</span>
+        <span class="n">generations</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">choices</span> <span class="o">=</span> <span class="n">response_json</span><span class="p">[</span><span class="s2">"choices"</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">choices</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"Endpoint response is not well formed."</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Error while formatting response payload."</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+
+        <span class="k">for</span> <span class="n">choice</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">:</span>
+            <span class="n">gen</span> <span class="o">=</span> <span class="n">Generation</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="n">choice</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"text"</span><span class="p">),</span>
+                <span class="n">generation_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_info</span><span class="p">(</span><span class="n">choice</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">generations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">generations</span>
+
+    <span class="k">def</span> <span class="nf">_generate_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">choice</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Extracts generation info from the response."""</span>
+        <span class="n">gen_info</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">finish_reason</span> <span class="o">=</span> <span class="n">choice</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"finish_reason"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">logprobs</span> <span class="o">=</span> <span class="n">choice</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"logprobs"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">choice</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"index"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">finish_reason</span><span class="p">:</span>
+            <span class="n">gen_info</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"finish_reason"</span><span class="p">:</span> <span class="n">finish_reason</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">logprobs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">gen_info</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"logprobs"</span><span class="p">:</span> <span class="n">logprobs</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">gen_info</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"index"</span><span class="p">:</span> <span class="n">index</span><span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">gen_info</span> <span class="ow">or</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_handle_sse_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GenerationChunk</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_stream_response</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">GenerationChunk</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span></div>
 
 
 
@@ -453,7 +980,7 @@ document.write(`
 <span class="w">    </span><span class="sd">"""OCI Data Science Model Deployment TGI Endpoint.</span>
 
 <span class="sd">    To use, you must provide the model HTTP endpoint from your deployed</span>
-<span class="sd">    model, e.g. https://&lt;MD_OCID&gt;/predict.</span>
+<span class="sd">    model, e.g. https://modeldeployment.&lt;region&gt;.oci.customer-oci.com/&lt;md_ocid&gt;/predict.</span>
 
 <span class="sd">    To authenticate, `oracle-ads` has been used to automatically load</span>
 <span class="sd">    credentials: https://accelerated-data-science.readthedocs.io/en/latest/user_guide/cli/authentication.html</span>
@@ -465,11 +992,33 @@ document.write(`
 <span class="sd">    Example:</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            from langchain_community.llms import ModelDeploymentTGI</span>
+<span class="sd">            from langchain_community.llms import OCIModelDeploymentTGI</span>
 
-<span class="sd">            oci_md = ModelDeploymentTGI(endpoint="https://&lt;MD_OCID&gt;/predict")</span>
+<span class="sd">            llm = OCIModelDeploymentTGI(</span>
+<span class="sd">                endpoint="https://modeldeployment.&lt;region&gt;.oci.customer-oci.com/&lt;md_ocid&gt;/predict",</span>
+<span class="sd">                api="/v1/completions",</span>
+<span class="sd">                streaming=True,</span>
+<span class="sd">                temperature=0.2,</span>
+<span class="sd">                seed=42,</span>
+<span class="sd">                # other model parameters ...</span>
+<span class="sd">            )</span>
 
 <span class="sd">    """</span>
+
+    <span class="n">api</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"/generate"</span><span class="p">,</span> <span class="s2">"/v1/completions"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"/v1/completions"</span>
+<span class="w">    </span><span class="sd">"""Api spec."""</span>
+
+    <span class="n">frequency_penalty</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="w">    </span><span class="sd">"""Penalizes repeated tokens according to frequency. Between 0 and 1."""</span>
+
+    <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Random sampling seed"""</span>
+
+    <span class="n">repetition_penalty</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""The parameter for repetition penalty. 1.0 means no penalty."""</span>
+
+    <span class="n">suffix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""The text to append to the prompt. """</span>
 
     <span class="n">do_sample</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="w">    </span><span class="sd">"""If set to True, this parameter enables decoding strategies such as</span>
@@ -492,27 +1041,71 @@ document.write(`
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_default_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Get the default parameters for invoking OCI model deployment TGI endpoint."""</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">"model"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>  <span class="c1"># can be any</span>
+                <span class="s2">"frequency_penalty"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequency_penalty</span><span class="p">,</span>
+                <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span><span class="p">,</span>
+                <span class="s2">"repetition_penalty"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">repetition_penalty</span><span class="p">,</span>
+                <span class="s2">"temperature"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
+                <span class="s2">"top_p"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">,</span>
+                <span class="s2">"seed"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
+                <span class="s2">"stream"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">,</span>
+                <span class="s2">"suffix"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="p">,</span>
+                <span class="s2">"stop"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span> <span class="o">==</span> <span class="s2">"/v1/completions"</span>
+            <span class="k">else</span> <span class="p">{</span>
+                <span class="s2">"best_of"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_of</span><span class="p">,</span>
+                <span class="s2">"max_new_tokens"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span><span class="p">,</span>
+                <span class="s2">"temperature"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
+                <span class="s2">"top_k"</span><span class="p">:</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">),</span>  <span class="c1"># `top_k` must be strictly positive'</span>
+                <span class="s2">"top_p"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">,</span>
+                <span class="s2">"do_sample"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_sample</span><span class="p">,</span>
+                <span class="s2">"return_full_text"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_full_text</span><span class="p">,</span>
+                <span class="s2">"watermark"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">watermark</span><span class="p">,</span>
+                <span class="s2">"stop"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_identifying_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Get the identifying parameters."""</span>
+        <span class="n">_model_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">"best_of"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_of</span><span class="p">,</span>
-            <span class="s2">"max_new_tokens"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span><span class="p">,</span>
-            <span class="s2">"temperature"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
-            <span class="s2">"top_k"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># `top_k` must be strictly positive'</span>
-            <span class="s2">"top_p"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">,</span>
-            <span class="s2">"do_sample"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_sample</span><span class="p">,</span>
-            <span class="s2">"return_full_text"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_full_text</span><span class="p">,</span>
-            <span class="s2">"watermark"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">watermark</span><span class="p">,</span>
+            <span class="o">**</span><span class="p">{</span>
+                <span class="s2">"endpoint"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span>
+                <span class="s2">"api"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="p">,</span>
+                <span class="s2">"model_kwargs"</span><span class="p">:</span> <span class="n">_model_kwargs</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_params</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">_construct_json_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Construct request payload."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span> <span class="o">==</span> <span class="s2">"/v1/completions"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_construct_json_body</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">"inputs"</span><span class="p">:</span> <span class="n">prompt</span><span class="p">,</span>
             <span class="s2">"parameters"</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">_process_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_json</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">response_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"generated_text"</span><span class="p">,</span> <span class="n">response_json</span><span class="p">))</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span></div>
+    <span class="k">def</span> <span class="nf">_process_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_json</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Generation</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Formats response."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span> <span class="o">==</span> <span class="s2">"/v1/completions"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_process_response</span><span class="p">(</span><span class="n">response_json</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">response_json</span><span class="p">[</span><span class="s2">"generated_text"</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Error while formatting response payload.response_json=</span><span class="si">{</span><span class="n">response_json</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">Generation</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">)]</span></div>
 
 
 
@@ -522,7 +1115,7 @@ document.write(`
 <span class="w">    </span><span class="sd">"""VLLM deployed on OCI Data Science Model Deployment</span>
 
 <span class="sd">    To use, you must provide the model HTTP endpoint from your deployed</span>
-<span class="sd">    model, e.g. https://&lt;MD_OCID&gt;/predict.</span>
+<span class="sd">    model, e.g. https://modeldeployment.&lt;region&gt;.oci.customer-oci.com/&lt;md_ocid&gt;/predict.</span>
 
 <span class="sd">    To authenticate, `oracle-ads` has been used to automatically load</span>
 <span class="sd">    credentials: https://accelerated-data-science.readthedocs.io/en/latest/user_guide/cli/authentication.html</span>
@@ -536,15 +1129,18 @@ document.write(`
 
 <span class="sd">            from langchain_community.llms import OCIModelDeploymentVLLM</span>
 
-<span class="sd">            oci_md = OCIModelDeploymentVLLM(</span>
-<span class="sd">                endpoint="https://&lt;MD_OCID&gt;/predict",</span>
-<span class="sd">                model="mymodel"</span>
+<span class="sd">            llm = OCIModelDeploymentVLLM(</span>
+<span class="sd">                endpoint="https://modeldeployment.&lt;region&gt;.oci.customer-oci.com/&lt;md_ocid&gt;/predict",</span>
+<span class="sd">                model="odsc-llm",</span>
+<span class="sd">                streaming=False,</span>
+<span class="sd">                temperature=0.2,</span>
+<span class="sd">                max_tokens=512,</span>
+<span class="sd">                n=3,</span>
+<span class="sd">                best_of=3,</span>
+<span class="sd">                # other model parameters</span>
 <span class="sd">            )</span>
 
 <span class="sd">    """</span>
-
-    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span>
-<span class="w">    </span><span class="sd">"""The name of the model."""</span>
 
     <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="w">    </span><span class="sd">"""Number of output sequences to return for the given prompt."""</span>
@@ -586,20 +1182,12 @@ document.write(`
             <span class="s2">"n"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span>
             <span class="s2">"presence_penalty"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">presence_penalty</span><span class="p">,</span>
             <span class="s2">"stop"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span>
+            <span class="s2">"stream"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">,</span>
             <span class="s2">"temperature"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
             <span class="s2">"top_k"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span>
             <span class="s2">"top_p"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">,</span>
             <span class="s2">"use_beam_search"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_beam_search</span><span class="p">,</span>
-        <span class="p">}</span>
-
-    <span class="k">def</span> <span class="nf">_construct_json_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">"prompt"</span><span class="p">:</span> <span class="n">prompt</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">params</span><span class="p">,</span>
-        <span class="p">}</span>
-
-    <span class="k">def</span> <span class="nf">_process_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_json</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">response_json</span><span class="p">[</span><span class="s2">"choices"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"text"</span><span class="p">]</span></div>
+        <span class="p">}</span></div>
 
 </pre></div>
 </article>

@@ -40,7 +40,7 @@
 <link href="indexes/langchain_community.indexes.base.RecordManager.html" rel="prev" title="RecordManager"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 15, 2024" name="docbuild:last-update"/>
+<meta content="Oct 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -267,7 +267,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.cloudflare_workersai.CloudflareWorkersAI.html">CloudflareWorkersAI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.ctransformers.CTransformers.html">CTransformers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.ctranslate2.CTranslate2.html">CTranslate2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.databricks.Databricks.html">Databricks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.deepinfra.DeepInfra.html">DeepInfra</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.deepsparse.DeepSparse.html">DeepSparse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.edenai.EdenAI.html">EdenAI</a></li>
@@ -303,9 +302,12 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.moonshot.MoonshotCommon.html">MoonshotCommon</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.mosaicml.MosaicML.html">MosaicML</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.nlpcloud.NLPCloud.html">NLPCloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment.html">BaseOCIModelDeployment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.html">OCIModelDeploymentLLM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentTGI.html">OCIModelDeploymentTGI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentVLLM.html">OCIModelDeploymentVLLM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.ServerError.html">ServerError</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.TokenExpiredError.html">TokenExpiredError</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.oci_generative_ai.CohereProvider.html">CohereProvider</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.oci_generative_ai.MetaProvider.html">MetaProvider</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.oci_generative_ai.OCIAuthType.html">OCIAuthType</a></li>
@@ -399,6 +401,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.bedrock.Bedrock.html">Bedrock</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.cohere.BaseCohere.html">BaseCohere</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.cohere.Cohere.html">Cohere</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.databricks.Databricks.html">Databricks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.fireworks.Fireworks.html">Fireworks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.google_palm.GooglePalm.html">GooglePalm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="llms/langchain_community.llms.huggingface_endpoint.HuggingFaceEndpoint.html">HuggingFaceEndpoint</a></li>
@@ -440,6 +443,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../chroma/index.html">Chroma</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cohere/index.html">Cohere</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../couchbase/index.html">Couchbase</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../databricks/index.html">Databricks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../elasticsearch/index.html">Elasticsearch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../exa/index.html">Exa</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../fireworks/index.html">Fireworks</a></li>
@@ -625,122 +629,128 @@ access to the large language model (<strong>LLM</strong>) APIs and services.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.ctranslate2.CTranslate2.html#langchain_community.llms.ctranslate2.CTranslate2" title="langchain_community.llms.ctranslate2.CTranslate2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.ctranslate2.CTranslate2</span></code></a></p></td>
 <td><p>CTranslate2 language model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.databricks.Databricks.html#langchain_community.llms.databricks.Databricks" title="langchain_community.llms.databricks.Databricks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.databricks.Databricks</span></code></a></p></td>
-<td><p>Databricks serving endpoint or a cluster driver proxy app for LLM.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.deepinfra.DeepInfra.html#langchain_community.llms.deepinfra.DeepInfra" title="langchain_community.llms.deepinfra.DeepInfra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.deepinfra.DeepInfra</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.deepinfra.DeepInfra.html#langchain_community.llms.deepinfra.DeepInfra" title="langchain_community.llms.deepinfra.DeepInfra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.deepinfra.DeepInfra</span></code></a></p></td>
 <td><p>DeepInfra models.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.deepsparse.DeepSparse.html#langchain_community.llms.deepsparse.DeepSparse" title="langchain_community.llms.deepsparse.DeepSparse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.deepsparse.DeepSparse</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.deepsparse.DeepSparse.html#langchain_community.llms.deepsparse.DeepSparse" title="langchain_community.llms.deepsparse.DeepSparse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.deepsparse.DeepSparse</span></code></a></p></td>
 <td><p>Neural Magic DeepSparse LLM interface.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.edenai.EdenAI.html#langchain_community.llms.edenai.EdenAI" title="langchain_community.llms.edenai.EdenAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.edenai.EdenAI</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.edenai.EdenAI.html#langchain_community.llms.edenai.EdenAI" title="langchain_community.llms.edenai.EdenAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.edenai.EdenAI</span></code></a></p></td>
 <td><p>EdenAI models.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.exllamav2.ExLlamaV2.html#langchain_community.llms.exllamav2.ExLlamaV2" title="langchain_community.llms.exllamav2.ExLlamaV2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.exllamav2.ExLlamaV2</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.exllamav2.ExLlamaV2.html#langchain_community.llms.exllamav2.ExLlamaV2" title="langchain_community.llms.exllamav2.ExLlamaV2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.exllamav2.ExLlamaV2</span></code></a></p></td>
 <td><p>ExllamaV2 API.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.fake.FakeListLLM.html#langchain_community.llms.fake.FakeListLLM" title="langchain_community.llms.fake.FakeListLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.fake.FakeListLLM</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.fake.FakeListLLM.html#langchain_community.llms.fake.FakeListLLM" title="langchain_community.llms.fake.FakeListLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.fake.FakeListLLM</span></code></a></p></td>
 <td><p>Fake LLM for testing purposes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.fake.FakeStreamingListLLM.html#langchain_community.llms.fake.FakeStreamingListLLM" title="langchain_community.llms.fake.FakeStreamingListLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.fake.FakeStreamingListLLM</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.fake.FakeStreamingListLLM.html#langchain_community.llms.fake.FakeStreamingListLLM" title="langchain_community.llms.fake.FakeStreamingListLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.fake.FakeStreamingListLLM</span></code></a></p></td>
 <td><p>Fake streaming list LLM for testing purposes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.forefrontai.ForefrontAI.html#langchain_community.llms.forefrontai.ForefrontAI" title="langchain_community.llms.forefrontai.ForefrontAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.forefrontai.ForefrontAI</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.forefrontai.ForefrontAI.html#langchain_community.llms.forefrontai.ForefrontAI" title="langchain_community.llms.forefrontai.ForefrontAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.forefrontai.ForefrontAI</span></code></a></p></td>
 <td><p>ForefrontAI large language models.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.friendli.BaseFriendli.html#langchain_community.llms.friendli.BaseFriendli" title="langchain_community.llms.friendli.BaseFriendli"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.friendli.BaseFriendli</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.friendli.BaseFriendli.html#langchain_community.llms.friendli.BaseFriendli" title="langchain_community.llms.friendli.BaseFriendli"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.friendli.BaseFriendli</span></code></a></p></td>
 <td><p>Base class of Friendli.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.friendli.Friendli.html#langchain_community.llms.friendli.Friendli" title="langchain_community.llms.friendli.Friendli"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.friendli.Friendli</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.friendli.Friendli.html#langchain_community.llms.friendli.Friendli" title="langchain_community.llms.friendli.Friendli"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.friendli.Friendli</span></code></a></p></td>
 <td><p>Friendli LLM.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.gigachat.GigaChat.html#langchain_community.llms.gigachat.GigaChat" title="langchain_community.llms.gigachat.GigaChat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.gigachat.GigaChat</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.gigachat.GigaChat.html#langchain_community.llms.gigachat.GigaChat" title="langchain_community.llms.gigachat.GigaChat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.gigachat.GigaChat</span></code></a></p></td>
 <td><p><cite>GigaChat</cite> large language models API.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.gooseai.GooseAI.html#langchain_community.llms.gooseai.GooseAI" title="langchain_community.llms.gooseai.GooseAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.gooseai.GooseAI</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.gooseai.GooseAI.html#langchain_community.llms.gooseai.GooseAI" title="langchain_community.llms.gooseai.GooseAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.gooseai.GooseAI</span></code></a></p></td>
 <td><p>GooseAI large language models.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.gpt4all.GPT4All.html#langchain_community.llms.gpt4all.GPT4All" title="langchain_community.llms.gpt4all.GPT4All"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.gpt4all.GPT4All</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.gpt4all.GPT4All.html#langchain_community.llms.gpt4all.GPT4All" title="langchain_community.llms.gpt4all.GPT4All"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.gpt4all.GPT4All</span></code></a></p></td>
 <td><p>GPT4All language models.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.gradient_ai.GradientLLM.html#langchain_community.llms.gradient_ai.GradientLLM" title="langchain_community.llms.gradient_ai.GradientLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.gradient_ai.GradientLLM</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.gradient_ai.GradientLLM.html#langchain_community.llms.gradient_ai.GradientLLM" title="langchain_community.llms.gradient_ai.GradientLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.gradient_ai.GradientLLM</span></code></a></p></td>
 <td><p>Gradient.ai LLM Endpoints.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.gradient_ai.TrainResult.html#langchain_community.llms.gradient_ai.TrainResult" title="langchain_community.llms.gradient_ai.TrainResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.gradient_ai.TrainResult</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.gradient_ai.TrainResult.html#langchain_community.llms.gradient_ai.TrainResult" title="langchain_community.llms.gradient_ai.TrainResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.gradient_ai.TrainResult</span></code></a></p></td>
 <td><p>Train result.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.human.HumanInputLLM.html#langchain_community.llms.human.HumanInputLLM" title="langchain_community.llms.human.HumanInputLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.human.HumanInputLLM</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.human.HumanInputLLM.html#langchain_community.llms.human.HumanInputLLM" title="langchain_community.llms.human.HumanInputLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.human.HumanInputLLM</span></code></a></p></td>
 <td><p>User input as the response.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.ipex_llm.IpexLLM.html#langchain_community.llms.ipex_llm.IpexLLM" title="langchain_community.llms.ipex_llm.IpexLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.ipex_llm.IpexLLM</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.ipex_llm.IpexLLM.html#langchain_community.llms.ipex_llm.IpexLLM" title="langchain_community.llms.ipex_llm.IpexLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.ipex_llm.IpexLLM</span></code></a></p></td>
 <td><p>IpexLLM model.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.javelin_ai_gateway.JavelinAIGateway.html#langchain_community.llms.javelin_ai_gateway.JavelinAIGateway" title="langchain_community.llms.javelin_ai_gateway.JavelinAIGateway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.javelin_ai_gateway.JavelinAIGateway</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.javelin_ai_gateway.JavelinAIGateway.html#langchain_community.llms.javelin_ai_gateway.JavelinAIGateway" title="langchain_community.llms.javelin_ai_gateway.JavelinAIGateway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.javelin_ai_gateway.JavelinAIGateway</span></code></a></p></td>
 <td><p>Javelin AI Gateway LLMs.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.javelin_ai_gateway.Params.html#langchain_community.llms.javelin_ai_gateway.Params" title="langchain_community.llms.javelin_ai_gateway.Params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.javelin_ai_gateway.Params</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.javelin_ai_gateway.Params.html#langchain_community.llms.javelin_ai_gateway.Params" title="langchain_community.llms.javelin_ai_gateway.Params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.javelin_ai_gateway.Params</span></code></a></p></td>
 <td><p>Parameters for the Javelin AI Gateway LLM.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.koboldai.KoboldApiLLM.html#langchain_community.llms.koboldai.KoboldApiLLM" title="langchain_community.llms.koboldai.KoboldApiLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.koboldai.KoboldApiLLM</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.koboldai.KoboldApiLLM.html#langchain_community.llms.koboldai.KoboldApiLLM" title="langchain_community.llms.koboldai.KoboldApiLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.koboldai.KoboldApiLLM</span></code></a></p></td>
 <td><p>Kobold API language model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.konko.Konko.html#langchain_community.llms.konko.Konko" title="langchain_community.llms.konko.Konko"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.konko.Konko</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.konko.Konko.html#langchain_community.llms.konko.Konko" title="langchain_community.llms.konko.Konko"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.konko.Konko</span></code></a></p></td>
 <td><p>Konko AI models.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.layerup_security.LayerupSecurity.html#langchain_community.llms.layerup_security.LayerupSecurity" title="langchain_community.llms.layerup_security.LayerupSecurity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.layerup_security.LayerupSecurity</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.layerup_security.LayerupSecurity.html#langchain_community.llms.layerup_security.LayerupSecurity" title="langchain_community.llms.layerup_security.LayerupSecurity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.layerup_security.LayerupSecurity</span></code></a></p></td>
 <td><p>Layerup Security LLM service.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.llamacpp.LlamaCpp.html#langchain_community.llms.llamacpp.LlamaCpp" title="langchain_community.llms.llamacpp.LlamaCpp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.llamacpp.LlamaCpp</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.llamacpp.LlamaCpp.html#langchain_community.llms.llamacpp.LlamaCpp" title="langchain_community.llms.llamacpp.LlamaCpp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.llamacpp.LlamaCpp</span></code></a></p></td>
 <td><p>llama.cpp model.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.llamafile.Llamafile.html#langchain_community.llms.llamafile.Llamafile" title="langchain_community.llms.llamafile.Llamafile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.llamafile.Llamafile</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.llamafile.Llamafile.html#langchain_community.llms.llamafile.Llamafile" title="langchain_community.llms.llamafile.Llamafile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.llamafile.Llamafile</span></code></a></p></td>
 <td><p>Llamafile lets you distribute and run large language models with a single file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.manifest.ManifestWrapper.html#langchain_community.llms.manifest.ManifestWrapper" title="langchain_community.llms.manifest.ManifestWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.manifest.ManifestWrapper</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.manifest.ManifestWrapper.html#langchain_community.llms.manifest.ManifestWrapper" title="langchain_community.llms.manifest.ManifestWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.manifest.ManifestWrapper</span></code></a></p></td>
 <td><p>HazyResearch's Manifest library.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.minimax.Minimax.html#langchain_community.llms.minimax.Minimax" title="langchain_community.llms.minimax.Minimax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.minimax.Minimax</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.minimax.Minimax.html#langchain_community.llms.minimax.Minimax" title="langchain_community.llms.minimax.Minimax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.minimax.Minimax</span></code></a></p></td>
 <td><p>Minimax large language models.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.minimax.MinimaxCommon.html#langchain_community.llms.minimax.MinimaxCommon" title="langchain_community.llms.minimax.MinimaxCommon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.minimax.MinimaxCommon</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.minimax.MinimaxCommon.html#langchain_community.llms.minimax.MinimaxCommon" title="langchain_community.llms.minimax.MinimaxCommon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.minimax.MinimaxCommon</span></code></a></p></td>
 <td><p>Common parameters for Minimax large language models.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.mlflow.Mlflow.html#langchain_community.llms.mlflow.Mlflow" title="langchain_community.llms.mlflow.Mlflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.mlflow.Mlflow</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.mlflow.Mlflow.html#langchain_community.llms.mlflow.Mlflow" title="langchain_community.llms.mlflow.Mlflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.mlflow.Mlflow</span></code></a></p></td>
 <td><p>MLflow LLM service.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.mlflow_ai_gateway.MlflowAIGateway.html#langchain_community.llms.mlflow_ai_gateway.MlflowAIGateway" title="langchain_community.llms.mlflow_ai_gateway.MlflowAIGateway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.mlflow_ai_gateway.MlflowAIGateway</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.mlflow_ai_gateway.MlflowAIGateway.html#langchain_community.llms.mlflow_ai_gateway.MlflowAIGateway" title="langchain_community.llms.mlflow_ai_gateway.MlflowAIGateway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.mlflow_ai_gateway.MlflowAIGateway</span></code></a></p></td>
 <td><p>MLflow AI Gateway LLMs.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.mlflow_ai_gateway.Params.html#langchain_community.llms.mlflow_ai_gateway.Params" title="langchain_community.llms.mlflow_ai_gateway.Params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.mlflow_ai_gateway.Params</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.mlflow_ai_gateway.Params.html#langchain_community.llms.mlflow_ai_gateway.Params" title="langchain_community.llms.mlflow_ai_gateway.Params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.mlflow_ai_gateway.Params</span></code></a></p></td>
 <td><p>Parameters for the MLflow AI Gateway LLM.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.mlx_pipeline.MLXPipeline.html#langchain_community.llms.mlx_pipeline.MLXPipeline" title="langchain_community.llms.mlx_pipeline.MLXPipeline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.mlx_pipeline.MLXPipeline</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.mlx_pipeline.MLXPipeline.html#langchain_community.llms.mlx_pipeline.MLXPipeline" title="langchain_community.llms.mlx_pipeline.MLXPipeline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.mlx_pipeline.MLXPipeline</span></code></a></p></td>
 <td><p>MLX Pipeline API.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.modal.Modal.html#langchain_community.llms.modal.Modal" title="langchain_community.llms.modal.Modal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.modal.Modal</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.modal.Modal.html#langchain_community.llms.modal.Modal" title="langchain_community.llms.modal.Modal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.modal.Modal</span></code></a></p></td>
 <td><p>Modal large language models.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.moonshot.Moonshot.html#langchain_community.llms.moonshot.Moonshot" title="langchain_community.llms.moonshot.Moonshot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.moonshot.Moonshot</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.moonshot.Moonshot.html#langchain_community.llms.moonshot.Moonshot" title="langchain_community.llms.moonshot.Moonshot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.moonshot.Moonshot</span></code></a></p></td>
 <td><p>Moonshot large language models.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.moonshot.MoonshotCommon.html#langchain_community.llms.moonshot.MoonshotCommon" title="langchain_community.llms.moonshot.MoonshotCommon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.moonshot.MoonshotCommon</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.moonshot.MoonshotCommon.html#langchain_community.llms.moonshot.MoonshotCommon" title="langchain_community.llms.moonshot.MoonshotCommon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.moonshot.MoonshotCommon</span></code></a></p></td>
 <td><p>Common parameters for Moonshot LLMs.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.mosaicml.MosaicML.html#langchain_community.llms.mosaicml.MosaicML" title="langchain_community.llms.mosaicml.MosaicML"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.mosaicml.MosaicML</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.mosaicml.MosaicML.html#langchain_community.llms.mosaicml.MosaicML" title="langchain_community.llms.mosaicml.MosaicML"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.mosaicml.MosaicML</span></code></a></p></td>
 <td><p>MosaicML LLM service.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.nlpcloud.NLPCloud.html#langchain_community.llms.nlpcloud.NLPCloud" title="langchain_community.llms.nlpcloud.NLPCloud"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.nlpcloud.NLPCloud</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.nlpcloud.NLPCloud.html#langchain_community.llms.nlpcloud.NLPCloud" title="langchain_community.llms.nlpcloud.NLPCloud"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.nlpcloud.NLPCloud</span></code></a></p></td>
 <td><p>NLPCloud large language models.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM" title="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment" title="langchain_community.llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment</span></code></a></p></td>
 <td><p>Base class for LLM deployed on OCI Data Science Model Deployment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM" title="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM</span></code></a></p></td>
+<td><p>LLM deployed on OCI Data Science Model Deployment.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentTGI.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentTGI" title="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentTGI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentTGI</span></code></a></p></td>
 <td><p>OCI Data Science Model Deployment TGI Endpoint.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentVLLM.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentVLLM" title="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentVLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentVLLM</span></code></a></p></td>
 <td><p>VLLM deployed on OCI Data Science Model Deployment</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.ServerError.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.ServerError" title="langchain_community.llms.oci_data_science_model_deployment_endpoint.ServerError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.oci_data_science_model_deployment_endpoint.ServerError</span></code></a></p></td>
+<td><p>Raises when encounter server error when making inference.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.TokenExpiredError.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.TokenExpiredError" title="langchain_community.llms.oci_data_science_model_deployment_endpoint.TokenExpiredError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.oci_data_science_model_deployment_endpoint.TokenExpiredError</span></code></a></p></td>
+<td><p>Raises when token expired.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.oci_generative_ai.CohereProvider.html#langchain_community.llms.oci_generative_ai.CohereProvider" title="langchain_community.llms.oci_generative_ai.CohereProvider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.oci_generative_ai.CohereProvider</span></code></a>()</p></td>
 <td><p></p></td>
@@ -1033,46 +1043,49 @@ access to the large language model (<strong>LLM</strong>) APIs and services.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.cohere.Cohere.html#langchain_community.llms.cohere.Cohere" title="langchain_community.llms.cohere.Cohere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.cohere.Cohere</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.fireworks.Fireworks.html#langchain_community.llms.fireworks.Fireworks" title="langchain_community.llms.fireworks.Fireworks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.fireworks.Fireworks</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.databricks.Databricks.html#langchain_community.llms.databricks.Databricks" title="langchain_community.llms.databricks.Databricks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.databricks.Databricks</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.google_palm.GooglePalm.html#langchain_community.llms.google_palm.GooglePalm" title="langchain_community.llms.google_palm.GooglePalm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.google_palm.GooglePalm</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.fireworks.Fireworks.html#langchain_community.llms.fireworks.Fireworks" title="langchain_community.llms.fireworks.Fireworks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.fireworks.Fireworks</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.huggingface_endpoint.HuggingFaceEndpoint.html#langchain_community.llms.huggingface_endpoint.HuggingFaceEndpoint" title="langchain_community.llms.huggingface_endpoint.HuggingFaceEndpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.huggingface_endpoint.HuggingFaceEndpoint</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.google_palm.GooglePalm.html#langchain_community.llms.google_palm.GooglePalm" title="langchain_community.llms.google_palm.GooglePalm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.google_palm.GooglePalm</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.huggingface_hub.HuggingFaceHub.html#langchain_community.llms.huggingface_hub.HuggingFaceHub" title="langchain_community.llms.huggingface_hub.HuggingFaceHub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.huggingface_hub.HuggingFaceHub</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.huggingface_endpoint.HuggingFaceEndpoint.html#langchain_community.llms.huggingface_endpoint.HuggingFaceEndpoint" title="langchain_community.llms.huggingface_endpoint.HuggingFaceEndpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.huggingface_endpoint.HuggingFaceEndpoint</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.huggingface_pipeline.HuggingFacePipeline.html#langchain_community.llms.huggingface_pipeline.HuggingFacePipeline" title="langchain_community.llms.huggingface_pipeline.HuggingFacePipeline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.huggingface_pipeline.HuggingFacePipeline</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.huggingface_hub.HuggingFaceHub.html#langchain_community.llms.huggingface_hub.HuggingFaceHub" title="langchain_community.llms.huggingface_hub.HuggingFaceHub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.huggingface_hub.HuggingFaceHub</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.huggingface_text_gen_inference.HuggingFaceTextGenInference.html#langchain_community.llms.huggingface_text_gen_inference.HuggingFaceTextGenInference" title="langchain_community.llms.huggingface_text_gen_inference.HuggingFaceTextGenInference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.huggingface_text_gen_inference.HuggingFaceTextGenInference</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.huggingface_pipeline.HuggingFacePipeline.html#langchain_community.llms.huggingface_pipeline.HuggingFacePipeline" title="langchain_community.llms.huggingface_pipeline.HuggingFacePipeline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.huggingface_pipeline.HuggingFacePipeline</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.ollama.Ollama.html#langchain_community.llms.ollama.Ollama" title="langchain_community.llms.ollama.Ollama"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.ollama.Ollama</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.huggingface_text_gen_inference.HuggingFaceTextGenInference.html#langchain_community.llms.huggingface_text_gen_inference.HuggingFaceTextGenInference" title="langchain_community.llms.huggingface_text_gen_inference.HuggingFaceTextGenInference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.huggingface_text_gen_inference.HuggingFaceTextGenInference</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.openai.AzureOpenAI.html#langchain_community.llms.openai.AzureOpenAI" title="langchain_community.llms.openai.AzureOpenAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.openai.AzureOpenAI</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.ollama.Ollama.html#langchain_community.llms.ollama.Ollama" title="langchain_community.llms.ollama.Ollama"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.ollama.Ollama</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.openai.OpenAI.html#langchain_community.llms.openai.OpenAI" title="langchain_community.llms.openai.OpenAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.openai.OpenAI</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.openai.AzureOpenAI.html#langchain_community.llms.openai.AzureOpenAI" title="langchain_community.llms.openai.AzureOpenAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.openai.AzureOpenAI</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.openai.OpenAIChat.html#langchain_community.llms.openai.OpenAIChat" title="langchain_community.llms.openai.OpenAIChat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.openai.OpenAIChat</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.openai.OpenAI.html#langchain_community.llms.openai.OpenAI" title="langchain_community.llms.openai.OpenAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.openai.OpenAI</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.together.Together.html#langchain_community.llms.together.Together" title="langchain_community.llms.together.Together"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.together.Together</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.openai.OpenAIChat.html#langchain_community.llms.openai.OpenAIChat" title="langchain_community.llms.openai.OpenAIChat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.openai.OpenAIChat</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.vertexai.VertexAI.html#langchain_community.llms.vertexai.VertexAI" title="langchain_community.llms.vertexai.VertexAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.vertexai.VertexAI</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.together.Together.html#langchain_community.llms.together.Together" title="langchain_community.llms.together.Together"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.together.Together</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.vertexai.VertexAIModelGarden.html#langchain_community.llms.vertexai.VertexAIModelGarden" title="langchain_community.llms.vertexai.VertexAIModelGarden"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.vertexai.VertexAIModelGarden</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.vertexai.VertexAI.html#langchain_community.llms.vertexai.VertexAI" title="langchain_community.llms.vertexai.VertexAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.vertexai.VertexAI</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.watsonxllm.WatsonxLLM.html#langchain_community.llms.watsonxllm.WatsonxLLM" title="langchain_community.llms.watsonxllm.WatsonxLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.watsonxllm.WatsonxLLM</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="llms/langchain_community.llms.vertexai.VertexAIModelGarden.html#langchain_community.llms.vertexai.VertexAIModelGarden" title="langchain_community.llms.vertexai.VertexAIModelGarden"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.vertexai.VertexAIModelGarden</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="llms/langchain_community.llms.watsonxllm.WatsonxLLM.html#langchain_community.llms.watsonxllm.WatsonxLLM" title="langchain_community.llms.watsonxllm.WatsonxLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">llms.watsonxllm.WatsonxLLM</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>

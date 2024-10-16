@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 15, 2024" name="docbuild:last-update"/>
+<meta content="Oct 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -402,7 +402,9 @@ document.write(`
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span>
             <span class="n">retrievalQuery</span><span class="o">=</span><span class="p">{</span><span class="s2">"text"</span><span class="p">:</span> <span class="n">query</span><span class="o">.</span><span class="n">strip</span><span class="p">()},</span>
             <span class="n">knowledgeBaseId</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">knowledge_base_id</span><span class="p">,</span>
-            <span class="n">retrievalConfiguration</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retrieval_config</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">retrievalConfiguration</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retrieval_config</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span>
+                <span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">by_alias</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">),</span>
         <span class="p">)</span>
         <span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">"retrievalResults"</span><span class="p">]</span>
         <span class="n">documents</span> <span class="o">=</span> <span class="p">[]</span>

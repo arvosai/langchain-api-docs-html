@@ -38,7 +38,7 @@
 <link href="../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 15, 2024" name="docbuild:last-update"/>
+<meta content="Oct 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -227,7 +227,8 @@ document.write(`
 <div id="searchbox"></div>
 <article class="bd-article">
 <h1>Source code for langchain_anthropic.chat_models</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">re</span>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
@@ -345,7 +346,6 @@ document.write(`
 <span class="w">    </span><span class="sd">"""Merge runs of human/tool messages into single human messages with content blocks."""</span>  <span class="c1"># noqa: E501</span>
     <span class="n">merged</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">curr</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
-        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">model_copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">curr</span><span class="p">,</span> <span class="n">ToolMessage</span><span class="p">):</span>
             <span class="k">if</span> <span class="p">(</span>
                 <span class="nb">isinstance</span><span class="p">(</span><span class="n">curr</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
@@ -372,12 +372,12 @@ document.write(`
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">last</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">new_content</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="n">last</span><span class="o">.</span><span class="n">content</span><span class="p">}]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">new_content</span> <span class="o">=</span> <span class="n">last</span><span class="o">.</span><span class="n">content</span>
+                <span class="n">new_content</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">last</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">curr</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">new_content</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="n">curr</span><span class="o">.</span><span class="n">content</span><span class="p">})</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">new_content</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">curr</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-            <span class="n">last</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">new_content</span>
+            <span class="n">merged</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">model_copy</span><span class="p">(</span><span class="n">update</span><span class="o">=</span><span class="p">{</span><span class="s2">"content"</span><span class="p">:</span> <span class="n">new_content</span><span class="p">},</span> <span class="n">deep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">merged</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curr</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">merged</span>
@@ -407,9 +407,11 @@ document.write(`
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"System message must be at beginning of message list."</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="n">system</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">block</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
-                    <span class="k">else</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"block"</span><span class="p">}</span>
+                    <span class="p">(</span>
+                        <span class="n">block</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+                        <span class="k">else</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"block"</span><span class="p">}</span>
+                    <span class="p">)</span>
                     <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span>
                 <span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>

@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 15, 2024" name="docbuild:last-update"/>
+<meta content="Oct 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -456,12 +456,12 @@ document.write(`
     <span class="n">since</span><span class="o">=</span><span class="s2">"0.0.31"</span><span class="p">,</span>
     <span class="n">message</span><span class="o">=</span><span class="p">(</span>
         <span class="s2">"This class is pending deprecation and may be removed in a future version. "</span>
-        <span class="s2">"You can swap to using the `PGVector`"</span>
-        <span class="s2">" implementation in `langchain_postgres`. "</span>
+        <span class="s2">"You can swap to using the `PGVector` "</span>
+        <span class="s2">"implementation in `langchain_postgres`. "</span>
         <span class="s2">"Please read the guidelines in the doc-string of this class "</span>
         <span class="s2">"to follow prior to migrating as there are some differences "</span>
         <span class="s2">"between the implementations. "</span>
-        <span class="s2">"See &lt;https://github.com/langchain-ai/langchain-postgres&gt; for details about"</span>
+        <span class="s2">"See &lt;https://github.com/langchain-ai/langchain-postgres&gt; for details about "</span>
         <span class="s2">"the new implementation."</span>
     <span class="p">),</span>
     <span class="n">alternative</span><span class="o">=</span><span class="s2">"from langchain_postgres import PGVector;"</span><span class="p">,</span>
@@ -570,11 +570,11 @@ document.write(`
                 <span class="n">message</span><span class="o">=</span><span class="p">(</span>
                     <span class="s2">"Please use JSONB instead of JSON for metadata. "</span>
                     <span class="s2">"This change will allow for more efficient querying that "</span>
-                    <span class="s2">"involves filtering based on metadata."</span>
+                    <span class="s2">"involves filtering based on metadata. "</span>
                     <span class="s2">"Please note that filtering operators have been changed "</span>
-                    <span class="s2">"when using JSOB metadata to be prefixed with a $ sign "</span>
+                    <span class="s2">"when using JSONB metadata to be prefixed with a $ sign "</span>
                     <span class="s2">"to avoid name collisions with columns. "</span>
-                    <span class="s2">"If you're using an existing database, you will need to create a"</span>
+                    <span class="s2">"If you're using an existing database, you will need to create a "</span>
                     <span class="s2">"db migration for your metadata column to be JSONB and update your "</span>
                     <span class="s2">"queries to use the new operators. "</span>
                 <span class="p">),</span>

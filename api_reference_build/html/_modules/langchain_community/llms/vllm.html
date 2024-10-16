@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 15, 2024" name="docbuild:last-update"/>
+<meta content="Oct 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -357,14 +357,19 @@ document.write(`
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LLMResult</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Run the LLM on the given prompt and input."""</span>
-
         <span class="kn">from</span> <span class="nn">vllm</span> <span class="kn">import</span> <span class="n">SamplingParams</span>
 
         <span class="c1"># build sampling parameters</span>
         <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="s2">"stop"</span><span class="p">:</span> <span class="n">stop</span><span class="p">}</span>
-        <span class="n">sampling_params</span> <span class="o">=</span> <span class="n">SamplingParams</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="c1"># filter params for SamplingParams</span>
+        <span class="n">known_keys</span> <span class="o">=</span> <span class="n">SamplingParams</span><span class="o">.</span><span class="vm">__annotations__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">sample_params</span> <span class="o">=</span> <span class="n">SamplingParams</span><span class="p">(</span>
+            <span class="o">**</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">known_keys</span><span class="p">}</span>
+        <span class="p">)</span>
+
         <span class="c1"># call the model</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">sampling_params</span><span class="p">)</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">sample_params</span><span class="p">)</span>
 
         <span class="n">generations</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>

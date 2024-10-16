@@ -36,11 +36,11 @@
 <script>DOCUMENTATION_OPTIONS.pagename = 'community/vectorstores/langchain_community.vectorstores.databricks_vector_search.DatabricksVectorSearch';</script>
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
-<link href="langchain_community.vectorstores.deeplake.DeepLake.html" rel="next" title="DeepLake"/>
-<link href="langchain_community.vectorstores.dashvector.DashVector.html" rel="prev" title="DashVector"/>
+<link href="langchain_community.vectorstores.elastic_vector_search.ElasticKnnSearch.html" rel="next" title="ElasticKnnSearch"/>
+<link href="langchain_community.vectorstores.couchbase.CouchbaseVectorStore.html" rel="prev" title="CouchbaseVectorStore"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 15, 2024" name="docbuild:last-update"/>
+<meta content="Oct 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -268,7 +268,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.clickhouse.Clickhouse.html">Clickhouse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.clickhouse.ClickhouseSettings.html">ClickhouseSettings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.dashvector.DashVector.html">DashVector</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">DatabricksVectorSearch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.deeplake.DeepLake.html">DeepLake</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.dingo.Dingo.html">Dingo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.docarray.base.DocArrayIndex.html">DocArrayIndex</a></li>
@@ -437,6 +436,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.bigquery_vector_search.BigQueryVectorSearch.html">BigQueryVectorSearch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.chroma.Chroma.html">Chroma</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.couchbase.CouchbaseVectorStore.html">CouchbaseVectorStore</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">DatabricksVectorSearch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.elastic_vector_search.ElasticKnnSearch.html">ElasticKnnSearch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.elastic_vector_search.ElasticVectorSearch.html">ElasticVectorSearch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.elasticsearch.ApproxRetrievalStrategy.html">ApproxRetrievalStrategy</a></li>
@@ -467,6 +467,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../chroma/index.html">Chroma</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cohere/index.html">Cohere</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../couchbase/index.html">Couchbase</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../databricks/index.html">Databricks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../elasticsearch/index.html">Elasticsearch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../exa/index.html">Exa</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../fireworks/index.html">Fireworks</a></li>
@@ -529,7 +530,10 @@ document.write(`
 <dl class="py class">
 <dt class="sig sig-object py" id="langchain_community.vectorstores.databricks_vector_search.DatabricksVectorSearch">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_community.vectorstores.databricks_vector_search.</span></span><span class="sig-name descname"><span class="pre">DatabricksVectorSearch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">VectorSearchIndex</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><span class="pre">Embeddings</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_community/vectorstores/databricks_vector_search.html#DatabricksVectorSearch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.vectorstores.databricks_vector_search.DatabricksVectorSearch" title="Link to this definition">#</a></dt>
-<dd><p><cite>Databricks Vector Search</cite> vector store.</p>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.3.3: </span>Use <code class="docutils literal notranslate"><span class="pre">:class:`~langchain_databricks.DatabricksVectorSearch`</span></code> instead.</p>
+</div>
+<p><cite>Databricks Vector Search</cite> vector store.</p>
 <p>To use, you should have the <code class="docutils literal notranslate"><span class="pre">databricks-vectorsearch</span></code> python package installed.</p>
 <p class="rubric">Example</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_community.vectorstores</span> <span class="kn">import</span> <span class="n">DatabricksVectorSearch</span>

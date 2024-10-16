@@ -40,7 +40,7 @@
 <link href="langchain_community.vectorstores.tiledb.TileDB.html" rel="prev" title="TileDB"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 15, 2024" name="docbuild:last-update"/>
+<meta content="Oct 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -268,7 +268,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.clickhouse.Clickhouse.html">Clickhouse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.clickhouse.ClickhouseSettings.html">ClickhouseSettings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.dashvector.DashVector.html">DashVector</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.databricks_vector_search.DatabricksVectorSearch.html">DatabricksVectorSearch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.deeplake.DeepLake.html">DeepLake</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.dingo.Dingo.html">Dingo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.docarray.base.DocArrayIndex.html">DocArrayIndex</a></li>
@@ -437,6 +436,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.bigquery_vector_search.BigQueryVectorSearch.html">BigQueryVectorSearch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.chroma.Chroma.html">Chroma</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.couchbase.CouchbaseVectorStore.html">CouchbaseVectorStore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.databricks_vector_search.DatabricksVectorSearch.html">DatabricksVectorSearch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.elastic_vector_search.ElasticKnnSearch.html">ElasticKnnSearch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.elastic_vector_search.ElasticVectorSearch.html">ElasticVectorSearch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.elasticsearch.ApproxRetrievalStrategy.html">ApproxRetrievalStrategy</a></li>
@@ -467,6 +467,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../chroma/index.html">Chroma</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cohere/index.html">Cohere</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../couchbase/index.html">Couchbase</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../databricks/index.html">Databricks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../elasticsearch/index.html">Elasticsearch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../exa/index.html">Exa</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../fireworks/index.html">Fireworks</a></li>
@@ -1254,11 +1255,11 @@ score_threshold: Optional, a floating point value between 0 to 1 to</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_community.vectorstores.timescalevector.TimescaleVector.create_index">
-<span class="sig-name descname"><span class="pre">create_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.IndexType.html#langchain_community.vectorstores.neo4j_vector.IndexType" title="langchain_community.vectorstores.neo4j_vector.IndexType"><span class="pre">IndexType</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">IndexType.TIMESCALE_VECTOR</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/langchain_community/vectorstores/timescalevector.html#TimescaleVector.create_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.vectorstores.timescalevector.TimescaleVector.create_index" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">create_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../databricks/vectorstores/langchain_databricks.vectorstores.IndexType.html#langchain_databricks.vectorstores.IndexType" title="langchain_databricks.vectorstores.IndexType"><span class="pre">IndexType</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">IndexType.TIMESCALE_VECTOR</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/langchain_community/vectorstores/timescalevector.html#TimescaleVector.create_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.vectorstores.timescalevector.TimescaleVector.create_index" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>index_type</strong> (<em>Union</em><em>[</em><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.IndexType.html#langchain_community.vectorstores.neo4j_vector.IndexType" title="langchain_community.vectorstores.neo4j_vector.IndexType"><em>IndexType</em></a><em>, </em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>index_type</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../databricks/vectorstores/langchain_databricks.vectorstores.IndexType.html#langchain_databricks.vectorstores.IndexType" title="langchain_databricks.vectorstores.IndexType"><em>IndexType</em></a><em>, </em><em>str</em><em>]</em>)</p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>)</p></li>
 </ul>
 </dd>

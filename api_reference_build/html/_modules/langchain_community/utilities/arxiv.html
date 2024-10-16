@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 15, 2024" name="docbuild:last-update"/>
+<meta content="Oct 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -328,6 +328,16 @@ document.write(`
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
 
+    <span class="k">def</span> <span class="nf">_fetch_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Helper function to fetch arxiv results based on query."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_arxiv_identifier</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_search</span><span class="p">(</span>
+                <span class="n">id_list</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">top_k_results</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_search</span><span class="p">(</span>
+            <span class="n">query</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ARXIV_MAX_QUERY_LENGTH</span><span class="p">],</span> <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">top_k_results</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
+
 <div class="viewcode-block" id="ArxivAPIWrapper.get_summaries_as_docs">
 <a class="viewcode-back" href="../../../community/utilities/langchain_community.utilities.arxiv.ArxivAPIWrapper.html#langchain_community.utilities.arxiv.ArxivAPIWrapper.get_summaries_as_docs">[docs]</a>
     <span class="k">def</span> <span class="nf">get_summaries_as_docs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
@@ -343,16 +353,11 @@ document.write(`
 <span class="sd">            query: a plaintext search query</span>
 <span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_arxiv_identifier</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
-                <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_search</span><span class="p">(</span>
-                    <span class="n">id_list</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span>
-                    <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">top_k_results</span><span class="p">,</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_search</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
-                    <span class="n">query</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ARXIV_MAX_QUERY_LENGTH</span><span class="p">],</span> <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">top_k_results</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_results</span><span class="p">(</span>
+                <span class="n">query</span>
+            <span class="p">)</span>  <span class="c1"># Using helper function to fetch results</span>
         <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_exceptions</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Arxiv exception: </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>  <span class="c1"># Added error logging</span>
             <span class="k">return</span> <span class="p">[</span><span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Arxiv exception: </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">"</span><span class="p">)]</span>
         <span class="n">docs</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">Document</span><span class="p">(</span>
@@ -385,16 +390,11 @@ document.write(`
 <span class="sd">            query: a plaintext search query</span>
 <span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_arxiv_identifier</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
-                <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_search</span><span class="p">(</span>
-                    <span class="n">id_list</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span>
-                    <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">top_k_results</span><span class="p">,</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_search</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
-                    <span class="n">query</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ARXIV_MAX_QUERY_LENGTH</span><span class="p">],</span> <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">top_k_results</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_results</span><span class="p">(</span>
+                <span class="n">query</span>
+            <span class="p">)</span>  <span class="c1"># Using helper function to fetch results</span>
         <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_exceptions</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Arxiv exception: </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>  <span class="c1"># Added error logging</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">"Arxiv exception: </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">"</span>
         <span class="n">docs</span> <span class="o">=</span> <span class="p">[</span>
             <span class="sa">f</span><span class="s2">"Published: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">updated</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
@@ -453,15 +453,9 @@ document.write(`
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Remove the ":" and "-" from the query, as they can cause search problems</span>
             <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">":"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"-"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_arxiv_identifier</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
-                <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_search</span><span class="p">(</span>
-                    <span class="n">id_list</span><span class="o">=</span><span class="n">query</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ARXIV_MAX_QUERY_LENGTH</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span>
-                    <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">load_max_docs</span><span class="p">,</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_search</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
-                    <span class="n">query</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ARXIV_MAX_QUERY_LENGTH</span><span class="p">],</span> <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">load_max_docs</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_results</span><span class="p">(</span>
+                <span class="n">query</span>
+            <span class="p">)</span>  <span class="c1"># Using helper function to fetch results</span>
         <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">arxiv_exceptions</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Error on arxiv: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
             <span class="k">return</span>

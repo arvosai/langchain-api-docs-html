@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 15, 2024" name="docbuild:last-update"/>
+<meta content="Oct 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -232,6 +232,8 @@ document.write(`
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span>
 <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
 
+<span class="kn">from</span> <span class="nn">langchain_core._api</span> <span class="kn">import</span> <span class="n">deprecated</span>
+
 <span class="kn">from</span> <span class="nn">langchain_community.embeddings.mlflow</span> <span class="kn">import</span> <span class="n">MlflowEmbeddings</span>
 
 
@@ -242,6 +244,11 @@ document.write(`
 
 <div class="viewcode-block" id="DatabricksEmbeddings">
 <a class="viewcode-back" href="../../../community/embeddings/langchain_community.embeddings.databricks.DatabricksEmbeddings.html#langchain_community.embeddings.databricks.DatabricksEmbeddings">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.3"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_databricks.DatabricksEmbeddings"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">class</span> <span class="nc">DatabricksEmbeddings</span><span class="p">(</span><span class="n">MlflowEmbeddings</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Databricks embeddings.</span>
 

@@ -38,7 +38,7 @@
 <link href="../../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 15, 2024" name="docbuild:last-update"/>
+<meta content="Oct 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -600,7 +600,7 @@ document.write(`
         <span class="k">for</span> <span class="n">endpoint_name</span> <span class="ow">in</span> <span class="n">endpoint_names</span><span class="p">:</span>
             <span class="n">found_match</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">docs</span> <span class="ow">in</span> <span class="n">api_spec</span><span class="o">.</span><span class="n">endpoints</span><span class="p">:</span>
-                <span class="n">regex_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"\{.*?\}"</span><span class="p">,</span> <span class="s2">".*"</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+                <span class="n">regex_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"</span><span class="se">\\</span><span class="s2">{.*?</span><span class="se">\\</span><span class="s2">}"</span><span class="p">,</span> <span class="s2">".*"</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">regex_name</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">endpoint_name</span><span class="p">):</span>
                     <span class="n">found_match</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="n">docs_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"== Docs for </span><span class="si">{</span><span class="n">endpoint_name</span><span class="si">}</span><span class="s2"> == </span><span class="se">\n</span><span class="si">{</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>

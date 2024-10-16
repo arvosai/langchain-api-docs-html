@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 15, 2024" name="docbuild:last-update"/>
+<meta content="Oct 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -1294,6 +1294,16 @@ document.write(`
                 <span class="s2">"This can happen if a class that inherits from "</span>
                 <span class="s2">"'MappedAsDataclass', even indirectly, is been mapped with "</span>
                 <span class="s2">"'@registry.mapped_as_dataclass'"</span>
+            <span class="p">)</span>
+
+        <span class="c1"># can't create a dataclass if __table__ is already there. This would</span>
+        <span class="c1"># fail an assertion when calling _get_arguments_for_make_dataclass:</span>
+        <span class="c1"># assert False, "Mapped[] received without a mapping declaration"</span>
+        <span class="k">if</span> <span class="s2">"__table__"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exc</span><span class="o">.</span><span class="n">InvalidRequestError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Class </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cls</span><span class="si">}</span><span class="s2"> already defines a '__table__'. "</span>
+                <span class="s2">"ORM Annotated Dataclasses do not support a pre-existing "</span>
+                <span class="s2">"'__table__' element"</span>
             <span class="p">)</span>
 
         <span class="n">warn_for_non_dc_attrs</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>

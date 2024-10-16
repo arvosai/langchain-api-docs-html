@@ -37,10 +37,10 @@
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
 <link href="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentTGI.html" rel="next" title="OCIModelDeploymentTGI"/>
-<link href="langchain_community.llms.nlpcloud.NLPCloud.html" rel="prev" title="NLPCloud"/>
+<link href="langchain_community.llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment.html" rel="prev" title="BaseOCIModelDeployment"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 15, 2024" name="docbuild:last-update"/>
+<meta content="Oct 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -270,7 +270,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.cloudflare_workersai.CloudflareWorkersAI.html">CloudflareWorkersAI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.ctransformers.CTransformers.html">CTransformers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.ctranslate2.CTranslate2.html">CTranslate2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.databricks.Databricks.html">Databricks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.deepinfra.DeepInfra.html">DeepInfra</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.deepsparse.DeepSparse.html">DeepSparse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.edenai.EdenAI.html">EdenAI</a></li>
@@ -306,9 +305,12 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.moonshot.MoonshotCommon.html">MoonshotCommon</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.mosaicml.MosaicML.html">MosaicML</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.nlpcloud.NLPCloud.html">NLPCloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment.html">BaseOCIModelDeployment</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">OCIModelDeploymentLLM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentTGI.html">OCIModelDeploymentTGI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentVLLM.html">OCIModelDeploymentVLLM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.oci_data_science_model_deployment_endpoint.ServerError.html">ServerError</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.oci_data_science_model_deployment_endpoint.TokenExpiredError.html">TokenExpiredError</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.oci_generative_ai.CohereProvider.html">CohereProvider</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.oci_generative_ai.MetaProvider.html">MetaProvider</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.oci_generative_ai.OCIAuthType.html">OCIAuthType</a></li>
@@ -402,6 +404,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.bedrock.Bedrock.html">Bedrock</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.cohere.BaseCohere.html">BaseCohere</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.cohere.Cohere.html">Cohere</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.databricks.Databricks.html">Databricks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.fireworks.Fireworks.html">Fireworks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.google_palm.GooglePalm.html">GooglePalm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.huggingface_endpoint.HuggingFaceEndpoint.html">HuggingFaceEndpoint</a></li>
@@ -443,6 +446,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../chroma/index.html">Chroma</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cohere/index.html">Cohere</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../couchbase/index.html">Couchbase</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../databricks/index.html">Databricks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../elasticsearch/index.html">Elasticsearch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../exa/index.html">Exa</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../fireworks/index.html">Fireworks</a></li>
@@ -505,8 +509,53 @@ document.write(`
 <dl class="py class pydantic_model">
 <dt class="sig sig-object py" id="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_community.llms.oci_data_science_model_deployment_endpoint.</span></span><span class="sig-name descname"><span class="pre">OCIModelDeploymentLLM</span></span><a class="reference internal" href="../../_modules/langchain_community/llms/oci_data_science_model_deployment_endpoint.html#OCIModelDeploymentLLM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../core/language_models/langchain_core.language_models.llms.LLM.html#langchain_core.language_models.llms.LLM" title="langchain_core.language_models.llms.LLM"><code class="xref py py-class docutils literal notranslate"><span class="pre">LLM</span></code></a></p>
-<p>Base class for LLM deployed on OCI Data Science Model Deployment.</p>
+<dd><p>Bases: <a class="reference internal" href="../../core/language_models/langchain_core.language_models.llms.BaseLLM.html#langchain_core.language_models.llms.BaseLLM" title="langchain_core.language_models.llms.BaseLLM"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLLM</span></code></a>, <a class="reference internal" href="langchain_community.llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment.html#langchain_community.llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment" title="langchain_community.llms.oci_data_science_model_deployment_endpoint.BaseOCIModelDeployment"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseOCIModelDeployment</span></code></a></p>
+<p>LLM deployed on OCI Data Science Model Deployment.</p>
+<p>To use, you must provide the model HTTP endpoint from your deployed
+model, e.g. <a class="reference external" href="https://modeldeployment">https://modeldeployment</a>.&lt;region&gt;.oci.customer-oci.com/&lt;md_ocid&gt;/predict.</p>
+<p>To authenticate, <cite>oracle-ads</cite> has been used to automatically load
+credentials: <a class="reference external" href="https://accelerated-data-science.readthedocs.io/en/latest/user_guide/cli/authentication.html">https://accelerated-data-science.readthedocs.io/en/latest/user_guide/cli/authentication.html</a></p>
+<p>Make sure to have the required policies to access the OCI Data
+Science Model Deployment endpoint. See:
+<a class="reference external" href="https://docs.oracle.com/en-us/iaas/data-science/using/model-dep-policies-auth.htm#model_dep_policies_auth__predict-endpoint">https://docs.oracle.com/en-us/iaas/data-science/using/model-dep-policies-auth.htm#model_dep_policies_auth__predict-endpoint</a></p>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_community.llms</span> <span class="kn">import</span> <span class="n">OCIModelDeploymentLLM</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">OCIModelDeploymentLLM</span><span class="p">(</span>
+    <span class="n">endpoint</span><span class="o">=</span><span class="s2">"https://modeldeployment.us-ashburn-1.oci.customer-oci.com/&lt;ocid&gt;/predict"</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"odsc-llm"</span><span class="p">,</span>
+    <span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">model_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">"frequency_penalty"</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">"tell me a joke."</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Customized Usage:</p>
+<p>User can inherit from our base class and overrwrite the <cite>_process_response</cite>, <cite>_process_stream_response</cite>,
+<cite>_construct_json_body</cite> for satisfying customized needed.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_community.llms</span> <span class="kn">import</span> <span class="n">OCIModelDeploymentLLM</span>
+
+<span class="k">class</span> <span class="nc">MyCutomizedModel</span><span class="p">(</span><span class="n">OCIModelDeploymentLLM</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_process_stream_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_json</span><span class="p">:</span><span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GenerationChunk</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"My customized output stream handler."</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">GenerationChunk</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_process_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_json</span><span class="p">:</span><span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Generation</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"My customized output handler."</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">Generation</span><span class="p">()]</span>
+
+    <span class="k">def</span> <span class="nf">_construct_json_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">param</span><span class="p">:</span><span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"My customized input handler."</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">MyCutomizedModel</span><span class="p">(</span>
+    <span class="n">endpoint</span><span class="o">=</span><span class="sa">f</span><span class="s2">"https://modeldeployment.us-ashburn-1.oci.customer-oci.com/</span><span class="si">{</span><span class="n">ocid</span><span class="si">}</span><span class="s2">/predict"</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"&lt;model_name&gt;"</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">"tell me a joke."</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>OCIModelDeploymentLLM implements the standard <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Runnable</span> <span class="pre">Interface</span></code></a>. 🏃</p>
@@ -561,8 +610,13 @@ provided then the <cite>ads.common.default_signer()</cite> will be used.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.k">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">k</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.k" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">k</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-1</span></em><a class="headerlink" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.k" title="Link to this definition">#</a></dt>
 <dd><p>Number of most likely tokens to consider at each step.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.max_retries">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_retries</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.max_retries" title="Link to this definition">#</a></dt>
+<dd><p>Maximum number of retries to make when generating.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.max_tokens">
@@ -575,6 +629,16 @@ provided then the <cite>ads.common.default_signer()</cite> will be used.</p>
 <dd><p>Metadata to add to the run trace.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.model">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'odsc-llm'</span></em><a class="headerlink" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.model" title="Link to this definition">#</a></dt>
+<dd><p>The name of the model.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.model_kwargs">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_kwargs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">[Optional]</span></em><a class="headerlink" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.model_kwargs" title="Link to this definition">#</a></dt>
+<dd><p>Keyword arguments to pass to the model.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.p">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">p</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.75</span></em><a class="headerlink" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.p" title="Link to this definition">#</a></dt>
 <dd><p>Total probability mass of tokens to consider at each step.</p>
@@ -584,6 +648,11 @@ provided then the <cite>ads.common.default_signer()</cite> will be used.</p>
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stop</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.stop" title="Link to this definition">#</a></dt>
 <dd><p>Stop words to use when generating. Model output is cut off
 at the first occurrence of any of these substrings.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.streaming">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">streaming</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.streaming" title="Link to this definition">#</a></dt>
+<dd><p>Whether to stream the results or not.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.tags">
@@ -685,6 +754,22 @@ Defaults to False.</p></li>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>AsyncIterator</em>[tuple[int, <em>Output</em> | Exception]]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.acompletion_with_retry">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">acompletion_with_retry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../core/callbacks/langchain_core.callbacks.manager.AsyncCallbackManagerForLLMRun.html#langchain_core.callbacks.manager.AsyncCallbackManagerForLLMRun" title="langchain_core.callbacks.manager.AsyncCallbackManagerForLLMRun"><span class="pre">AsyncCallbackManagerForLLMRun</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.acompletion_with_retry" title="Link to this definition">#</a></dt>
+<dd><p>Use tenacity to retry the async completion call.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run_manager</strong> (<a class="reference internal" href="../../core/callbacks/langchain_core.callbacks.manager.AsyncCallbackManagerForLLMRun.html#langchain_core.callbacks.manager.AsyncCallbackManagerForLLMRun" title="langchain_core.callbacks.manager.AsyncCallbackManagerForLLMRun"><em>AsyncCallbackManagerForLLMRun</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Any</em></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1111,6 +1196,22 @@ in the output of the previous Runnable or included in the user input.</p>
 </div>
 </dd></dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.completion_with_retry">
+<span class="sig-name descname"><span class="pre">completion_with_retry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../core/callbacks/langchain_core.callbacks.manager.CallbackManagerForLLMRun.html#langchain_core.callbacks.manager.CallbackManagerForLLMRun" title="langchain_core.callbacks.manager.CallbackManagerForLLMRun"><span class="pre">CallbackManagerForLLMRun</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.completion_with_retry" title="Link to this definition">#</a></dt>
+<dd><p>Use tenacity to retry the completion call.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run_manager</strong> (<a class="reference internal" href="../../core/callbacks/langchain_core.callbacks.manager.CallbackManagerForLLMRun.html#langchain_core.callbacks.manager.CallbackManagerForLLMRun" title="langchain_core.callbacks.manager.CallbackManagerForLLMRun"><em>CallbackManagerForLLMRun</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Any</em></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
 <dt class="sig sig-object py" id="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.configurable_alternatives">
 <span class="sig-name descname"><span class="pre">configurable_alternatives</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../core/runnables/langchain_core.runnables.utils.ConfigurableField.html#langchain_core.runnables.utils.ConfigurableField" title="langchain_core.runnables.utils.ConfigurableField"><span class="pre">ConfigurableField</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><span class="pre">Runnable</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Input</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Output</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><span class="pre">Runnable</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Input</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Output</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.RunnableSerializable.html#langchain_core.runnables.base.RunnableSerializable" title="langchain_core.runnables.base.RunnableSerializable"><span class="pre">RunnableSerializable</span></a></span></span><a class="headerlink" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.configurable_alternatives" title="Link to this definition">#</a></dt>
 <dd><p>Configure alternatives for Runnables that can be set at runtime.</p>
@@ -1317,19 +1418,6 @@ Subclasses should override this method if they support streaming output.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Iterator</em>[str]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.validate_environment">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_environment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../../_modules/langchain_community/llms/oci_data_science_model_deployment_endpoint.html#OCIModelDeploymentLLM.validate_environment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.validate_environment" title="Link to this definition">#</a></dt>
-<dd><p>Validate that python package exists in environment.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>values</strong> (<em>Dict</em>)</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>Dict</em></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1661,22 +1749,28 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.custom_get_token_ids"><code class="docutils literal notranslate"><span class="pre">custom_get_token_ids</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.endpoint"><code class="docutils literal notranslate"><span class="pre">endpoint</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.k"><code class="docutils literal notranslate"><span class="pre">k</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.max_retries"><code class="docutils literal notranslate"><span class="pre">max_retries</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.max_tokens"><code class="docutils literal notranslate"><span class="pre">max_tokens</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.metadata"><code class="docutils literal notranslate"><span class="pre">metadata</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.model_kwargs"><code class="docutils literal notranslate"><span class="pre">model_kwargs</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.p"><code class="docutils literal notranslate"><span class="pre">p</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.streaming"><code class="docutils literal notranslate"><span class="pre">streaming</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.tags"><code class="docutils literal notranslate"><span class="pre">tags</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.temperature"><code class="docutils literal notranslate"><span class="pre">temperature</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.verbose"><code class="docutils literal notranslate"><span class="pre">verbose</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.__call__"><code class="docutils literal notranslate"><span class="pre">__call__()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.abatch"><code class="docutils literal notranslate"><span class="pre">abatch()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.abatch_as_completed"><code class="docutils literal notranslate"><span class="pre">abatch_as_completed()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.acompletion_with_retry"><code class="docutils literal notranslate"><span class="pre">acompletion_with_retry()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.ainvoke"><code class="docutils literal notranslate"><span class="pre">ainvoke()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.astream"><code class="docutils literal notranslate"><span class="pre">astream()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.astream_events"><code class="docutils literal notranslate"><span class="pre">astream_events()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.batch"><code class="docutils literal notranslate"><span class="pre">batch()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.batch_as_completed"><code class="docutils literal notranslate"><span class="pre">batch_as_completed()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.bind"><code class="docutils literal notranslate"><span class="pre">bind()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.completion_with_retry"><code class="docutils literal notranslate"><span class="pre">completion_with_retry()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.configurable_alternatives"><code class="docutils literal notranslate"><span class="pre">configurable_alternatives()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.configurable_fields"><code class="docutils literal notranslate"><span class="pre">configurable_fields()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.get_num_tokens"><code class="docutils literal notranslate"><span class="pre">get_num_tokens()</span></code></a></li>
@@ -1685,7 +1779,6 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.invoke"><code class="docutils literal notranslate"><span class="pre">invoke()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.stream"><code class="docutils literal notranslate"><span class="pre">stream()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.validate_environment"><code class="docutils literal notranslate"><span class="pre">validate_environment()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.with_alisteners"><code class="docutils literal notranslate"><span class="pre">with_alisteners()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.with_config"><code class="docutils literal notranslate"><span class="pre">with_config()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentLLM.with_fallbacks"><code class="docutils literal notranslate"><span class="pre">with_fallbacks()</span></code></a></li>
