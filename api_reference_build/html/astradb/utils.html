@@ -40,7 +40,7 @@
 <link href="storage/langchain_astradb.storage.AstraDBStore.html" rel="prev" title="AstraDBStore"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 16, 2024" name="docbuild:last-update"/>
+<meta content="Oct 17, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -225,9 +225,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="storage.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">storage</span></code></a></li>
 <li class="toctree-l2 current active has-children"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="utils/langchain_astradb.utils.astradb.SetupMode.html">SetupMode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="utils/langchain_astradb.utils.mmr_traversal.MmrHelper.html">MmrHelper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="utils/langchain_astradb.utils.mmr.cosine_similarity.html">cosine_similarity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="utils/langchain_astradb.utils.mmr.maximal_marginal_relevance.html">maximal_marginal_relevance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils/langchain_astradb.utils.mmr_helper.MmrHelper.html">MmrHelper</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="vectorstores.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">vectorstores</span></code></a></li>
@@ -248,6 +246,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../google_vertexai/index.html">Google VertexAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../groq/index.html">Groq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../huggingface/index.html">Huggingface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ibm/index.html">Ibm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../milvus/index.html">Milvus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../mistralai/index.html">MistralAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../mongodb/index.html">MongoDB</a></li>
@@ -305,20 +304,8 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="utils/langchain_astradb.utils.astradb.SetupMode.html#langchain_astradb.utils.astradb.SetupMode" title="langchain_astradb.utils.astradb.SetupMode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.astradb.SetupMode</span></code></a>(value[, names, ...])</p></td>
 <td><p>Setup mode for the Astra DB collection.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="utils/langchain_astradb.utils.mmr_traversal.MmrHelper.html#langchain_astradb.utils.mmr_traversal.MmrHelper" title="langchain_astradb.utils.mmr_traversal.MmrHelper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.mmr_traversal.MmrHelper</span></code></a>(k, query_embedding)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="utils/langchain_astradb.utils.mmr_helper.MmrHelper.html#langchain_astradb.utils.mmr_helper.MmrHelper" title="langchain_astradb.utils.mmr_helper.MmrHelper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.mmr_helper.MmrHelper</span></code></a>(k, query_embedding)</p></td>
 <td><p>Helper for executing an MMR traversal query.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Functions</strong></p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="utils/langchain_astradb.utils.mmr.cosine_similarity.html#langchain_astradb.utils.mmr.cosine_similarity" title="langchain_astradb.utils.mmr.cosine_similarity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.mmr.cosine_similarity</span></code></a>(x, y)</p></td>
-<td><p>Row-wise cosine similarity between two equal-width matrices.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="utils/langchain_astradb.utils.mmr.maximal_marginal_relevance.html#langchain_astradb.utils.mmr.maximal_marginal_relevance" title="langchain_astradb.utils.mmr.maximal_marginal_relevance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.mmr.maximal_marginal_relevance</span></code></a>(...[, ...])</p></td>
-<td><p>Calculate maximal marginal relevance.</p></td>
 </tr>
 </tbody>
 </table>

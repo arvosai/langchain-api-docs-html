@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 16, 2024" name="docbuild:last-update"/>
+<meta content="Oct 17, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -612,18 +612,20 @@ document.write(`
                     <span class="n">service</span><span class="o">=</span><span class="n">collection_vector_service_options</span><span class="p">,</span>
                     <span class="n">check_exists</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="p">)</span>
-            <span class="k">except</span> <span class="n">DataAPIException</span><span class="p">:</span>
+            <span class="k">except</span> <span class="n">DataAPIException</span> <span class="k">as</span> <span class="n">data_api_exception</span><span class="p">:</span>
                 <span class="c1"># possibly the collection is preexisting and may have legacy,</span>
                 <span class="c1"># or custom, indexing settings: verify</span>
                 <span class="n">collection_descriptors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">list_collections</span><span class="p">())</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_indexing_policy</span><span class="p">(</span>
-                    <span class="n">collection_descriptors</span><span class="o">=</span><span class="n">collection_descriptors</span><span class="p">,</span>
-                    <span class="n">collection_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
-                    <span class="n">requested_indexing_policy</span><span class="o">=</span><span class="n">requested_indexing_policy</span><span class="p">,</span>
-                    <span class="n">default_indexing_policy</span><span class="o">=</span><span class="n">default_indexing_policy</span><span class="p">,</span>
-                <span class="p">):</span>
-                    <span class="c1"># other reasons for the exception</span>
-                    <span class="k">raise</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_indexing_policy</span><span class="p">(</span>
+                        <span class="n">collection_descriptors</span><span class="o">=</span><span class="n">collection_descriptors</span><span class="p">,</span>
+                        <span class="n">collection_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
+                        <span class="n">requested_indexing_policy</span><span class="o">=</span><span class="n">requested_indexing_policy</span><span class="p">,</span>
+                        <span class="n">default_indexing_policy</span><span class="o">=</span><span class="n">default_indexing_policy</span><span class="p">,</span>
+                    <span class="p">):</span>
+                        <span class="k">raise</span> <span class="n">data_api_exception</span>  <span class="c1"># noqa: TRY201</span>
+                <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">validation_error</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">validation_error</span> <span class="kn">from</span> <span class="nn">data_api_exception</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_asetup_db</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -652,20 +654,23 @@ document.write(`
                 <span class="n">service</span><span class="o">=</span><span class="n">collection_vector_service_options</span><span class="p">,</span>
                 <span class="n">check_exists</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="k">except</span> <span class="n">DataAPIException</span><span class="p">:</span>
+        <span class="k">except</span> <span class="n">DataAPIException</span> <span class="k">as</span> <span class="n">data_api_exception</span><span class="p">:</span>
             <span class="c1"># possibly the collection is preexisting and may have legacy,</span>
             <span class="c1"># or custom, indexing settings: verify</span>
             <span class="n">collection_descriptors</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="n">coll_desc</span> <span class="k">async</span> <span class="k">for</span> <span class="n">coll_desc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_database</span><span class="o">.</span><span class="n">list_collections</span><span class="p">()</span>
             <span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_indexing_policy</span><span class="p">(</span>
-                <span class="n">collection_descriptors</span><span class="o">=</span><span class="n">collection_descriptors</span><span class="p">,</span>
-                <span class="n">collection_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
-                <span class="n">requested_indexing_policy</span><span class="o">=</span><span class="n">requested_indexing_policy</span><span class="p">,</span>
-                <span class="n">default_indexing_policy</span><span class="o">=</span><span class="n">default_indexing_policy</span><span class="p">,</span>
-            <span class="p">):</span>
-                <span class="c1"># other reasons for the exception</span>
-                <span class="k">raise</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_indexing_policy</span><span class="p">(</span>
+                    <span class="n">collection_descriptors</span><span class="o">=</span><span class="n">collection_descriptors</span><span class="p">,</span>
+                    <span class="n">collection_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
+                    <span class="n">requested_indexing_policy</span><span class="o">=</span><span class="n">requested_indexing_policy</span><span class="p">,</span>
+                    <span class="n">default_indexing_policy</span><span class="o">=</span><span class="n">default_indexing_policy</span><span class="p">,</span>
+                <span class="p">):</span>
+                    <span class="c1"># other reasons for the exception</span>
+                    <span class="k">raise</span> <span class="n">data_api_exception</span>  <span class="c1"># noqa: TRY201</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">validation_error</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">validation_error</span> <span class="kn">from</span> <span class="nn">data_api_exception</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_validate_indexing_policy</span><span class="p">(</span>

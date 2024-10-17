@@ -38,7 +38,7 @@
 <link href="../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 16, 2024" name="docbuild:last-update"/>
+<meta content="Oct 17, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -229,11 +229,15 @@ document.write(`
 <h1>Source code for pydantic_settings.main</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span> <span class="k">as</span> <span class="n">_annotations</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">ClassVar</span>
+<span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">Namespace</span>
+<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">SimpleNamespace</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">TypeVar</span>
 
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">ConfigDict</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">AliasGenerator</span><span class="p">,</span> <span class="n">ConfigDict</span>
 <span class="kn">from</span> <span class="nn">pydantic._internal._config</span> <span class="kn">import</span> <span class="n">config_keys</span>
-<span class="kn">from</span> <span class="nn">pydantic._internal._utils</span> <span class="kn">import</span> <span class="n">deep_update</span>
+<span class="kn">from</span> <span class="nn">pydantic._internal._signature</span> <span class="kn">import</span> <span class="n">_field_name_for_signature</span>
+<span class="kn">from</span> <span class="nn">pydantic._internal._utils</span> <span class="kn">import</span> <span class="n">deep_update</span><span class="p">,</span> <span class="n">is_model_class</span>
+<span class="kn">from</span> <span class="nn">pydantic.dataclasses</span> <span class="kn">import</span> <span class="n">is_pydantic_dataclass</span>
 <span class="kn">from</span> <span class="nn">pydantic.main</span> <span class="kn">import</span> <span class="n">BaseModel</span>
 
 <span class="kn">from</span> <span class="nn">.sources</span> <span class="kn">import</span> <span class="p">(</span>
@@ -246,8 +250,13 @@ document.write(`
     <span class="n">InitSettingsSource</span><span class="p">,</span>
     <span class="n">PathType</span><span class="p">,</span>
     <span class="n">PydanticBaseSettingsSource</span><span class="p">,</span>
+    <span class="n">PydanticModel</span><span class="p">,</span>
     <span class="n">SecretsSettingsSource</span><span class="p">,</span>
+    <span class="n">SettingsError</span><span class="p">,</span>
+    <span class="n">get_subcommand</span><span class="p">,</span>
 <span class="p">)</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">'T'</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">SettingsConfigDict</span><span class="p">(</span><span class="n">ConfigDict</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -262,7 +271,6 @@ document.write(`
     <span class="n">env_parse_enums</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="n">cli_prog_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="n">cli_parse_args</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
-    <span class="n">cli_settings_source</span><span class="p">:</span> <span class="n">CliSettingsSource</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="n">cli_parse_none_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="n">cli_hide_none_type</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="n">cli_avoid_json</span><span class="p">:</span> <span class="nb">bool</span>
@@ -270,7 +278,9 @@ document.write(`
     <span class="n">cli_use_class_docs_for_groups</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="n">cli_exit_on_error</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="n">cli_prefix</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">cli_flag_prefix_char</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">cli_implicit_flags</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">cli_ignore_unknown_args</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="n">secrets_dir</span><span class="p">:</span> <span class="n">PathType</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="n">json_file</span><span class="p">:</span> <span class="n">PathType</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="n">json_file_encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
@@ -318,7 +328,8 @@ document.write(`
 <span class="sd">    All the below attributes can be set via `model_config`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        _case_sensitive: Whether environment variables names should be read with case-sensitivity. Defaults to `None`.</span>
+<span class="sd">        _case_sensitive: Whether environment and CLI variable names should be read with case-sensitivity.</span>
+<span class="sd">            Defaults to `None`.</span>
 <span class="sd">        _nested_model_default_partial_update: Whether to allow partial updates on nested model default object fields.</span>
 <span class="sd">            Defaults to `False`.</span>
 <span class="sd">        _env_prefix: Prefix for all environment variables. Defaults to `None`.</span>
@@ -347,8 +358,10 @@ document.write(`
 <span class="sd">        _cli_exit_on_error: Determines whether or not the internal parser exits with error info when an error occurs.</span>
 <span class="sd">            Defaults to `True`.</span>
 <span class="sd">        _cli_prefix: The root parser command line arguments prefix. Defaults to "".</span>
+<span class="sd">        _cli_flag_prefix_char: The flag prefix character to use for CLI optional arguments. Defaults to '-'.</span>
 <span class="sd">        _cli_implicit_flags: Whether `bool` fields should be implicitly converted into CLI boolean flags.</span>
 <span class="sd">            (e.g. --flag, --no-flag). Defaults to `False`.</span>
+<span class="sd">        _cli_ignore_unknown_args: Whether to ignore unknown CLI args and parse only known ones. Defaults to `False`.</span>
 <span class="sd">        _secrets_dir: The secret files directory or a sequence of directories. Defaults to `None`.</span>
 <span class="sd">    """</span>
 
@@ -373,7 +386,9 @@ document.write(`
         <span class="n">_cli_use_class_docs_for_groups</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">_cli_exit_on_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">_cli_prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">_cli_flag_prefix_char</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">_cli_implicit_flags</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">_cli_ignore_unknown_args</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">_secrets_dir</span><span class="p">:</span> <span class="n">PathType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">values</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -400,10 +415,14 @@ document.write(`
                 <span class="n">_cli_use_class_docs_for_groups</span><span class="o">=</span><span class="n">_cli_use_class_docs_for_groups</span><span class="p">,</span>
                 <span class="n">_cli_exit_on_error</span><span class="o">=</span><span class="n">_cli_exit_on_error</span><span class="p">,</span>
                 <span class="n">_cli_prefix</span><span class="o">=</span><span class="n">_cli_prefix</span><span class="p">,</span>
+                <span class="n">_cli_flag_prefix_char</span><span class="o">=</span><span class="n">_cli_flag_prefix_char</span><span class="p">,</span>
                 <span class="n">_cli_implicit_flags</span><span class="o">=</span><span class="n">_cli_implicit_flags</span><span class="p">,</span>
+                <span class="n">_cli_ignore_unknown_args</span><span class="o">=</span><span class="n">_cli_ignore_unknown_args</span><span class="p">,</span>
                 <span class="n">_secrets_dir</span><span class="o">=</span><span class="n">_secrets_dir</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
+
+    <span class="fm">__init__</span><span class="o">.</span><span class="n">__pydantic_base_init__</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># type: ignore</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">settings_customise_sources</span><span class="p">(</span>
@@ -451,7 +470,9 @@ document.write(`
         <span class="n">_cli_use_class_docs_for_groups</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">_cli_exit_on_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">_cli_prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">_cli_flag_prefix_char</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">_cli_implicit_flags</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">_cli_ignore_unknown_args</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">_secrets_dir</span><span class="p">:</span> <span class="n">PathType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="c1"># Determine settings config values</span>
@@ -506,8 +527,18 @@ document.write(`
             <span class="n">_cli_exit_on_error</span> <span class="k">if</span> <span class="n">_cli_exit_on_error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'cli_exit_on_error'</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">cli_prefix</span> <span class="o">=</span> <span class="n">_cli_prefix</span> <span class="k">if</span> <span class="n">_cli_prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'cli_prefix'</span><span class="p">)</span>
+        <span class="n">cli_flag_prefix_char</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">_cli_flag_prefix_char</span>
+            <span class="k">if</span> <span class="n">_cli_flag_prefix_char</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'cli_flag_prefix_char'</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">cli_implicit_flags</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">_cli_implicit_flags</span> <span class="k">if</span> <span class="n">_cli_implicit_flags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'cli_implicit_flags'</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">cli_ignore_unknown_args</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">_cli_ignore_unknown_args</span>
+            <span class="k">if</span> <span class="n">_cli_ignore_unknown_args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'cli_ignore_unknown_args'</span><span class="p">)</span>
         <span class="p">)</span>
 
         <span class="n">secrets_dir</span> <span class="o">=</span> <span class="n">_secrets_dir</span> <span class="k">if</span> <span class="n">_secrets_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'secrets_dir'</span><span class="p">)</span>
@@ -554,24 +585,24 @@ document.write(`
             <span class="n">file_secret_settings</span><span class="o">=</span><span class="n">file_secret_settings</span><span class="p">,</span>
         <span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">default_settings</span><span class="p">,)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">source</span> <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">sources</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">CliSettingsSource</span><span class="p">)]):</span>
-            <span class="k">if</span> <span class="n">cli_parse_args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">cli_settings_source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">cli_settings</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">CliSettingsSource</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span>
-                        <span class="n">cli_prog_name</span><span class="o">=</span><span class="n">cli_prog_name</span><span class="p">,</span>
-                        <span class="n">cli_parse_args</span><span class="o">=</span><span class="n">cli_parse_args</span><span class="p">,</span>
-                        <span class="n">cli_parse_none_str</span><span class="o">=</span><span class="n">cli_parse_none_str</span><span class="p">,</span>
-                        <span class="n">cli_hide_none_type</span><span class="o">=</span><span class="n">cli_hide_none_type</span><span class="p">,</span>
-                        <span class="n">cli_avoid_json</span><span class="o">=</span><span class="n">cli_avoid_json</span><span class="p">,</span>
-                        <span class="n">cli_enforce_required</span><span class="o">=</span><span class="n">cli_enforce_required</span><span class="p">,</span>
-                        <span class="n">cli_use_class_docs_for_groups</span><span class="o">=</span><span class="n">cli_use_class_docs_for_groups</span><span class="p">,</span>
-                        <span class="n">cli_exit_on_error</span><span class="o">=</span><span class="n">cli_exit_on_error</span><span class="p">,</span>
-                        <span class="n">cli_prefix</span><span class="o">=</span><span class="n">cli_prefix</span><span class="p">,</span>
-                        <span class="n">cli_implicit_flags</span><span class="o">=</span><span class="n">cli_implicit_flags</span><span class="p">,</span>
-                        <span class="n">case_sensitive</span><span class="o">=</span><span class="n">case_sensitive</span><span class="p">,</span>
-                    <span class="p">)</span>
-                    <span class="k">if</span> <span class="n">cli_settings_source</span> <span class="ow">is</span> <span class="kc">None</span>
-                    <span class="k">else</span> <span class="n">cli_settings_source</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cli_settings_source</span><span class="p">,</span> <span class="n">CliSettingsSource</span><span class="p">):</span>
+                <span class="n">sources</span> <span class="o">=</span> <span class="p">(</span><span class="n">cli_settings_source</span><span class="p">,)</span> <span class="o">+</span> <span class="n">sources</span>
+            <span class="k">elif</span> <span class="n">cli_parse_args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">cli_settings</span> <span class="o">=</span> <span class="n">CliSettingsSource</span><span class="p">[</span><span class="n">Any</span><span class="p">](</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span>
+                    <span class="n">cli_prog_name</span><span class="o">=</span><span class="n">cli_prog_name</span><span class="p">,</span>
+                    <span class="n">cli_parse_args</span><span class="o">=</span><span class="n">cli_parse_args</span><span class="p">,</span>
+                    <span class="n">cli_parse_none_str</span><span class="o">=</span><span class="n">cli_parse_none_str</span><span class="p">,</span>
+                    <span class="n">cli_hide_none_type</span><span class="o">=</span><span class="n">cli_hide_none_type</span><span class="p">,</span>
+                    <span class="n">cli_avoid_json</span><span class="o">=</span><span class="n">cli_avoid_json</span><span class="p">,</span>
+                    <span class="n">cli_enforce_required</span><span class="o">=</span><span class="n">cli_enforce_required</span><span class="p">,</span>
+                    <span class="n">cli_use_class_docs_for_groups</span><span class="o">=</span><span class="n">cli_use_class_docs_for_groups</span><span class="p">,</span>
+                    <span class="n">cli_exit_on_error</span><span class="o">=</span><span class="n">cli_exit_on_error</span><span class="p">,</span>
+                    <span class="n">cli_prefix</span><span class="o">=</span><span class="n">cli_prefix</span><span class="p">,</span>
+                    <span class="n">cli_flag_prefix_char</span><span class="o">=</span><span class="n">cli_flag_prefix_char</span><span class="p">,</span>
+                    <span class="n">cli_implicit_flags</span><span class="o">=</span><span class="n">cli_implicit_flags</span><span class="p">,</span>
+                    <span class="n">cli_ignore_unknown_args</span><span class="o">=</span><span class="n">cli_ignore_unknown_args</span><span class="p">,</span>
+                    <span class="n">case_sensitive</span><span class="o">=</span><span class="n">case_sensitive</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="n">sources</span> <span class="o">=</span> <span class="p">(</span><span class="n">cli_settings</span><span class="p">,)</span> <span class="o">+</span> <span class="n">sources</span>
         <span class="k">if</span> <span class="n">sources</span><span class="p">:</span>
@@ -608,7 +639,6 @@ document.write(`
         <span class="n">env_parse_enums</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">cli_prog_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">cli_parse_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">cli_settings_source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">cli_parse_none_str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">cli_hide_none_type</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">cli_avoid_json</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -616,7 +646,9 @@ document.write(`
         <span class="n">cli_use_class_docs_for_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">cli_exit_on_error</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">cli_prefix</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span>
+        <span class="n">cli_flag_prefix_char</span><span class="o">=</span><span class="s1">'-'</span><span class="p">,</span>
         <span class="n">cli_implicit_flags</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">cli_ignore_unknown_args</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">json_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">json_file_encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">yaml_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -625,6 +657,117 @@ document.write(`
         <span class="n">secrets_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">protected_namespaces</span><span class="o">=</span><span class="p">(</span><span class="s1">'model_'</span><span class="p">,</span> <span class="s1">'settings_'</span><span class="p">),</span>
     <span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">CliApp</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    A utility class for running Pydantic `BaseSettings`, `BaseModel`, or `pydantic.dataclasses.dataclass` as</span>
+<span class="sd">    CLI applications.</span>
+<span class="sd">    """</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_run_cli_cmd</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">cli_cmd_method_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_required</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">),</span> <span class="n">cli_cmd_method_name</span><span class="p">):</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">),</span> <span class="n">cli_cmd_method_name</span><span class="p">)(</span><span class="n">model</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">is_required</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Error: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1"> class is missing </span><span class="si">{</span><span class="n">cli_cmd_method_name</span><span class="si">}</span><span class="s1"> entrypoint'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+        <span class="n">model_cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">T</span><span class="p">],</span>
+        <span class="n">cli_args</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">Namespace</span> <span class="o">|</span> <span class="n">SimpleNamespace</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cli_settings_source</span><span class="p">:</span> <span class="n">CliSettingsSource</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cli_exit_on_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cli_cmd_method_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'cli_cmd'</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">model_init_data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Runs a Pydantic `BaseSettings`, `BaseModel`, or `pydantic.dataclasses.dataclass` as a CLI application.</span>
+<span class="sd">        Running a model as a CLI application requires the `cli_cmd` method to be defined in the model class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model_cls: The model class to run as a CLI application.</span>
+<span class="sd">            cli_args: The list of CLI arguments to parse. If `cli_settings_source` is specified, this may</span>
+<span class="sd">                also be a namespace or dictionary of pre-parsed CLI arguments. Defaults to `sys.argv[1:]`.</span>
+<span class="sd">            cli_settings_source: Override the default CLI settings source with a user defined instance.</span>
+<span class="sd">                Defaults to `None`.</span>
+<span class="sd">            cli_exit_on_error: Determines whether this function exits on error. If model is subclass of</span>
+<span class="sd">                `BaseSettings`, defaults to BaseSettings `cli_exit_on_error` value. Otherwise, defaults to</span>
+<span class="sd">                `True`.</span>
+<span class="sd">            cli_cmd_method_name: The CLI command method name to run. Defaults to "cli_cmd".</span>
+<span class="sd">            model_init_data: The model init data.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The ran instance of model.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            SettingsError: If model_cls is not subclass of `BaseModel` or `pydantic.dataclasses.dataclass`.</span>
+<span class="sd">            SettingsError: If model_cls does not have a `cli_cmd` entrypoint defined.</span>
+<span class="sd">        """</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">is_pydantic_dataclass</span><span class="p">(</span><span class="n">model_cls</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_model_class</span><span class="p">(</span><span class="n">model_cls</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">'Error: </span><span class="si">{</span><span class="n">model_cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1"> is not subclass of BaseModel or pydantic.dataclasses.dataclass'</span>
+            <span class="p">)</span>
+
+        <span class="n">cli_settings</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">cli_parse_args</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">cli_args</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">cli_args</span>
+        <span class="k">if</span> <span class="n">cli_settings_source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cli_parse_args</span><span class="p">,</span> <span class="p">(</span><span class="n">Namespace</span><span class="p">,</span> <span class="n">SimpleNamespace</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)):</span>
+                <span class="n">cli_settings</span> <span class="o">=</span> <span class="n">cli_settings_source</span><span class="p">(</span><span class="n">parsed_args</span><span class="o">=</span><span class="n">cli_parse_args</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cli_settings</span> <span class="o">=</span> <span class="n">cli_settings_source</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">cli_parse_args</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cli_parse_args</span><span class="p">,</span> <span class="p">(</span><span class="n">Namespace</span><span class="p">,</span> <span class="n">SimpleNamespace</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span><span class="s1">'Error: `cli_args` must be list[str] or None when `cli_settings_source` is not used'</span><span class="p">)</span>
+
+        <span class="n">model_init_data</span><span class="p">[</span><span class="s1">'_cli_parse_args'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cli_parse_args</span>
+        <span class="n">model_init_data</span><span class="p">[</span><span class="s1">'_cli_exit_on_error'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cli_exit_on_error</span>
+        <span class="n">model_init_data</span><span class="p">[</span><span class="s1">'_cli_settings_source'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cli_settings</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">model_cls</span><span class="p">,</span> <span class="n">BaseSettings</span><span class="p">):</span>
+
+            <span class="k">class</span> <span class="nc">CliAppBaseSettings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">,</span> <span class="n">model_cls</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+                <span class="n">model_config</span> <span class="o">=</span> <span class="n">SettingsConfigDict</span><span class="p">(</span>
+                    <span class="n">alias_generator</span><span class="o">=</span><span class="n">AliasGenerator</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'_'</span><span class="p">,</span> <span class="s1">'-'</span><span class="p">)),</span>
+                    <span class="n">nested_model_default_partial_update</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">cli_hide_none_type</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">cli_avoid_json</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">cli_enforce_required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">cli_implicit_flags</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="n">model</span> <span class="o">=</span> <span class="n">CliAppBaseSettings</span><span class="p">(</span><span class="o">**</span><span class="n">model_init_data</span><span class="p">)</span>
+            <span class="n">model_init_data</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">field_info</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">model_fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">model_init_data</span><span class="p">[</span><span class="n">_field_name_for_signature</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">field_info</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">CliApp</span><span class="o">.</span><span class="n">_run_cli_cmd</span><span class="p">(</span><span class="n">model_cls</span><span class="p">(</span><span class="o">**</span><span class="n">model_init_data</span><span class="p">),</span> <span class="n">cli_cmd_method_name</span><span class="p">,</span> <span class="n">is_required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">run_subcommand</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">PydanticModel</span><span class="p">,</span> <span class="n">cli_exit_on_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cli_cmd_method_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'cli_cmd'</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PydanticModel</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Runs the model subcommand. Running a model subcommand requires the `cli_cmd` method to be defined in</span>
+<span class="sd">        the nested model subcommand class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model: The model to run the subcommand from.</span>
+<span class="sd">            cli_exit_on_error: Determines whether this function exits with error if no subcommand is found.</span>
+<span class="sd">                Defaults to model_config `cli_exit_on_error` value if set. Otherwise, defaults to `True`.</span>
+<span class="sd">            cli_cmd_method_name: The CLI command method name to run. Defaults to "cli_cmd".</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The ran subcommand model.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            SystemExit: When no subcommand is found and cli_exit_on_error=`True` (the default).</span>
+<span class="sd">            SettingsError: When no subcommand is found and cli_exit_on_error=`False`.</span>
+<span class="sd">        """</span>
+
+        <span class="n">subcommand</span> <span class="o">=</span> <span class="n">get_subcommand</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">is_required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cli_exit_on_error</span><span class="o">=</span><span class="n">cli_exit_on_error</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">CliApp</span><span class="o">.</span><span class="n">_run_cli_cmd</span><span class="p">(</span><span class="n">subcommand</span><span class="p">,</span> <span class="n">cli_cmd_method_name</span><span class="p">,</span> <span class="n">is_required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </article>
 </div>

@@ -40,7 +40,7 @@
 <link href="langchain_core.messages.utils.messages_from_dict.html" rel="prev" title="messages_from_dict"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 16, 2024" name="docbuild:last-update"/>
+<meta content="Oct 17, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -261,6 +261,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.tool.tool_call.html">tool_call</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.tool.tool_call_chunk.html">tool_call_chunk</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.utils.convert_to_messages.html">convert_to_messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.utils.convert_to_openai_messages.html">convert_to_openai_messages</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.utils.filter_messages.html">filter_messages</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.utils.get_buffer_string.html">get_buffer_string</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.utils.merge_message_runs.html">merge_message_runs</a></li>
@@ -311,6 +312,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../google_vertexai/index.html">Google VertexAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../groq/index.html">Groq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../huggingface/index.html">Huggingface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ibm/index.html">Ibm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../milvus/index.html">Milvus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mistralai/index.html">MistralAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mongodb/index.html">MongoDB</a></li>
@@ -441,7 +443,7 @@ newlines.</p>
 </dd>
 </dl>
 </dd>
-<dt>Returns:</dt><dd><p>List of trimmed BaseMessages.</p>
+<dt>Returns:</dt><dd><p>list of trimmed BaseMessages.</p>
 </dd>
 <dt>Raises:</dt><dd><dl class="simple">
 <dt>ValueError: if two incompatible arguments are specified or an unrecognized</dt><dd><p><code class="docutils literal notranslate"><span class="pre">strategy</span></code> is specified.</p>
@@ -451,7 +453,7 @@ newlines.</p>
 <dt>Example:</dt><dd><p>Trim chat history based on token count, keeping the SystemMessage if
 present, and ensuring that the chat history starts with a HumanMessage (
 or a SystemMessage followed by a HumanMessage).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="nb">list</span>
 
 <span class="kn">from</span> <span class="nn">langchain_core.messages</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">AIMessage</span><span class="p">,</span>
@@ -561,7 +563,7 @@ number of tokens in each message.</p>
     <span class="n">AIMessage</span><span class="p">(</span><span class="s2">"This is a 4 token text. The full message is 10 tokens."</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">"fourth"</span><span class="p">),</span>
 <span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">dummy_token_counter</span><span class="p">(</span><span class="n">messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">dummy_token_counter</span><span class="p">(</span><span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="c1"># treat each message like it adds 3 default tokens at the beginning</span>
     <span class="c1"># of the message and at the end of the message. 3 + 4 + 3 = 10 tokens</span>
     <span class="c1"># per message.</span>
@@ -603,7 +605,7 @@ number of tokens in each message.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>messages</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>MessageLikeRepresentation</em><em>]</em><em>]</em>)</p></li>
+<li><p><strong>messages</strong> (<em>Union</em><em>[</em><em>Sequence</em><em>[</em><em>MessageLikeRepresentation</em><em>]</em><em>, </em><em>None</em><em>]</em>)</p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>)</p></li>
 </ul>
 </dd>

@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>langchain_astradb.utils.mmr_traversal — 🦜🔗 LangChain  documentation</title>
+<title>langchain_astradb.utils.mmr_helper — 🦜🔗 LangChain  documentation</title>
 <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
@@ -33,12 +33,12 @@
 <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../../_static/copybutton.js?v=f281be69"></script>
 <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
-<script>DOCUMENTATION_OPTIONS.pagename = '_modules/langchain_astradb/utils/mmr_traversal';</script>
+<script>DOCUMENTATION_OPTIONS.pagename = '_modules/langchain_astradb/utils/mmr_helper';</script>
 <link href="../../../_static/favicon.png" rel="icon"/>
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 16, 2024" name="docbuild:last-update"/>
+<meta content="Oct 17, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -226,7 +226,7 @@ document.write(`
 </div>
 <div id="searchbox"></div>
 <article class="bd-article">
-<h1>Source code for langchain_astradb.utils.mmr_traversal</h1><div class="highlight"><pre>
+<h1>Source code for langchain_astradb.utils.mmr_helper</h1><div class="highlight"><pre>
 <span></span><span class="sd">"""Tools for the Graph Traversal Maximal Marginal Relevance (MMR) reranking."""</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
@@ -235,11 +235,9 @@ document.write(`
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Iterable</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="kn">from</span> <span class="nn">langchain_astradb.utils.mmr</span> <span class="kn">import</span> <span class="n">cosine_similarity</span>
+<span class="kn">from</span> <span class="nn">langchain_community.utils.math</span> <span class="kn">import</span> <span class="n">cosine_similarity</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">langchain_core.documents</span> <span class="kn">import</span> <span class="n">Document</span>
     <span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NDArray</span>
 
 
@@ -256,6 +254,7 @@ document.write(`
 <span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
 <span class="k">class</span> <span class="nc">_Candidate</span><span class="p">:</span>
     <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">similarity</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">weighted_similarity</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">weighted_redundancy</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -270,7 +269,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="MmrHelper">
-<a class="viewcode-back" href="../../../astradb/utils/langchain_astradb.utils.mmr_traversal.MmrHelper.html#langchain_astradb.utils.mmr_traversal.MmrHelper">[docs]</a>
+<a class="viewcode-back" href="../../../astradb/utils/langchain_astradb.utils.mmr_helper.MmrHelper.html#langchain_astradb.utils.mmr_helper.MmrHelper">[docs]</a>
 <span class="k">class</span> <span class="nc">MmrHelper</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Helper for executing an MMR traversal query.</span>
 
@@ -303,6 +302,13 @@ document.write(`
 
     <span class="n">selected_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 <span class="w">    </span><span class="sd">"""List of selected IDs (in selection order)."""</span>
+
+    <span class="n">selected_mmr_scores</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">"""List of MMR score at the time each document is selected."""</span>
+
+    <span class="n">selected_similarity_scores</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">"""List of similarity score for each selected document."""</span>
+
     <span class="n">selected_embeddings</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">]</span>
 <span class="w">    </span><span class="sd">"""(N, dim) ndarray with a row for each selected node."""</span>
 
@@ -313,8 +319,6 @@ document.write(`
 
 <span class="sd">    Same order as rows in `candidate_embeddings`.</span>
 <span class="sd">    """</span>
-    <span class="n">candidate_docs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Document</span><span class="p">]</span>
-<span class="w">    </span><span class="sd">"""Dict containing the documents associated with each candidate ID."""</span>
     <span class="n">candidate_embeddings</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">]</span>
 <span class="w">    </span><span class="sd">"""(N, dim) ndarray with a row for each candidate."""</span>
 
@@ -322,7 +326,7 @@ document.write(`
     <span class="n">best_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="MmrHelper.__init__">
-<a class="viewcode-back" href="../../../astradb/utils/langchain_astradb.utils.mmr_traversal.MmrHelper.html#langchain_astradb.utils.mmr_traversal.MmrHelper.__init__">[docs]</a>
+<a class="viewcode-back" href="../../../astradb/utils/langchain_astradb.utils.mmr_helper.MmrHelper.html#langchain_astradb.utils.mmr_helper.MmrHelper.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -339,12 +343,13 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">score_threshold</span> <span class="o">=</span> <span class="n">score_threshold</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">selected_ids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selected_similarity_scores</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selected_mmr_scores</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># List of selected embeddings (in selection order).</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selected_embeddings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimensions</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">candidate_id_to_index</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">candidate_docs</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="c1"># List of the candidates.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">candidates</span> <span class="o">=</span> <span class="p">[]</span>
@@ -356,7 +361,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="MmrHelper.candidate_ids">
-<a class="viewcode-back" href="../../../astradb/utils/langchain_astradb.utils.mmr_traversal.MmrHelper.html#langchain_astradb.utils.mmr_traversal.MmrHelper.candidate_ids">[docs]</a>
+<a class="viewcode-back" href="../../../astradb/utils/langchain_astradb.utils.mmr_helper.MmrHelper.html#langchain_astradb.utils.mmr_helper.MmrHelper.candidate_ids">[docs]</a>
     <span class="k">def</span> <span class="nf">candidate_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Return the IDs of the candidates."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">candidate_id_to_index</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
@@ -367,11 +372,11 @@ document.write(`
         <span class="n">selected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selected_ids</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vsplit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selected_embeddings</span><span class="p">,</span> <span class="p">[</span><span class="n">selected</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_pop_candidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">candidate_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_pop_candidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">candidate_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">"""Pop the candidate with the given ID.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            The embedding of the candidate.</span>
+<span class="sd">            The similarity score and embedding of the candidate.</span>
 <span class="sd">        """</span>
         <span class="c1"># Get the embedding for the id.</span>
         <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">candidate_id_to_index</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">candidate_id</span><span class="p">)</span>
@@ -387,11 +392,14 @@ document.write(`
         <span class="c1"># candidate_embeddings.</span>
         <span class="n">last_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">candidate_embeddings</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
 
+        <span class="n">similarity</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="n">last_index</span><span class="p">:</span>
             <span class="c1"># Already the last item. We don't need to swap.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">candidates</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">similarity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">candidates</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span><span class="o">.</span><span class="n">similarity</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">candidate_embeddings</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">candidate_embeddings</span><span class="p">[</span><span class="n">last_index</span><span class="p">]</span>
+
+            <span class="n">similarity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">candidates</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">similarity</span>
 
             <span class="n">old_last</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">candidates</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">candidates</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">old_last</span>
@@ -401,10 +409,10 @@ document.write(`
             <span class="mi">0</span>
         <span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">embedding</span>
+        <span class="k">return</span> <span class="n">similarity</span><span class="p">,</span> <span class="n">embedding</span>
 
 <div class="viewcode-block" id="MmrHelper.pop_best">
-<a class="viewcode-back" href="../../../astradb/utils/langchain_astradb.utils.mmr_traversal.MmrHelper.html#langchain_astradb.utils.mmr_traversal.MmrHelper.pop_best">[docs]</a>
+<a class="viewcode-back" href="../../../astradb/utils/langchain_astradb.utils.mmr_helper.MmrHelper.html#langchain_astradb.utils.mmr_helper.MmrHelper.pop_best">[docs]</a>
     <span class="k">def</span> <span class="nf">pop_best</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Select and pop the best item being considered.</span>
 
@@ -418,11 +426,13 @@ document.write(`
 
         <span class="c1"># Get the selection and remove from candidates.</span>
         <span class="n">selected_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_id</span>
-        <span class="n">selected_embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pop_candidate</span><span class="p">(</span><span class="n">selected_id</span><span class="p">)</span>
+        <span class="n">selected_similarity</span><span class="p">,</span> <span class="n">selected_embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pop_candidate</span><span class="p">(</span><span class="n">selected_id</span><span class="p">)</span>
 
         <span class="c1"># Add the ID and embedding to the selected information.</span>
         <span class="n">selection_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selected_ids</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selected_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">selected_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selected_mmr_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">best_score</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selected_similarity_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">selected_similarity</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selected_embeddings</span><span class="p">[</span><span class="n">selection_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">selected_embedding</span>
 
         <span class="c1"># Reset the best score / best ID.</span>
@@ -444,10 +454,8 @@ document.write(`
 
 
 <div class="viewcode-block" id="MmrHelper.add_candidates">
-<a class="viewcode-back" href="../../../astradb/utils/langchain_astradb.utils.mmr_traversal.MmrHelper.html#langchain_astradb.utils.mmr_traversal.MmrHelper.add_candidates">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_candidates</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">candidates</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Document</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a class="viewcode-back" href="../../../astradb/utils/langchain_astradb.utils.mmr_helper.MmrHelper.html#langchain_astradb.utils.mmr_helper.MmrHelper.add_candidates">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_candidates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">candidates</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Add candidates to the consideration set."""</span>
         <span class="c1"># Determine the keys to actually include.</span>
         <span class="c1"># These are the candidates that aren't already selected</span>
@@ -469,9 +477,8 @@ document.write(`
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">candidate_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">include_ids</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">candidate_id</span> <span class="ow">in</span> <span class="n">include_ids</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">candidate_id_to_index</span><span class="p">[</span><span class="n">candidate_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">index</span>
-                <span class="n">doc</span><span class="p">,</span> <span class="n">embedding</span> <span class="o">=</span> <span class="n">candidates</span><span class="p">[</span><span class="n">candidate_id</span><span class="p">]</span>
+                <span class="n">embedding</span> <span class="o">=</span> <span class="n">candidates</span><span class="p">[</span><span class="n">candidate_id</span><span class="p">]</span>
                 <span class="n">new_embeddings</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">embedding</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">candidate_docs</span><span class="p">[</span><span class="n">candidate_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc</span>
 
         <span class="c1"># Compute the similarity to the query.</span>
         <span class="n">similarity</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">new_embeddings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_embedding</span><span class="p">)</span>
@@ -487,6 +494,7 @@ document.write(`
                 <span class="n">max_redundancy</span> <span class="o">=</span> <span class="n">redundancy</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
             <span class="n">candidate</span> <span class="o">=</span> <span class="n">_Candidate</span><span class="p">(</span>
                 <span class="nb">id</span><span class="o">=</span><span class="n">candidate_id</span><span class="p">,</span>
+                <span class="n">similarity</span><span class="o">=</span><span class="n">similarity</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
                 <span class="n">weighted_similarity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_mult</span> <span class="o">*</span> <span class="n">similarity</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
                 <span class="n">weighted_redundancy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_mult_complement</span> <span class="o">*</span> <span class="n">max_redundancy</span><span class="p">,</span>
             <span class="p">)</span>

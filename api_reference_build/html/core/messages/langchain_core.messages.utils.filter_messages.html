@@ -37,10 +37,10 @@
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
 <link href="langchain_core.messages.utils.get_buffer_string.html" rel="next" title="get_buffer_string"/>
-<link href="langchain_core.messages.utils.convert_to_messages.html" rel="prev" title="convert_to_messages"/>
+<link href="langchain_core.messages.utils.convert_to_openai_messages.html" rel="prev" title="convert_to_openai_messages"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 16, 2024" name="docbuild:last-update"/>
+<meta content="Oct 17, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -261,6 +261,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.tool.tool_call.html">tool_call</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.tool.tool_call_chunk.html">tool_call_chunk</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.utils.convert_to_messages.html">convert_to_messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.utils.convert_to_openai_messages.html">convert_to_openai_messages</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">filter_messages</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.utils.get_buffer_string.html">get_buffer_string</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.utils.merge_message_runs.html">merge_message_runs</a></li>
@@ -311,6 +312,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../google_vertexai/index.html">Google VertexAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../groq/index.html">Groq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../huggingface/index.html">Huggingface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ibm/index.html">Ibm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../milvus/index.html">Milvus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mistralai/index.html">MistralAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mongodb/index.html">MongoDB</a></li>
@@ -369,7 +371,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>messages</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>MessageLikeRepresentation</em><em>]</em><em>]</em>) – Sequence Message-like objects to filter.</p></li>
+<li><p><strong>messages</strong> (<em>Union</em><em>[</em><em>Sequence</em><em>[</em><em>MessageLikeRepresentation</em><em>]</em><em>, </em><em>None</em><em>]</em>) – Sequence Message-like objects to filter.</p></li>
 <li><p><strong>include_names</strong> – Message names to include. Default is None.</p></li>
 <li><p><strong>exclude_names</strong> – Messages names to exclude. Default is None.</p></li>
 <li><p><strong>include_types</strong> – Message types to include. Can be specified as string names (e.g.

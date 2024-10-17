@@ -40,7 +40,7 @@
 <link href="load/langchain_core.load.serializable.try_neq_default.html" rel="prev" title="try_neq_default"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 16, 2024" name="docbuild:last-update"/>
+<meta content="Oct 17, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -258,6 +258,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="messages/langchain_core.messages.tool.tool_call.html">tool_call</a></li>
 <li class="toctree-l3"><a class="reference internal" href="messages/langchain_core.messages.tool.tool_call_chunk.html">tool_call_chunk</a></li>
 <li class="toctree-l3"><a class="reference internal" href="messages/langchain_core.messages.utils.convert_to_messages.html">convert_to_messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="messages/langchain_core.messages.utils.convert_to_openai_messages.html">convert_to_openai_messages</a></li>
 <li class="toctree-l3"><a class="reference internal" href="messages/langchain_core.messages.utils.filter_messages.html">filter_messages</a></li>
 <li class="toctree-l3"><a class="reference internal" href="messages/langchain_core.messages.utils.get_buffer_string.html">get_buffer_string</a></li>
 <li class="toctree-l3"><a class="reference internal" href="messages/langchain_core.messages.utils.merge_message_runs.html">merge_message_runs</a></li>
@@ -308,6 +309,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../google_vertexai/index.html">Google VertexAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../groq/index.html">Groq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../huggingface/index.html">Huggingface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ibm/index.html">Ibm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../milvus/index.html">Milvus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../mistralai/index.html">MistralAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../mongodb/index.html">MongoDB</a></li>
@@ -346,7 +348,7 @@ document.write(`
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="index.html">langchain-core: 0.3.10</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="index.html">langchain-core: 0.3.11</a></li>
 <li aria-current="page" class="breadcrumb-item active"><code...< li="">
 </code...<></li></ul>
 </nav>
@@ -479,22 +481,25 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="messages/langchain_core.messages.utils.convert_to_messages.html#langchain_core.messages.utils.convert_to_messages" title="langchain_core.messages.utils.convert_to_messages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.utils.convert_to_messages</span></code></a>(messages)</p></td>
 <td><p>Convert a sequence of messages to a list of messages.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="messages/langchain_core.messages.utils.filter_messages.html#langchain_core.messages.utils.filter_messages" title="langchain_core.messages.utils.filter_messages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.utils.filter_messages</span></code></a>([messages])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="messages/langchain_core.messages.utils.convert_to_openai_messages.html#langchain_core.messages.utils.convert_to_openai_messages" title="langchain_core.messages.utils.convert_to_openai_messages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.utils.convert_to_openai_messages</span></code></a>(...)</p></td>
+<td><p>Convert LangChain messages into OpenAI message dicts.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="messages/langchain_core.messages.utils.filter_messages.html#langchain_core.messages.utils.filter_messages" title="langchain_core.messages.utils.filter_messages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.utils.filter_messages</span></code></a>([messages])</p></td>
 <td><p>Filter messages based on name, type or id.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="messages/langchain_core.messages.utils.get_buffer_string.html#langchain_core.messages.utils.get_buffer_string" title="langchain_core.messages.utils.get_buffer_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.utils.get_buffer_string</span></code></a>(messages[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="messages/langchain_core.messages.utils.get_buffer_string.html#langchain_core.messages.utils.get_buffer_string" title="langchain_core.messages.utils.get_buffer_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.utils.get_buffer_string</span></code></a>(messages[, ...])</p></td>
 <td><p>Convert a sequence of Messages to strings and concatenate them into one string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="messages/langchain_core.messages.utils.merge_message_runs.html#langchain_core.messages.utils.merge_message_runs" title="langchain_core.messages.utils.merge_message_runs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.utils.merge_message_runs</span></code></a>([messages])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="messages/langchain_core.messages.utils.merge_message_runs.html#langchain_core.messages.utils.merge_message_runs" title="langchain_core.messages.utils.merge_message_runs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.utils.merge_message_runs</span></code></a>([messages])</p></td>
 <td><p>Merge consecutive Messages of the same type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="messages/langchain_core.messages.utils.message_chunk_to_message.html#langchain_core.messages.utils.message_chunk_to_message" title="langchain_core.messages.utils.message_chunk_to_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.utils.message_chunk_to_message</span></code></a>(chunk)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="messages/langchain_core.messages.utils.message_chunk_to_message.html#langchain_core.messages.utils.message_chunk_to_message" title="langchain_core.messages.utils.message_chunk_to_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.utils.message_chunk_to_message</span></code></a>(chunk)</p></td>
 <td><p>Convert a message chunk to a message.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="messages/langchain_core.messages.utils.messages_from_dict.html#langchain_core.messages.utils.messages_from_dict" title="langchain_core.messages.utils.messages_from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.utils.messages_from_dict</span></code></a>(messages)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="messages/langchain_core.messages.utils.messages_from_dict.html#langchain_core.messages.utils.messages_from_dict" title="langchain_core.messages.utils.messages_from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.utils.messages_from_dict</span></code></a>(messages)</p></td>
 <td><p>Convert a sequence of messages from dicts to Message objects.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="messages/langchain_core.messages.utils.trim_messages.html#langchain_core.messages.utils.trim_messages" title="langchain_core.messages.utils.trim_messages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.utils.trim_messages</span></code></a>([messages])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="messages/langchain_core.messages.utils.trim_messages.html#langchain_core.messages.utils.trim_messages" title="langchain_core.messages.utils.trim_messages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages.utils.trim_messages</span></code></a>([messages])</p></td>
 <td><p>Trim messages to be below a token count.</p></td>
 </tr>
 </tbody>

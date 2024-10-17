@@ -40,7 +40,7 @@
 <link href="langchain_core.messages.utils.message_chunk_to_message.html" rel="prev" title="message_chunk_to_message"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 16, 2024" name="docbuild:last-update"/>
+<meta content="Oct 17, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -261,6 +261,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.tool.tool_call.html">tool_call</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.tool.tool_call_chunk.html">tool_call_chunk</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.utils.convert_to_messages.html">convert_to_messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.utils.convert_to_openai_messages.html">convert_to_openai_messages</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.utils.filter_messages.html">filter_messages</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.utils.get_buffer_string.html">get_buffer_string</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_core.messages.utils.merge_message_runs.html">merge_message_runs</a></li>
@@ -311,6 +312,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../google_vertexai/index.html">Google VertexAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../groq/index.html">Groq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../huggingface/index.html">Huggingface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ibm/index.html">Ibm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../milvus/index.html">Milvus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mistralai/index.html">MistralAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mongodb/index.html">MongoDB</a></li>
@@ -371,7 +373,7 @@ document.write(`
 <dd class="field-odd"><p><strong>messages</strong> (<em>Sequence</em><em>[</em><em>dict</em><em>]</em>) – Sequence of messages (as dicts) to convert.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of messages (BaseMessages).</p>
+<dd class="field-even"><p>list of messages (BaseMessages).</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list[<a class="reference internal" href="langchain_core.messages.base.BaseMessage.html#langchain_core.messages.base.BaseMessage" title="langchain_core.messages.base.BaseMessage"><em>BaseMessage</em></a>]</p>

@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 16, 2024" name="docbuild:last-update"/>
+<meta content="Oct 17, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -729,14 +729,19 @@ document.write(`
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">AIMessageChunk</span><span class="p">):</span>
-                <span class="k">yield</span> <span class="n">ChatGenerationChunk</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">chunk</span><span class="p">)</span>
+                <span class="n">generation_chunk</span> <span class="o">=</span> <span class="n">ChatGenerationChunk</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">chunk</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">run_manager</span><span class="p">:</span>
+                    <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span>
+                        <span class="n">generation_chunk</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">chunk</span><span class="o">=</span><span class="n">generation_chunk</span>
+                    <span class="p">)</span>
+                <span class="k">yield</span> <span class="n">generation_chunk</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">delta</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">text</span>
                 <span class="k">if</span> <span class="n">generation_info</span> <span class="o">:=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">generation_info</span><span class="p">:</span>
                     <span class="n">usage_metadata</span> <span class="o">=</span> <span class="n">generation_info</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"usage_metadata"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">usage_metadata</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="k">yield</span> <span class="n">ChatGenerationChunk</span><span class="p">(</span>
+                <span class="n">generation_chunk</span> <span class="o">=</span> <span class="n">ChatGenerationChunk</span><span class="p">(</span>
                     <span class="n">message</span><span class="o">=</span><span class="n">AIMessageChunk</span><span class="p">(</span>
                         <span class="n">content</span><span class="o">=</span><span class="n">delta</span><span class="p">,</span>
                         <span class="n">response_metadata</span><span class="o">=</span><span class="n">chunk</span><span class="o">.</span><span class="n">generation_info</span><span class="p">,</span>
@@ -745,6 +750,11 @@ document.write(`
                     <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">generation_info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                     <span class="k">else</span> <span class="n">AIMessageChunk</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">delta</span><span class="p">)</span>
                 <span class="p">)</span>
+                <span class="k">if</span> <span class="n">run_manager</span><span class="p">:</span>
+                    <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span>
+                        <span class="n">generation_chunk</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">chunk</span><span class="o">=</span><span class="n">generation_chunk</span>
+                    <span class="p">)</span>
+                <span class="k">yield</span> <span class="n">generation_chunk</span>
 
     <span class="k">def</span> <span class="nf">_generate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>

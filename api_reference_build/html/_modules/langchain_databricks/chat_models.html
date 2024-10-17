@@ -38,7 +38,7 @@
 <link href="../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 16, 2024" name="docbuild:last-update"/>
+<meta content="Oct 17, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -600,11 +600,16 @@ document.write(`
         <span class="k">if</span> <span class="n">tool_choice</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tool_choice</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="c1"># tool_choice is a tool/function name</span>
-                <span class="k">if</span> <span class="n">tool_choice</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"auto"</span><span class="p">,</span> <span class="s2">"none"</span><span class="p">,</span> <span class="s2">"required"</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">tool_choice</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"auto"</span><span class="p">,</span> <span class="s2">"none"</span><span class="p">,</span> <span class="s2">"required"</span><span class="p">,</span> <span class="s2">"any"</span><span class="p">):</span>
                     <span class="n">tool_choice</span> <span class="o">=</span> <span class="p">{</span>
                         <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"function"</span><span class="p">,</span>
                         <span class="s2">"function"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="n">tool_choice</span><span class="p">},</span>
                     <span class="p">}</span>
+                <span class="c1"># 'any' is not natively supported by OpenAI API,</span>
+                <span class="c1"># but supported by other models in Langchain.</span>
+                <span class="c1"># Ref: https://github.com/langchain-ai/langchain/blob/202d7f6c4a2ca8c7e5949d935bcf0ba9b0c23fb0/libs/partners/openai/langchain_openai/chat_models/base.py#L1098C1-L1101C45</span>
+                <span class="k">if</span> <span class="n">tool_choice</span> <span class="o">==</span> <span class="s2">"any"</span><span class="p">:</span>
+                    <span class="n">tool_choice</span> <span class="o">=</span> <span class="s2">"required"</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tool_choice</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="n">tool_names</span> <span class="o">=</span> <span class="p">[</span>
                     <span class="n">formatted_tool</span><span class="p">[</span><span class="s2">"function"</span><span class="p">][</span><span class="s2">"name"</span><span class="p">]</span>
