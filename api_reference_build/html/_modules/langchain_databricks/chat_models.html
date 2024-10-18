@@ -38,7 +38,7 @@
 <link href="../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 17, 2024" name="docbuild:last-update"/>
+<meta content="Oct 18, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -231,6 +231,7 @@ document.write(`
 
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">Any</span><span class="p">,</span>
     <span class="n">Callable</span><span class="p">,</span>
@@ -264,14 +265,19 @@ document.write(`
     <span class="n">ToolMessageChunk</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">langchain_core.messages.tool</span> <span class="kn">import</span> <span class="n">tool_call_chunk</span>
+<span class="kn">from</span> <span class="nn">langchain_core.output_parsers</span> <span class="kn">import</span> <span class="n">JsonOutputParser</span><span class="p">,</span> <span class="n">PydanticOutputParser</span>
+<span class="kn">from</span> <span class="nn">langchain_core.output_parsers.base</span> <span class="kn">import</span> <span class="n">OutputParserLike</span>
 <span class="kn">from</span> <span class="nn">langchain_core.output_parsers.openai_tools</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">JsonOutputKeyToolsParser</span><span class="p">,</span>
+    <span class="n">PydanticToolsParser</span><span class="p">,</span>
     <span class="n">make_invalid_tool_call</span><span class="p">,</span>
     <span class="n">parse_tool_call</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">langchain_core.outputs</span> <span class="kn">import</span> <span class="n">ChatGeneration</span><span class="p">,</span> <span class="n">ChatGenerationChunk</span><span class="p">,</span> <span class="n">ChatResult</span>
-<span class="kn">from</span> <span class="nn">langchain_core.runnables</span> <span class="kn">import</span> <span class="n">Runnable</span>
+<span class="kn">from</span> <span class="nn">langchain_core.runnables</span> <span class="kn">import</span> <span class="n">Runnable</span><span class="p">,</span> <span class="n">RunnableMap</span><span class="p">,</span> <span class="n">RunnablePassthrough</span>
 <span class="kn">from</span> <span class="nn">langchain_core.tools</span> <span class="kn">import</span> <span class="n">BaseTool</span>
 <span class="kn">from</span> <span class="nn">langchain_core.utils.function_calling</span> <span class="kn">import</span> <span class="n">convert_to_openai_tool</span>
+<span class="kn">from</span> <span class="nn">langchain_core.utils.pydantic</span> <span class="kn">import</span> <span class="n">is_basemodel_subclass</span>
 <span class="kn">from</span> <span class="nn">mlflow.deployments</span> <span class="kn">import</span> <span class="n">BaseDeploymentClient</span>  <span class="c1"># type: ignore</span>
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
 
@@ -630,6 +636,230 @@ document.write(`
                 <span class="p">)</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s2">"tool_choice"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool_choice</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">tools</span><span class="o">=</span><span class="n">formatted_tools</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ChatDatabricks.with_structured_output">
+<a class="viewcode-back" href="../../databricks/chat_models/langchain_databricks.chat_models.ChatDatabricks.html#langchain_databricks.chat_models.ChatDatabricks.with_structured_output">[docs]</a>
+    <span class="k">def</span> <span class="nf">with_structured_output</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">schema</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">Type</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">method</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"function_calling"</span><span class="p">,</span> <span class="s2">"json_mode"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"function_calling"</span><span class="p">,</span>
+        <span class="n">include_raw</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Runnable</span><span class="p">[</span><span class="n">LanguageModelInput</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""Model wrapper that returns outputs formatted to match the given schema.</span>
+
+<span class="sd">        Assumes model is compatible with OpenAI tool-calling API.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            schema: The output schema as a dict or a Pydantic class. If a Pydantic class</span>
+<span class="sd">                then the model output will be an object of that class. If a dict then</span>
+<span class="sd">                the model output will be a dict. With a Pydantic class the returned</span>
+<span class="sd">                attributes will be validated, whereas with a dict they will not be. If</span>
+<span class="sd">                `method` is "function_calling" and `schema` is a dict, then the dict</span>
+<span class="sd">                must match the OpenAI function-calling spec or be a valid JSON schema</span>
+<span class="sd">                with top level 'title' and 'description' keys specified.</span>
+<span class="sd">            method: The method for steering model generation, either "function_calling"</span>
+<span class="sd">                or "json_mode". If "function_calling" then the schema will be converted</span>
+<span class="sd">                to an OpenAI function and the returned model will make use of the</span>
+<span class="sd">                function-calling API. If "json_mode" then OpenAI's JSON mode will be</span>
+<span class="sd">                used. Note that if using "json_mode" then you must include instructions</span>
+<span class="sd">                for formatting the output into the desired schema into the model call.</span>
+<span class="sd">            include_raw: If False then only the parsed structured output is returned. If</span>
+<span class="sd">                an error occurs during model output parsing it will be raised. If True</span>
+<span class="sd">                then both the raw model response (a BaseMessage) and the parsed model</span>
+<span class="sd">                response will be returned. If an error occurs during output parsing it</span>
+<span class="sd">                will be caught and returned as well. The final output is always a dict</span>
+<span class="sd">                with keys "raw", "parsed", and "parsing_error".</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A Runnable that takes any ChatModel input and returns as output:</span>
+
+<span class="sd">            If ``include_raw`` is False and ``schema`` is a Pydantic class, Runnable outputs</span>
+<span class="sd">            an instance of ``schema`` (i.e., a Pydantic object).</span>
+
+<span class="sd">            Otherwise, if ``include_raw`` is False then Runnable outputs a dict.</span>
+
+<span class="sd">            If ``include_raw`` is True, then Runnable outputs a dict with keys:</span>
+<span class="sd">                - ``"raw"``: BaseMessage</span>
+<span class="sd">                - ``"parsed"``: None if there was a parsing error, otherwise the type depends on the ``schema`` as described above.</span>
+<span class="sd">                - ``"parsing_error"``: Optional[BaseException]</span>
+
+<span class="sd">        Example: Function-calling, Pydantic schema (method="function_calling", include_raw=False):</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from langchain_databricks import ChatDatabricks</span>
+<span class="sd">                from pydantic import BaseModel</span>
+
+
+<span class="sd">                class AnswerWithJustification(BaseModel):</span>
+<span class="sd">                    '''An answer to the user question along with justification for the answer.'''</span>
+
+<span class="sd">                    answer: str</span>
+<span class="sd">                    justification: str</span>
+
+
+<span class="sd">                llm = ChatDatabricks(endpoint="databricks-meta-llama-3-1-70b-instruct")</span>
+<span class="sd">                structured_llm = llm.with_structured_output(AnswerWithJustification)</span>
+
+<span class="sd">                structured_llm.invoke(</span>
+<span class="sd">                    "What weighs more a pound of bricks or a pound of feathers"</span>
+<span class="sd">                )</span>
+
+<span class="sd">                # -&gt; AnswerWithJustification(</span>
+<span class="sd">                #     answer='They weigh the same',</span>
+<span class="sd">                #     justification='Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ.'</span>
+<span class="sd">                # )</span>
+
+<span class="sd">        Example: Function-calling, Pydantic schema (method="function_calling", include_raw=True):</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from langchain_databricks import ChatDatabricks</span>
+<span class="sd">                from pydantic import BaseModel</span>
+
+
+<span class="sd">                class AnswerWithJustification(BaseModel):</span>
+<span class="sd">                    '''An answer to the user question along with justification for the answer.'''</span>
+
+<span class="sd">                    answer: str</span>
+<span class="sd">                    justification: str</span>
+
+
+<span class="sd">                llm = ChatDatabricks(endpoint="databricks-meta-llama-3-1-70b-instruct")</span>
+<span class="sd">                structured_llm = llm.with_structured_output(</span>
+<span class="sd">                    AnswerWithJustification, include_raw=True</span>
+<span class="sd">                )</span>
+
+<span class="sd">                structured_llm.invoke(</span>
+<span class="sd">                    "What weighs more a pound of bricks or a pound of feathers"</span>
+<span class="sd">                )</span>
+<span class="sd">                # -&gt; {</span>
+<span class="sd">                #     'raw': AIMessage(content='', additional_kwargs={'tool_calls': [{'id': 'call_Ao02pnFYXD6GN1yzc0uXPsvF', 'function': {'arguments': '{"answer":"They weigh the same.","justification":"Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ."}', 'name': 'AnswerWithJustification'}, 'type': 'function'}]}),</span>
+<span class="sd">                #     'parsed': AnswerWithJustification(answer='They weigh the same.', justification='Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ.'),</span>
+<span class="sd">                #     'parsing_error': None</span>
+<span class="sd">                # }</span>
+
+<span class="sd">        Example: Function-calling, dict schema (method="function_calling", include_raw=False):</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from langchain_databricks import ChatDatabricks</span>
+<span class="sd">                from langchain_core.utils.function_calling import convert_to_openai_tool</span>
+<span class="sd">                from pydantic import BaseModel</span>
+
+
+<span class="sd">                class AnswerWithJustification(BaseModel):</span>
+<span class="sd">                    '''An answer to the user question along with justification for the answer.'''</span>
+
+<span class="sd">                    answer: str</span>
+<span class="sd">                    justification: str</span>
+
+
+<span class="sd">                dict_schema = convert_to_openai_tool(AnswerWithJustification)</span>
+<span class="sd">                llm = ChatDatabricks(endpoint="databricks-meta-llama-3-1-70b-instruct")</span>
+<span class="sd">                structured_llm = llm.with_structured_output(dict_schema)</span>
+
+<span class="sd">                structured_llm.invoke(</span>
+<span class="sd">                    "What weighs more a pound of bricks or a pound of feathers"</span>
+<span class="sd">                )</span>
+<span class="sd">                # -&gt; {</span>
+<span class="sd">                #     'answer': 'They weigh the same',</span>
+<span class="sd">                #     'justification': 'Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume and density of the two substances differ.'</span>
+<span class="sd">                # }</span>
+
+<span class="sd">        Example: JSON mode, Pydantic schema (method="json_mode", include_raw=True):</span>
+<span class="sd">            .. code-block::</span>
+
+<span class="sd">                from langchain_databricks import ChatDatabricks</span>
+<span class="sd">                from pydantic import BaseModel</span>
+
+<span class="sd">                class AnswerWithJustification(BaseModel):</span>
+<span class="sd">                    answer: str</span>
+<span class="sd">                    justification: str</span>
+
+<span class="sd">                llm = ChatDatabricks(endpoint="databricks-meta-llama-3-1-70b-instruct")</span>
+<span class="sd">                structured_llm = llm.with_structured_output(</span>
+<span class="sd">                    AnswerWithJustification,</span>
+<span class="sd">                    method="json_mode",</span>
+<span class="sd">                    include_raw=True</span>
+<span class="sd">                )</span>
+
+<span class="sd">                structured_llm.invoke(</span>
+<span class="sd">                    "Answer the following question. "</span>
+<span class="sd">                    "Make sure to return a JSON blob with keys 'answer' and 'justification'.\n\n"</span>
+<span class="sd">                    "What's heavier a pound of bricks or a pound of feathers?"</span>
+<span class="sd">                )</span>
+<span class="sd">                # -&gt; {</span>
+<span class="sd">                #     'raw': AIMessage(content='{\n    "answer": "They are both the same weight.",\n    "justification": "Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight." \n}'),</span>
+<span class="sd">                #     'parsed': AnswerWithJustification(answer='They are both the same weight.', justification='Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight.'),</span>
+<span class="sd">                #     'parsing_error': None</span>
+<span class="sd">                # }</span>
+
+<span class="sd">        Example: JSON mode, no schema (schema=None, method="json_mode", include_raw=True):</span>
+<span class="sd">            .. code-block::</span>
+
+<span class="sd">                structured_llm = llm.with_structured_output(method="json_mode", include_raw=True)</span>
+
+<span class="sd">                structured_llm.invoke(</span>
+<span class="sd">                    "Answer the following question. "</span>
+<span class="sd">                    "Make sure to return a JSON blob with keys 'answer' and 'justification'.\n\n"</span>
+<span class="sd">                    "What's heavier a pound of bricks or a pound of feathers?"</span>
+<span class="sd">                )</span>
+<span class="sd">                # -&gt; {</span>
+<span class="sd">                #     'raw': AIMessage(content='{\n    "answer": "They are both the same weight.",\n    "justification": "Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight." \n}'),</span>
+<span class="sd">                #     'parsed': {</span>
+<span class="sd">                #         'answer': 'They are both the same weight.',</span>
+<span class="sd">                #         'justification': 'Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight.'</span>
+<span class="sd">                #     },</span>
+<span class="sd">                #     'parsing_error': None</span>
+<span class="sd">                # }</span>
+
+
+<span class="sd">        """</span>  <span class="c1"># noqa: E501</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Received unsupported arguments </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">is_pydantic_schema</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_basemodel_subclass</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"function_calling"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"schema must be specified when method is 'function_calling'. "</span>
+                    <span class="s2">"Received None."</span>
+                <span class="p">)</span>
+            <span class="n">tool_name</span> <span class="o">=</span> <span class="n">convert_to_openai_tool</span><span class="p">(</span><span class="n">schema</span><span class="p">)[</span><span class="s2">"function"</span><span class="p">][</span><span class="s2">"name"</span><span class="p">]</span>
+            <span class="n">llm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bind_tools</span><span class="p">([</span><span class="n">schema</span><span class="p">],</span> <span class="n">tool_choice</span><span class="o">=</span><span class="n">tool_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">is_pydantic_schema</span><span class="p">:</span>
+                <span class="n">output_parser</span><span class="p">:</span> <span class="n">OutputParserLike</span> <span class="o">=</span> <span class="n">PydanticToolsParser</span><span class="p">(</span>
+                    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">schema</span><span class="p">],</span>  <span class="c1"># type: ignore[list-item]</span>
+                    <span class="n">first_tool_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># type: ignore[list-item]</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">output_parser</span> <span class="o">=</span> <span class="n">JsonOutputKeyToolsParser</span><span class="p">(</span>
+                    <span class="n">key_name</span><span class="o">=</span><span class="n">tool_name</span><span class="p">,</span> <span class="n">first_tool_only</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"json_mode"</span><span class="p">:</span>
+            <span class="n">llm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">response_format</span><span class="o">=</span><span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"json_object"</span><span class="p">})</span>
+            <span class="n">output_parser</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">PydanticOutputParser</span><span class="p">(</span><span class="n">pydantic_object</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
+                <span class="k">if</span> <span class="n">is_pydantic_schema</span>
+                <span class="k">else</span> <span class="n">JsonOutputParser</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Unrecognized method argument. Expected one of 'function_calling' or "</span>
+                <span class="sa">f</span><span class="s2">"'json_mode'. Received: '</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">'"</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">include_raw</span><span class="p">:</span>
+            <span class="n">parser_assign</span> <span class="o">=</span> <span class="n">RunnablePassthrough</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+                <span class="n">parsed</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="s2">"raw"</span><span class="p">)</span> <span class="o">|</span> <span class="n">output_parser</span><span class="p">,</span> <span class="n">parsing_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="p">)</span>
+            <span class="n">parser_none</span> <span class="o">=</span> <span class="n">RunnablePassthrough</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">parsed</span><span class="o">=</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">parser_with_fallback</span> <span class="o">=</span> <span class="n">parser_assign</span><span class="o">.</span><span class="n">with_fallbacks</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">parser_none</span><span class="p">],</span> <span class="n">exception_key</span><span class="o">=</span><span class="s2">"parsing_error"</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">RunnableMap</span><span class="p">(</span><span class="n">raw</span><span class="o">=</span><span class="n">llm</span><span class="p">)</span> <span class="o">|</span> <span class="n">parser_with_fallback</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">output_parser</span></div>
 
 
     <span class="nd">@property</span>

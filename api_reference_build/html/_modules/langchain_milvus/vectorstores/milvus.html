@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 17, 2024" name="docbuild:last-update"/>
+<meta content="Oct 18, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -1054,8 +1054,6 @@ document.write(`
 <span class="sd">        Returns:</span>
 <span class="sd">            List[str]: The resulting keys for each inserted element.</span>
 <span class="sd">        """</span>
-        <span class="kn">from</span> <span class="nn">pymilvus</span> <span class="kn">import</span> <span class="n">Collection</span><span class="p">,</span> <span class="n">MilvusException</span>
-
         <span class="n">texts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_id</span><span class="p">:</span>
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="nb">list</span><span class="p">),</span> <span class="p">(</span>
@@ -1079,7 +1077,6 @@ document.write(`
                 <span class="p">)</span>
 
         <span class="n">embeddings_functions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EmbeddingType</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">)</span>
-        <span class="n">vector_fields</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">)</span>
         <span class="n">embeddings</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">embedding_func</span> <span class="ow">in</span> <span class="n">embeddings_functions</span><span class="p">:</span>
@@ -1093,10 +1090,97 @@ document.write(`
         <span class="c1">#     [f1(a), f1(b), f1(c)],</span>
         <span class="c1">#     [f2(a), f2(b), f2(c)]</span>
         <span class="c1"># ]</span>
+        <span class="c1"># or</span>
+        <span class="c1"># embeddings = [</span>
+        <span class="c1">#     [f1(a), f1(b), f1(c)]</span>
+        <span class="c1"># ]</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Nothing to insert, skipping."</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_multi_vector</span><span class="p">:</span>
+            <span class="c1"># transposed_embeddings = [</span>
+            <span class="c1">#     [f1(a), f2(a)],</span>
+            <span class="c1">#     [f1(b), f2(b)],</span>
+            <span class="c1">#     [f1(c), f2(c)]</span>
+            <span class="c1"># ]</span>
+            <span class="n">transposed_embeddings</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">[</span><span class="n">embeddings</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">))]</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># transposed_embeddings = [</span>
+            <span class="c1">#     f1(a),</span>
+            <span class="c1">#     f1(b),</span>
+            <span class="c1">#     f1(c)</span>
+            <span class="c1"># ]</span>
+            <span class="n">transposed_embeddings</span> <span class="o">=</span> <span class="n">embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_embeddings</span><span class="p">(</span>
+            <span class="n">texts</span><span class="o">=</span><span class="n">texts</span><span class="p">,</span>
+            <span class="n">embeddings</span><span class="o">=</span><span class="n">transposed_embeddings</span><span class="p">,</span>
+            <span class="n">metadatas</span><span class="o">=</span><span class="n">metadatas</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">ids</span><span class="o">=</span><span class="n">ids</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Milvus.add_embeddings">
+<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.add_embeddings">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_embeddings</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">texts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">embeddings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
+        <span class="n">metadatas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Insert text data with embeddings vectors into Milvus.</span>
+
+<span class="sd">        This method inserts a batch of text embeddings into a Milvus collection.</span>
+<span class="sd">        If the collection is not initialized, it will automatically initialize</span>
+<span class="sd">        the collection based on the embeddings,metadatas, and other parameters.</span>
+<span class="sd">        The embeddings are expected to be pre-generated using compatible embedding</span>
+<span class="sd">        functions, and the metadata associated with each text is optional but</span>
+<span class="sd">        must match the number of texts.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            texts (List[str]): the texts to insert</span>
+<span class="sd">            embeddings (List[List[Union[float, List[float]]]]):</span>
+<span class="sd">                A vector embeddings for each text (in case of a single vector)</span>
+<span class="sd">                or list of vectors for each text (in case of multi-vector)</span>
+<span class="sd">            metadatas (Optional[List[dict]]): Metadata dicts attached to each of</span>
+<span class="sd">                the texts. Defaults to None.</span>
+<span class="sd">            should be less than 65535 bytes. Required and work when auto_id is False.</span>
+<span class="sd">            timeout (Optional[float]): Timeout for each batch insert. Defaults</span>
+<span class="sd">                to None.</span>
+<span class="sd">            batch_size (int, optional): Batch size to use for insertion.</span>
+<span class="sd">                Defaults to 1000.</span>
+<span class="sd">            ids (Optional[List[str]]): List of text ids. The length of each item</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            MilvusException: Failure to add texts and embeddings</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[str]: The resulting keys for each inserted element.</span>
+<span class="sd">        """</span>
+        <span class="kn">from</span> <span class="nn">pymilvus</span> <span class="kn">import</span> <span class="n">Collection</span><span class="p">,</span> <span class="n">MilvusException</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_multi_vector</span><span class="p">:</span>
+            <span class="n">embeddings</span> <span class="o">=</span> <span class="p">[[</span><span class="n">embedding</span><span class="p">]</span> <span class="k">for</span> <span class="n">embedding</span> <span class="ow">in</span> <span class="n">embeddings</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+        <span class="c1"># Transpose embeddings to make it a list of embeddings of each type.</span>
+        <span class="n">embeddings</span> <span class="o">=</span> <span class="p">[</span>  <span class="c1"># type: ignore</span>
+            <span class="p">[</span><span class="n">embeddings</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">))]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="p">]</span>
+
+        <span class="n">vector_fields</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">)</span>
 
         <span class="c1"># If the collection hasn't been initialized yet, perform all steps to do so</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="p">,</span> <span class="n">Collection</span><span class="p">):</span>
@@ -1129,7 +1213,7 @@ document.write(`
 
             <span class="n">entity_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_text_field</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
 
-            <span class="k">for</span> <span class="n">vector_field</span><span class="p">,</span> <span class="n">vector_field_embeddings</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vector_fields</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">vector_field</span><span class="p">,</span> <span class="n">vector_field_embeddings</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vector_fields</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
                 <span class="n">entity_dict</span><span class="p">[</span><span class="n">vector_field</span><span class="p">]</span> <span class="o">=</span> <span class="n">vector_field_embeddings</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_field</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_dynamic_field</span><span class="p">:</span>

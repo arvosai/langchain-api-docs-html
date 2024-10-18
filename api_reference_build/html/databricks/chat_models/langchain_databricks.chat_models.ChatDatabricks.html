@@ -40,7 +40,7 @@
 <link href="../chat_models.html" rel="prev" title="chat_models"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 17, 2024" name="docbuild:last-update"/>
+<meta content="Oct 18, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -245,7 +245,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../google_vertexai/index.html">Google VertexAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../groq/index.html">Groq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../huggingface/index.html">Huggingface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../ibm/index.html">Ibm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ibm/index.html">IBM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../milvus/index.html">Milvus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mistralai/index.html">MistralAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mongodb/index.html">MongoDB</a></li>
@@ -1542,41 +1542,34 @@ between retries</p></li>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_databricks.chat_models.ChatDatabricks.with_structured_output">
-<span class="sig-name descname"><span class="pre">with_structured_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">type</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><span class="pre">Runnable</span></a><span class="p"><span class="pre">[</span></span><span class="pre">LanguageModelInput</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../../experimental/video_captioning/langchain_experimental.video_captioning.models.BaseModel.html#langchain_experimental.video_captioning.models.BaseModel" title="langchain_experimental.video_captioning.models.BaseModel"><span class="pre">BaseModel</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_databricks.chat_models.ChatDatabricks.with_structured_output" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">with_structured_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Type</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'function_calling'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'json_mode'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'function_calling'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><span class="pre">Runnable</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/prompt_values/langchain_core.prompt_values.PromptValue.html#langchain_core.prompt_values.PromptValue" title="langchain_core.prompt_values.PromptValue"><span class="pre">PromptValue</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/messages/langchain_core.messages.base.BaseMessage.html#langchain_core.messages.base.BaseMessage" title="langchain_core.messages.base.BaseMessage"><span class="pre">BaseMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseModel</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/langchain_databricks/chat_models.html#ChatDatabricks.with_structured_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_databricks.chat_models.ChatDatabricks.with_structured_output" title="Link to this definition">#</a></dt>
 <dd><p>Model wrapper that returns outputs formatted to match the given schema.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>schema</strong> (<em>Union</em><em>[</em><em>Dict</em><em>, </em><em>type</em><em>]</em>) – <dl class="simple">
-<dt>The output schema. Can be passed in as:</dt><dd><ul>
-<li><p>an OpenAI function/tool schema,</p></li>
-<li><p>a JSON Schema,</p></li>
-<li><p>a TypedDict class (support added in 0.2.26),</p></li>
-<li><p>or a Pydantic class.</p></li>
-</ul>
+<blockquote>
+<div><p>Assumes model is compatible with OpenAI tool-calling API.</p>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>schema: The output schema as a dict or a Pydantic class. If a Pydantic class</dt><dd><p>then the model output will be an object of that class. If a dict then
+the model output will be a dict. With a Pydantic class the returned
+attributes will be validated, whereas with a dict they will not be. If
+<cite>method</cite> is “function_calling” and <cite>schema</cite> is a dict, then the dict
+must match the OpenAI function-calling spec or be a valid JSON schema
+with top level ‘title’ and ‘description’ keys specified.</p>
 </dd>
-</dl>
-<p>If <code class="docutils literal notranslate"><span class="pre">schema</span></code> is a Pydantic class then the model output will be a
-Pydantic instance of that class, and the model-generated fields will be
-validated by the Pydantic class. Otherwise the model output will be a
-dict and will not be validated. See <a class="reference internal" href="../../core/utils/langchain_core.utils.function_calling.convert_to_openai_tool.html#langchain_core.utils.function_calling.convert_to_openai_tool" title="langchain_core.utils.function_calling.convert_to_openai_tool"><code class="xref py py-meth docutils literal notranslate"><span class="pre">langchain_core.utils.function_calling.convert_to_openai_tool()</span></code></a>
-for more on how to properly specify types and descriptions of
-schema fields when specifying a Pydantic or TypedDict class.</p>
-<div class="versionchanged">
-<p><span class="versionmodified changed">Changed in version 0.2.26: </span>Added support for TypedDict class.</p>
-</div>
-</p></li>
-<li><p><strong>include_raw</strong> (<em>bool</em>) – If False then only the parsed structured output is returned. If
-an error occurs during model output parsing it will be raised. If True
+<dt>method: The method for steering model generation, either “function_calling”</dt><dd><p>or “json_mode”. If “function_calling” then the schema will be converted
+to an OpenAI function and the returned model will make use of the
+function-calling API. If “json_mode” then OpenAI’s JSON mode will be
+used. Note that if using “json_mode” then you must include instructions
+for formatting the output into the desired schema into the model call.</p>
+</dd>
+<dt>include_raw: If False then only the parsed structured output is returned. If</dt><dd><p>an error occurs during model output parsing it will be raised. If True
 then both the raw model response (a BaseMessage) and the parsed model
 response will be returned. If an error occurs during output parsing it
 will be caught and returned as well. The final output is always a dict
-with keys “raw”, “parsed”, and “parsing_error”.</p></li>
-<li><p><strong>kwargs</strong> (<em>Any</em>)</p></li>
-</ul>
+with keys “raw”, “parsed”, and “parsing_error”.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>A Runnable that takes same inputs as a <code class="xref py py-class docutils literal notranslate"><span class="pre">langchain_core.language_models.chat.BaseChatModel</span></code>.</p>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>A Runnable that takes any ChatModel input and returns as output:</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">include_raw</span></code> is False and <code class="docutils literal notranslate"><span class="pre">schema</span></code> is a Pydantic class, Runnable outputs
 an instance of <code class="docutils literal notranslate"><span class="pre">schema</span></code> (i.e., a Pydantic object).</p>
 <p>Otherwise, if <code class="docutils literal notranslate"><span class="pre">include_raw</span></code> is False then Runnable outputs a dict.</p>
@@ -1588,24 +1581,24 @@ an instance of <code class="docutils literal notranslate"><span class="pre">sche
 </ul>
 </dd>
 </dl>
-</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable">Runnable</a>[LanguageModelInput, Union[<em>Dict</em>, <a class="reference internal" href="../../experimental/video_captioning/langchain_experimental.video_captioning.models.BaseModel.html#langchain_experimental.video_captioning.models.BaseModel" title="langchain_experimental.video_captioning.models.BaseModel">BaseModel</a>]]</p>
-</dd>
-</dl>
-<dl>
-<dt>Example: Pydantic schema (include_raw=False):</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+<dt>Example: Function-calling, Pydantic schema (method=”function_calling”, include_raw=False):</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_databricks</span> <span class="kn">import</span> <span class="n">ChatDatabricks</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+
 
 <span class="k">class</span> <span class="nc">AnswerWithJustification</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''An answer to the user question along with justification for the answer.'''</span>
+
     <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">justification</span><span class="p">:</span> <span class="nb">str</span>
 
-<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"model-name"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatDatabricks</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="s2">"databricks-meta-llama-3-1-70b-instruct"</span><span class="p">)</span>
 <span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">AnswerWithJustification</span><span class="p">)</span>
 
-<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">"What weighs more a pound of bricks or a pound of feathers"</span><span class="p">)</span>
+<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="s2">"What weighs more a pound of bricks or a pound of feathers"</span>
+<span class="p">)</span>
 
 <span class="c1"># -&gt; AnswerWithJustification(</span>
 <span class="c1">#     answer='They weigh the same',</span>
@@ -1614,17 +1607,25 @@ an instance of <code class="docutils literal notranslate"><span class="pre">sche
 </pre></div>
 </div>
 </dd>
-<dt>Example: Pydantic schema (include_raw=True):</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+<dt>Example: Function-calling, Pydantic schema (method=”function_calling”, include_raw=True):</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_databricks</span> <span class="kn">import</span> <span class="n">ChatDatabricks</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+
 
 <span class="k">class</span> <span class="nc">AnswerWithJustification</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''An answer to the user question along with justification for the answer.'''</span>
+
     <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">justification</span><span class="p">:</span> <span class="nb">str</span>
 
-<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"model-name"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">AnswerWithJustification</span><span class="p">,</span> <span class="n">include_raw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">"What weighs more a pound of bricks or a pound of feathers"</span><span class="p">)</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatDatabricks</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="s2">"databricks-meta-llama-3-1-70b-instruct"</span><span class="p">)</span>
+<span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span>
+    <span class="n">AnswerWithJustification</span><span class="p">,</span> <span class="n">include_raw</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="s2">"What weighs more a pound of bricks or a pound of feathers"</span>
+<span class="p">)</span>
 <span class="c1"># -&gt; {</span>
 <span class="c1">#     'raw': AIMessage(content='', additional_kwargs={'tool_calls': [{'id': 'call_Ao02pnFYXD6GN1yzc0uXPsvF', 'function': {'arguments': '{"answer":"They weigh the same.","justification":"Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ."}', 'name': 'AnswerWithJustification'}, 'type': 'function'}]}),</span>
 <span class="c1">#     'parsed': AnswerWithJustification(answer='They weigh the same.', justification='Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ.'),</span>
@@ -1633,25 +1634,114 @@ an instance of <code class="docutils literal notranslate"><span class="pre">sche
 </pre></div>
 </div>
 </dd>
-<dt>Example: Dict schema (include_raw=False):</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+<dt>Example: Function-calling, dict schema (method=”function_calling”, include_raw=False):</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_databricks</span> <span class="kn">import</span> <span class="n">ChatDatabricks</span>
 <span class="kn">from</span> <span class="nn">langchain_core.utils.function_calling</span> <span class="kn">import</span> <span class="n">convert_to_openai_tool</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+
 
 <span class="k">class</span> <span class="nc">AnswerWithJustification</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''An answer to the user question along with justification for the answer.'''</span>
+
     <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">justification</span><span class="p">:</span> <span class="nb">str</span>
 
+
 <span class="n">dict_schema</span> <span class="o">=</span> <span class="n">convert_to_openai_tool</span><span class="p">(</span><span class="n">AnswerWithJustification</span><span class="p">)</span>
-<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"model-name"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatDatabricks</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="s2">"databricks-meta-llama-3-1-70b-instruct"</span><span class="p">)</span>
 <span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">dict_schema</span><span class="p">)</span>
 
-<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">"What weighs more a pound of bricks or a pound of feathers"</span><span class="p">)</span>
+<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="s2">"What weighs more a pound of bricks or a pound of feathers"</span>
+<span class="p">)</span>
 <span class="c1"># -&gt; {</span>
 <span class="c1">#     'answer': 'They weigh the same',</span>
 <span class="c1">#     'justification': 'Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume and density of the two substances differ.'</span>
 <span class="c1"># }</span>
 </pre></div>
 </div>
+</dd>
+<dt>Example: JSON mode, Pydantic schema (method=”json_mode”, include_raw=True):</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_databricks</span> <span class="kn">import</span> <span class="n">ChatDatabricks</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+
+<span class="k">class</span> <span class="nc">AnswerWithJustification</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">justification</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatDatabricks</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="s2">"databricks-meta-llama-3-1-70b-instruct"</span><span class="p">)</span>
+<span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span>
+    <span class="n">AnswerWithJustification</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">"json_mode"</span><span class="p">,</span>
+    <span class="n">include_raw</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="s2">"Answer the following question. "</span>
+    <span class="s2">"Make sure to return a JSON blob with keys 'answer' and 'justification'.</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl>
+<dt>“</dt><dd><blockquote>
+<div><blockquote>
+<div><p>“What’s heavier a pound of bricks or a pound of feathers?”</p>
+</div></blockquote>
+<p>)
+# -&gt; {
+#     ‘raw’: AIMessage(content=’{</p>
+</div></blockquote>
+<p>“answer”: “They are both the same weight.”,
+“justification”: “Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight.”</p>
+</dd>
+<dt>}’),</dt><dd><blockquote>
+<div><p>#     ‘parsed’: AnswerWithJustification(answer=’They are both the same weight.’, justification=’Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight.’),
+#     ‘parsing_error’: None
+# }</p>
+</div></blockquote>
+<dl>
+<dt>Example: JSON mode, no schema (schema=None, method=”json_mode”, include_raw=True):</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">"json_mode"</span><span class="p">,</span> <span class="n">include_raw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="s2">"Answer the following question. "</span>
+    <span class="s2">"Make sure to return a JSON blob with keys 'answer' and 'justification'.</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>“</dt><dd><blockquote>
+<div><blockquote>
+<div><p>“What’s heavier a pound of bricks or a pound of feathers?”</p>
+</div></blockquote>
+<p>)
+# -&gt; {
+#     ‘raw’: AIMessage(content=’{</p>
+</div></blockquote>
+<p>“answer”: “They are both the same weight.”,
+“justification”: “Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight.”</p>
+</dd>
+<dt>}’),</dt><dd><p>#     ‘parsed’: {
+#         ‘answer’: ‘They are both the same weight.’,
+#         ‘justification’: ‘Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight.’
+#     },
+#     ‘parsing_error’: None
+# }</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>schema</strong> (<em>Dict</em><em> | </em><em>Type</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>method</strong> (<em>Literal</em><em>[</em><em>'function_calling'</em><em>, </em><em>'json_mode'</em><em>]</em>)</p></li>
+<li><p><strong>include_raw</strong> (<em>bool</em>)</p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><em>Runnable</em></a>[<a class="reference internal" href="../../core/prompt_values/langchain_core.prompt_values.PromptValue.html#langchain_core.prompt_values.PromptValue" title="langchain_core.prompt_values.PromptValue"><em>PromptValue</em></a> | str | <em>Sequence</em>[<a class="reference internal" href="../../core/messages/langchain_core.messages.base.BaseMessage.html#langchain_core.messages.base.BaseMessage" title="langchain_core.messages.base.BaseMessage"><em>BaseMessage</em></a> | list[str] | tuple[str, str] | str | dict[str, <em>Any</em>]], <em>Dict</em> | <em>BaseModel</em>]</p>
 </dd>
 </dl>
 </dd></dl>

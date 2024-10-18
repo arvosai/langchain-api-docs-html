@@ -40,7 +40,7 @@
 <link href="../vectorstores.html" rel="prev" title="vectorstores"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 17, 2024" name="docbuild:last-update"/>
+<meta content="Oct 18, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -236,7 +236,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../google_vertexai/index.html">Google VertexAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../groq/index.html">Groq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../huggingface/index.html">Huggingface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../ibm/index.html">Ibm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ibm/index.html">IBM</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">Milvus</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../retrievers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">retrievers</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></a></li>
@@ -437,85 +437,88 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.add_documents" title="langchain_milvus.vectorstores.milvus.Milvus.add_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_documents</span></code></a>(documents, **kwargs)</p></td>
 <td><p>Run more documents through the embeddings and add to the vectorstore.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.add_texts" title="langchain_milvus.vectorstores.milvus.Milvus.add_texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_texts</span></code></a>(texts[, metadatas, timeout, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.add_embeddings" title="langchain_milvus.vectorstores.milvus.Milvus.add_embeddings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_embeddings</span></code></a>(texts, embeddings[, ...])</p></td>
+<td><p>Insert text data with embeddings vectors into Milvus.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.add_texts" title="langchain_milvus.vectorstores.milvus.Milvus.add_texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_texts</span></code></a>(texts[, metadatas, timeout, ...])</p></td>
 <td><p>Insert text data into Milvus.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.adelete" title="langchain_milvus.vectorstores.milvus.Milvus.adelete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adelete</span></code></a>([ids])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.adelete" title="langchain_milvus.vectorstores.milvus.Milvus.adelete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adelete</span></code></a>([ids])</p></td>
 <td><p>Async delete by vector ID or other criteria.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.afrom_documents" title="langchain_milvus.vectorstores.milvus.Milvus.afrom_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">afrom_documents</span></code></a>(documents, embedding, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.afrom_documents" title="langchain_milvus.vectorstores.milvus.Milvus.afrom_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">afrom_documents</span></code></a>(documents, embedding, **kwargs)</p></td>
 <td><p>Async return VectorStore initialized from documents and embeddings.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.afrom_texts" title="langchain_milvus.vectorstores.milvus.Milvus.afrom_texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">afrom_texts</span></code></a>(texts, embedding[, metadatas, ids])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.afrom_texts" title="langchain_milvus.vectorstores.milvus.Milvus.afrom_texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">afrom_texts</span></code></a>(texts, embedding[, metadatas, ids])</p></td>
 <td><p>Async return VectorStore initialized from texts and embeddings.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.aget_by_ids" title="langchain_milvus.vectorstores.milvus.Milvus.aget_by_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aget_by_ids</span></code></a>(ids, /)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.aget_by_ids" title="langchain_milvus.vectorstores.milvus.Milvus.aget_by_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aget_by_ids</span></code></a>(ids, /)</p></td>
 <td><p>Async get documents by their IDs.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.amax_marginal_relevance_search" title="langchain_milvus.vectorstores.milvus.Milvus.amax_marginal_relevance_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">amax_marginal_relevance_search</span></code></a>(query[, k, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.amax_marginal_relevance_search" title="langchain_milvus.vectorstores.milvus.Milvus.amax_marginal_relevance_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">amax_marginal_relevance_search</span></code></a>(query[, k, ...])</p></td>
 <td><p>Async return docs selected using the maximal marginal relevance.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.amax_marginal_relevance_search_by_vector" title="langchain_milvus.vectorstores.milvus.Milvus.amax_marginal_relevance_search_by_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">amax_marginal_relevance_search_by_vector</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.amax_marginal_relevance_search_by_vector" title="langchain_milvus.vectorstores.milvus.Milvus.amax_marginal_relevance_search_by_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">amax_marginal_relevance_search_by_vector</span></code></a>(...)</p></td>
 <td><p>Async return docs selected using the maximal marginal relevance.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.as_retriever" title="langchain_milvus.vectorstores.milvus.Milvus.as_retriever"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_retriever</span></code></a>(**kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.as_retriever" title="langchain_milvus.vectorstores.milvus.Milvus.as_retriever"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_retriever</span></code></a>(**kwargs)</p></td>
 <td><p>Return VectorStoreRetriever initialized from this VectorStore.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.asearch" title="langchain_milvus.vectorstores.milvus.Milvus.asearch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asearch</span></code></a>(query, search_type, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.asearch" title="langchain_milvus.vectorstores.milvus.Milvus.asearch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asearch</span></code></a>(query, search_type, **kwargs)</p></td>
 <td><p>Async return docs most similar to query using a specified search type.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search" title="langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asimilarity_search</span></code></a>(query[, k])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search" title="langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asimilarity_search</span></code></a>(query[, k])</p></td>
 <td><p>Async return docs most similar to query.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search_by_vector" title="langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search_by_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asimilarity_search_by_vector</span></code></a>(embedding[, k])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search_by_vector" title="langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search_by_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asimilarity_search_by_vector</span></code></a>(embedding[, k])</p></td>
 <td><p>Async return docs most similar to embedding vector.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search_with_relevance_scores" title="langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search_with_relevance_scores"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asimilarity_search_with_relevance_scores</span></code></a>(query)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search_with_relevance_scores" title="langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search_with_relevance_scores"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asimilarity_search_with_relevance_scores</span></code></a>(query)</p></td>
 <td><p>Async return docs and relevance scores in the range [0, 1].</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search_with_score" title="langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search_with_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asimilarity_search_with_score</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search_with_score" title="langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search_with_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asimilarity_search_with_score</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Async run similarity search with distance.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.delete" title="langchain_milvus.vectorstores.milvus.Milvus.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>([ids, expr])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.delete" title="langchain_milvus.vectorstores.milvus.Milvus.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>([ids, expr])</p></td>
 <td><p>Delete by vector ID or boolean expression.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.from_documents" title="langchain_milvus.vectorstores.milvus.Milvus.from_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_documents</span></code></a>(documents, embedding, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.from_documents" title="langchain_milvus.vectorstores.milvus.Milvus.from_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_documents</span></code></a>(documents, embedding, **kwargs)</p></td>
 <td><p>Return VectorStore initialized from documents and embeddings.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.from_texts" title="langchain_milvus.vectorstores.milvus.Milvus.from_texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_texts</span></code></a>(texts, embedding[, metadatas, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.from_texts" title="langchain_milvus.vectorstores.milvus.Milvus.from_texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_texts</span></code></a>(texts, embedding[, metadatas, ...])</p></td>
 <td><p>Create a Milvus collection, indexes it with HNSW, and insert data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.get_by_ids" title="langchain_milvus.vectorstores.milvus.Milvus.get_by_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_by_ids</span></code></a>(ids, /)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.get_by_ids" title="langchain_milvus.vectorstores.milvus.Milvus.get_by_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_by_ids</span></code></a>(ids, /)</p></td>
 <td><p>Get documents by their IDs.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.get_pks" title="langchain_milvus.vectorstores.milvus.Milvus.get_pks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_pks</span></code></a>(expr, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.get_pks" title="langchain_milvus.vectorstores.milvus.Milvus.get_pks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_pks</span></code></a>(expr, **kwargs)</p></td>
 <td><p>Get primary keys with expression</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.max_marginal_relevance_search" title="langchain_milvus.vectorstores.milvus.Milvus.max_marginal_relevance_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_marginal_relevance_search</span></code></a>(query[, k, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.max_marginal_relevance_search" title="langchain_milvus.vectorstores.milvus.Milvus.max_marginal_relevance_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_marginal_relevance_search</span></code></a>(query[, k, ...])</p></td>
 <td><p>Perform a search and return results that are reordered by MMR.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.max_marginal_relevance_search_by_vector" title="langchain_milvus.vectorstores.milvus.Milvus.max_marginal_relevance_search_by_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_marginal_relevance_search_by_vector</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.max_marginal_relevance_search_by_vector" title="langchain_milvus.vectorstores.milvus.Milvus.max_marginal_relevance_search_by_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_marginal_relevance_search_by_vector</span></code></a>(...)</p></td>
 <td><p>Perform a search and return results that are reordered by MMR.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.search" title="langchain_milvus.vectorstores.milvus.Milvus.search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search</span></code></a>(query, search_type, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.search" title="langchain_milvus.vectorstores.milvus.Milvus.search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search</span></code></a>(query, search_type, **kwargs)</p></td>
 <td><p>Return docs most similar to query using a specified search type.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.similarity_search" title="langchain_milvus.vectorstores.milvus.Milvus.similarity_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search</span></code></a>(query[, k, param, expr, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.similarity_search" title="langchain_milvus.vectorstores.milvus.Milvus.similarity_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search</span></code></a>(query[, k, param, expr, ...])</p></td>
 <td><p>Perform a similarity search against the query string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.similarity_search_by_vector" title="langchain_milvus.vectorstores.milvus.Milvus.similarity_search_by_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_by_vector</span></code></a>(embedding[, k, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.similarity_search_by_vector" title="langchain_milvus.vectorstores.milvus.Milvus.similarity_search_by_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_by_vector</span></code></a>(embedding[, k, ...])</p></td>
 <td><p>Perform a similarity search against the query string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.similarity_search_with_relevance_scores" title="langchain_milvus.vectorstores.milvus.Milvus.similarity_search_with_relevance_scores"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_with_relevance_scores</span></code></a>(query)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.similarity_search_with_relevance_scores" title="langchain_milvus.vectorstores.milvus.Milvus.similarity_search_with_relevance_scores"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_with_relevance_scores</span></code></a>(query)</p></td>
 <td><p>Return docs and relevance scores in the range [0, 1].</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.similarity_search_with_score" title="langchain_milvus.vectorstores.milvus.Milvus.similarity_search_with_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_with_score</span></code></a>(query[, k, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.similarity_search_with_score" title="langchain_milvus.vectorstores.milvus.Milvus.similarity_search_with_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_with_score</span></code></a>(query[, k, ...])</p></td>
 <td><p>Perform a search on a query string and return results with score.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.similarity_search_with_score_by_vector" title="langchain_milvus.vectorstores.milvus.Milvus.similarity_search_with_score_by_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_with_score_by_vector</span></code></a>(embedding)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.similarity_search_with_score_by_vector" title="langchain_milvus.vectorstores.milvus.Milvus.similarity_search_with_score_by_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_with_score_by_vector</span></code></a>(embedding)</p></td>
 <td><p>Perform a search on an embedding and return results with score.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.upsert" title="langchain_milvus.vectorstores.milvus.Milvus.upsert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">upsert</span></code></a>([ids, documents])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_milvus.vectorstores.milvus.Milvus.upsert" title="langchain_milvus.vectorstores.milvus.Milvus.upsert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">upsert</span></code></a>([ids, documents])</p></td>
 <td><p>Update/Insert documents to the vectorstore.</p></td>
 </tr>
 </tbody>
@@ -645,6 +648,44 @@ Default is None.</p></li>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>List</em>[str]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="langchain_milvus.vectorstores.milvus.Milvus.add_embeddings">
+<span class="sig-name descname"><span class="pre">add_embeddings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadatas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/langchain_milvus/vectorstores/milvus.html#Milvus.add_embeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_milvus.vectorstores.milvus.Milvus.add_embeddings" title="Link to this definition">#</a></dt>
+<dd><p>Insert text data with embeddings vectors into Milvus.</p>
+<p>This method inserts a batch of text embeddings into a Milvus collection.
+If the collection is not initialized, it will automatically initialize
+the collection based on the embeddings,metadatas, and other parameters.
+The embeddings are expected to be pre-generated using compatible embedding
+functions, and the metadata associated with each text is optional but
+must match the number of texts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>texts</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – the texts to insert</p></li>
+<li><p><strong>embeddings</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>Union</em><em>[</em><em>float</em><em>, </em><em>List</em><em>[</em><em>float</em><em>]</em><em>]</em><em>]</em><em>]</em>) – A vector embeddings for each text (in case of a single vector)
+or list of vectors for each text (in case of multi-vector)</p></li>
+<li><p><strong>metadatas</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>dict</em><em>]</em><em>]</em>) – Metadata dicts attached to each of
+the texts. Defaults to None.</p></li>
+<li><p><strong>False.</strong> (<em>should be less than 65535 bytes. Required and work when auto_id is</em>)</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Timeout for each batch insert. Defaults
+to None.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em><em>, </em><em>optional</em>) – Batch size to use for insertion.
+Defaults to 1000.</p></li>
+<li><p><strong>ids</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – List of text ids. The length of each item</p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>MilvusException</strong> – Failure to add texts and embeddings</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The resulting keys for each inserted element.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1395,6 +1436,7 @@ Defaults to None.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_milvus.vectorstores.milvus.Milvus.aadd_documents"><code class="docutils literal notranslate"><span class="pre">aadd_documents()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_milvus.vectorstores.milvus.Milvus.aadd_texts"><code class="docutils literal notranslate"><span class="pre">aadd_texts()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_milvus.vectorstores.milvus.Milvus.add_documents"><code class="docutils literal notranslate"><span class="pre">add_documents()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_milvus.vectorstores.milvus.Milvus.add_embeddings"><code class="docutils literal notranslate"><span class="pre">add_embeddings()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_milvus.vectorstores.milvus.Milvus.add_texts"><code class="docutils literal notranslate"><span class="pre">add_texts()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_milvus.vectorstores.milvus.Milvus.adelete"><code class="docutils literal notranslate"><span class="pre">adelete()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_milvus.vectorstores.milvus.Milvus.afrom_documents"><code class="docutils literal notranslate"><span class="pre">afrom_documents()</span></code></a></li>

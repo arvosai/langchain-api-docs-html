@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 17, 2024" name="docbuild:last-update"/>
+<meta content="Oct 18, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -257,6 +257,7 @@ document.write(`
 
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Discriminator</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">Tag</span>
 
+<span class="kn">from</span> <span class="nn">langchain_core.exceptions</span> <span class="kn">import</span> <span class="n">ErrorCode</span><span class="p">,</span> <span class="n">create_message</span>
 <span class="kn">from</span> <span class="nn">langchain_core.messages.ai</span> <span class="kn">import</span> <span class="n">AIMessage</span><span class="p">,</span> <span class="n">AIMessageChunk</span>
 <span class="kn">from</span> <span class="nn">langchain_core.messages.base</span> <span class="kn">import</span> <span class="n">BaseMessage</span><span class="p">,</span> <span class="n">BaseMessageChunk</span>
 <span class="kn">from</span> <span class="nn">langchain_core.messages.chat</span> <span class="kn">import</span> <span class="n">ChatMessage</span><span class="p">,</span> <span class="n">ChatMessageChunk</span>
@@ -512,6 +513,7 @@ document.write(`
             <span class="sa">f</span><span class="s2">"Unexpected message type: '</span><span class="si">{</span><span class="n">message_type</span><span class="si">}</span><span class="s2">'. Use one of 'human',"</span>
             <span class="sa">f</span><span class="s2">" 'user', 'ai', 'assistant', 'function', 'tool', or 'system'."</span>
         <span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">create_message</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="n">ErrorCode</span><span class="o">.</span><span class="n">MESSAGE_COERCION_FAILURE</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">message</span>
 
@@ -556,12 +558,16 @@ document.write(`
             <span class="n">msg_content</span> <span class="o">=</span> <span class="n">msg_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"content"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
         <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Message dict must contain 'role' and 'content' keys, got </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">create_message</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="n">ErrorCode</span><span class="o">.</span><span class="n">MESSAGE_COERCION_FAILURE</span>
+            <span class="p">)</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
         <span class="n">_message</span> <span class="o">=</span> <span class="n">_create_message_from_message_type</span><span class="p">(</span>
             <span class="n">msg_type</span><span class="p">,</span> <span class="n">msg_content</span><span class="p">,</span> <span class="o">**</span><span class="n">msg_kwargs</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unsupported message type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">create_message</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="n">ErrorCode</span><span class="o">.</span><span class="n">MESSAGE_COERCION_FAILURE</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">_message</span>
@@ -1580,6 +1586,7 @@ document.write(`
         <span class="sa">f</span><span class="s2">"Unrecognized message class </span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="vm">__class__</span><span class="si">}</span><span class="s2">. Supported classes are "</span>
         <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">_MSG_CHUNK_MAP</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span>
     <span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="n">create_message</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="n">ErrorCode</span><span class="o">.</span><span class="n">MESSAGE_COERCION_FAILURE</span><span class="p">)</span>
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 
@@ -1596,6 +1603,7 @@ document.write(`
         <span class="sa">f</span><span class="s2">"Unrecognized message chunk class </span><span class="si">{</span><span class="n">chunk</span><span class="o">.</span><span class="vm">__class__</span><span class="si">}</span><span class="s2">. Supported classes are "</span>
         <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">_CHUNK_MSG_MAP</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span>
     <span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="n">create_message</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="n">ErrorCode</span><span class="o">.</span><span class="n">MESSAGE_COERCION_FAILURE</span><span class="p">)</span>
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 

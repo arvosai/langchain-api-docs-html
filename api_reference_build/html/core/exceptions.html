@@ -36,11 +36,11 @@
 <script>DOCUMENTATION_OPTIONS.pagename = 'core/exceptions';</script>
 <link href="../_static/favicon.png" rel="icon"/>
 <link href="../search.html" rel="search" title="Search"/>
-<link href="exceptions/langchain_core.exceptions.LangChainException.html" rel="next" title="LangChainException"/>
+<link href="exceptions/langchain_core.exceptions.ErrorCode.html" rel="next" title="ErrorCode"/>
 <link href="example_selectors/langchain_core.example_selectors.semantic_similarity.sorted_values.html" rel="prev" title="sorted_values"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 17, 2024" name="docbuild:last-update"/>
+<meta content="Oct 18, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -219,9 +219,11 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="embeddings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">embeddings</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="example_selectors.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">example_selectors</span></code></a></li>
 <li class="toctree-l2 current active has-children"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">exceptions</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="exceptions/langchain_core.exceptions.ErrorCode.html">ErrorCode</a></li>
 <li class="toctree-l3"><a class="reference internal" href="exceptions/langchain_core.exceptions.LangChainException.html">LangChainException</a></li>
 <li class="toctree-l3"><a class="reference internal" href="exceptions/langchain_core.exceptions.OutputParserException.html">OutputParserException</a></li>
 <li class="toctree-l3"><a class="reference internal" href="exceptions/langchain_core.exceptions.TracerException.html">TracerException</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exceptions/langchain_core.exceptions.create_message.html">create_message</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="globals.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">globals</span></code></a></li>
@@ -271,7 +273,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../google_vertexai/index.html">Google VertexAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../groq/index.html">Groq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../huggingface/index.html">Huggingface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ibm/index.html">Ibm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ibm/index.html">IBM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../milvus/index.html">Milvus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../mistralai/index.html">MistralAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../mongodb/index.html">MongoDB</a></li>
@@ -310,7 +312,7 @@ document.write(`
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="index.html">langchain-core: 0.3.11</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="index.html">langchain-core: 0.3.12</a></li>
 <li aria-current="page" class="breadcrumb-item active"><code...< li="">
 </code...<></li></ul>
 </nav>
@@ -326,14 +328,26 @@ document.write(`
 <p><strong>Classes</strong></p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="exceptions/langchain_core.exceptions.LangChainException.html#langchain_core.exceptions.LangChainException" title="langchain_core.exceptions.LangChainException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exceptions.LangChainException</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="exceptions/langchain_core.exceptions.ErrorCode.html#langchain_core.exceptions.ErrorCode" title="langchain_core.exceptions.ErrorCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exceptions.ErrorCode</span></code></a>(value[, names, module, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="exceptions/langchain_core.exceptions.LangChainException.html#langchain_core.exceptions.LangChainException" title="langchain_core.exceptions.LangChainException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exceptions.LangChainException</span></code></a></p></td>
 <td><p>General LangChain exception.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="exceptions/langchain_core.exceptions.OutputParserException.html#langchain_core.exceptions.OutputParserException" title="langchain_core.exceptions.OutputParserException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exceptions.OutputParserException</span></code></a>(error[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="exceptions/langchain_core.exceptions.OutputParserException.html#langchain_core.exceptions.OutputParserException" title="langchain_core.exceptions.OutputParserException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exceptions.OutputParserException</span></code></a>(error[, ...])</p></td>
 <td><p>Exception that output parsers should raise to signify a parsing error.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="exceptions/langchain_core.exceptions.TracerException.html#langchain_core.exceptions.TracerException" title="langchain_core.exceptions.TracerException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exceptions.TracerException</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="exceptions/langchain_core.exceptions.TracerException.html#langchain_core.exceptions.TracerException" title="langchain_core.exceptions.TracerException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exceptions.TracerException</span></code></a></p></td>
 <td><p>Base class for exceptions in tracers module.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Functions</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="exceptions/langchain_core.exceptions.create_message.html#langchain_core.exceptions.create_message" title="langchain_core.exceptions.create_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exceptions.create_message</span></code></a>(*, message, error_code)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>

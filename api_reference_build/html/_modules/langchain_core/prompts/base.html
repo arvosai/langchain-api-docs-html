@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 17, 2024" name="docbuild:last-update"/>
+<meta content="Oct 18, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -250,6 +250,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
 <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Self</span><span class="p">,</span> <span class="n">override</span>
 
+<span class="kn">from</span> <span class="nn">langchain_core.exceptions</span> <span class="kn">import</span> <span class="n">ErrorCode</span><span class="p">,</span> <span class="n">create_message</span>
 <span class="kn">from</span> <span class="nn">langchain_core.load</span> <span class="kn">import</span> <span class="n">dumpd</span>
 <span class="kn">from</span> <span class="nn">langchain_core.output_parsers.base</span> <span class="kn">import</span> <span class="n">BaseOutputParser</span>
 <span class="kn">from</span> <span class="nn">langchain_core.prompt_values</span> <span class="kn">import</span> <span class="p">(</span>
@@ -305,18 +306,24 @@ document.write(`
                 <span class="s2">"Cannot have an input variable named 'stop', as it is used internally,"</span>
                 <span class="s2">" please rename."</span>
             <span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="n">create_message</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="n">ErrorCode</span><span class="o">.</span><span class="n">INVALID_PROMPT_INPUT</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="s2">"stop"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">partial_variables</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s2">"Cannot have an partial variable named 'stop', as it is used "</span>
                 <span class="s2">"internally, please rename."</span>
             <span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="n">create_message</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="n">ErrorCode</span><span class="o">.</span><span class="n">INVALID_PROMPT_INPUT</span><span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="n">overall</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_variables</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">partial_variables</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">overall</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Found overlapping input and partial variables: </span><span class="si">{</span><span class="n">overall</span><span class="si">}</span><span class="s2">"</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="n">create_message</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="n">ErrorCode</span><span class="o">.</span><span class="n">INVALID_PROMPT_INPUT</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="nd">@classmethod</span>
@@ -379,7 +386,11 @@ document.write(`
                     <span class="sa">f</span><span class="s2">"Expected mapping type as input to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">. "</span>
                     <span class="sa">f</span><span class="s2">"Received </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">inner_input</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
                 <span class="p">)</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="n">create_message</span><span class="p">(</span>
+                        <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="n">ErrorCode</span><span class="o">.</span><span class="n">INVALID_PROMPT_INPUT</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
         <span class="n">missing</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_variables</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">inner_input</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
@@ -393,7 +404,9 @@ document.write(`
                 <span class="s2">" and not a variable, please escape it with double curly braces like: "</span>
                 <span class="sa">f</span><span class="s2">"'</span><span class="se">{{{{</span><span class="si">{</span><span class="n">example_key</span><span class="si">}</span><span class="se">}}}}</span><span class="s2">'."</span>
             <span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                <span class="n">create_message</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="n">ErrorCode</span><span class="o">.</span><span class="n">INVALID_PROMPT_INPUT</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">inner_input</span>
 
     <span class="k">def</span> <span class="nf">_format_prompt_with_error_handling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inner_input</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PromptValue</span><span class="p">:</span>
@@ -637,7 +650,9 @@ document.write(`
             <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">required_metadata</span><span class="si">}</span><span class="s2">. Received document with missing metadata: "</span>
             <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">missing_metadata</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
         <span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="n">create_message</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="n">ErrorCode</span><span class="o">.</span><span class="n">INVALID_PROMPT_INPUT</span><span class="p">)</span>
+        <span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">base_info</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">prompt</span><span class="o">.</span><span class="n">input_variables</span><span class="p">}</span>
 
 

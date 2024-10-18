@@ -38,7 +38,7 @@
 <link href="../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 17, 2024" name="docbuild:last-update"/>
+<meta content="Oct 18, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -229,6 +229,7 @@ document.write(`
 <h1>Source code for langchain_core.exceptions</h1><div class="highlight"><pre>
 <span></span><span class="sd">"""Custom **exceptions** for LangChain."""</span>
 
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
 
 
@@ -276,6 +277,10 @@ document.write(`
         <span class="n">llm_output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">send_to_llm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">create_message</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="n">error</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="n">ErrorCode</span><span class="o">.</span><span class="n">OUTPUT_PARSING_FAILURE</span>
+            <span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">send_to_llm</span> <span class="ow">and</span> <span class="p">(</span><span class="n">observation</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">llm_output</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
@@ -286,6 +291,30 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">observation</span> <span class="o">=</span> <span class="n">observation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">llm_output</span> <span class="o">=</span> <span class="n">llm_output</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">send_to_llm</span> <span class="o">=</span> <span class="n">send_to_llm</span></div>
+
+
+
+<div class="viewcode-block" id="ErrorCode">
+<a class="viewcode-back" href="../../core/exceptions/langchain_core.exceptions.ErrorCode.html#langchain_core.exceptions.ErrorCode">[docs]</a>
+<span class="k">class</span> <span class="nc">ErrorCode</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">INVALID_PROMPT_INPUT</span> <span class="o">=</span> <span class="s2">"INVALID_PROMPT_INPUT"</span>
+    <span class="n">INVALID_TOOL_RESULTS</span> <span class="o">=</span> <span class="s2">"INVALID_TOOL_RESULTS"</span>
+    <span class="n">MESSAGE_COERCION_FAILURE</span> <span class="o">=</span> <span class="s2">"MESSAGE_COERCION_FAILURE"</span>
+    <span class="n">MODEL_AUTHENTICATION</span> <span class="o">=</span> <span class="s2">"MODEL_AUTHENTICATION"</span>
+    <span class="n">MODEL_NOT_FOUND</span> <span class="o">=</span> <span class="s2">"MODEL_NOT_FOUND"</span>
+    <span class="n">MODEL_RATE_LIMIT</span> <span class="o">=</span> <span class="s2">"MODEL_RATE_LIMIT"</span>
+    <span class="n">OUTPUT_PARSING_FAILURE</span> <span class="o">=</span> <span class="s2">"OUTPUT_PARSING_FAILURE"</span></div>
+
+
+
+<div class="viewcode-block" id="create_message">
+<a class="viewcode-back" href="../../core/exceptions/langchain_core.exceptions.create_message.html#langchain_core.exceptions.create_message">[docs]</a>
+<span class="k">def</span> <span class="nf">create_message</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">error_code</span><span class="p">:</span> <span class="n">ErrorCode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="s2">"For troubleshooting, visit: https://python.langchain.com/docs/"</span>
+        <span class="sa">f</span><span class="s2">"troubleshooting/errors/</span><span class="si">{</span><span class="n">error_code</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span></div>
 
 </pre></div>
 </article>
