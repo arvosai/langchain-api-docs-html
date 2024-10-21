@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 18, 2024" name="docbuild:last-update"/>
+<meta content="Oct 21, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -570,9 +570,9 @@ document.write(`
         <span class="n">full_query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span><span class="si">{</span><span class="n">embeddings_query</span><span class="si">}</span>
 <span class="s2">        </span><span class="si">{</span><span class="n">select_clause</span><span class="si">}</span>
 <span class="s2">        FROM VECTOR_SEARCH(</span>
-<span class="s2">            TABLE `</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">full_table_id</span><span class="si">}</span><span class="s2">`,</span>
+<span class="s2">            (SELECT * FROM `</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">full_table_id</span><span class="si">}</span><span class="s2">` WHERE </span><span class="si">{</span><span class="n">where_filter_expr</span><span class="si">}</span><span class="s2">),</span>
 <span class="s2">            "</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_field</span><span class="si">}</span><span class="s2">",</span>
-<span class="s2">            (SELECT row_num, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_field</span><span class="si">}</span><span class="s2"> from embeddings),</span>
+<span class="s2">            (SELECT row_num, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_field</span><span class="si">}</span><span class="s2"> FROM embeddings),</span>
 <span class="s2">            distance_type =&gt; "</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">distance_type</span><span class="si">}</span><span class="s2">",</span>
 <span class="s2">            top_k =&gt; </span><span class="si">{</span><span class="n">k</span><span class="si">}</span>
 <span class="s2">        )</span>
@@ -583,7 +583,6 @@ document.write(`
 <span class="s2">        FROM (</span>
 <span class="s2">            </span><span class="si">{</span><span class="n">full_query</span><span class="si">}</span>
 <span class="s2">        ) AS result</span>
-<span class="s2">        WHERE </span><span class="si">{</span><span class="n">where_filter_expr</span><span class="si">}</span>
 <span class="s2">        ORDER BY row_num, score</span>
 <span class="s2">        """</span>
         <span class="k">return</span> <span class="n">full_query_wrapper</span>

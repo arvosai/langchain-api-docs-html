@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 18, 2024" name="docbuild:last-update"/>
+<meta content="Oct 21, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -358,6 +358,8 @@ document.write(`
                     <span class="n">invalid_tool_calls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                         <span class="n">make_invalid_tool_call</span><span class="p">(</span><span class="n">raw_tool_call</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
                     <span class="p">)</span>
+        <span class="k">if</span> <span class="n">audio</span> <span class="o">:=</span> <span class="n">_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"audio"</span><span class="p">):</span>
+            <span class="n">additional_kwargs</span><span class="p">[</span><span class="s2">"audio"</span><span class="p">]</span> <span class="o">=</span> <span class="n">audio</span>
         <span class="k">return</span> <span class="n">AIMessage</span><span class="p">(</span>
             <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span>
             <span class="n">additional_kwargs</span><span class="o">=</span><span class="n">additional_kwargs</span><span class="p">,</span>
@@ -448,6 +450,17 @@ document.write(`
         <span class="c1"># If tool calls present, content null value should be None not empty string.</span>
         <span class="k">if</span> <span class="s2">"function_call"</span> <span class="ow">in</span> <span class="n">message_dict</span> <span class="ow">or</span> <span class="s2">"tool_calls"</span> <span class="ow">in</span> <span class="n">message_dict</span><span class="p">:</span>
             <span class="n">message_dict</span><span class="p">[</span><span class="s2">"content"</span><span class="p">]</span> <span class="o">=</span> <span class="n">message_dict</span><span class="p">[</span><span class="s2">"content"</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="s2">"audio"</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="p">:</span>
+            <span class="c1"># openai doesn't support passing the data back - only the id</span>
+            <span class="c1"># https://platform.openai.com/docs/guides/audio/multi-turn-conversations</span>
+            <span class="n">raw_audio</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="p">[</span><span class="s2">"audio"</span><span class="p">]</span>
+            <span class="n">audio</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="n">message</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="p">[</span><span class="s2">"audio"</span><span class="p">][</span><span class="s2">"id"</span><span class="p">]}</span>
+                <span class="k">if</span> <span class="s2">"id"</span> <span class="ow">in</span> <span class="n">raw_audio</span>
+                <span class="k">else</span> <span class="n">raw_audio</span>
+            <span class="p">)</span>
+            <span class="n">message_dict</span><span class="p">[</span><span class="s2">"audio"</span><span class="p">]</span> <span class="o">=</span> <span class="n">audio</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">SystemMessage</span><span class="p">):</span>
         <span class="n">message_dict</span><span class="p">[</span><span class="s2">"role"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"system"</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">FunctionMessage</span><span class="p">):</span>

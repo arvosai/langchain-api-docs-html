@@ -38,7 +38,7 @@
 <link href="../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 18, 2024" name="docbuild:last-update"/>
+<meta content="Oct 21, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -229,7 +229,7 @@ document.write(`
 <h1>Source code for langchain_mongodb.chat_message_histories</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
 
 <span class="kn">from</span> <span class="nn">langchain_core.chat_history</span> <span class="kn">import</span> <span class="n">BaseChatMessageHistory</span>
 <span class="kn">from</span> <span class="nn">langchain_core.messages</span> <span class="kn">import</span> <span class="p">(</span>
@@ -245,6 +245,19 @@ document.write(`
 <span class="n">DEFAULT_COLLECTION_NAME</span> <span class="o">=</span> <span class="s2">"message_store"</span>
 <span class="n">DEFAULT_SESSION_ID_KEY</span> <span class="o">=</span> <span class="s2">"SessionId"</span>
 <span class="n">DEFAULT_HISTORY_KEY</span> <span class="o">=</span> <span class="s2">"History"</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">motor.motor_asyncio</span> <span class="kn">import</span> <span class="n">AsyncIOMotorClient</span>  <span class="c1"># type: ignore</span>
+
+    <span class="n">_motor_available</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">AsyncIOMotorClient</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_motor_available</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+        <span class="s2">"Motor library is not installed. Asynchronous methods will fall back to using "</span>
+        <span class="s2">"`run_in_executor`, which is less efficient. "</span>
+        <span class="s2">"Install motor with `pip install motor` for improved performance."</span>
+    <span class="p">)</span>
 
 
 <div class="viewcode-block" id="MongoDBChatMessageHistory">
@@ -293,7 +306,7 @@ document.write(`
 <a class="viewcode-back" href="../../mongodb/chat_message_histories/langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.html#langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">connection_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">connection_string</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">database_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_DBNAME</span><span class="p">,</span>
         <span class="n">collection_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_COLLECTION_NAME</span><span class="p">,</span>
@@ -303,12 +316,14 @@ document.write(`
         <span class="n">create_index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">history_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">index_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MongoClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Initialize with a MongoDBChatMessageHistory instance.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            connection_string: str</span>
-<span class="sd">                connection string to connect to MongoDB.</span>
+<span class="sd">            connection_string: Optional[str]</span>
+<span class="sd">                connection string to connect to MongoDB. Can be None if mongo_client is</span>
+<span class="sd">                provided.</span>
 <span class="sd">            session_id: str</span>
 <span class="sd">                arbitrary key that is used to store the messages of</span>
 <span class="sd">                 a single chat session.</span>
@@ -326,8 +341,10 @@ document.write(`
 <span class="sd">                count of (most recent) messages to fetch from MongoDB.</span>
 <span class="sd">            index_kwargs: Optional[Dict]</span>
 <span class="sd">                additional keyword arguments to pass to the index creation.</span>
+<span class="sd">            client: Optional[MongoClient]</span>
+<span class="sd">                an existing MongoClient instance.</span>
+<span class="sd">                If provided, connection_string is ignored.</span>
 <span class="sd">        """</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection_string</span> <span class="o">=</span> <span class="n">connection_string</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span> <span class="o">=</span> <span class="n">session_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">database_name</span> <span class="o">=</span> <span class="n">database_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span> <span class="o">=</span> <span class="n">collection_name</span>
@@ -335,13 +352,29 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">history_key</span> <span class="o">=</span> <span class="n">history_key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">history_size</span> <span class="o">=</span> <span class="n">history_size</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">:</span> <span class="n">MongoClient</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="n">connection_string</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionFailure</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">client</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">connection_string</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Must provide connection_string or client, not both"</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="k">elif</span> <span class="n">connection_string</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="n">connection_string</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">errors</span><span class="o">.</span><span class="n">ConnectionFailure</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Either connection_string or client must be provided"</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">[</span><span class="n">database_name</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">[</span><span class="n">collection_name</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">_motor_available</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">async_client</span> <span class="o">=</span> <span class="n">AsyncIOMotorClient</span><span class="p">(</span><span class="n">connection_string</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">async_db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_client</span><span class="p">[</span><span class="n">database_name</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">async_collection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_db</span><span class="p">[</span><span class="n">collection_name</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">async_client</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">async_db</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">async_collection</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="n">create_index</span><span class="p">:</span>
             <span class="n">index_kwargs</span> <span class="o">=</span> <span class="n">index_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -376,6 +409,40 @@ document.write(`
         <span class="n">messages</span> <span class="o">=</span> <span class="n">messages_from_dict</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">messages</span>
 
+<div class="viewcode-block" id="MongoDBChatMessageHistory.aget_messages">
+<a class="viewcode-back" href="../../mongodb/chat_message_histories/langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.html#langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.aget_messages">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">aget_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Async version of getting messages from MongoDB"""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_motor_available</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">"Motor library is not installed. "</span>
+                <span class="s2">"Using `run_in_executor` for aget_messages, "</span>
+                <span class="s2">"which may be less efficient."</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">aget_messages</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">history_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_collection</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">session_id_key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">total_count</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_collection</span><span class="o">.</span><span class="n">count_documents</span><span class="p">(</span>
+                <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">session_id_key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">}</span>
+            <span class="p">)</span>
+            <span class="n">skip_count</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="n">total_count</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">history_size</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+                <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">session_id_key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">},</span> <span class="n">skip</span><span class="o">=</span><span class="n">skip_count</span>
+            <span class="p">)</span>
+
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">document</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
+            <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">document</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">history_key</span><span class="p">]))</span>
+
+        <span class="n">messages</span> <span class="o">=</span> <span class="n">messages_from_dict</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">messages</span></div>
+
+
 <div class="viewcode-block" id="MongoDBChatMessageHistory.add_message">
 <a class="viewcode-back" href="../../mongodb/chat_message_histories/langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.html#langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.add_message">[docs]</a>
     <span class="k">def</span> <span class="nf">add_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">BaseMessage</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -391,6 +458,28 @@ document.write(`
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">err</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="MongoDBChatMessageHistory.aadd_messages">
+<a class="viewcode-back" href="../../mongodb/chat_message_histories/langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.html#langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.aadd_messages">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">aadd_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">messages</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Async add a list of messages to MongoDB"""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_motor_available</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">"Motor library is not installed. "</span>
+                <span class="s2">"Using `run_in_executor` for aadd_messages, "</span>
+                <span class="s2">"which may be less efficient."</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">aadd_messages</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+
+        <span class="n">documents</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">session_id_key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">history_key</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">message_to_dict</span><span class="p">(</span><span class="n">message</span><span class="p">)),</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span>
+        <span class="p">]</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_collection</span><span class="o">.</span><span class="n">insert_many</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="MongoDBChatMessageHistory.clear">
 <a class="viewcode-back" href="../../mongodb/chat_message_histories/langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.html#langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.clear">[docs]</a>
     <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -399,6 +488,20 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">delete_many</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">session_id_key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">})</span>
         <span class="k">except</span> <span class="n">errors</span><span class="o">.</span><span class="n">WriteError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">err</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MongoDBChatMessageHistory.aclear">
+<a class="viewcode-back" href="../../mongodb/chat_message_histories/langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.html#langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.aclear">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">aclear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Async clear session memory from MongoDB"""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_motor_available</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">"Motor library is not installed. "</span>
+                <span class="s2">"Using `run_in_executor` for aclear, which may be less efficient."</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">aclear</span><span class="p">()</span>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_collection</span><span class="o">.</span><span class="n">delete_many</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">session_id_key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">})</span></div>
 </div>
 
 </pre></div>

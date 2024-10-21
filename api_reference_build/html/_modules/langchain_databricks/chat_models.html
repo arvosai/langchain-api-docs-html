@@ -38,7 +38,7 @@
 <link href="../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 18, 2024" name="docbuild:last-update"/>
+<meta content="Oct 21, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -264,6 +264,7 @@ document.write(`
     <span class="n">ToolMessage</span><span class="p">,</span>
     <span class="n">ToolMessageChunk</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">langchain_core.messages.ai</span> <span class="kn">import</span> <span class="n">UsageMetadata</span>
 <span class="kn">from</span> <span class="nn">langchain_core.messages.tool</span> <span class="kn">import</span> <span class="n">tool_call_chunk</span>
 <span class="kn">from</span> <span class="nn">langchain_core.output_parsers</span> <span class="kn">import</span> <span class="n">JsonOutputParser</span><span class="p">,</span> <span class="n">PydanticOutputParser</span>
 <span class="kn">from</span> <span class="nn">langchain_core.output_parsers.base</span> <span class="kn">import</span> <span class="n">OutputParserLike</span>
@@ -388,6 +389,30 @@ document.write(`
 <span class="sd">                id='run-4cef851f-6223-424f-ad26-4a54e5852aa5'</span>
 <span class="sd">            )</span>
 
+<span class="sd">        To get token usage returned when streaming, pass the ``stream_usage`` kwarg:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            stream = llm.stream(messages, stream_usage=True)</span>
+<span class="sd">            next(stream).usage_metadata</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            {"input_tokens": 28, "output_tokens": 5, "total_tokens": 33}</span>
+
+<span class="sd">        Alternatively, setting ``stream_usage`` when instantiating the model can be</span>
+<span class="sd">        useful when incorporating ``ChatDatabricks`` into LCEL chains-- or when using</span>
+<span class="sd">        methods like ``.with_structured_output``, which generate chains under the</span>
+<span class="sd">        hood.</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            llm = ChatDatabricks(</span>
+<span class="sd">                endpoint="databricks-meta-llama-3-1-405b-instruct",</span>
+<span class="sd">                stream_usage=True</span>
+<span class="sd">            )</span>
+<span class="sd">            structured_llm = llm.with_structured_output(...)</span>
+
 <span class="sd">    Async:</span>
 <span class="sd">        .. code-block:: python</span>
 
@@ -460,6 +485,10 @@ document.write(`
     <span class="n">max_tokens</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">"""The maximum number of tokens to generate."""</span>
     <span class="n">extra_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Whether to include usage metadata in streaming output. If True, additional</span>
+<span class="sd">    message chunks will be generated during the stream including usage metadata.</span>
+<span class="sd">    """</span>
+    <span class="n">stream_usage</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="w">    </span><span class="sd">"""Any extra parameters to pass to the endpoint."""</span>
     <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseDeploymentClient</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">True</span>
@@ -532,8 +561,12 @@ document.write(`
         <span class="n">messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
         <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">stream_usage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">ChatGenerationChunk</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">stream_usage</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">stream_usage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_usage</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_inputs</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">first_chunk_role</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">predict_stream</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="n">data</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
@@ -544,8 +577,19 @@ document.write(`
                 <span class="k">if</span> <span class="n">first_chunk_role</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">first_chunk_role</span> <span class="o">=</span> <span class="n">chunk_delta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"role"</span><span class="p">)</span>
 
+                <span class="k">if</span> <span class="n">stream_usage</span> <span class="ow">and</span> <span class="p">(</span><span class="n">usage</span> <span class="o">:=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"usage"</span><span class="p">)):</span>
+                    <span class="n">input_tokens</span> <span class="o">=</span> <span class="n">usage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"prompt_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="n">output_tokens</span> <span class="o">=</span> <span class="n">usage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"completion_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="n">usage</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">"input_tokens"</span><span class="p">:</span> <span class="n">input_tokens</span><span class="p">,</span>
+                        <span class="s2">"output_tokens"</span><span class="p">:</span> <span class="n">output_tokens</span><span class="p">,</span>
+                        <span class="s2">"total_tokens"</span><span class="p">:</span> <span class="n">input_tokens</span> <span class="o">+</span> <span class="n">output_tokens</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">usage</span> <span class="o">=</span> <span class="kc">None</span>
+
                 <span class="n">chunk_message</span> <span class="o">=</span> <span class="n">_convert_dict_to_message_chunk</span><span class="p">(</span>
-                    <span class="n">chunk_delta</span><span class="p">,</span> <span class="n">first_chunk_role</span>
+                    <span class="n">chunk_delta</span><span class="p">,</span> <span class="n">first_chunk_role</span><span class="p">,</span> <span class="n">usage</span><span class="o">=</span><span class="n">usage</span>
                 <span class="p">)</span>
 
                 <span class="n">generation_info</span> <span class="o">=</span> <span class="p">{}</span>
@@ -997,7 +1041,9 @@ document.write(`
 
 
 <span class="k">def</span> <span class="nf">_convert_dict_to_message_chunk</span><span class="p">(</span>
-    <span class="n">_dict</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">default_role</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">_dict</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">default_role</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">usage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseMessageChunk</span><span class="p">:</span>
     <span class="n">role</span> <span class="o">=</span> <span class="n">_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"role"</span><span class="p">,</span> <span class="n">default_role</span><span class="p">)</span>
     <span class="n">content</span> <span class="o">=</span> <span class="n">_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"content"</span><span class="p">)</span>
@@ -1028,11 +1074,13 @@ document.write(`
                 <span class="p">]</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="k">pass</span>
+        <span class="n">usage_metadata</span> <span class="o">=</span> <span class="n">UsageMetadata</span><span class="p">(</span><span class="o">**</span><span class="n">usage</span><span class="p">)</span> <span class="k">if</span> <span class="n">usage</span> <span class="k">else</span> <span class="kc">None</span>  <span class="c1"># type: ignore</span>
         <span class="k">return</span> <span class="n">AIMessageChunk</span><span class="p">(</span>
             <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span>
             <span class="n">additional_kwargs</span><span class="o">=</span><span class="n">additional_kwargs</span><span class="p">,</span>
             <span class="nb">id</span><span class="o">=</span><span class="n">_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"id"</span><span class="p">),</span>
             <span class="n">tool_call_chunks</span><span class="o">=</span><span class="n">tool_call_chunks</span><span class="p">,</span>
+            <span class="n">usage_metadata</span><span class="o">=</span><span class="n">usage_metadata</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">ChatMessageChunk</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>

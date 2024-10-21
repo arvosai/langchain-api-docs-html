@@ -40,7 +40,7 @@
 <link href="../chat_models.html" rel="prev" title="chat_models"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 18, 2024" name="docbuild:last-update"/>
+<meta content="Oct 21, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -389,6 +389,25 @@ document.write(`
 <span class="p">)</span>
 </pre></div>
 </div>
+<p>To get token usage returned when streaming, pass the <code class="docutils literal notranslate"><span class="pre">stream_usage</span></code> kwarg:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stream</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">stream_usage</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">next</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span><span class="o">.</span><span class="n">usage_metadata</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">"input_tokens"</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span> <span class="s2">"output_tokens"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">"total_tokens"</span><span class="p">:</span> <span class="mi">33</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Alternatively, setting <code class="docutils literal notranslate"><span class="pre">stream_usage</span></code> when instantiating the model can be
+useful when incorporating <code class="docutils literal notranslate"><span class="pre">ChatDatabricks</span></code> into LCEL chains– or when using
+methods like <code class="docutils literal notranslate"><span class="pre">.with_structured_output</span></code>, which generate chains under the
+hood.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">llm</span> <span class="o">=</span> <span class="n">ChatDatabricks</span><span class="p">(</span>
+    <span class="n">endpoint</span><span class="o">=</span><span class="s2">"databricks-meta-llama-3-1-405b-instruct"</span><span class="p">,</span>
+    <span class="n">stream_usage</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd>
 <dt>Async:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">await</span> <span class="n">llm</span><span class="o">.</span><span class="n">ainvoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
 
@@ -499,7 +518,8 @@ with a <code class="docutils literal notranslate"><span class="pre">tools</span>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_databricks.chat_models.ChatDatabricks.extra_params">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extra_params</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_databricks.chat_models.ChatDatabricks.extra_params" title="Link to this definition">#</a></dt>
-<dd><p>Any extra parameters to pass to the endpoint.</p>
+<dd><p>Whether to include usage metadata in streaming output. If True, additional
+message chunks will be generated during the stream including usage metadata.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_databricks.chat_models.ChatDatabricks.max_tokens">
@@ -525,6 +545,11 @@ with a <code class="docutils literal notranslate"><span class="pre">tools</span>
 <dt class="sig sig-object py" id="langchain_databricks.chat_models.ChatDatabricks.stop">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stop</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_databricks.chat_models.ChatDatabricks.stop" title="Link to this definition">#</a></dt>
 <dd><p>List of strings to stop generation at.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_databricks.chat_models.ChatDatabricks.stream_usage">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stream_usage</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#langchain_databricks.chat_models.ChatDatabricks.stream_usage" title="Link to this definition">#</a></dt>
+<dd><p>Any extra parameters to pass to the endpoint.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_databricks.chat_models.ChatDatabricks.tags">
@@ -1793,6 +1818,7 @@ an instance of <code class="docutils literal notranslate"><span class="pre">sche
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_databricks.chat_models.ChatDatabricks.n"><code class="docutils literal notranslate"><span class="pre">n</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_databricks.chat_models.ChatDatabricks.rate_limiter"><code class="docutils literal notranslate"><span class="pre">rate_limiter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_databricks.chat_models.ChatDatabricks.stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_databricks.chat_models.ChatDatabricks.stream_usage"><code class="docutils literal notranslate"><span class="pre">stream_usage</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_databricks.chat_models.ChatDatabricks.tags"><code class="docutils literal notranslate"><span class="pre">tags</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_databricks.chat_models.ChatDatabricks.target_uri"><code class="docutils literal notranslate"><span class="pre">target_uri</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_databricks.chat_models.ChatDatabricks.temperature"><code class="docutils literal notranslate"><span class="pre">temperature</span></code></a></li>
