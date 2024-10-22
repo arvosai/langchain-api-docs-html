@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 21, 2024" name="docbuild:last-update"/>
+<meta content="Oct 22, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -227,7 +227,7 @@ document.write(`
 <div id="searchbox"></div>
 <article class="bd-article">
 <h1>Source code for langchain_huggingface.embeddings.huggingface</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>  <span class="c1"># type: ignore[import-not-found]</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">langchain_core.embeddings</span> <span class="kn">import</span> <span class="n">Embeddings</span>
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span>
@@ -257,7 +257,6 @@ document.write(`
 <span class="sd">            )</span>
 <span class="sd">    """</span>
 
-    <span class="n">client</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: :meta private:</span>
     <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_MODEL_NAME</span>
 <span class="w">    </span><span class="sd">"""Model name to use."""</span>
     <span class="n">cache_folder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -288,7 +287,7 @@ document.write(`
                 <span class="s2">"Please install it with `pip install sentence-transformers`."</span>
             <span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">sentence_transformers</span><span class="o">.</span><span class="n">SentenceTransformer</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">sentence_transformers</span><span class="o">.</span><span class="n">SentenceTransformer</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span> <span class="n">cache_folder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_folder</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">model_kwargs</span>
         <span class="p">)</span>
 
@@ -312,12 +311,20 @@ document.write(`
 
         <span class="n">texts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">),</span> <span class="n">texts</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">multi_process</span><span class="p">:</span>
-            <span class="n">pool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">start_multi_process_pool</span><span class="p">()</span>
-            <span class="n">embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">encode_multi_process</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">pool</span><span class="p">)</span>
+            <span class="n">pool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">start_multi_process_pool</span><span class="p">()</span>
+            <span class="n">embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">encode_multi_process</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">pool</span><span class="p">)</span>
             <span class="n">sentence_transformers</span><span class="o">.</span><span class="n">SentenceTransformer</span><span class="o">.</span><span class="n">stop_multi_process_pool</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
-                <span class="n">texts</span><span class="p">,</span> <span class="n">show_progress_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">show_progress</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">encode_kwargs</span>
+            <span class="n">embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+                <span class="n">texts</span><span class="p">,</span>
+                <span class="n">show_progress_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">show_progress</span><span class="p">,</span>
+                <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">encode_kwargs</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">"Expected embeddings to be a Tensor or a numpy array, "</span>
+                <span class="s2">"got a list instead."</span>
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">embeddings</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>

@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 21, 2024" name="docbuild:last-update"/>
+<meta content="Oct 22, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -631,15 +631,18 @@ document.write(`
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">set_disable_streaming</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="n">values</span><span class="p">[</span><span class="s2">"provider"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"provider"</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model_id"</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="s2">"model"</span><span class="p">]))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">model_id</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model_id"</span><span class="p">,</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model"</span><span class="p">))</span>
+        <span class="n">model_parts</span> <span class="o">=</span> <span class="n">model_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">"provider"</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"provider"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="n">model_parts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">model_parts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">model_parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="p">)</span>
 
-        <span class="c1"># As of 08/05/24 only Anthropic models support streamed tool calling</span>
+        <span class="c1"># As of 09/15/24 Anthropic and Cohere models support streamed tool calling</span>
         <span class="k">if</span> <span class="s2">"disable_streaming"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
             <span class="n">values</span><span class="p">[</span><span class="s2">"disable_streaming"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="kc">False</span> <span class="k">if</span> <span class="s2">"anthropic"</span> <span class="ow">in</span> <span class="n">values</span><span class="p">[</span><span class="s2">"provider"</span><span class="p">]</span> <span class="k">else</span> <span class="s2">"tool_calling"</span>
+                <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"provider"</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"anthropic"</span><span class="p">,</span> <span class="s2">"cohere"</span><span class="p">]</span>
+                <span class="k">else</span> <span class="s2">"tool_calling"</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
 

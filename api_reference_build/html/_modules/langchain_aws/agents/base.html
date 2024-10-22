@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 21, 2024" name="docbuild:last-update"/>
+<meta content="Oct 22, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -294,7 +294,11 @@ document.write(`
     <span class="n">response_text</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="n">event_stream</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">"completion"</span><span class="p">]</span>
     <span class="n">session_id</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">"sessionId"</span><span class="p">]</span>
+    <span class="n">trace_log</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">event_stream</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"trace"</span> <span class="ow">in</span> <span class="n">event</span><span class="p">:</span>
+            <span class="n">trace_log</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="s2">"trace"</span><span class="p">])</span>
+
         <span class="k">if</span> <span class="s2">"returnControl"</span> <span class="ow">in</span> <span class="n">event</span><span class="p">:</span>
             <span class="n">response_text</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
             <span class="k">break</span>
@@ -306,6 +310,7 @@ document.write(`
         <span class="n">return_values</span><span class="o">=</span><span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="n">response_text</span><span class="p">},</span>
         <span class="n">log</span><span class="o">=</span><span class="n">response_text</span><span class="p">,</span>
         <span class="n">session_id</span><span class="o">=</span><span class="n">session_id</span><span class="p">,</span>
+        <span class="n">trace_log</span><span class="o">=</span><span class="n">trace_log</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">response_text</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">agent_finish</span>
@@ -339,6 +344,7 @@ document.write(`
                 <span class="n">tool_input</span><span class="o">=</span><span class="n">parameters_json</span><span class="p">,</span>
                 <span class="n">log</span><span class="o">=</span><span class="n">response_text</span><span class="p">,</span>
                 <span class="n">session_id</span><span class="o">=</span><span class="n">session_id</span><span class="p">,</span>
+                <span class="n">trace_log</span><span class="o">=</span><span class="n">trace_log</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">]</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
@@ -507,9 +513,11 @@ document.write(`
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        session_id: Session id</span>
+<span class="sd">        trace_log: trace log as string when enable_trace flag is set</span>
 <span class="sd">    """</span>
 
     <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">trace_log</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">is_lc_serializable</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -529,9 +537,11 @@ document.write(`
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        session_id: session id</span>
+<span class="sd">        trace_log: trace log as string when enable_trace flag is set</span>
 <span class="sd">    """</span>
 
     <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">trace_log</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">is_lc_serializable</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -574,6 +584,8 @@ document.write(`
 <span class="w">    </span><span class="sd">"""Credentials to use to invoke the agent"""</span>
     <span class="n">endpoint_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">"""Endpoint URL"""</span>
+    <span class="n">enable_trace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">"""Boolean flag to enable trace when invoking Bedrock Agent"""</span>
 
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
@@ -628,6 +640,7 @@ document.write(`
         <span class="n">region_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">bedrock_endpoint_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">runtime_endpoint_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">enable_trace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BedrockAgentsRunnable</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""</span>
@@ -665,6 +678,8 @@ document.write(`
 <span class="sd">            region_name: Region for the Bedrock agent</span>
 <span class="sd">            bedrock_endpoint_url: Endpoint URL for bedrock agent</span>
 <span class="sd">            runtime_endpoint_url: Endpoint URL for bedrock agent runtime</span>
+<span class="sd">            enable_trace: Boolean flag to specify whether trace should be enabled when</span>
+<span class="sd">                invoking the agent</span>
 <span class="sd">            **kwargs: Additional arguments</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            BedrockAgentsRunnable configured to invoke the Bedrock agent</span>
@@ -709,6 +724,7 @@ document.write(`
             <span class="n">region_name</span><span class="o">=</span><span class="n">region_name</span><span class="p">,</span>
             <span class="n">credentials_profile_name</span><span class="o">=</span><span class="n">credentials_profile_name</span><span class="p">,</span>
             <span class="n">endpoint_url</span><span class="o">=</span><span class="n">runtime_endpoint_url</span><span class="p">,</span>
+            <span class="n">enable_trace</span><span class="o">=</span><span class="n">enable_trace</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span></div>
 
@@ -730,7 +746,7 @@ document.write(`
 <span class="sd">                end_session: Boolean indicating whether to end a session or not</span>
 <span class="sd">                intermediate_steps: The intermediate steps that are used to provide RoC</span>
 <span class="sd">                    invocation details</span>
-<span class="sd">                enable_trace: Boolean flag to enable trace when invoke bedrock agent</span>
+<span class="sd">            config: The optional RunnableConfig</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Union[List[BedrockAgentAction], BedrockAgentFinish]</span>
@@ -746,10 +762,10 @@ document.write(`
         <span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">agent_input</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">agent_input</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s2">"agentId"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent_id</span><span class="p">,</span>
                 <span class="s2">"agentAliasId"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent_alias_id</span><span class="p">,</span>
-                <span class="s2">"enableTrace"</span><span class="p">:</span> <span class="nb">input</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"enable_trace"</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                <span class="s2">"enableTrace"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_trace</span><span class="p">,</span>
                 <span class="s2">"endSession"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"end_session"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)),</span>
             <span class="p">}</span>
 

@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 21, 2024" name="docbuild:last-update"/>
+<meta content="Oct 22, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -831,19 +831,20 @@ document.write(`
 <span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    An optional dictionary to configure guardrails for Bedrock.</span>
 
-<span class="sd">    This field 'guardrails' consists of two keys: 'id' and 'version',</span>
-<span class="sd">    which should be strings, but are initialized to None. It's used to</span>
-<span class="sd">    determine if specific guardrails are enabled and properly set.</span>
+<span class="sd">    This field 'guardrails' consists of two keys: 'guardrailId' and</span>
+<span class="sd">    'guardrailVersion', which should be strings, but are initialized to None.</span>
+<span class="sd">    It's used to determine if specific guardrails are enabled and properly set.</span>
 
 <span class="sd">    Type:</span>
-<span class="sd">        Optional[Mapping[str, str]]: A mapping with 'id' and 'version' keys.</span>
+<span class="sd">        Optional[Mapping[str, str]]: A mapping with 'guardrailId' and</span>
+<span class="sd">        'guardrailVersion' keys.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    llm = BedrockLLM(model_id="&lt;model_id&gt;", client=&lt;bedrock_client&gt;,</span>
 <span class="sd">                  model_kwargs={},</span>
 <span class="sd">                  guardrails={</span>
-<span class="sd">                        "id": "&lt;guardrail_id&gt;",</span>
-<span class="sd">                        "version": "&lt;guardrail_version&gt;"})</span>
+<span class="sd">                        "guardrailId": "&lt;guardrail_id&gt;",</span>
+<span class="sd">                        "guardrailVersion": "&lt;guardrail_version&gt;"})</span>
 
 <span class="sd">    To enable tracing for guardrails, set the 'trace' key to True and pass a callback handler to the</span>
 <span class="sd">    'run_manager' parameter of the 'generate', '_call' methods.</span>
@@ -852,8 +853,8 @@ document.write(`
 <span class="sd">    llm = BedrockLLM(model_id="&lt;model_id&gt;", client=&lt;bedrock_client&gt;,</span>
 <span class="sd">                  model_kwargs={},</span>
 <span class="sd">                  guardrails={</span>
-<span class="sd">                        "id": "&lt;guardrail_id&gt;",</span>
-<span class="sd">                        "version": "&lt;guardrail_version&gt;",</span>
+<span class="sd">                        "guardrailId": "&lt;guardrail_id&gt;",</span>
+<span class="sd">                        "guardrailVersion": "&lt;guardrail_version&gt;",</span>
 <span class="sd">                        "trace": True},</span>
 <span class="sd">                callbacks=[BedrockAsyncCallbackHandler()])</span>
 

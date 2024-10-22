@@ -38,7 +38,7 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 21, 2024" name="docbuild:last-update"/>
+<meta content="Oct 22, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -1010,7 +1010,8 @@ document.write(`
             <span class="k">for</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">parsed_json</span><span class="p">:</span>
                 <span class="c1"># Check if mandatory properties are there</span>
                 <span class="k">if</span> <span class="p">(</span>
-                    <span class="ow">not</span> <span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"head"</span><span class="p">)</span>
+                    <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rel</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="ow">not</span> <span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"head"</span><span class="p">)</span>
                     <span class="ow">or</span> <span class="ow">not</span> <span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tail"</span><span class="p">)</span>
                     <span class="ow">or</span> <span class="ow">not</span> <span class="n">rel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"relation"</span><span class="p">)</span>
                 <span class="p">):</span>

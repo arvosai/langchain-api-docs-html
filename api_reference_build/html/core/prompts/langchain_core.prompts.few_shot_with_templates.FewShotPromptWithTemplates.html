@@ -40,7 +40,7 @@
 <link href="langchain_core.prompts.few_shot.FewShotPromptTemplate.html" rel="prev" title="FewShotPromptTemplate"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 21, 2024" name="docbuild:last-update"/>
+<meta content="Oct 22, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -437,8 +437,9 @@ pass them in every time you call the prompt.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_core.prompts.few_shot_with_templates.FewShotPromptWithTemplates.template_format">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">template_format</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'f-string'</span></em><a class="headerlink" href="#langchain_core.prompts.few_shot_with_templates.FewShotPromptWithTemplates.template_format" title="Link to this definition">#</a></dt>
-<dd><p>The format of the prompt template. Options are: ‘f-string’, ‘jinja2’.</p>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">template_format</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'f-string'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mustache'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'jinja2'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'f-string'</span></em><a class="headerlink" href="#langchain_core.prompts.few_shot_with_templates.FewShotPromptWithTemplates.template_format" title="Link to this definition">#</a></dt>
+<dd><p>The format of the prompt template.
+Options are: ‘f-string’, ‘jinja2’, ‘mustache’.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_core.prompts.few_shot_with_templates.FewShotPromptWithTemplates.validate_template">

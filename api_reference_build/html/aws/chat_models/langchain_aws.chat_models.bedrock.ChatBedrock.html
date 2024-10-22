@@ -40,7 +40,7 @@
 <link href="../chat_models.html" rel="prev" title="chat_models"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 21, 2024" name="docbuild:last-update"/>
+<meta content="Oct 22, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -420,11 +420,12 @@ with a <code class="docutils literal notranslate"><span class="pre">tools</span>
 <dt class="sig sig-object py" id="langchain_aws.chat_models.bedrock.ChatBedrock.guardrails">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">guardrails</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'guardrailIdentifier':</span> <span class="pre">None,</span> <span class="pre">'guardrailVersion':</span> <span class="pre">None,</span> <span class="pre">'trace':</span> <span class="pre">None}</span></em><a class="headerlink" href="#langchain_aws.chat_models.bedrock.ChatBedrock.guardrails" title="Link to this definition">#</a></dt>
 <dd><p>An optional dictionary to configure guardrails for Bedrock.</p>
-<p>This field ‘guardrails’ consists of two keys: ‘id’ and ‘version’,
-which should be strings, but are initialized to None. It’s used to
-determine if specific guardrails are enabled and properly set.</p>
+<p>This field ‘guardrails’ consists of two keys: ‘guardrailId’ and
+‘guardrailVersion’, which should be strings, but are initialized to None.
+It’s used to determine if specific guardrails are enabled and properly set.</p>
 <dl class="simple">
-<dt>Type:</dt><dd><p>Optional[Mapping[str, str]]: A mapping with ‘id’ and ‘version’ keys.</p>
+<dt>Type:</dt><dd><p>Optional[Mapping[str, str]]: A mapping with ‘guardrailId’ and
+‘guardrailVersion’ keys.</p>
 </dd>
 </dl>
 <p>Example:
@@ -433,8 +434,8 @@ llm = BedrockLLM(model_id=”&lt;model_id&gt;”, client=&lt;bedrock_client&gt;,
 <div><p>model_kwargs={},
 guardrails={</p>
 <blockquote>
-<div><p>“id”: “&lt;guardrail_id&gt;”,
-“version”: “&lt;guardrail_version&gt;”})</p>
+<div><p>“guardrailId”: “&lt;guardrail_id&gt;”,
+“guardrailVersion”: “&lt;guardrail_version&gt;”})</p>
 </div></blockquote>
 </div></blockquote>
 <p>To enable tracing for guardrails, set the ‘trace’ key to True and pass a callback handler to the
@@ -446,8 +447,8 @@ llm = BedrockLLM(model_id=”&lt;model_id&gt;”, client=&lt;bedrock_client&gt;,
 <div><p>model_kwargs={},
 guardrails={</p>
 <blockquote>
-<div><p>“id”: “&lt;guardrail_id&gt;”,
-“version”: “&lt;guardrail_version&gt;”,
+<div><p>“guardrailId”: “&lt;guardrail_id&gt;”,
+“guardrailVersion”: “&lt;guardrail_version&gt;”,
 “trace”: True},</p>
 </div></blockquote>
 </div></blockquote>
