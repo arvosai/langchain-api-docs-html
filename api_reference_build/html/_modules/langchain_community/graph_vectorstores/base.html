@@ -10,23 +10,28 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+<!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+<noscript>
+<style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+</noscript>
 <!-- Loaded before other Sphinx assets -->
-<link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
-<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
-<link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
-<link as="font" crossorigin="" href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" rel="preload" type="font/woff2"/>
-<link as="font" crossorigin="" href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" rel="preload" type="font/woff2"/>
-<link as="font" crossorigin="" href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" rel="preload" type="font/woff2"/>
+<link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet"/>
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet"/>
 <link href="../../../_static/pygments.css?v=a746c00c" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/autodoc_pydantic.css" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/sphinx-design.min.css?v=95c83b7e" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/css/custom.css?v=b95e2228" rel="stylesheet" type="text/css"/>
+<!-- So that users can add custom icons -->
+<script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
 <!-- Pre-loaded scripts that we'll load fully later -->
-<link as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" rel="preload"/>
-<link as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" rel="preload"/>
-<script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+<link as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" rel="preload"/>
+<link as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" rel="preload"/>
 <script src="../../../_static/documentation_options.js?v=3b5cce75"></script>
 <script src="../../../_static/doctools.js?v=9bcbadda"></script>
 <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
@@ -38,26 +43,21 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 22, 2024" name="docbuild:last-update"/>
+<meta content="" name="docsearch:version"/>
+<meta content="Oct 23, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
 <div id="pst-scroll-pixel-helper"></div>
 <button class="btn rounded-pill" id="pst-back-to-top" type="button">
 <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-<input class="sidebar-toggle" id="pst-primary-sidebar-checkbox" type="checkbox"/>
-<label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-<input class="sidebar-toggle" id="pst-secondary-sidebar-checkbox" type="checkbox"/>
-<label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-<div class="search-button__wrapper">
-<div class="search-button__overlay"></div>
-<div class="search-button__search-container">
+<dialog id="pst-search-dialog">
 <form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
 <i class="fa-solid fa-magnifying-glass"></i>
-<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search" spellcheck="false" type="search"/>
 <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-</div>
+</form>
+</dialog>
 <div class="pst-async-banner-revealer d-none">
 <aside aria-label="Version warning" class="d-none d-print-none" id="bd-header-version-warning"></aside>
 </div>
@@ -70,7 +70,7 @@
 <div class="navbar-item">
 <a class="navbar-brand logo" href="../../../index.html">
 <img alt="🦜🔗 LangChain  documentation - Home" class="logo__image only-light" src="../../../_static/wordmark-api.svg"/>
-<script>document.write(`<img src="../../../_static/wordmark-api-dark.svg" class="logo__image only-dark" alt="🦜🔗 LangChain  documentation - Home"/>`);</script>
+<img alt="🦜🔗 LangChain  documentation - Home" class="logo__image only-dark pst-js-only" src="../../../_static/wordmark-api-dark.svg"/>
 </a></div>
 </div>
 <div class="navbar-header-items">
@@ -83,11 +83,6 @@
     Reference
   </a>
 </li>
-<li class="nav-item">
-<a class="nav-link nav-external" href="https://api.python.langchain.com/">
-    Legacy reference
-  </a>
-</li>
 </ul>
 </nav></div>
 </div>
@@ -95,7 +90,7 @@
 <div class="navbar-item navbar-persistent--container">
 <form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
 <i class="fa-solid fa-magnifying-glass"></i>
-<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search" spellcheck="false" type="search"/>
 <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
 </div>
@@ -112,15 +107,11 @@
 <a class="text-link" href="https://python.langchain.com/">Docs</a>
 </body></div>
 <div class="navbar-item">
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" data-bs-placement="bottom" data-bs-title="Color mode" data-bs-toggle="tooltip">
+<i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+</button></div>
 <div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
 <li class="nav-item">
 <a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
@@ -136,7 +127,7 @@ document.write(`
 <div class="navbar-persistent--mobile">
 <form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
 <i class="fa-solid fa-magnifying-glass"></i>
-<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search" spellcheck="false" type="search"/>
 <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
 </div>
@@ -144,7 +135,8 @@ document.write(`
 </header>
 <div class="bd-container">
 <div class="bd-container__inner bd-page-width">
-<div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+<dialog id="pst-primary-sidebar-modal"></dialog>
+<div class="bd-sidebar-primary bd-sidebar hide-on-wide" id="pst-primary-sidebar">
 <div class="sidebar-header-items sidebar-primary__section">
 <div class="sidebar-header-items__center">
 <div class="navbar-item">
@@ -153,11 +145,6 @@ document.write(`
 <li class="nav-item">
 <a class="nav-link nav-internal" href="../../../reference.html">
     Reference
-  </a>
-</li>
-<li class="nav-item">
-<a class="nav-link nav-external" href="https://api.python.langchain.com/">
-    Legacy reference
   </a>
 </li>
 </ul>
@@ -177,15 +164,11 @@ document.write(`
 <a class="text-link" href="https://python.langchain.com/">Docs</a>
 </body></div>
 <div class="navbar-item">
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" data-bs-placement="bottom" data-bs-title="Color mode" data-bs-toggle="tooltip">
+<i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+</button></div>
 <div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
 <li class="nav-item">
 <a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
@@ -217,7 +200,7 @@ document.write(`
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../../index.html">Module code</a></li>
-<li aria-current="page" class="breadcrumb-item active">langchain_co...</li>
+<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">langchain_community.graph_vectorstores.base</span></li>
 </ul>
 </nav>
 </div>
@@ -229,12 +212,14 @@ document.write(`
 <h1>Source code for langchain_community.graph_vectorstores.base</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">AsyncIterable</span><span class="p">,</span> <span class="n">Collection</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">Any</span><span class="p">,</span>
     <span class="n">ClassVar</span><span class="p">,</span>
     <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Sequence</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">langchain_core._api</span> <span class="kn">import</span> <span class="n">beta</span>
@@ -249,6 +234,8 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span>
 
 <span class="kn">from</span> <span class="nn">langchain_community.graph_vectorstores.links</span> <span class="kn">import</span> <span class="n">METADATA_LINKS_KEY</span><span class="p">,</span> <span class="n">Link</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_has_next</span><span class="p">(</span><span class="n">iterator</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -397,6 +384,7 @@ document.write(`
 
 <span class="sd">        Args:</span>
 <span class="sd">            nodes: the nodes to add.</span>
+<span class="sd">            **kwargs: Additional keyword arguments.</span>
 <span class="sd">        """</span></div>
 
 
@@ -411,6 +399,7 @@ document.write(`
 
 <span class="sd">        Args:</span>
 <span class="sd">            nodes: the nodes to add.</span>
+<span class="sd">            **kwargs: Additional keyword arguments.</span>
 <span class="sd">        """</span>
         <span class="n">iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="k">await</span> <span class="n">run_in_executor</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_nodes</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
         <span class="n">done</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
@@ -431,7 +420,7 @@ document.write(`
         <span class="n">ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Run more texts through the embeddings and add to the vectorstore.</span>
+<span class="w">        </span><span class="sd">"""Run more texts through the embeddings and add to the vector store.</span>
 
 <span class="sd">        The Links present in the metadata field `links` will be extracted to create</span>
 <span class="sd">        the `Node` links.</span>
@@ -459,15 +448,15 @@ document.write(`
 <span class="sd">            )</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            texts: Iterable of strings to add to the vectorstore.</span>
+<span class="sd">            texts: Iterable of strings to add to the vector store.</span>
 <span class="sd">            metadatas: Optional list of metadatas associated with the texts.</span>
 <span class="sd">                The metadata key `links` shall be an iterable of</span>
 <span class="sd">                :py:class:`~langchain_community.graph_vectorstores.links.Link`.</span>
 <span class="sd">            ids: Optional list of IDs associated with the texts.</span>
-<span class="sd">            **kwargs: vectorstore specific parameters.</span>
+<span class="sd">            **kwargs: vector store specific parameters.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            List of ids from adding the texts into the vectorstore.</span>
+<span class="sd">            List of ids from adding the texts into the vector store.</span>
 <span class="sd">        """</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="n">_texts_to_nodes</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">metadatas</span><span class="p">,</span> <span class="n">ids</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_nodes</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
@@ -483,7 +472,7 @@ document.write(`
         <span class="n">ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Run more texts through the embeddings and add to the vectorstore.</span>
+<span class="w">        </span><span class="sd">"""Run more texts through the embeddings and add to the vector store.</span>
 
 <span class="sd">        The Links present in the metadata field `links` will be extracted to create</span>
 <span class="sd">        the `Node` links.</span>
@@ -511,15 +500,15 @@ document.write(`
 <span class="sd">            )</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            texts: Iterable of strings to add to the vectorstore.</span>
+<span class="sd">            texts: Iterable of strings to add to the vector store.</span>
 <span class="sd">            metadatas: Optional list of metadatas associated with the texts.</span>
 <span class="sd">                The metadata key `links` shall be an iterable of</span>
 <span class="sd">                :py:class:`~langchain_community.graph_vectorstores.links.Link`.</span>
 <span class="sd">            ids: Optional list of IDs associated with the texts.</span>
-<span class="sd">            **kwargs: vectorstore specific parameters.</span>
+<span class="sd">            **kwargs: vector store specific parameters.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            List of ids from adding the texts into the vectorstore.</span>
+<span class="sd">            List of ids from adding the texts into the vector store.</span>
 <span class="sd">        """</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="n">_texts_to_nodes</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">metadatas</span><span class="p">,</span> <span class="n">ids</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">_id</span> <span class="k">async</span> <span class="k">for</span> <span class="n">_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aadd_nodes</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)]</span></div>
@@ -532,7 +521,7 @@ document.write(`
         <span class="n">documents</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Document</span><span class="p">],</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Run more documents through the embeddings and add to the vectorstore.</span>
+<span class="w">        </span><span class="sd">"""Run more documents through the embeddings and add to the vector store.</span>
 
 <span class="sd">        The Links present in the document metadata field `links` will be extracted to</span>
 <span class="sd">        create the `Node` links.</span>
@@ -567,7 +556,7 @@ document.write(`
 <span class="sd">            )</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            documents: Documents to add to the vectorstore.</span>
+<span class="sd">            documents: Documents to add to the vector store.</span>
 <span class="sd">                The document's metadata key `links` shall be an iterable of</span>
 <span class="sd">                :py:class:`~langchain_community.graph_vectorstores.links.Link`.</span>
 
@@ -585,7 +574,7 @@ document.write(`
         <span class="n">documents</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Document</span><span class="p">],</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Run more documents through the embeddings and add to the vectorstore.</span>
+<span class="w">        </span><span class="sd">"""Run more documents through the embeddings and add to the vector store.</span>
 
 <span class="sd">        The Links present in the document metadata field `links` will be extracted to</span>
 <span class="sd">        create the `Node` links.</span>
@@ -620,7 +609,7 @@ document.write(`
 <span class="sd">            )</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            documents: Documents to add to the vectorstore.</span>
+<span class="sd">            documents: Documents to add to the vector store.</span>
 <span class="sd">                The document's metadata key `links` shall be an iterable of</span>
 <span class="sd">                :py:class:`~langchain_community.graph_vectorstores.links.Link`.</span>
 
@@ -640,6 +629,7 @@ document.write(`
         <span class="o">*</span><span class="p">,</span>
         <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
         <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: A002</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Retrieve documents from traversing this graph store.</span>
@@ -653,8 +643,10 @@ document.write(`
 <span class="sd">            k: The number of Documents to return from the initial search.</span>
 <span class="sd">                Defaults to 4. Applies to each of the query strings.</span>
 <span class="sd">            depth: The maximum depth of edges to traverse. Defaults to 1.</span>
+<span class="sd">            filter: Optional metadata to filter the results.</span>
+<span class="sd">            **kwargs: Additional keyword arguments.</span>
 <span class="sd">        Returns:</span>
-<span class="sd">            Retrieved documents.</span>
+<span class="sd">            Collection of retrieved documents.</span>
 <span class="sd">        """</span></div>
 
 
@@ -666,6 +658,7 @@ document.write(`
         <span class="o">*</span><span class="p">,</span>
         <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
         <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: A002</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterable</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Retrieve documents from traversing this graph store.</span>
@@ -679,12 +672,20 @@ document.write(`
 <span class="sd">            k: The number of Documents to return from the initial search.</span>
 <span class="sd">                Defaults to 4. Applies to each of the query strings.</span>
 <span class="sd">            depth: The maximum depth of edges to traverse. Defaults to 1.</span>
+<span class="sd">            filter: Optional metadata to filter the results.</span>
+<span class="sd">            **kwargs: Additional keyword arguments.</span>
 <span class="sd">        Returns:</span>
-<span class="sd">            Retrieved documents.</span>
+<span class="sd">            Collection of retrieved documents.</span>
 <span class="sd">        """</span>
         <span class="n">iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span>
             <span class="k">await</span> <span class="n">run_in_executor</span><span class="p">(</span>
-                <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">traversal_search</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+                <span class="kc">None</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">traversal_search</span><span class="p">,</span>
+                <span class="n">query</span><span class="p">,</span>
+                <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+                <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span>
+                <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="n">done</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
@@ -702,12 +703,14 @@ document.write(`
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
+        <span class="n">initial_roots</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
         <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
         <span class="n">fetch_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
         <span class="n">adjacent_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
         <span class="n">lambda_mult</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
         <span class="n">score_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"-inf"</span><span class="p">),</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: A002</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Retrieve documents from this graph store using MMR-traversal.</span>
@@ -722,6 +725,10 @@ document.write(`
 
 <span class="sd">        Args:</span>
 <span class="sd">            query: The query string to search for.</span>
+<span class="sd">            initial_roots: Optional list of document IDs to use for initializing search.</span>
+<span class="sd">                The top `adjacent_k` nodes adjacent to each initial root will be</span>
+<span class="sd">                included in the set of initial candidates. To fetch only in the</span>
+<span class="sd">                neighborhood of these nodes, set `fetch_k = 0`.</span>
 <span class="sd">            k: Number of Documents to return. Defaults to 4.</span>
 <span class="sd">            fetch_k: Number of Documents to fetch via similarity.</span>
 <span class="sd">                Defaults to 100.</span>
@@ -734,6 +741,8 @@ document.write(`
 <span class="sd">                diversity and 1 to minimum diversity. Defaults to 0.5.</span>
 <span class="sd">            score_threshold: Only documents with a score greater than or equal</span>
 <span class="sd">                this threshold will be chosen. Defaults to negative infinity.</span>
+<span class="sd">            filter: Optional metadata to filter the results.</span>
+<span class="sd">            **kwargs: Additional keyword arguments.</span>
 <span class="sd">        """</span></div>
 
 
@@ -743,12 +752,14 @@ document.write(`
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
+        <span class="n">initial_roots</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
         <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
         <span class="n">fetch_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
         <span class="n">adjacent_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
         <span class="n">lambda_mult</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
         <span class="n">score_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"-inf"</span><span class="p">),</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: A002</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterable</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Retrieve documents from this graph store using MMR-traversal.</span>
@@ -763,6 +774,10 @@ document.write(`
 
 <span class="sd">        Args:</span>
 <span class="sd">            query: The query string to search for.</span>
+<span class="sd">            initial_roots: Optional list of document IDs to use for initializing search.</span>
+<span class="sd">                The top `adjacent_k` nodes adjacent to each initial root will be</span>
+<span class="sd">                included in the set of initial candidates. To fetch only in the</span>
+<span class="sd">                neighborhood of these nodes, set `fetch_k = 0`.</span>
 <span class="sd">            k: Number of Documents to return. Defaults to 4.</span>
 <span class="sd">            fetch_k: Number of Documents to fetch via similarity.</span>
 <span class="sd">                Defaults to 100.</span>
@@ -775,18 +790,22 @@ document.write(`
 <span class="sd">                diversity and 1 to minimum diversity. Defaults to 0.5.</span>
 <span class="sd">            score_threshold: Only documents with a score greater than or equal</span>
 <span class="sd">                this threshold will be chosen. Defaults to negative infinity.</span>
+<span class="sd">            filter: Optional metadata to filter the results.</span>
+<span class="sd">            **kwargs: Additional keyword arguments.</span>
 <span class="sd">        """</span>
         <span class="n">iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span>
             <span class="k">await</span> <span class="n">run_in_executor</span><span class="p">(</span>
                 <span class="kc">None</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mmr_traversal_search</span><span class="p">,</span>
                 <span class="n">query</span><span class="p">,</span>
+                <span class="n">initial_roots</span><span class="o">=</span><span class="n">initial_roots</span><span class="p">,</span>
                 <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
                 <span class="n">fetch_k</span><span class="o">=</span><span class="n">fetch_k</span><span class="p">,</span>
                 <span class="n">adjacent_k</span><span class="o">=</span><span class="n">adjacent_k</span><span class="p">,</span>
                 <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span>
                 <span class="n">lambda_mult</span><span class="o">=</span><span class="n">lambda_mult</span><span class="p">,</span>
                 <span class="n">score_threshold</span><span class="o">=</span><span class="n">score_threshold</span><span class="p">,</span>
+                <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">,</span>
                 <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -816,6 +835,11 @@ document.write(`
         <span class="n">lambda_mult</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"depth"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">"'mmr' search started with depth &gt; 0. "</span>
+                <span class="s2">"Maybe you meant to do a 'mmr_traversal' search?"</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mmr_traversal_search</span><span class="p">(</span>
                 <span class="n">query</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">fetch_k</span><span class="o">=</span><span class="n">fetch_k</span><span class="p">,</span> <span class="n">lambda_mult</span><span class="o">=</span><span class="n">lambda_mult</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">0</span>
@@ -851,7 +875,7 @@ document.write(`
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"search_type of </span><span class="si">{</span><span class="n">search_type</span><span class="si">}</span><span class="s2"> not allowed. Expected "</span>
                 <span class="s2">"search_type to be 'similarity', 'similarity_score_threshold', "</span>
-                <span class="s2">"'mmr' or 'traversal'."</span>
+                <span class="s2">"'mmr', 'traversal', or 'mmr_traversal'."</span>
             <span class="p">)</span></div>
 
 
@@ -871,11 +895,13 @@ document.write(`
             <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">amax_marginal_relevance_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">search_type</span> <span class="o">==</span> <span class="s2">"traversal"</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span><span class="n">doc</span> <span class="k">async</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">atraversal_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="n">search_type</span> <span class="o">==</span> <span class="s2">"mmr_traversal"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">doc</span> <span class="k">async</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ammr_traversal_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"search_type of </span><span class="si">{</span><span class="n">search_type</span><span class="si">}</span><span class="s2"> not allowed. Expected "</span>
                 <span class="s2">"search_type to be 'similarity', 'similarity_score_threshold', "</span>
-                <span class="s2">"'mmr' or 'traversal'."</span>
+                <span class="s2">"'mmr', 'traversal', or 'mmr_traversal'."</span>
             <span class="p">)</span></div>
 
 
@@ -890,13 +916,14 @@ document.write(`
 
 <span class="sd">                - search_type (Optional[str]): Defines the type of search that</span>
 <span class="sd">                  the Retriever should perform.</span>
-<span class="sd">                  Can be ``traversal`` (default), ``similarity``, ``mmr``, or</span>
-<span class="sd">                  ``similarity_score_threshold``.</span>
+<span class="sd">                  Can be ``traversal`` (default), ``similarity``, ``mmr``,</span>
+<span class="sd">                   ``mmr_traversal``, or ``similarity_score_threshold``.</span>
 <span class="sd">                - search_kwargs (Optional[Dict]): Keyword arguments to pass to the</span>
 <span class="sd">                  search function. Can include things like:</span>
 
 <span class="sd">                  - k(int): Amount of documents to return (Default: 4).</span>
 <span class="sd">                  - depth(int): The maximum depth of edges to traverse (Default: 1).</span>
+<span class="sd">                    Only applies to search_type: ``traversal`` and ``mmr_traversal``.</span>
 <span class="sd">                  - score_threshold(float): Minimum relevance threshold</span>
 <span class="sd">                    for similarity_score_threshold.</span>
 <span class="sd">                  - fetch_k(int): Amount of documents to pass to MMR algorithm</span>
@@ -913,21 +940,21 @@ document.write(`
 <span class="sd">            # Retrieve documents traversing edges</span>
 <span class="sd">            docsearch.as_retriever(</span>
 <span class="sd">                search_type="traversal",</span>
-<span class="sd">                search_kwargs={'k': 6, 'depth': 3}</span>
+<span class="sd">                search_kwargs={'k': 6, 'depth': 2}</span>
 <span class="sd">            )</span>
 
-<span class="sd">            # Retrieve more documents with higher diversity</span>
+<span class="sd">            # Retrieve documents with higher diversity</span>
 <span class="sd">            # Useful if your dataset has many similar documents</span>
 <span class="sd">            docsearch.as_retriever(</span>
-<span class="sd">                search_type="mmr",</span>
-<span class="sd">                search_kwargs={'k': 6, 'lambda_mult': 0.25}</span>
+<span class="sd">                search_type="mmr_traversal",</span>
+<span class="sd">                search_kwargs={'k': 6, 'lambda_mult': 0.25, 'depth': 2}</span>
 <span class="sd">            )</span>
 
 <span class="sd">            # Fetch more documents for the MMR algorithm to consider</span>
 <span class="sd">            # But only return the top 5</span>
 <span class="sd">            docsearch.as_retriever(</span>
-<span class="sd">                search_type="mmr",</span>
-<span class="sd">                search_kwargs={'k': 5, 'fetch_k': 50}</span>
+<span class="sd">                search_type="mmr_traversal",</span>
+<span class="sd">                search_kwargs={'k': 5, 'fetch_k': 50, 'depth': 2}</span>
 <span class="sd">            )</span>
 
 <span class="sd">            # Only retrieve documents that have a relevance score</span>
@@ -941,7 +968,7 @@ document.write(`
 <span class="sd">            docsearch.as_retriever(search_kwargs={'k': 1})</span>
 
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="n">GraphVectorStoreRetriever</span><span class="p">(</span><span class="n">vectorstore</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">GraphVectorStoreRetriever</span><span class="p">(</span><span class="n">vector_store</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </div>
 
 
@@ -1032,7 +1059,7 @@ document.write(`
 <span class="sd">    Passing search parameters</span>
 <span class="sd">    -------------------------</span>
 
-<span class="sd">    We can pass parameters to the underlying graph vectorstore's search methods using</span>
+<span class="sd">    We can pass parameters to the underlying graph vector store's search methods using</span>
 <span class="sd">    ``search_kwargs``.</span>
 
 <span class="sd">    Specifying graph traversal depth</span>
@@ -1081,7 +1108,7 @@ document.write(`
 <span class="sd">        retriever = graph_vectorstore.as_retriever(search_kwargs={"score_threshold": 0.5})</span>
 <span class="sd">    """</span>  <span class="c1"># noqa: E501</span>
 
-    <span class="n">vectorstore</span><span class="p">:</span> <span class="n">GraphVectorStore</span>
+    <span class="n">vector_store</span><span class="p">:</span> <span class="n">GraphVectorStore</span>
 <span class="w">    </span><span class="sd">"""GraphVectorStore to use for retrieval."""</span>
     <span class="n">search_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"traversal"</span>
 <span class="w">    </span><span class="sd">"""Type of search to perform. Defaults to "traversal"."""</span>
@@ -1097,10 +1124,10 @@ document.write(`
         <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">run_manager</span><span class="p">:</span> <span class="n">CallbackManagerForRetrieverRun</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_type</span> <span class="o">==</span> <span class="s2">"traversal"</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vectorstore</span><span class="o">.</span><span class="n">traversal_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">search_kwargs</span><span class="p">))</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_store</span><span class="o">.</span><span class="n">traversal_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">search_kwargs</span><span class="p">))</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_type</span> <span class="o">==</span> <span class="s2">"mmr_traversal"</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">list</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">vectorstore</span><span class="o">.</span><span class="n">mmr_traversal_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">search_kwargs</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vector_store</span><span class="o">.</span><span class="n">mmr_traversal_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">search_kwargs</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_get_relevant_documents</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span><span class="p">)</span>
@@ -1111,14 +1138,14 @@ document.write(`
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_type</span> <span class="o">==</span> <span class="s2">"traversal"</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span>
                 <span class="n">doc</span>
-                <span class="k">async</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectorstore</span><span class="o">.</span><span class="n">atraversal_search</span><span class="p">(</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_store</span><span class="o">.</span><span class="n">atraversal_search</span><span class="p">(</span>
                     <span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">search_kwargs</span>
                 <span class="p">)</span>
             <span class="p">]</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_type</span> <span class="o">==</span> <span class="s2">"mmr_traversal"</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span>
                 <span class="n">doc</span>
-                <span class="k">async</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectorstore</span><span class="o">.</span><span class="n">ammr_traversal_search</span><span class="p">(</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_store</span><span class="o">.</span><span class="n">ammr_traversal_search</span><span class="p">(</span>
                     <span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">search_kwargs</span>
                 <span class="p">)</span>
             <span class="p">]</span>
@@ -1137,8 +1164,8 @@ document.write(`
 </div>
 </div>
 <!-- Scripts loaded after <body> so the DOM is not blocked -->
-<script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script defer="" src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer="" src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
 <div class="footer-items__start">

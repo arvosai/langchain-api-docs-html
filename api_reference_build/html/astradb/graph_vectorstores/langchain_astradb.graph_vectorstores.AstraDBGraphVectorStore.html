@@ -10,23 +10,28 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+<!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+<noscript>
+<style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+</noscript>
 <!-- Loaded before other Sphinx assets -->
-<link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
-<link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
-<link as="font" crossorigin="" href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" rel="preload" type="font/woff2"/>
-<link as="font" crossorigin="" href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" rel="preload" type="font/woff2"/>
-<link as="font" crossorigin="" href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" rel="preload" type="font/woff2"/>
+<link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet"/>
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet"/>
 <link href="../../_static/pygments.css?v=a746c00c" rel="stylesheet" type="text/css"/>
 <link href="../../_static/autodoc_pydantic.css" rel="stylesheet" type="text/css"/>
 <link href="../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
 <link href="../../_static/sphinx-design.min.css?v=95c83b7e" rel="stylesheet" type="text/css"/>
 <link href="../../_static/css/custom.css?v=b95e2228" rel="stylesheet" type="text/css"/>
+<!-- So that users can add custom icons -->
+<script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
 <!-- Pre-loaded scripts that we'll load fully later -->
-<link as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" rel="preload"/>
-<link as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" rel="preload"/>
-<script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+<link as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" rel="preload"/>
+<link as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" rel="preload"/>
 <script src="../../_static/documentation_options.js?v=3b5cce75"></script>
 <script src="../../_static/doctools.js?v=9bcbadda"></script>
 <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
@@ -40,26 +45,21 @@
 <link href="langchain_astradb.graph_vectorstores.AdjacentNode.html" rel="prev" title="AdjacentNode"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 22, 2024" name="docbuild:last-update"/>
+<meta content="" name="docsearch:version"/>
+<meta content="Oct 23, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
 <div id="pst-scroll-pixel-helper"></div>
 <button class="btn rounded-pill" id="pst-back-to-top" type="button">
 <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-<input class="sidebar-toggle" id="pst-primary-sidebar-checkbox" type="checkbox"/>
-<label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-<input class="sidebar-toggle" id="pst-secondary-sidebar-checkbox" type="checkbox"/>
-<label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-<div class="search-button__wrapper">
-<div class="search-button__overlay"></div>
-<div class="search-button__search-container">
+<dialog id="pst-search-dialog">
 <form action="../../search.html" class="bd-search d-flex align-items-center" method="get">
 <i class="fa-solid fa-magnifying-glass"></i>
-<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search" spellcheck="false" type="search"/>
 <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-</div>
+</form>
+</dialog>
 <div class="pst-async-banner-revealer d-none">
 <aside aria-label="Version warning" class="d-none d-print-none" id="bd-header-version-warning"></aside>
 </div>
@@ -72,7 +72,7 @@
 <div class="navbar-item">
 <a class="navbar-brand logo" href="../../index.html">
 <img alt="🦜🔗 LangChain  documentation - Home" class="logo__image only-light" src="../../_static/wordmark-api.svg"/>
-<script>document.write(`<img src="../../_static/wordmark-api-dark.svg" class="logo__image only-dark" alt="🦜🔗 LangChain  documentation - Home"/>`);</script>
+<img alt="🦜🔗 LangChain  documentation - Home" class="logo__image only-dark pst-js-only" src="../../_static/wordmark-api-dark.svg"/>
 </a></div>
 </div>
 <div class="navbar-header-items">
@@ -85,11 +85,6 @@
     Reference
   </a>
 </li>
-<li class="nav-item">
-<a class="nav-link nav-external" href="https://api.python.langchain.com/">
-    Legacy reference
-  </a>
-</li>
 </ul>
 </nav></div>
 </div>
@@ -97,7 +92,7 @@
 <div class="navbar-item navbar-persistent--container">
 <form action="../../search.html" class="bd-search d-flex align-items-center" method="get">
 <i class="fa-solid fa-magnifying-glass"></i>
-<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search" spellcheck="false" type="search"/>
 <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
 </div>
@@ -114,15 +109,11 @@
 <a class="text-link" href="https://python.langchain.com/">Docs</a>
 </body></div>
 <div class="navbar-item">
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" data-bs-placement="bottom" data-bs-title="Color mode" data-bs-toggle="tooltip">
+<i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+</button></div>
 <div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
 <li class="nav-item">
 <a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
@@ -138,7 +129,7 @@ document.write(`
 <div class="navbar-persistent--mobile">
 <form action="../../search.html" class="bd-search d-flex align-items-center" method="get">
 <i class="fa-solid fa-magnifying-glass"></i>
-<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search" spellcheck="false" type="search"/>
 <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
 </div>
@@ -149,7 +140,8 @@ document.write(`
 </header>
 <div class="bd-container">
 <div class="bd-container__inner bd-page-width">
-<div class="bd-sidebar-primary bd-sidebar">
+<dialog id="pst-primary-sidebar-modal"></dialog>
+<div class="bd-sidebar-primary bd-sidebar" id="pst-primary-sidebar">
 <div class="sidebar-header-items sidebar-primary__section">
 <div class="sidebar-header-items__center">
 <div class="navbar-item">
@@ -158,11 +150,6 @@ document.write(`
 <li class="nav-item current active">
 <a class="nav-link nav-internal" href="../../reference.html">
     Reference
-  </a>
-</li>
-<li class="nav-item">
-<a class="nav-link nav-external" href="https://api.python.langchain.com/">
-    Legacy reference
   </a>
 </li>
 </ul>
@@ -182,15 +169,11 @@ document.write(`
 <a class="text-link" href="https://python.langchain.com/">Docs</a>
 </body></div>
 <div class="navbar-item">
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" data-bs-placement="bottom" data-bs-title="Color mode" data-bs-toggle="tooltip">
+<i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+</button></div>
 <div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
 <li class="nav-item">
 <a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
@@ -288,9 +271,9 @@ document.write(`
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><i class="fa-solid fa-ellipsis"></i></li>
+<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-astradb: 0.5.1</a></li>
 <li class="breadcrumb-item"><a class="nav-link" href="../graph_vectorstores.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">graph_vectorstores</span></code></a></li>
-<li aria-current="page" class="breadcrumb-item active">AstraDBGraph...</li>
+<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">AstraDBGraphVectorStore</span></li>
 </ul>
 </nav>
 </div>
@@ -457,22 +440,22 @@ Remember you can pass concurrency settings to individual calls to
 <td><p>Graph Vector Store backed by AstraDB.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.aadd_documents" title="langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.aadd_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aadd_documents</span></code></a>(documents, **kwargs)</p></td>
-<td><p>Run more documents through the embeddings and add to the vectorstore.</p></td>
+<td><p>Run more documents through the embeddings and add to the vector store.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.aadd_nodes" title="langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.aadd_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aadd_nodes</span></code></a>(nodes, **kwargs)</p></td>
 <td><p>Add nodes to the graph store.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.aadd_texts" title="langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.aadd_texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aadd_texts</span></code></a>(texts[, metadatas, ids])</p></td>
-<td><p>Run more texts through the embeddings and add to the vectorstore.</p></td>
+<td><p>Run more texts through the embeddings and add to the vector store.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.add_documents" title="langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.add_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_documents</span></code></a>(documents, **kwargs)</p></td>
-<td><p>Run more documents through the embeddings and add to the vectorstore.</p></td>
+<td><p>Run more documents through the embeddings and add to the vector store.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.add_nodes" title="langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.add_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_nodes</span></code></a>(nodes, **kwargs)</p></td>
 <td><p>Add nodes to the graph store.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.add_texts" title="langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.add_texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_texts</span></code></a>(texts[, metadatas, ids])</p></td>
-<td><p>Run more texts through the embeddings and add to the vectorstore.</p></td>
+<td><p>Run more texts through the embeddings and add to the vector store.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.adelete" title="langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.adelete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adelete</span></code></a>([ids])</p></td>
 <td><p>Async delete by vector ID or other criteria.</p></td>
@@ -713,7 +696,7 @@ Remember you can pass concurrency settings to individual calls to
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.aadd_documents">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aadd_documents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">documents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><span class="pre">Document</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.aadd_documents" title="Link to this definition">#</a></dt>
-<dd><p>Run more documents through the embeddings and add to the vectorstore.</p>
+<dd><p>Run more documents through the embeddings and add to the vector store.</p>
 <p>The Links present in the document metadata field <cite>links</cite> will be extracted to
 create the <cite>Node</cite> links.</p>
 <p>Eg if nodes <cite>a</cite> and <cite>b</cite> are connected over a hyperlink <cite>https://some-url</cite>, the
@@ -746,7 +729,7 @@ function call would look like:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>documents</strong> (<em>Iterable</em><em>[</em><a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><em>Document</em></a><em>]</em>) – Documents to add to the vectorstore.
+<li><p><strong>documents</strong> (<em>Iterable</em><em>[</em><a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><em>Document</em></a><em>]</em>) – Documents to add to the vector store.
 The document’s metadata key <cite>links</cite> shall be an iterable of
 <a class="reference internal" href="../../community/graph_vectorstores/langchain_community.graph_vectorstores.links.Link.html#langchain_community.graph_vectorstores.links.Link" title="langchain_community.graph_vectorstores.links.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">Link</span></code></a>.</p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>)</p></li>
@@ -779,7 +762,7 @@ The document’s metadata key <cite>links</cite> shall be an iterable of
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.aadd_texts">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aadd_texts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadatas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.aadd_texts" title="Link to this definition">#</a></dt>
-<dd><p>Run more texts through the embeddings and add to the vectorstore.</p>
+<dd><p>Run more texts through the embeddings and add to the vector store.</p>
 <p>The Links present in the metadata field <cite>links</cite> will be extracted to create
 the <cite>Node</cite> links.</p>
 <p>Eg if nodes <cite>a</cite> and <cite>b</cite> are connected over a hyperlink <cite>https://some-url</cite>, the
@@ -805,16 +788,16 @@ function call would look like:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>texts</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>) – Iterable of strings to add to the vectorstore.</p></li>
+<li><p><strong>texts</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>) – Iterable of strings to add to the vector store.</p></li>
 <li><p><strong>metadatas</strong> (<em>Iterable</em><em>[</em><em>dict</em><em>] </em><em>| </em><em>None</em>) – Optional list of metadatas associated with the texts.
 The metadata key <cite>links</cite> shall be an iterable of
 <a class="reference internal" href="../../community/graph_vectorstores/langchain_community.graph_vectorstores.links.Link.html#langchain_community.graph_vectorstores.links.Link" title="langchain_community.graph_vectorstores.links.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">Link</span></code></a>.</p></li>
 <li><p><strong>ids</strong> (<em>Iterable</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>) – Optional list of IDs associated with the texts.</p></li>
-<li><p><strong>**kwargs</strong> (<em>Any</em>) – vectorstore specific parameters.</p></li>
+<li><p><strong>**kwargs</strong> (<em>Any</em>) – vector store specific parameters.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of ids from adding the texts into the vectorstore.</p>
+<dd class="field-even"><p>List of ids from adding the texts into the vector store.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list[str]</p>
@@ -824,7 +807,7 @@ The metadata key <cite>links</cite> shall be an iterable of
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.add_documents">
 <span class="sig-name descname"><span class="pre">add_documents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">documents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><span class="pre">Document</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.add_documents" title="Link to this definition">#</a></dt>
-<dd><p>Run more documents through the embeddings and add to the vectorstore.</p>
+<dd><p>Run more documents through the embeddings and add to the vector store.</p>
 <p>The Links present in the document metadata field <cite>links</cite> will be extracted to
 create the <cite>Node</cite> links.</p>
 <p>Eg if nodes <cite>a</cite> and <cite>b</cite> are connected over a hyperlink <cite>https://some-url</cite>, the
@@ -857,7 +840,7 @@ function call would look like:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>documents</strong> (<em>Iterable</em><em>[</em><a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><em>Document</em></a><em>]</em>) – Documents to add to the vectorstore.
+<li><p><strong>documents</strong> (<em>Iterable</em><em>[</em><a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><em>Document</em></a><em>]</em>) – Documents to add to the vector store.
 The document’s metadata key <cite>links</cite> shall be an iterable of
 <a class="reference internal" href="../../community/graph_vectorstores/langchain_community.graph_vectorstores.links.Link.html#langchain_community.graph_vectorstores.links.Link" title="langchain_community.graph_vectorstores.links.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">Link</span></code></a>.</p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>)</p></li>
@@ -890,7 +873,7 @@ The document’s metadata key <cite>links</cite> shall be an iterable of
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.add_texts">
 <span class="sig-name descname"><span class="pre">add_texts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadatas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_astradb.graph_vectorstores.AstraDBGraphVectorStore.add_texts" title="Link to this definition">#</a></dt>
-<dd><p>Run more texts through the embeddings and add to the vectorstore.</p>
+<dd><p>Run more texts through the embeddings and add to the vector store.</p>
 <p>The Links present in the metadata field <cite>links</cite> will be extracted to create
 the <cite>Node</cite> links.</p>
 <p>Eg if nodes <cite>a</cite> and <cite>b</cite> are connected over a hyperlink <cite>https://some-url</cite>, the
@@ -916,16 +899,16 @@ function call would look like:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>texts</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>) – Iterable of strings to add to the vectorstore.</p></li>
+<li><p><strong>texts</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>) – Iterable of strings to add to the vector store.</p></li>
 <li><p><strong>metadatas</strong> (<em>Iterable</em><em>[</em><em>dict</em><em>] </em><em>| </em><em>None</em>) – Optional list of metadatas associated with the texts.
 The metadata key <cite>links</cite> shall be an iterable of
 <a class="reference internal" href="../../community/graph_vectorstores/langchain_community.graph_vectorstores.links.Link.html#langchain_community.graph_vectorstores.links.Link" title="langchain_community.graph_vectorstores.links.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">Link</span></code></a>.</p></li>
 <li><p><strong>ids</strong> (<em>Iterable</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>) – Optional list of IDs associated with the texts.</p></li>
-<li><p><strong>**kwargs</strong> (<em>Any</em>) – vectorstore specific parameters.</p></li>
+<li><p><strong>**kwargs</strong> (<em>Any</em>) – vector store specific parameters.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of ids from adding the texts into the vectorstore.</p>
+<dd class="field-even"><p>List of ids from adding the texts into the vector store.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list[str]</p>
@@ -1159,16 +1142,20 @@ this threshold will be chosen. Defaults to -infinity.</p></li>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>**kwargs</strong> (<em>Any</em>) – <p>Keyword arguments to pass to the search function.
 Can include:</p>
-<ul class="simple">
+<ul>
 <li><p>search_type (Optional[str]): Defines the type of search that
 the Retriever should perform.
-Can be <code class="docutils literal notranslate"><span class="pre">traversal</span></code> (default), <code class="docutils literal notranslate"><span class="pre">similarity</span></code>, <code class="docutils literal notranslate"><span class="pre">mmr</span></code>, or
-<code class="docutils literal notranslate"><span class="pre">similarity_score_threshold</span></code>.</p></li>
+Can be <code class="docutils literal notranslate"><span class="pre">traversal</span></code> (default), <code class="docutils literal notranslate"><span class="pre">similarity</span></code>, <code class="docutils literal notranslate"><span class="pre">mmr</span></code>,</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">mmr_traversal</span></code>, or <code class="docutils literal notranslate"><span class="pre">similarity_score_threshold</span></code>.</p>
+</div></blockquote>
+</li>
 <li><p>search_kwargs (Optional[Dict]): Keyword arguments to pass to the
 search function. Can include things like:</p>
-<ul>
+<ul class="simple">
 <li><p>k(int): Amount of documents to return (Default: 4).</p></li>
-<li><p>depth(int): The maximum depth of edges to traverse (Default: 1).</p></li>
+<li><p>depth(int): The maximum depth of edges to traverse (Default: 1).
+Only applies to search_type: <code class="docutils literal notranslate"><span class="pre">traversal</span></code> and <code class="docutils literal notranslate"><span class="pre">mmr_traversal</span></code>.</p></li>
 <li><p>score_threshold(float): Minimum relevance threshold
 for similarity_score_threshold.</p></li>
 <li><p>fetch_k(int): Amount of documents to pass to MMR algorithm
@@ -1191,21 +1178,21 @@ for similarity_score_threshold.</p></li>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Retrieve documents traversing edges</span>
 <span class="n">docsearch</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span>
     <span class="n">search_type</span><span class="o">=</span><span class="s2">"traversal"</span><span class="p">,</span>
-    <span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">'k'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">'depth'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+    <span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">'k'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">'depth'</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
 <span class="p">)</span>
 
-<span class="c1"># Retrieve more documents with higher diversity</span>
+<span class="c1"># Retrieve documents with higher diversity</span>
 <span class="c1"># Useful if your dataset has many similar documents</span>
 <span class="n">docsearch</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span>
-    <span class="n">search_type</span><span class="o">=</span><span class="s2">"mmr"</span><span class="p">,</span>
-    <span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">'k'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">'lambda_mult'</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">}</span>
+    <span class="n">search_type</span><span class="o">=</span><span class="s2">"mmr_traversal"</span><span class="p">,</span>
+    <span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">'k'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">'lambda_mult'</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span> <span class="s1">'depth'</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
 <span class="p">)</span>
 
 <span class="c1"># Fetch more documents for the MMR algorithm to consider</span>
 <span class="c1"># But only return the top 5</span>
 <span class="n">docsearch</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span>
-    <span class="n">search_type</span><span class="o">=</span><span class="s2">"mmr"</span><span class="p">,</span>
-    <span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">'k'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'fetch_k'</span><span class="p">:</span> <span class="mi">50</span><span class="p">}</span>
+    <span class="n">search_type</span><span class="o">=</span><span class="s2">"mmr_traversal"</span><span class="p">,</span>
+    <span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">'k'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'fetch_k'</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">'depth'</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
 <span class="p">)</span>
 
 <span class="c1"># Only retrieve documents that have a relevance score</span>
@@ -1731,7 +1718,8 @@ Defaults to 4.</p></li>
 </section>
 </article>
 </div>
-<div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+<dialog id="pst-secondary-sidebar-modal"></dialog>
+<div class="bd-sidebar-secondary bd-toc" id="pst-secondary-sidebar"><div class="sidebar-secondary-items sidebar-secondary__inner">
 <div class="sidebar-secondary-item">
 <div class="page-toc tocsection onthispage" id="pst-page-navigation-heading-2">
 <i class="fa-solid fa-list"></i> On this page
@@ -1790,8 +1778,8 @@ Defaults to 4.</p></li>
 </div>
 </div>
 <!-- Scripts loaded after <body> so the DOM is not blocked -->
-<script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script defer="" src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer="" src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
 <div class="footer-items__start">

@@ -10,23 +10,28 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+<!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+<noscript>
+<style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+</noscript>
 <!-- Loaded before other Sphinx assets -->
-<link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
-<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
-<link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet"/>
-<link as="font" crossorigin="" href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" rel="preload" type="font/woff2"/>
-<link as="font" crossorigin="" href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" rel="preload" type="font/woff2"/>
-<link as="font" crossorigin="" href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" rel="preload" type="font/woff2"/>
+<link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet"/>
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet"/>
 <link href="../../../_static/pygments.css?v=a746c00c" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/autodoc_pydantic.css" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/sphinx-design.min.css?v=95c83b7e" rel="stylesheet" type="text/css"/>
 <link href="../../../_static/css/custom.css?v=b95e2228" rel="stylesheet" type="text/css"/>
+<!-- So that users can add custom icons -->
+<script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
 <!-- Pre-loaded scripts that we'll load fully later -->
-<link as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" rel="preload"/>
-<link as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" rel="preload"/>
-<script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+<link as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" rel="preload"/>
+<link as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" rel="preload"/>
 <script src="../../../_static/documentation_options.js?v=3b5cce75"></script>
 <script src="../../../_static/doctools.js?v=9bcbadda"></script>
 <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
@@ -38,26 +43,21 @@
 <link href="../../../search.html" rel="search" title="Search"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
-<meta content="Oct 22, 2024" name="docbuild:last-update"/>
+<meta content="" name="docsearch:version"/>
+<meta content="Oct 23, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
 <div id="pst-scroll-pixel-helper"></div>
 <button class="btn rounded-pill" id="pst-back-to-top" type="button">
 <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-<input class="sidebar-toggle" id="pst-primary-sidebar-checkbox" type="checkbox"/>
-<label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-<input class="sidebar-toggle" id="pst-secondary-sidebar-checkbox" type="checkbox"/>
-<label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-<div class="search-button__wrapper">
-<div class="search-button__overlay"></div>
-<div class="search-button__search-container">
+<dialog id="pst-search-dialog">
 <form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
 <i class="fa-solid fa-magnifying-glass"></i>
-<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search" spellcheck="false" type="search"/>
 <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-</div>
+</form>
+</dialog>
 <div class="pst-async-banner-revealer d-none">
 <aside aria-label="Version warning" class="d-none d-print-none" id="bd-header-version-warning"></aside>
 </div>
@@ -70,7 +70,7 @@
 <div class="navbar-item">
 <a class="navbar-brand logo" href="../../../index.html">
 <img alt="🦜🔗 LangChain  documentation - Home" class="logo__image only-light" src="../../../_static/wordmark-api.svg"/>
-<script>document.write(`<img src="../../../_static/wordmark-api-dark.svg" class="logo__image only-dark" alt="🦜🔗 LangChain  documentation - Home"/>`);</script>
+<img alt="🦜🔗 LangChain  documentation - Home" class="logo__image only-dark pst-js-only" src="../../../_static/wordmark-api-dark.svg"/>
 </a></div>
 </div>
 <div class="navbar-header-items">
@@ -83,11 +83,6 @@
     Reference
   </a>
 </li>
-<li class="nav-item">
-<a class="nav-link nav-external" href="https://api.python.langchain.com/">
-    Legacy reference
-  </a>
-</li>
 </ul>
 </nav></div>
 </div>
@@ -95,7 +90,7 @@
 <div class="navbar-item navbar-persistent--container">
 <form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
 <i class="fa-solid fa-magnifying-glass"></i>
-<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search" spellcheck="false" type="search"/>
 <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
 </div>
@@ -112,15 +107,11 @@
 <a class="text-link" href="https://python.langchain.com/">Docs</a>
 </body></div>
 <div class="navbar-item">
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" data-bs-placement="bottom" data-bs-title="Color mode" data-bs-toggle="tooltip">
+<i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+</button></div>
 <div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
 <li class="nav-item">
 <a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
@@ -136,7 +127,7 @@ document.write(`
 <div class="navbar-persistent--mobile">
 <form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
 <i class="fa-solid fa-magnifying-glass"></i>
-<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" id="search-input" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search" spellcheck="false" type="search"/>
 <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
 </div>
@@ -144,7 +135,8 @@ document.write(`
 </header>
 <div class="bd-container">
 <div class="bd-container__inner bd-page-width">
-<div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+<dialog id="pst-primary-sidebar-modal"></dialog>
+<div class="bd-sidebar-primary bd-sidebar hide-on-wide" id="pst-primary-sidebar">
 <div class="sidebar-header-items sidebar-primary__section">
 <div class="sidebar-header-items__center">
 <div class="navbar-item">
@@ -153,11 +145,6 @@ document.write(`
 <li class="nav-item">
 <a class="nav-link nav-internal" href="../../../reference.html">
     Reference
-  </a>
-</li>
-<li class="nav-item">
-<a class="nav-link nav-external" href="https://api.python.langchain.com/">
-    Legacy reference
   </a>
 </li>
 </ul>
@@ -177,15 +164,11 @@ document.write(`
 <a class="text-link" href="https://python.langchain.com/">Docs</a>
 </body></div>
 <div class="navbar-item">
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" data-bs-placement="bottom" data-bs-title="Color mode" data-bs-toggle="tooltip">
+<i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+</button></div>
 <div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
 <li class="nav-item">
 <a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
@@ -217,7 +200,7 @@ document.write(`
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../../index.html">Module code</a></li>
-<li aria-current="page" class="breadcrumb-item active">langchain_ex...</li>
+<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">langchain_experimental.rl_chain.base</span></li>
 </ul>
 </nav>
 </div>
@@ -281,7 +264,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="BasedOn">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.BasedOn.html#langchain_experimental.rl_chain.pick_best_chain.BasedOn">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.BasedOn.html#langchain_experimental.rl_chain.base.BasedOn">[docs]</a>
 <span class="k">def</span> <span class="nf">BasedOn</span><span class="p">(</span><span class="n">anything</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_BasedOn</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Wrap a value to indicate that it should be based on."""</span>
 
@@ -300,7 +283,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ToSelectFrom">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.ToSelectFrom.html#langchain_experimental.rl_chain.pick_best_chain.ToSelectFrom">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.ToSelectFrom.html#langchain_experimental.rl_chain.base.ToSelectFrom">[docs]</a>
 <span class="k">def</span> <span class="nf">ToSelectFrom</span><span class="p">(</span><span class="n">anything</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_ToSelectFrom</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Wrap a value to indicate that it should be selected from."""</span>
 
@@ -311,7 +294,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="Embed">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Embed.html#langchain_experimental.rl_chain.pick_best_chain.Embed">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Embed.html#langchain_experimental.rl_chain.base.Embed">[docs]</a>
 <span class="k">def</span> <span class="nf">Embed</span><span class="p">(</span><span class="n">anything</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">keep</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Wrap a value to indicate that it should be embedded."""</span>
 
@@ -330,7 +313,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="EmbedAndKeep">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.EmbedAndKeep.html#langchain_experimental.rl_chain.pick_best_chain.EmbedAndKeep">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.EmbedAndKeep.html#langchain_experimental.rl_chain.base.EmbedAndKeep">[docs]</a>
 <span class="k">def</span> <span class="nf">EmbedAndKeep</span><span class="p">(</span><span class="n">anything</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Wrap a value to indicate that it should be embedded and kept."""</span>
 
@@ -342,7 +325,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="parse_lines">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.parse_lines.html#langchain_experimental.rl_chain.pick_best_chain.parse_lines">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.parse_lines.html#langchain_experimental.rl_chain.base.parse_lines">[docs]</a>
 <span class="k">def</span> <span class="nf">parse_lines</span><span class="p">(</span><span class="n">parser</span><span class="p">:</span> <span class="s2">"vw.TextFormatParser"</span><span class="p">,</span> <span class="n">input_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">"vw.Example"</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""Parse the input string into a list of examples."""</span>
 
@@ -351,7 +334,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="get_based_on_and_to_select_from">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.get_based_on_and_to_select_from.html#langchain_experimental.rl_chain.pick_best_chain.get_based_on_and_to_select_from">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.get_based_on_and_to_select_from.html#langchain_experimental.rl_chain.base.get_based_on_and_to_select_from">[docs]</a>
 <span class="k">def</span> <span class="nf">get_based_on_and_to_select_from</span><span class="p">(</span><span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""Get the BasedOn and ToSelectFrom from the inputs."""</span>
     <span class="n">to_select_from</span> <span class="o">=</span> <span class="p">{</span>
@@ -376,7 +359,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="prepare_inputs_for_autoembed">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.prepare_inputs_for_autoembed.html#langchain_experimental.rl_chain.pick_best_chain.prepare_inputs_for_autoembed">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.prepare_inputs_for_autoembed.html#langchain_experimental.rl_chain.base.prepare_inputs_for_autoembed">[docs]</a>
 <span class="k">def</span> <span class="nf">prepare_inputs_for_autoembed</span><span class="p">(</span><span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""Prepare the inputs for auto embedding.</span>
 
@@ -397,7 +380,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="Selected">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Selected.html#langchain_experimental.rl_chain.pick_best_chain.Selected">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Selected.html#langchain_experimental.rl_chain.base.Selected">[docs]</a>
 <span class="k">class</span> <span class="nc">Selected</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Abstract class to represent the selected item."""</span>
 
@@ -409,7 +392,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="Event">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Event.html#langchain_experimental.rl_chain.pick_best_chain.Event">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Event.html#langchain_experimental.rl_chain.base.Event">[docs]</a>
 <span class="k">class</span> <span class="nc">Event</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">TSelected</span><span class="p">],</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Abstract class to represent an event."""</span>
 
@@ -417,7 +400,7 @@ document.write(`
     <span class="n">selected</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TSelected</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Event.__init__">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Event.html#langchain_experimental.rl_chain.pick_best_chain.Event.__init__">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Event.html#langchain_experimental.rl_chain.base.Event.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">selected</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TSelected</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selected</span> <span class="o">=</span> <span class="n">selected</span></div>
@@ -429,36 +412,36 @@ document.write(`
 
 
 <div class="viewcode-block" id="Policy">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Policy.html#langchain_experimental.rl_chain.pick_best_chain.Policy">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Policy.html#langchain_experimental.rl_chain.base.Policy">[docs]</a>
 <span class="k">class</span> <span class="nc">Policy</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">TEvent</span><span class="p">],</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Abstract class to represent a policy."""</span>
 
 <div class="viewcode-block" id="Policy.__init__">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Policy.html#langchain_experimental.rl_chain.pick_best_chain.Policy.__init__">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Policy.html#langchain_experimental.rl_chain.base.Policy.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="Policy.predict">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Policy.html#langchain_experimental.rl_chain.pick_best_chain.Policy.predict">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Policy.html#langchain_experimental.rl_chain.base.Policy.predict">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">TEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span> <span class="o">...</span></div>
 
 
 <div class="viewcode-block" id="Policy.learn">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Policy.html#langchain_experimental.rl_chain.pick_best_chain.Policy.learn">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Policy.html#langchain_experimental.rl_chain.base.Policy.learn">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">learn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">TEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span></div>
 
 
 <div class="viewcode-block" id="Policy.log">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Policy.html#langchain_experimental.rl_chain.pick_best_chain.Policy.log">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Policy.html#langchain_experimental.rl_chain.base.Policy.log">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">TEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span></div>
 
 
 <div class="viewcode-block" id="Policy.save">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Policy.html#langchain_experimental.rl_chain.pick_best_chain.Policy.save">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Policy.html#langchain_experimental.rl_chain.base.Policy.save">[docs]</a>
     <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">pass</span></div>
 </div>
@@ -466,12 +449,12 @@ document.write(`
 
 
 <div class="viewcode-block" id="VwPolicy">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.VwPolicy.html#langchain_experimental.rl_chain.pick_best_chain.VwPolicy">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.VwPolicy.html#langchain_experimental.rl_chain.base.VwPolicy">[docs]</a>
 <span class="k">class</span> <span class="nc">VwPolicy</span><span class="p">(</span><span class="n">Policy</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Vowpal Wabbit policy."""</span>
 
 <div class="viewcode-block" id="VwPolicy.__init__">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.VwPolicy.html#langchain_experimental.rl_chain.pick_best_chain.VwPolicy.__init__">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.VwPolicy.html#langchain_experimental.rl_chain.base.VwPolicy.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model_repo</span><span class="p">:</span> <span class="n">ModelRepository</span><span class="p">,</span>
@@ -489,7 +472,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="VwPolicy.predict">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.VwPolicy.html#langchain_experimental.rl_chain.pick_best_chain.VwPolicy.predict">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.VwPolicy.html#langchain_experimental.rl_chain.base.VwPolicy.predict">[docs]</a>
     <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">TEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">vowpal_wabbit_next</span> <span class="k">as</span> <span class="nn">vw</span>
 
@@ -500,7 +483,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="VwPolicy.learn">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.VwPolicy.html#langchain_experimental.rl_chain.pick_best_chain.VwPolicy.learn">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.VwPolicy.html#langchain_experimental.rl_chain.base.VwPolicy.learn">[docs]</a>
     <span class="k">def</span> <span class="nf">learn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">TEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">vowpal_wabbit_next</span> <span class="k">as</span> <span class="nn">vw</span>
 
@@ -511,7 +494,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="VwPolicy.log">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.VwPolicy.html#langchain_experimental.rl_chain.pick_best_chain.VwPolicy.log">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.VwPolicy.html#langchain_experimental.rl_chain.base.VwPolicy.log">[docs]</a>
     <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">TEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vw_logger</span><span class="o">.</span><span class="n">logging_enabled</span><span class="p">():</span>
             <span class="n">vw_ex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_embedder</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
@@ -519,7 +502,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="VwPolicy.save">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.VwPolicy.html#langchain_experimental.rl_chain.pick_best_chain.VwPolicy.save">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.VwPolicy.html#langchain_experimental.rl_chain.base.VwPolicy.save">[docs]</a>
     <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model_repo</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">)</span></div>
 </div>
@@ -527,18 +510,18 @@ document.write(`
 
 
 <div class="viewcode-block" id="Embedder">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Embedder.html#langchain_experimental.rl_chain.pick_best_chain.Embedder">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Embedder.html#langchain_experimental.rl_chain.base.Embedder">[docs]</a>
 <span class="k">class</span> <span class="nc">Embedder</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">TEvent</span><span class="p">],</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Abstract class to represent an embedder."""</span>
 
 <div class="viewcode-block" id="Embedder.__init__">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Embedder.html#langchain_experimental.rl_chain.pick_best_chain.Embedder.__init__">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Embedder.html#langchain_experimental.rl_chain.base.Embedder.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="Embedder.format">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Embedder.html#langchain_experimental.rl_chain.pick_best_chain.Embedder.format">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.Embedder.html#langchain_experimental.rl_chain.base.Embedder.format">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">TEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span> <span class="o">...</span></div>
 </div>
@@ -546,12 +529,12 @@ document.write(`
 
 
 <div class="viewcode-block" id="SelectionScorer">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.SelectionScorer.html#langchain_experimental.rl_chain.pick_best_chain.SelectionScorer">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.SelectionScorer.html#langchain_experimental.rl_chain.base.SelectionScorer">[docs]</a>
 <span class="k">class</span> <span class="nc">SelectionScorer</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">TEvent</span><span class="p">],</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Abstract class to grade the chosen selection or the response of the llm."""</span>
 
 <div class="viewcode-block" id="SelectionScorer.score_response">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.SelectionScorer.html#langchain_experimental.rl_chain.pick_best_chain.SelectionScorer.score_response">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.SelectionScorer.html#langchain_experimental.rl_chain.base.SelectionScorer.score_response">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">score_response</span><span class="p">(</span></div>
 
@@ -561,7 +544,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AutoSelectionScorer">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.AutoSelectionScorer.html#langchain_experimental.rl_chain.pick_best_chain.AutoSelectionScorer">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.AutoSelectionScorer.html#langchain_experimental.rl_chain.base.AutoSelectionScorer">[docs]</a>
 <span class="k">class</span> <span class="nc">AutoSelectionScorer</span><span class="p">(</span><span class="n">SelectionScorer</span><span class="p">[</span><span class="n">Event</span><span class="p">],</span> <span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Auto selection scorer."""</span>
 
@@ -570,7 +553,7 @@ document.write(`
     <span class="n">scoring_criteria_template_str</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="AutoSelectionScorer.get_default_system_prompt">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.AutoSelectionScorer.html#langchain_experimental.rl_chain.pick_best_chain.AutoSelectionScorer.get_default_system_prompt">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.AutoSelectionScorer.html#langchain_experimental.rl_chain.base.AutoSelectionScorer.get_default_system_prompt">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_default_system_prompt</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">SystemMessagePromptTemplate</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">SystemMessagePromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
@@ -583,7 +566,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="AutoSelectionScorer.get_default_prompt">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.AutoSelectionScorer.html#langchain_experimental.rl_chain.pick_best_chain.AutoSelectionScorer.get_default_prompt">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.AutoSelectionScorer.html#langchain_experimental.rl_chain.base.AutoSelectionScorer.get_default_prompt">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_default_prompt</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ChatPromptTemplate</span><span class="p">:</span>
         <span class="n">human_template</span> <span class="o">=</span> <span class="s1">'Given this based_on "</span><span class="si">{rl_chain_selected_based_on}</span><span class="s1">" </span><span class="se">\</span>
@@ -618,7 +601,7 @@ document.write(`
         <span class="k">return</span> <span class="n">values</span>
 
 <div class="viewcode-block" id="AutoSelectionScorer.score_response">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.AutoSelectionScorer.html#langchain_experimental.rl_chain.pick_best_chain.AutoSelectionScorer.score_response">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.AutoSelectionScorer.html#langchain_experimental.rl_chain.base.AutoSelectionScorer.score_response">[docs]</a>
     <span class="k">def</span> <span class="nf">score_response</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">llm_response</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -636,7 +619,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="RLChain">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.RLChain.html#langchain_experimental.rl_chain.pick_best_chain.RLChain">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.RLChain.html#langchain_experimental.rl_chain.base.RLChain">[docs]</a>
 <span class="k">class</span> <span class="nc">RLChain</span><span class="p">(</span><span class="n">Chain</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">TEvent</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">"""Chain that leverages the Vowpal Wabbit (VW) model as a learned policy</span>
 <span class="sd">    for reinforcement learning.</span>
@@ -746,7 +729,7 @@ document.write(`
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">output_key</span><span class="p">]</span>
 
 <div class="viewcode-block" id="RLChain.update_with_delayed_score">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.RLChain.html#langchain_experimental.rl_chain.pick_best_chain.RLChain.update_with_delayed_score">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.RLChain.html#langchain_experimental.rl_chain.base.RLChain.update_with_delayed_score">[docs]</a>
     <span class="k">def</span> <span class="nf">update_with_delayed_score</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">score</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">chain_response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">force_score</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -767,7 +750,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="RLChain.deactivate_selection_scorer">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.RLChain.html#langchain_experimental.rl_chain.pick_best_chain.RLChain.deactivate_selection_scorer">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.RLChain.html#langchain_experimental.rl_chain.base.RLChain.deactivate_selection_scorer">[docs]</a>
     <span class="k">def</span> <span class="nf">deactivate_selection_scorer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Deactivates the selection scorer, meaning that the chain will no longer attempt to use the selection scorer to score responses.</span>
@@ -776,7 +759,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="RLChain.activate_selection_scorer">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.RLChain.html#langchain_experimental.rl_chain.pick_best_chain.RLChain.activate_selection_scorer">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.RLChain.html#langchain_experimental.rl_chain.base.RLChain.activate_selection_scorer">[docs]</a>
     <span class="k">def</span> <span class="nf">activate_selection_scorer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Activates the selection scorer, meaning that the chain will attempt to use the selection scorer to score responses.</span>
@@ -785,7 +768,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="RLChain.save_progress">
-<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.RLChain.html#langchain_experimental.rl_chain.pick_best_chain.RLChain.save_progress">[docs]</a>
+<a class="viewcode-back" href="../../../experimental/rl_chain/langchain_experimental.rl_chain.base.RLChain.html#langchain_experimental.rl_chain.base.RLChain.save_progress">[docs]</a>
     <span class="k">def</span> <span class="nf">save_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        This function should be called to save the state of the learned policy model.</span>
@@ -892,8 +875,8 @@ document.write(`
 </div>
 </div>
 <!-- Scripts loaded after <body> so the DOM is not blocked -->
-<script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script defer="" src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer="" src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
 <div class="footer-items__start">
