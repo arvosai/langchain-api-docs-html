@@ -46,7 +46,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Oct 23, 2024" name="docbuild:last-update"/>
+<meta content="Oct 24, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -299,44 +299,41 @@
 <span class="sig-prename descclassname"><span class="pre">langchain.chat_models.base.</span></span><span class="sig-name descname"><span class="pre">init_chat_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_provider</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configurable_fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">_ConfigurableModel</span></span></span></dt>
 <dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">langchain.chat_models.base.</span></span><span class="sig-name descname"><span class="pre">init_chat_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_provider</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configurable_fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'any'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">_ConfigurableModel</span></span></span></dt>
-<dd><div class="admonition-beta admonition">
-<p class="admonition-title">Beta</p>
-<p>This feature is in beta. It is actively being worked on, so the API may change.</p>
-</div>
-<p>Initialize a ChatModel from the model name and provider.</p>
-<p>Must have the integration package corresponding to the model provider installed.</p>
+<dd><p>Initialize a ChatModel from the model name and provider.</p>
+<p><strong>Note:</strong> Must have the integration package corresponding to the model provider
+installed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> – The name of the model, e.g. “gpt-4o”, “claude-3-opus-20240229”.</p></li>
 <li><p><strong>model_provider</strong> – <p>The model provider. Supported model_provider values and the
-corresponding integration package:</p>
+corresponding integration package are:</p>
 <ul>
-<li><p>openai (langchain-openai)</p></li>
-<li><p>anthropic (langchain-anthropic)</p></li>
-<li><p>azure_openai (langchain-openai)</p></li>
-<li><p>google_vertexai (langchain-google-vertexai)</p></li>
-<li><p>google_genai (langchain-google-genai)</p></li>
-<li><p>bedrock (langchain-aws)</p></li>
-<li><p>bedrock_converse (langchain-aws)</p></li>
-<li><p>cohere (langchain-cohere)</p></li>
-<li><p>fireworks (langchain-fireworks)</p></li>
-<li><p>together (langchain-together)</p></li>
-<li><p>mistralai (langchain-mistralai)</p></li>
-<li><p>huggingface (langchain-huggingface)</p></li>
-<li><p>groq (langchain-groq)</p></li>
-<li><p>ollama (langchain-ollama)  [support added in langchain==0.2.12]</p></li>
+<li><p>’openai’              -&gt; langchain-openai</p></li>
+<li><p>’anthropic’           -&gt; langchain-anthropic</p></li>
+<li><p>’azure_openai’        -&gt; langchain-openai</p></li>
+<li><p>’google_vertexai’     -&gt; langchain-google-vertexai</p></li>
+<li><p>’google_genai’        -&gt; langchain-google-genai</p></li>
+<li><p>’bedrock’             -&gt; langchain-aws</p></li>
+<li><p>’bedrock_converse’    -&gt; langchain-aws</p></li>
+<li><p>’cohere’              -&gt; langchain-cohere</p></li>
+<li><p>’fireworks’           -&gt; langchain-fireworks</p></li>
+<li><p>’together’            -&gt; langchain-together</p></li>
+<li><p>’mistralai’           -&gt; langchain-mistralai</p></li>
+<li><p>’huggingface’         -&gt; langchain-huggingface</p></li>
+<li><p>’groq’                -&gt; langchain-groq</p></li>
+<li><p>’ollama’              -&gt; langchain-ollama</p></li>
 </ul>
 <p>Will attempt to infer model_provider from model if not specified. The
 following providers will be inferred based on these model prefixes:</p>
 <ul>
-<li><p>gpt-3…, gpt-4…, or o1… -&gt; openai</p></li>
-<li><p>claude… -&gt; anthropic</p></li>
-<li><p>amazon…. -&gt; bedrock</p></li>
-<li><p>gemini… -&gt; google_vertexai</p></li>
-<li><p>command… -&gt; cohere</p></li>
-<li><p>accounts/fireworks… -&gt; fireworks</p></li>
-<li><p>mistral… -&gt; mistralai</p></li>
+<li><p>’gpt-3…’ | ‘gpt-4…’ | ‘o1…’ -&gt; ‘openai’</p></li>
+<li><p>’claude…’                       -&gt; ‘anthropic’</p></li>
+<li><p>’amazon….’                      -&gt; ‘bedrock’</p></li>
+<li><p>’gemini…’                       -&gt; ‘google_vertexai’</p></li>
+<li><p>’command…’                      -&gt; ‘cohere’</p></li>
+<li><p>’accounts/fireworks…’           -&gt; ‘fireworks’</p></li>
+<li><p>’mistral…’                      -&gt; ‘mistralai’</p></li>
 </ul>
 </p></li>
 <li><p><strong>configurable_fields</strong> – <p>Which model parameters are
@@ -498,6 +495,9 @@ the now-deprecated langchain-community version of Ollama was imported
 (langchain_community.chat_models.ChatOllama).</p>
 <p>Support for langchain_aws.ChatBedrockConverse added
 (model_provider=”bedrock_converse”).</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.3.5: </span>Out of beta.</p>
 </div>
 </dd></dl>
 <p class="rubric">Examples using init_chat_model</p>

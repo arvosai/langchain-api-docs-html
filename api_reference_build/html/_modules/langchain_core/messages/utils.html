@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Oct 23, 2024" name="docbuild:last-update"/>
+<meta content="Oct 24, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -1118,8 +1118,6 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">"""Convert LangChain messages into OpenAI message dicts.</span>
 
-<span class="sd">    .. versionadded:: 0.3.11</span>
-
 <span class="sd">    Args:</span>
 <span class="sd">        messages: Message-like object or iterable of objects whose contents are</span>
 <span class="sd">            in OpenAI, Anthropic, Bedrock Converse, or VertexAI formats.</span>
@@ -1171,6 +1169,8 @@
 <span class="sd">            #   {'role': 'tool', 'name': 'bar', 'content': 'foobar'},</span>
 <span class="sd">            #   {'role': 'assistant', 'content': 'thats nice'}</span>
 <span class="sd">            # ]</span>
+
+<span class="sd">    .. versionadded:: 0.3.11</span>
 
 <span class="sd">    """</span>  <span class="c1"># noqa: E501</span>
     <span class="k">if</span> <span class="n">text_format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"string"</span><span class="p">,</span> <span class="s2">"block"</span><span class="p">):</span>

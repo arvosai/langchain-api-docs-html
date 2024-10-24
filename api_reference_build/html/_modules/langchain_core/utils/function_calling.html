@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Oct 23, 2024" name="docbuild:last-update"/>
+<meta content="Oct 24, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -571,23 +571,17 @@
     <span class="n">strict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""Convert a raw function/class to an OpenAI function.</span>
-
-<span class="sd">    .. versionchanged:: 0.2.29</span>
-
-<span class="sd">        ``strict`` arg added.</span>
-
 <span class="sd">    Args:</span>
 <span class="sd">        function:</span>
 <span class="sd">            A dictionary, Pydantic BaseModel class, TypedDict class, a LangChain</span>
 <span class="sd">            Tool object, or a Python function. If a dictionary is passed in, it is</span>
-<span class="sd">            assumed to already be a valid OpenAI function or a JSON schema with</span>
-<span class="sd">            top-level 'title' and 'description' keys specified.</span>
+<span class="sd">            assumed to already be a valid OpenAI function, a JSON schema with</span>
+<span class="sd">            top-level 'title' and 'description' keys specified, or an Anthropic format</span>
+<span class="sd">            tool.</span>
 <span class="sd">        strict:</span>
 <span class="sd">            If True, model output is guaranteed to exactly match the JSON Schema</span>
 <span class="sd">            provided in the function definition. If None, ``strict`` argument will not</span>
 <span class="sd">            be included in function definition.</span>
-
-<span class="sd">            .. versionadded:: 0.2.29</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A dict version of the passed in function which is compatible with the OpenAI</span>
@@ -595,6 +589,14 @@
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: If function is not in a supported format.</span>
+
+<span class="sd">    .. versionchanged:: 0.2.29</span>
+
+<span class="sd">        ``strict`` arg added.</span>
+
+<span class="sd">    .. versionchanged:: 0.3.13</span>
+
+<span class="sd">        Support for Anthropic format tools added.</span>
 <span class="sd">    """</span>
     <span class="kn">from</span> <span class="nn">langchain_core.tools</span> <span class="kn">import</span> <span class="n">BaseTool</span>
 
@@ -612,6 +614,15 @@
             <span class="s2">"name"</span><span class="p">:</span> <span class="n">function</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"title"</span><span class="p">),</span>
             <span class="s2">"description"</span><span class="p">:</span> <span class="n">function</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"description"</span><span class="p">),</span>
             <span class="s2">"parameters"</span><span class="p">:</span> <span class="n">function</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="c1"># an Anthropic format tool</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span>
+        <span class="n">k</span> <span class="ow">in</span> <span class="n">function</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"description"</span><span class="p">,</span> <span class="s2">"input_schema"</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="n">oai_function</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"name"</span><span class="p">:</span> <span class="n">function</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span>
+            <span class="s2">"description"</span><span class="p">:</span> <span class="n">function</span><span class="p">[</span><span class="s2">"description"</span><span class="p">],</span>
+            <span class="s2">"parameters"</span><span class="p">:</span> <span class="n">function</span><span class="p">[</span><span class="s2">"input_schema"</span><span class="p">],</span>
         <span class="p">}</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_basemodel_subclass</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
         <span class="n">oai_function</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">convert_pydantic_to_openai_function</span><span class="p">(</span><span class="n">function</span><span class="p">))</span>
@@ -652,34 +663,35 @@
     <span class="o">*</span><span class="p">,</span>
     <span class="n">strict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">"""Convert a raw function/class to an OpenAI tool.</span>
-
-<span class="sd">    .. versionchanged:: 0.2.29</span>
-
-<span class="sd">        ``strict`` arg added.</span>
+<span class="w">    </span><span class="sd">"""Convert a tool-like object to an OpenAI tool schema.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        tool:</span>
 <span class="sd">            Either a dictionary, a pydantic.BaseModel class, Python function, or</span>
 <span class="sd">            BaseTool. If a dictionary is passed in, it is assumed to already be a valid</span>
-<span class="sd">            OpenAI tool, OpenAI function, or a JSON schema with top-level 'title' and</span>
-<span class="sd">            'description' keys specified.</span>
+<span class="sd">            OpenAI tool, OpenAI function, a JSON schema with top-level 'title' and</span>
+<span class="sd">            'description' keys specified, or an Anthropic format tool.</span>
 <span class="sd">        strict:</span>
 <span class="sd">            If True, model output is guaranteed to exactly match the JSON Schema</span>
 <span class="sd">            provided in the function definition. If None, ``strict`` argument will not</span>
 <span class="sd">            be included in tool definition.</span>
 
-<span class="sd">            .. versionadded:: 0.2.29</span>
-
 <span class="sd">    Returns:</span>
 <span class="sd">        A dict version of the passed in tool which is compatible with the</span>
 <span class="sd">        OpenAI tool-calling API.</span>
+
+<span class="sd">    .. versionchanged:: 0.2.29</span>
+
+<span class="sd">        ``strict`` arg added.</span>
+
+<span class="sd">    .. versionchanged:: 0.3.13</span>
+
+<span class="sd">        Support for Anthropic format tools added.</span>
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tool</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">tool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"function"</span> <span class="ow">and</span> <span class="s2">"function"</span> <span class="ow">in</span> <span class="n">tool</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">tool</span>
     <span class="n">oai_function</span> <span class="o">=</span> <span class="n">convert_to_openai_function</span><span class="p">(</span><span class="n">tool</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">)</span>
-    <span class="n">oai_tool</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"function"</span><span class="p">,</span> <span class="s2">"function"</span><span class="p">:</span> <span class="n">oai_function</span><span class="p">}</span>
-    <span class="k">return</span> <span class="n">oai_tool</span></div>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"function"</span><span class="p">,</span> <span class="s2">"function"</span><span class="p">:</span> <span class="n">oai_function</span><span class="p">}</span></div>
 
 
 
